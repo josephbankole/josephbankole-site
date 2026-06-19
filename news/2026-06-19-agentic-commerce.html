@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Agents start spending: Visa, Stripe, Adyen, and a 4% toll · Joseph Bankole</title>
-<meta name="description" content="The week agent-led checkout stopped being a demo: Adyen Agentic, Visa with OpenAI and Stripe, the AP2 mandate model, OpenAI's 4% checkout fee, and the GENIUS Act stablecoin rulebook taking shape. Sourced and read from the rails." />
+<title>Now the agents pay each other: Mastercard's machine rails and the governance question · Joseph Bankole</title>
+<meta name="description" content="Mastercard's Agent Pay for Machines opens payments between agents, Visa ties in OpenAI, Adyen ships Agentic, JPMorgan names the delegation problem, and the GENIUS Act rulebook hardens. Sourced and read from the rails." />
 <meta name="theme-color" content="#0c2a3e" />
 <link rel="canonical" href="https://josephbankole.ca/news/2026-06-19-agentic-commerce.html" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="Agents start spending: Visa, Stripe, Adyen, and a 4% toll" />
-<meta property="og:description" content="The week the rails for agent-led checkout stopped being a demo, read from the perspective of someone who operated them." />
+<meta property="og:title" content="Now the agents pay each other: Mastercard's machine rails and the governance question" />
+<meta property="og:description" content="The week agent-to-agent payments went live and the industry started arguing about what you should let a machine spend. Read from the perspective of someone who operated the rails." />
 <meta property="og:url" content="https://josephbankole.ca/news/2026-06-19-agentic-commerce.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -19,7 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/assets/style.css" />
 <script type="application/ld+json">
-{ "@context": "https://schema.org", "@type": "NewsArticle", "headline": "Agents start spending: Visa, Stripe, Adyen, and a 4% toll", "datePublished": "2026-06-19", "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole" }, "mainEntityOfPage": "https://josephbankole.ca/news/2026-06-19-agentic-commerce.html" }
+{ "@context": "https://schema.org", "@type": "NewsArticle", "headline": "Now the agents pay each other: Mastercard's machine rails and the governance question", "datePublished": "2026-06-19", "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole" }, "mainEntityOfPage": "https://josephbankole.ca/news/2026-06-19-agentic-commerce.html" }
 </script>
 </head>
 <body>
@@ -34,43 +34,43 @@
 <header class="article-head wrap">
   <a class="backlink" href="/news/">&larr; News</a>
   <span class="index">Daily brief &middot; 19 June 2026</span>
-  <h1>Agents start spending: Visa, Stripe, Adyen, and a 4% toll.</h1>
+  <h1>Now the agents pay each other.</h1>
   <div class="article-meta"><span>19 June 2026</span><span>Payments &middot; Agentic commerce</span><span>Sourced</span></div>
 </header>
 
 <section class="article-body" style="border-top:none">
   <div class="wrap">
     <div class="prose">
-      <p>For two years agent-led checkout was a stage demo: a model that could "buy" something if every condition was perfect. This week it started to look like infrastructure. The card networks, the processors, and an open protocol layer all moved in the same direction at once, and the rulebook for the money underneath it took shape in Washington. Here is what happened, and what it means from the rails.</p>
+      <p>Most of the agentic-commerce story so far has been about a person at one end and a shop at the other, with an agent doing the clicking in between. This week the picture changed. The newest move is not an agent buying from a merchant, it is an agent paying another agent, at machine speed, in amounts a card network was never built to carry. Here is what landed, and what it means from the rails.</p>
 
-      <h3>The processors shipped product</h3>
-      <p>Adyen unveiled a suite called Adyen Agentic on 16 June, aimed at helping merchants sell through conversational AI and cover the stages of an agent-driven customer journey <a class="inline-link" href="https://www.pymnts.com/news/b2b-payments/2026/adyen-debuts-agentic-solutions-for-enterprise-merchants/" target="_blank" rel="noopener">[1]</a>. Stripe, meanwhile, has been building the plumbing for a while: an AI Agents SDK, single-use virtual cards with merchant and amount controls, and Shared Payment Tokens that now carry Mastercard Agent Pay and Visa's intelligent-commerce flows, plus buy-now-pay-later methods <a class="inline-link" href="https://stripe.com/blog/supporting-additional-payment-methods-for-agentic-commerce" target="_blank" rel="noopener">[2]</a>.</p>
+      <h3>Machine pays machine</h3>
+      <p>Mastercard launched Agent Pay for Machines on 10 June, a payment framework aimed at a world where software buys services from other software <a class="inline-link" href="https://www.mastercard.com/us/en/news-and-trends/press/2026/june/mastercard-launches-agent-pay-for-machines.html" target="_blank" rel="noopener">[1]</a>. The pitch is sums as small as fractions of a cent, completed programmatically and in chains, so an agent can pay for an API call, a data lookup, or a compute slice as it works <a class="inline-link" href="https://fortune.com/2026/06/10/mastercard-ai-payments-protocol-launch-agentic-finance/" target="_blank" rel="noopener">[2]</a>. More than thirty partners signed on at launch, spanning processors such as Stripe, Adyen, and Checkout.com and crypto firms such as Coinbase, and the protocol is built to settle across cards, bank rails, and stablecoins rather than one of them <a class="inline-link" href="https://www.mastercard.com/us/en/news-and-trends/press/2026/june/mastercard-launches-agent-pay-for-machines.html" target="_blank" rel="noopener">[1]</a>.</p>
 
-      <h3>The networks picked their model</h3>
-      <p>Visa scaled its agentic-commerce push through a protocol collaboration with Stripe <a class="inline-link" href="https://www.pymnts.com/visa/2026/visa-scales-agentic-commerce-through-stripe-protocol-collaboration/" target="_blank" rel="noopener">[3]</a> and a separate tie-up with OpenAI to put secure Visa payments inside agent experiences <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-agents-start-shopping-and-payments-firms-adapt/" target="_blank" rel="noopener">[4]</a>. Underneath the brand names sits a shared idea. Mastercard Agent Pay binds a tokenised card credential to a specific agent, a specific merchant scope, and a specific consent policy. Visa's Trusted Agent Protocol does the credential-plus-authorization dance over existing web infrastructure. And an open layer, AP2, defines three mandates the networks consume as inputs: an Intent Mandate for what the user authorised, a Cart Mandate for what the merchant offered, and a Payment Mandate for settlement <a class="inline-link" href="https://www.crossmint.com/learn/agent-card-payments-compared" target="_blank" rel="noopener">[5]</a>.</p>
+      <h3>The consumer side kept filling in</h3>
+      <p>The human-facing rails moved too. Visa tied its agentic push to OpenAI so that tokenised, agent-led purchases can happen inside the model itself <a class="inline-link" href="https://www.americanbanker.com/payments/news/visa-partners-with-openai-mastercard-pushes-machine-payments" target="_blank" rel="noopener">[3]</a>. Adyen unveiled a suite called Adyen Agentic on 16 June, covering the stages of an agent-driven customer journey for enterprise merchants <a class="inline-link" href="https://www.pymnts.com/news/b2b-payments/2026/adyen-debuts-agentic-solutions-for-enterprise-merchants/" target="_blank" rel="noopener">[4]</a>. Demand is not hypothetical. Visa's research has 47% of US shoppers already using AI for at least one shopping task, such as price comparison or recommendations <a class="inline-link" href="https://www.pymnts.com/news/b2b-payments/2026/adyen-debuts-agentic-solutions-for-enterprise-merchants/" target="_blank" rel="noopener">[4]</a>.</p>
 
-      <h3>The toll appeared</h3>
-      <p>OpenAI's Instant Checkout in ChatGPT lets people buy inside a conversation, and it introduced a new economic model earlier in 2026: a 4% transaction fee on autonomous agent-led conversions <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-agents-start-shopping-and-payments-firms-adapt/" target="_blank" rel="noopener">[4]</a>. Demand is not theoretical. Visa's research has 47% of US shoppers already using AI for at least one shopping task, such as price comparison or recommendations <a class="inline-link" href="https://www.pymnts.com/news/b2b-payments/2026/adyen-debuts-agentic-solutions-for-enterprise-merchants/" target="_blank" rel="noopener">[1]</a>.</p>
+      <h3>Someone finally named the hard part</h3>
+      <p>At NY Tech Week, JPMorgan's payments team put the uncomfortable question on the table: the real problem is not whether a machine can pay, it is deciding what you are willing to delegate to one, at what threshold, and under what conditions <a class="inline-link" href="https://www.jpmorgan.com/payments/newsroom/agentic-ai-payments-takeaways-2026" target="_blank" rel="noopener">[5]</a>. Their other point matters more than it sounds. For any high-value payment, you need auditability, the ability to say after the fact why the payment was made and under what policy, and they framed that as the foundation an agentic system has to sit on, not a feature bolted on later <a class="inline-link" href="https://www.jpmorgan.com/payments/newsroom/agentic-ai-payments-takeaways-2026" target="_blank" rel="noopener">[5]</a>.</p>
 
-      <h3>And the money underneath got a rulebook</h3>
-      <p>While the front end learned to spend, the back end got regulated. The GENIUS Act, enacted in July 2025, is now in active rulemaking. The OCC issued proposed rules on 2 March, the FDIC approved its notice of proposed rulemaking on 7 April, and Treasury's FinCEN and OFAC proposed treating permitted stablecoin issuers as financial institutions under the Bank Secrecy Act <a class="inline-link" href="https://www.morganlewis.com/pubs/2026/04/genius-act-implementation-key-proposals-and-what-comes-next" target="_blank" rel="noopener">[6]</a>. Final regulations are due by 18 July 2026, and the Act takes effect on the earlier of January 2027 or 120 days after those final rules <a class="inline-link" href="https://www.congress.gov/bill/119th-congress/senate-bill/1582" target="_blank" rel="noopener">[7]</a>.</p>
+      <h3>And the money underneath kept getting a rulebook</h3>
+      <p>While the front end learned to spend, the back end stayed in active rulemaking. The GENIUS Act, signed into law on 18 July 2025, is now being written into regulation. Treasury's proposal on how it will judge whether a state regime is substantially similar to the federal one closed for comment on 2 June, and the joint FinCEN and OFAC rule treating permitted stablecoin issuers as financial institutions under the Bank Secrecy Act closed on 9 June <a class="inline-link" href="https://www.consumerfinancemonitor.com/2026/04/14/treasury-issues-nprm-on-state-oversight-of-stablecoin-issuers-under-the-genius-act/" target="_blank" rel="noopener">[6]</a>. Final regulations are due by 18 July 2026 <a class="inline-link" href="https://www.congress.gov/bill/119th-congress/senate-bill/1582" target="_blank" rel="noopener">[7]</a>.</p>
 
       <h3>Read from the rails</h3>
-      <p>Strip the branding and the agentic-payments stack is three old payment problems wearing new names. The mandate model is authorization plus tokenization plus consent, which is exactly how a card transaction has always been scoped, only now the cardholder is a piece of software acting under a policy. The 4% checkout fee is interchange by another name, and whoever owns that toll owns the economics of the channel.</p>
-      <p>The parts I would watch are the parts the demos skip. Replay protection: an agent that retries a failed call must not buy twice, which is the same idempotency problem I have hit running my own agents. Reconciliation and dispute: when an autonomous purchase goes wrong, whose mandate was violated, and how do you prove it after the fact. And exception handling, because a migration, or a protocol, is judged not on the day it launches but on the first month of edge cases. The networks have built the happy path. The repair queue is where this will actually be won.</p>
+      <p>Machine-to-machine micropayments are where the old assumptions break first. A card transaction assumes one buyer, one merchant, one authorisation a human could in principle inspect. An agent paying thousands of fractional charges an hour assumes none of that, and it moves the whole system from "approve this purchase" to "did the policy hold across the run." That is closer to how a payments operation already thinks than how a checkout button thinks.</p>
+      <p>The parts I would watch are the parts the launch slides skip. Replay protection: an agent that retries a failed call must not pay twice, which is the same idempotency problem I have hit running my own agents, and at fractions of a cent per call it hides easily until the totals do not reconcile. Auditability: JPMorgan is right that you need to prove why a payment fired and under what mandate, and that proof has to survive into the dispute, not just the dashboard. And exception handling, because a protocol is judged not on the day it launches but on the first month of edge cases. The networks have built the happy path. The repair queue is where this gets won.</p>
 
-      <blockquote>The mandate model is authorization, tokenization, and consent, rebuilt for a buyer that is software. The unsolved parts are replay protection, reconciliation, and dispute.</blockquote>
+      <blockquote>Agent-to-agent payments turn the question from "approve this purchase" into "did the policy hold across the run." That is an operations problem, and operations is judged on the exceptions.</blockquote>
     </div>
 
     <div class="sources">
       <h4>Sources</h4>
       <ol>
+        <li><a href="https://www.mastercard.com/us/en/news-and-trends/press/2026/june/mastercard-launches-agent-pay-for-machines.html" target="_blank" rel="noopener">Mastercard Launches Agent Pay for Machines · Mastercard (10 Jun 2026)</a></li>
+        <li><a href="https://fortune.com/2026/06/10/mastercard-ai-payments-protocol-launch-agentic-finance/" target="_blank" rel="noopener">Mastercard launches protocol to let AI agents pay each other, send micropayments · Fortune (10 Jun 2026)</a></li>
+        <li><a href="https://www.americanbanker.com/payments/news/visa-partners-with-openai-mastercard-pushes-machine-payments" target="_blank" rel="noopener">Visa partners with OpenAI, Mastercard pushes machine payments · American Banker</a></li>
         <li><a href="https://www.pymnts.com/news/b2b-payments/2026/adyen-debuts-agentic-solutions-for-enterprise-merchants/" target="_blank" rel="noopener">Adyen Debuts Agentic Solutions for Enterprise Merchants · PYMNTS (16 Jun 2026)</a></li>
-        <li><a href="https://stripe.com/blog/supporting-additional-payment-methods-for-agentic-commerce" target="_blank" rel="noopener">Supporting additional payment methods for agentic commerce · Stripe</a></li>
-        <li><a href="https://www.pymnts.com/visa/2026/visa-scales-agentic-commerce-through-stripe-protocol-collaboration/" target="_blank" rel="noopener">Visa Teams With Stripe on Agent Payments · PYMNTS</a></li>
-        <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-agents-start-shopping-and-payments-firms-adapt/" target="_blank" rel="noopener">AI Agents Start Shopping and Payments Firms Adapt · PYMNTS</a></li>
-        <li><a href="https://www.crossmint.com/learn/agent-card-payments-compared" target="_blank" rel="noopener">Agent card payments compared: Visa, Mastercard, Stripe, Ramp and Slash · Crossmint</a></li>
-        <li><a href="https://www.morganlewis.com/pubs/2026/04/genius-act-implementation-key-proposals-and-what-comes-next" target="_blank" rel="noopener">US Stablecoin Regulation: GENIUS Act Implementation and Key Proposals · Morgan Lewis</a></li>
+        <li><a href="https://www.jpmorgan.com/payments/newsroom/agentic-ai-payments-takeaways-2026" target="_blank" rel="noopener">4 Takeaways on AI in Payments from NY Tech Week 2026 · J.P. Morgan</a></li>
+        <li><a href="https://www.consumerfinancemonitor.com/2026/04/14/treasury-issues-nprm-on-state-oversight-of-stablecoin-issuers-under-the-genius-act/" target="_blank" rel="noopener">Treasury Issues NPRM on State Oversight of Stablecoin Issuers Under the GENIUS Act · Consumer Finance Monitor</a></li>
         <li><a href="https://www.congress.gov/bill/119th-congress/senate-bill/1582" target="_blank" rel="noopener">S.1582 · GENIUS Act, 119th Congress · Congress.gov</a></li>
       </ol>
     </div>
