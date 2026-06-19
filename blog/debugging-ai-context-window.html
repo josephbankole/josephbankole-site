@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The production AI bug that was the context window · Joseph Bankole</title>
+<meta name="description" content="Two AI agents started failing the same way. The root cause was context-window exhaustion as a production failure mode, and the fixes were classic operations, not AI magic." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/blog/debugging-ai-context-window.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The production AI bug that was the context window" />
+<meta property="og:description" content="Context-window exhaustion as a production failure mode, and the classic-ops fixes that closed it." />
+<meta property="og:url" content="https://josephbankole.ca/blog/debugging-ai-context-window.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230c2a3e'/%3E%3Ctext%20x='16'%20y='23'%20font-family='Georgia,serif'%20font-size='20'%20fill='%23c9a14a'%20text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The production AI bug that was the context window",
+  "datePublished": "2026-06-17",
+  "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" },
+  "publisher": { "@type": "Person", "name": "Joseph Bankole" },
+  "mainEntityOfPage": "https://josephbankole.ca/blog/debugging-ai-context-window.html"
+}
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#projects">Projects</a>
+    <a href="/news/">News</a>
+    <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a consultation</a>
+  </div>
+</nav>
+
+<header class="article-head wrap">
+  <a class="backlink" href="/blog/">&larr; Blog</a>
+  <span class="index">Build in public</span>
+  <h1>The production AI bug that was the context window.</h1>
+  <div class="article-meta"><span>June 2026</span><span>6 min read</span><span>LLMOps &middot; Production</span></div>
+</header>
+
+<section class="article-body" style="border-top:none">
+  <div class="wrap">
+    <div class="prose">
+      <p>I run a small fleet of automated AI agents. Content pipelines, analytics jobs, scheduled workflows. Recently two of them started failing the same way, and the root cause was something I do not see discussed enough: context-window exhaustion as a production failure mode.</p>
+      <p>If you only ever build with AI in a chat window, this failure is invisible to you. It only shows up once a model is doing real, repeated work on a schedule, with files and tool outputs piling into its working memory. That is exactly where I found it.</p>
+
+      <h3>What was happening</h3>
+      <p>The first job force-loaded around 141KB of reference files before it did any actual work. A style guide, a performance log that kept growing, a few content banks. Then the tool outputs landed on top of that, and the agent's working memory overflowed mid-run. It compacted, re-read the same files, overflowed again. Three loops, then it gave up.</p>
+      <p>The second job loaded a 25KB CSV, rewrote the whole file back at the end, and crashed in the gap between posting and recording that it had posted. That is the dangerous one. It left the system a single rerun away from publishing the same thing twice.</p>
+      <p>Neither of these is an AI problem in the way people mean when they say "the model got confused." The model was fine. The system around the model was wasteful, and the waste had nowhere to go but the context budget.</p>
+
+      <h3>The fixes were classic ops, not AI magic</h3>
+      <ol>
+        <li><strong>Read slim.</strong> The 63KB style guide became a 3KB cheatsheet. The full document still exists, but it is reference-only now. The agent reads the short version to do its job.</li>
+        <li><strong>Logs that grow must rotate.</strong> Anything over roughly 400 lines archives itself, and the jobs read the tail instead of the whole history.</li>
+        <li><strong>Data files get edited by scripts, not by the model.</strong> One cell changes through code. The file never enters the agent's memory at all.</li>
+        <li><strong>Idempotency first.</strong> Post, then immediately record that you posted, with nothing in between, plus a duplicate guard that checks before it acts.</li>
+      </ol>
+
+      <h3>Why this felt familiar</h3>
+      <p>Ten years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
+      <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over. It did. Then it stopped.</p>
+
+      <blockquote>The model was never the bottleneck. The system around the model was.</blockquote>
+
+      <p class="dim">If you are running agents on real workflows, the failure mode that surprised you is probably worth writing down. That is the artifact almost nobody has, and it is the one I would want to read.</p>
+    </div>
+
+    <div class="ctaband" style="max-width:44rem;margin-top:48px">
+      <h2>Putting AI into production against a real problem?</h2>
+      <p>That is the work I do. Book thirty minutes and we will scope the one build worth doing.</p>
+      <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book an AI consultation</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right">
+      <a href="/blog/">All posts</a>
+      <a href="https://www.linkedin.com/in/josephbankole" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

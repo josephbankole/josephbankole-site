@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Joseph Bankole · Payments infrastructure operator who ships production AI</title>
+<meta name="description" content="Ten years in payments operations (SWIFT, ISO 20022, ACH). Today I build production AI agents and automations that run real work end to end. Writing on the infrastructure for agentic commerce, and booking AI consultations." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/" />
+<meta name="robots" content="index, follow" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Joseph Bankole · Payments operator who ships production AI" />
+<meta property="og:description" content="I operated the payment rails for ten years. Now I build AI systems on top of them. Writing on agentic commerce, and booking AI consultations." />
+<meta property="og:url" content="https://josephbankole.ca/" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Joseph Bankole · Payments operator who ships production AI" />
+<meta name="twitter:description" content="I operated the payment rails for ten years. Now I build AI systems on top of them." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og.png" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230c2a3e'/%3E%3Ctext%20x='16'%20y='23'%20font-family='Georgia,serif'%20font-size='20'%20fill='%23c9a14a'%20text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/style.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://josephbankole.ca/#person",
+      "name": "Joseph Bankole",
+      "url": "https://josephbankole.ca/",
+      "jobTitle": "Forward-Deployed / Applied AI Engineer",
+      "description": "Payments infrastructure operator (SWIFT, ISO 20022, ACH) who builds and ships production AI agents and automations.",
+      "alumniOf": "McGill University",
+      "homeLocation": { "@type": "Place", "name": "Montreal, Canada" },
+      "sameAs": [
+        "https://www.linkedin.com/in/josephbankole",
+        "https://joeysdr.com",
+        "https://thearchv.ca"
+      ],
+      "knowsAbout": ["Payment operations", "ISO 20022", "SWIFT", "ACH", "Agentic commerce", "AI agents", "LLMOps"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://josephbankole.ca/#website",
+      "url": "https://josephbankole.ca/",
+      "name": "Joseph Bankole",
+      "publisher": { "@id": "https://josephbankole.ca/#person" }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="/blog/">Blog</a>
+    <a href="#projects">Projects</a>
+    <a href="/news/">News</a>
+    <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a consultation</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <p class="eyebrow">Forward-Deployed AI &middot; Payments Infrastructure</p>
+  <h1>I operated the rails. Now I ship <em>AI</em> on top of them.</h1>
+  <p class="lede">Ten years in payments operations: SWIFT, ISO 20022, ACH, cross-border settlement. Today I build production AI agents and automations that run real work end to end. This is where I write what I am building, and break down what is happening underneath agentic commerce.</p>
+  <div class="hero-cta">
+    <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book an AI consultation</a>
+    <a class="btn btn--ghost" href="/blog/">Read the blog</a>
+  </div>
+  <div class="credrow">
+    <span>ex-HSBC</span><span>Société Générale</span><span>McGill</span><span>Montreal</span>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="index">01 / About</span>
+      <h2>I spent ten years watching money move. Now I build the systems that <em>move it</em>.</h2>
+    </div>
+    <div class="prose reveal">
+      <p>For ten years my job was to know how money actually moves. SWIFT, Lynx, ISO 20022, ACH, cross-border settlement, across HSBC and Société Générale. Not the marketing version of payments. The 2am version: the batch that half-processed, the one malformed record that failed an entire file, the reconciliation that broke three systems downstream because someone truncated a remittance field a decade earlier.</p>
+      <p>That work taught me a discipline that has little to do with technology being clever and everything to do with respecting how it fails. Scope before you fix. Find the poison pill. Race the cutoffs. Tell people early, because clients forgive a delay and never forgive silence. Write the root-cause analysis, because it is the only thing standing between you and the same incident twice.</p>
+      <p>What changed is that I stopped only writing about this and started building. I now design and ship production AI systems against real problems: multi-tool agent integrations, scheduled autonomous workflows, a full-stack app on a live database that my own household depends on. Not demos. Things that run real work end to end, break in real ways, and get fixed.</p>
+      <p>The surprise was how familiar it felt. Running a fleet of AI agents is the same job as running payment operations. Schedule the jobs so they do not step on each other. Build idempotency so nothing posts twice. Keep a hard respect for the limits of the system, except now the budget is a context window instead of a settlement cutoff. Ten years of operations turned out to be ten years of training for this.</p>
+      <p class="dim">I write here a few times a week about the infrastructure underneath agentic payments: how autonomous systems will authenticate, transact, and settle, from someone who operated the rails and now builds on top of them. If you are putting AI into production against a real operational problem, <a class="inline-link" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">book a consultation</a> or <a class="inline-link" href="#subscribe">join the weekly newsletter</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="index">02 / Projects</span>
+      <h2>Things I have <em>shipped</em>.</h2>
+      <p>Two live products, both built and run end to end. One sells. One tells a story to a few hundred thousand people.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="project">
+        <div class="logo-circle"><span class="mark">&#9670;</span></div>
+        <div>
+          <h3>Joey</h3>
+          <span class="role">AI SDR &middot; Forward-Deployed AI</span>
+          <p>An AI sales rep that works the leads a business already paid for. It answers every new lead in seconds, re-engages the no-shows everyone ignores, qualifies against the founder's own rubric, and books the ready ones straight onto the calendar, all in the founder's voice. Not a cold-email robot. It works the people who already raised a hand. Built into the funnel and run for you, on a fixed pilot priced on booked calls, not messages blasted.</p>
+          <div class="links">
+            <a href="https://joeysdr.com" target="_blank" rel="noopener">joeysdr.com &rarr;</a>
+            <a href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a funnel teardown</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="logo-circle"><span class="mark" style="font-size:1.5rem;letter-spacing:.04em">ARCHV</span></div>
+        <div>
+          <h3>The ARCHV</h3>
+          <span class="role">Football history, illustrated &middot; @thearchv_ca</span>
+          <p>An immersive archive of football's greatest moments, retold for a few hundred thousand people across social. The owned site is the brand's credibility surface and link-in-bio destination, built to an awwwards-grade brief on a locked navy, cream and gold identity, with a WebGL hero and scroll choreography. The whole content operation behind it runs as a fleet of scheduled AI agents: generation, scheduling, analytics, and a performance log that breeds toward what works.</p>
+          <div class="links">
+            <a href="https://thearchv.ca" target="_blank" rel="noopener">thearchv.ca &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG TEASER -->
+<section id="blog">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="index">03 / Blog</span>
+      <h2>Field notes from <em>building in production</em>.</h2>
+      <p>Lived-experience write-ups on payment infrastructure and running AI agents against real work. Expanded from what I post each week.</p>
+    </div>
+    <div class="postlist reveal">
+      <a class="post-row" href="/blog/debugging-ai-context-window.html">
+        <span class="date">Jun 2026</span>
+        <span class="ttl">The production AI bug that was the context window<span>Two agents failed the same way. The fix was classic ops, not AI magic.</span></span>
+        <span class="arrow">&rarr;</span>
+      </a>
+      <a class="post-row" href="/blog/iso-20022-migration.html">
+        <span class="date">Jun 2026</span>
+        <span class="ttl">What an ISO 20022 migration actually breaks first<span>It is not a date on a calendar. It is a long list of small things that break quietly.</span></span>
+        <span class="arrow">&rarr;</span>
+      </a>
+      <a class="post-row" href="/blog/payment-batch-fails.html">
+        <span class="date">Jun 2026</span>
+        <span class="ttl">What actually happens when a payment batch fails<span>One problem, shared by thousands of payments. The triage order matters more than speed.</span></span>
+        <span class="arrow">&rarr;</span>
+      </a>
+    </div>
+    <p style="margin-top:28px"><a class="inline-link" href="/blog/">Read all posts &rarr;</a></p>
+  </div>
+</section>
+
+<!-- NEWS TEASER -->
+<section id="news">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="index">04 / News</span>
+      <h2>The brief on <em>agentic commerce</em>.</h2>
+      <p>A running digest of payments, agentic commerce, and the AI stories that touch how money will move. Sourced, edited, and written plainly.</p>
+    </div>
+    <div class="postlist reveal">
+      <a class="post-row" href="/news/2026-06-19-agentic-commerce.html">
+        <span class="date">19 Jun 2026</span>
+        <span class="ttl">Agents start spending: Visa, Stripe, Adyen, and a 4% toll<span>The week the rails for agent-led checkout stopped being a demo.</span></span>
+        <span class="arrow">&rarr;</span>
+      </a>
+    </div>
+    <p style="margin-top:28px"><a class="inline-link" href="/news/">See the full digest &rarr;</a></p>
+  </div>
+</section>
+
+<!-- CONSULTATION FUNNEL -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="index">05 / Work with me</span>
+      <h2>One conversation. The one build <em>worth doing</em>.</h2>
+    </div>
+    <div class="math reveal">
+      <div class="bignum">30 min</div>
+      <div class="math-copy">
+        <p>Most teams do not have an AI problem. They have a deployment problem: a real operational pain, and no one who has both shipped against it and lived inside the domain. That is the gap I work in.</p>
+        <p>Book a consultation and we name the one build actually worth doing, what it is worth, and how it would run in production. You leave with a plan whether or not we work together.</p>
+        <p class="fine">For founders and teams putting AI into production against payments, operations, or agentic-commerce problems.</p>
+      </div>
+    </div>
+    <div class="ctaband reveal" style="margin-top:48px">
+      <h2>Put a real problem in front of someone who has shipped.</h2>
+      <p>Thirty minutes, no pitch deck. We scope the highest-leverage AI build for your funnel or your operation.</p>
+      <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book your AI consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section id="subscribe">
+  <div class="wrap">
+    <div class="subscribe reveal">
+      <span class="index">06 / Newsletter</span>
+      <h2>The week's best, once a week.</h2>
+      <p class="sub-note" style="margin-top:16px;font-size:1.05rem;color:var(--cream-dim);font-family:var(--grotesque);letter-spacing:0;text-transform:none">A short Sunday email with the best posts from the site that week, plus the one agentic-commerce story worth your attention. Every issue carries a link to book an AI consultation. No noise.</p>
+      <form class="sub-form" id="subForm" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="REPLACE_WITH_WEB3FORMS_KEY" />
+        <input type="hidden" name="subject" value="New newsletter subscriber · josephbankole.ca" />
+        <input type="hidden" name="from_name" value="josephbankole.ca" />
+        <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
+        <input type="email" name="email" placeholder="you@work.com" required aria-label="Email address" />
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+      <p class="form-msg" id="formMsg">You are on the list. Talk Sunday.</p>
+      <p class="sub-note">Unsubscribe any time. Your email stays between us.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right">
+      <a href="https://www.linkedin.com/in/josephbankole" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a consultation</a>
+      <a href="mailto:joseph@thearchv.ca">joseph@thearchv.ca</a>
+    </div>
+  </div>
+  <div class="foot" style="margin-top:20px">
+    <span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  // reveal on scroll
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+
+  // subscribe · graceful: posts to Web3Forms when a key is set, else shows confirm + mailto fallback
+  (function () {
+    var form = document.getElementById('subForm');
+    var msg = document.getElementById('formMsg');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      var key = form.querySelector('[name=access_key]').value;
+      if (!key || key.indexOf('REPLACE_') === 0) {
+        e.preventDefault();
+        var email = encodeURIComponent(form.querySelector('[name=email]').value);
+        msg.textContent = 'Almost there. Opening your email client to confirm.';
+        msg.classList.add('show');
+        window.location.href = 'mailto:joseph@thearchv.ca?subject=Subscribe%20me%20to%20the%20newsletter&body=Please%20add%20' + email + '%20to%20the%20weekly%20list.';
+        return;
+      }
+      // real submit handled by fetch to keep the user on-page
+      e.preventDefault();
+      var data = new FormData(form);
+      fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
+        .then(function () { msg.classList.add('show'); form.reset(); })
+        .catch(function () { msg.textContent = 'Something went wrong. Email joseph@thearchv.ca and I will add you.'; msg.classList.add('show'); });
+    });
+  })();
+</script>
+</body>
+</html>

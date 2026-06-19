@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The carousel that rendered blank · Joseph Bankole</title>
+<meta name="description" content="A renderer started shipping carousels where the first card was blank. Blank-on-the-first-one is a tell. It almost always means a race." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/blog/blank-carousel-render.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The carousel that rendered blank" />
+<meta property="og:description" content="Blank-on-the-first-one is a tell. It almost always means a race: something captured before it was ready." />
+<meta property="og:url" content="https://josephbankole.ca/blog/blank-carousel-render.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230c2a3e'/%3E%3Ctext%20x='16'%20y='23'%20font-family='Georgia,serif'%20font-size='20'%20fill='%23c9a14a'%20text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "BlogPosting", "headline": "The carousel that rendered blank", "datePublished": "2026-06-18", "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole" }, "mainEntityOfPage": "https://josephbankole.ca/blog/blank-carousel-render.html" }
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/#projects">Projects</a><a href="/news/">News</a>
+    <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a consultation</a>
+  </div>
+</nav>
+
+<header class="article-head wrap">
+  <a class="backlink" href="/blog/">&larr; Blog</a>
+  <span class="index">Debugging</span>
+  <h1>The carousel that rendered blank.</h1>
+  <div class="article-meta"><span>June 2026</span><span>4 min read</span><span>Automation &middot; Debugging</span></div>
+</header>
+
+<section class="article-body" style="border-top:none">
+  <div class="wrap">
+    <div class="prose">
+      <p>A renderer I run started shipping carousels where the first card's image was just... blank. Every other card was fine. Only the first.</p>
+      <p>Blank-on-the-first-one is a tell. It almost always means a race: something is being captured before it is ready.</p>
+
+      <h3>What was happening</h3>
+      <p>The pipeline builds each slide in a headless browser, then screenshots it. The images on the cards load from a remote CDN. The screenshot was firing the instant the page reported "done," but "page loaded" and "every image finished downloading" are not the same event. The first card lost the race most often because it had the furthest to travel.</p>
+
+      <h3>The fix</h3>
+      <p>The fix was one idea: do not screenshot until every image has actually finished. Wait for each one to reach a real loaded state, or to error, before capturing the frame. No model involved. No clever prompt. Just the oldest rule in automation, which is that you do not take the picture before the subject has arrived.</p>
+
+      <blockquote>Do not take the picture before the subject has arrived.</blockquote>
+
+      <h3>The same bug, everywhere</h3>
+      <p>Capture-before-load is the same bug as record-before-act and read-before-think. Different system, same lesson: finish step one before you start step two. Once you have seen it in one place you start catching it everywhere, including in AI workflows that report success a beat before the work is genuinely done.</p>
+
+      <p class="dim">If you build anything that screenshots or scrapes rendered pages, the interesting question is how you decide it is truly "ready." That definition is usually where the bug lives.</p>
+    </div>
+
+    <div class="ctaband" style="max-width:44rem;margin-top:48px">
+      <h2>Shipping automation that has to be right?</h2>
+      <p>I build and debug production AI and automation for a living. Book thirty minutes.</p>
+      <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book an AI consultation</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right"><a href="/blog/">All posts</a><a href="https://www.linkedin.com/in/josephbankole" target="_blank" rel="noopener">LinkedIn</a></div>
+  </div>
+</footer>
+</body>
+</html>

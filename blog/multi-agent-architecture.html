@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The architecture of a multi-agent content operation · Joseph Bankole</title>
+<meta name="description" content="A content operation that is almost entirely automated: scheduled agents that generate, queue, measure, and adjust. The models write fine. The hard part is everything around the model." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/blog/multi-agent-architecture.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The architecture of a multi-agent content operation" />
+<meta property="og:description" content="The models write fine. The hard part is orchestration, constraints, idempotency, and evals." />
+<meta property="og:url" content="https://josephbankole.ca/blog/multi-agent-architecture.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230c2a3e'/%3E%3Ctext%20x='16'%20y='23'%20font-family='Georgia,serif'%20font-size='20'%20fill='%23c9a14a'%20text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "BlogPosting", "headline": "The architecture of a multi-agent content operation", "datePublished": "2026-06-16", "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole" }, "mainEntityOfPage": "https://josephbankole.ca/blog/multi-agent-architecture.html" }
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/#projects">Projects</a><a href="/news/">News</a>
+    <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a consultation</a>
+  </div>
+</nav>
+
+<header class="article-head wrap">
+  <a class="backlink" href="/blog/">&larr; Blog</a>
+  <span class="index">Build in public</span>
+  <h1>The architecture of a multi-agent content operation.</h1>
+  <div class="article-meta"><span>June 2026</span><span>6 min read</span><span>AI agents &middot; LLMOps</span></div>
+</header>
+
+<section class="article-body" style="border-top:none">
+  <div class="wrap">
+    <div class="prose">
+      <p>I run a content operation that is almost entirely automated. Scheduled jobs generate posts, queue them across platforms, pull analytics back in, and adjust. No team. Just a set of AI agents wired together with scheduled tasks and tool integrations, orchestrated through Claude Code.</p>
+      <p>People assume the hard part is the writing. It is not. The models write fine. The hard part is everything around the model.</p>
+
+      <h3>Orchestration</h3>
+      <p>Two dozen scheduled jobs that have to not step on each other. One generates tomorrow's slate in the evening. Another verifies and ships it in the morning. Others pull stats. None of them can duplicate work or assume another job has already run. This is scheduling, and it is the same problem as sequencing payment files across windows.</p>
+
+      <h3>A constraint budget</h3>
+      <p>Every job runs inside a finite context window and a finite credit budget. Treat those as free and the whole thing falls over. It did, which is <a class="inline-link" href="/blog/debugging-ai-context-window.html">a separate story I wrote up here</a>. The fix was pure operations discipline: read slim, rotate logs, keep big files out of the model's memory.</p>
+
+      <h3>Idempotency</h3>
+      <p>A scheduled job will get re-run. That is not a maybe. If "did I already do this?" is not built in, you publish twice. So every action that touches the outside world records itself the instant it happens, with a guard that checks before it acts.</p>
+
+      <h3>Evals as a log, not a vibe</h3>
+      <p>I keep a performance log per post, so the system breeds toward what actually works instead of what feels good. The numbers are blunt, and they have already overturned a few of my own assumptions about what would land. A log you actually read is worth more than a dashboard you do not.</p>
+
+      <h3>What nearly killed it</h3>
+      <p>The thing that nearly killed it was not the AI. It was treating reference files and logs as free to load. They are not. They eat the context budget until a run cannot think. Fixing that was operations, not prompting.</p>
+
+      <blockquote>I came up through payment operations. Running a fleet of agents is the same job: scheduling, reconciliation, replay protection, and a hard respect for the limits of the system.</blockquote>
+
+      <p class="dim">If you are orchestrating AI agents on real work, the part that is harder than the model is usually the part worth talking about.</p>
+    </div>
+
+    <div class="ctaband" style="max-width:44rem;margin-top:48px">
+      <h2>Want a system like this for your team?</h2>
+      <p>Scheduled agents, real integrations, built to run unattended. Book thirty minutes and we will scope it.</p>
+      <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book an AI consultation</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right"><a href="/blog/">All posts</a><a href="https://www.linkedin.com/in/josephbankole" target="_blank" rel="noopener">LinkedIn</a></div>
+  </div>
+</footer>
+</body>
+</html>

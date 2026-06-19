@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What an ISO 20022 migration actually breaks first · Joseph Bankole</title>
+<meta name="description" content="ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/blog/iso-20022-migration.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="What an ISO 20022 migration actually breaks first" />
+<meta property="og:description" content="From inside payment operations, a migration is a long list of small things that break quietly." />
+<meta property="og:url" content="https://josephbankole.ca/blog/iso-20022-migration.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230c2a3e'/%3E%3Ctext%20x='16'%20y='23'%20font-family='Georgia,serif'%20font-size='20'%20fill='%23c9a14a'%20text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "BlogPosting", "headline": "What an ISO 20022 migration actually breaks first", "datePublished": "2026-06-11", "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole" }, "mainEntityOfPage": "https://josephbankole.ca/blog/iso-20022-migration.html" }
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/#projects">Projects</a><a href="/news/">News</a>
+    <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a consultation</a>
+  </div>
+</nav>
+
+<header class="article-head wrap">
+  <a class="backlink" href="/blog/">&larr; Blog</a>
+  <span class="index">Payment infrastructure</span>
+  <h1>What an ISO 20022 migration actually breaks first.</h1>
+  <div class="article-meta"><span>June 2026</span><span>5 min read</span><span>ISO 20022 &middot; SWIFT</span></div>
+</header>
+
+<section class="article-body" style="border-top:none">
+  <div class="wrap">
+    <div class="prose">
+      <p>Everyone talks about ISO 20022 like it is a date on a calendar. A deadline to clear, a box to tick, a project that ends.</p>
+      <p>From inside payment operations, it is not a date. It is a long list of small things that break quietly, and almost none of them break on go-live day. Here is what goes first, in my experience watching these migrations up close.</p>
+
+      <h3>1. Field mappings</h3>
+      <p>MT messages truncate. MX messages carry rich, structured data. Map one onto the other and somewhere a remittance detail gets cut, quietly, with no error. Nobody notices until a beneficiary's reconciliation fails days later and the trail leads back to a field that was always too small to hold what you tried to put in it.</p>
+
+      <h3>2. Downstream systems</h3>
+      <p>The payment engine speaks MX now. Good. The sanctions filter, the archiving system, the reporting job someone wrote ten years ago and then left the company? Still expecting MT. The migration was never one cutover. It is dozens of them, scattered across systems that were never designed to be changed together, and each one is somebody's quiet assumption that the format would never move.</p>
+
+      <h3>3. Exception handling</h3>
+      <p>The happy path gets tested for months. Demos, sign-offs, dry runs. The repair queue, which is where operations actually lives, gets tested in production. That is not a criticism of anyone. It is just how it always goes. The exceptions are infinite and the test window is not, so the real edge cases meet the real system on the first busy morning.</p>
+
+      <h3>The lesson</h3>
+      <p>The lesson took me years to internalise: a migration is judged not by the day it goes live, but by the first month of exceptions. The go-live is the easy part. The month after is where you find out whether you actually understood your own pipeline.</p>
+
+      <blockquote>A migration is judged not by the day it goes live, but by the first month of exceptions.</blockquote>
+
+      <p class="dim">This is the same instinct I now bring to AI systems in production. The demo always works. The question is what happens in the first month of real exceptions, and whether anyone built for them.</p>
+    </div>
+
+    <div class="ctaband" style="max-width:44rem;margin-top:48px">
+      <h2>Payments depth meets AI deployment.</h2>
+      <p>If you are building where money and autonomous systems meet, let us talk.</p>
+      <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book an AI consultation</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right"><a href="/blog/">All posts</a><a href="https://www.linkedin.com/in/josephbankole" target="_blank" rel="noopener">LinkedIn</a></div>
+  </div>
+</footer>
+</body>
+</html>
