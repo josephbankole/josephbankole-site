@@ -74,6 +74,7 @@
 </nav>
 
 <header class="hero wrap">
+  <canvas id="dust" aria-hidden="true"></canvas>
   <p class="eyebrow">Forward-Deployed AI &middot; Payments Infrastructure</p>
   <h1>I operated the rails. Now I ship <em>AI</em> on top of them.</h1>
   <p class="lede">Ten years in payments operations: SWIFT, ISO 20022, ACH, cross-border settlement. Today I build production AI agents and automations that run real work end to end. This is where I write what I am building, and break down what is happening underneath agentic commerce.</p>
@@ -84,6 +85,7 @@
   <div class="credrow">
     <span>ex-HSBC</span><span>Société Générale</span><span>McGill</span><span>Montreal</span>
   </div>
+  <a class="scrollcue" href="#about"><i></i> Scroll</a>
 </header>
 
 <!-- ABOUT -->
@@ -112,7 +114,7 @@
       <p>Two live products, both built and run end to end. One sells. One tells a story to a few hundred thousand people.</p>
     </div>
 
-    <div class="reveal">
+    <div class="reveal stagger">
       <div class="project">
         <div class="logo-circle"><span class="mark">&#9670;</span></div>
         <div>
@@ -149,7 +151,7 @@
       <h2>Field notes from <em>building in production</em>.</h2>
       <p>Lived-experience write-ups on payment infrastructure and running AI agents against real work. Expanded from what I post each week.</p>
     </div>
-    <div class="postlist reveal">
+    <div class="postlist reveal stagger">
       <a class="post-row" href="/blog/debugging-ai-context-window.html">
         <span class="date">Jun 2026</span>
         <span class="ttl">The production AI bug that was the context window<span>Two agents failed the same way. The fix was classic ops, not AI magic.</span></span>
@@ -178,7 +180,7 @@
       <h2>The brief on <em>agentic commerce</em>.</h2>
       <p>A running digest of payments, agentic commerce, and the AI stories that touch how money will move. Sourced, edited, and written plainly.</p>
     </div>
-    <div class="postlist reveal">
+    <div class="postlist reveal stagger">
       <a class="post-row" href="/news/2026-06-19-agentic-commerce.html">
         <span class="date">19 Jun 2026</span>
         <span class="ttl">Agents start spending: Visa, Stripe, Adyen, and a 4% toll<span>The week the rails for agent-led checkout stopped being a demo.</span></span>
@@ -250,17 +252,8 @@
   </div>
 </footer>
 
+<script src="/assets/site.js" defer></script>
 <script>
-  // reveal on scroll
-  (function () {
-    var els = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.12 });
-    els.forEach(function (e) { io.observe(e); });
-  })();
-
   // subscribe · graceful: posts to Web3Forms when a key is set, else shows confirm + mailto fallback
   (function () {
     var form = document.getElementById('subForm');

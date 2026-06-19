@@ -18,6 +18,5 @@
   <p style="color:var(--cream-dim);max-width:46ch;margin:0 auto">The link is broken or the page moved. Head back to the front and find your way from there.</p>
   <div style="margin-top:10px"><a class="btn" href="/">Back to home</a></div>
 </div>
-<script src="/assets/site.js" defer></script>
 </body>
 </html>
