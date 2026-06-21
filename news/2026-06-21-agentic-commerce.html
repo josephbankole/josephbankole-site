@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Five protocols, one checkout: the agentic-payment layer starts to crowd · Joseph Bankole</title>
+<meta name="description" content="The agentic-payment layer is splitting into a stack of competing protocols, intermediaries are racing to translate across all of them, and BNPL just climbed into the agent's cart. Sourced and read from the rails." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/news/2026-06-21-agentic-commerce.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Five protocols, one checkout: the agentic-payment layer starts to crowd" />
+<meta property="og:description" content="Not one new rail this week, but the whole layer crowding. Read from the perspective of someone who operated the rails." />
+<meta property="og:url" content="https://josephbankole.ca/news/2026-06-21-agentic-commerce.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230c2a3e'/%3E%3Ctext%20x='16'%20y='23'%20font-family='Georgia,serif'%20font-size='20'%20fill='%23c9a14a'%20text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "NewsArticle", "headline": "Five protocols, one checkout: the agentic-payment layer starts to crowd", "datePublished": "2026-06-21", "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole" }, "mainEntityOfPage": "https://josephbankole.ca/news/2026-06-21-agentic-commerce.html" }
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/#projects">Projects</a><a href="/news/">News</a>
+    <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book a consultation</a>
+  </div>
+</nav>
+
+<header class="article-head wrap">
+  <a class="backlink" href="/news/">&larr; News</a>
+  <span class="index">Daily brief &middot; 21 June 2026</span>
+  <h1>Five protocols, one checkout.</h1>
+  <div class="article-meta"><span>21 June 2026</span><span>Payments &middot; Agentic commerce</span><span>Sourced</span></div>
+</header>
+
+<section class="article-body" style="border-top:none">
+  <div class="wrap">
+    <div class="prose">
+      <p>The headline moves of the past fortnight were single launches, an agent paying a machine here, a stablecoin rulebook there. Step back and the week's real story is quieter and bigger. It is not one new rail. It is the whole layer underneath the agent's checkout filling up with competing standards, and the scramble by everyone in the middle to sit across all of them at once. Here is what that looks like, and what it means from the rails.</p>
+
+      <h3>It is a stack, not a single pipe</h3>
+      <p>There is no longer one way for an agent to pay. There are several, and they sit at different heights. Settlement between machines runs on Coinbase's x402 and on the Machine Payments Protocol that Stripe and Tempo shipped on 18 March, the latter using a sessions model where an agent pre-authorises a spending limit and then streams small payments against it <a class="inline-link" href="https://www.crossmint.com/learn/agentic-payments-protocols-compared" target="_blank" rel="noopener">[1]</a>. The merchant journey runs on Google's Universal Commerce Protocol and OpenAI's Agentic Commerce Protocol. Authorisation, the part that decides whether an agent was actually allowed to spend, runs on Google's Agent Payments Protocol using cryptographically signed mandates <a class="inline-link" href="https://www.openfort.io/blog/agentic-payments-landscape" target="_blank" rel="noopener">[2]</a>. The official line is that these interlock rather than compete. For a merchant deciding what to build against, the practical effect is the same either way: more than one seam to support.</p>
+
+      <h3>The translators are having a good week</h3>
+      <p>If the layer is fragmenting, the value moves to whoever can speak all of it. Adyen built for exactly that. Its Agentic suite, out on 16 June, is designed to carry merchants across the rival UCP, ACP, and AP2 standards from a single integration, so a merchant does not have to bet on which one wins <a class="inline-link" href="https://www.pymnts.com/news/b2b-payments/2026/adyen-debuts-agentic-solutions-for-enterprise-merchants/" target="_blank" rel="noopener">[3]</a>. The card networks are doing the same from their side. Visa is extending the Stripe and Tempo machine protocol to card-based payments on its acceptance platform, so an agent settling through MPP can land on a card rather than only a stablecoin <a class="inline-link" href="https://www.pymnts.com/visa/2026/visa-scales-agentic-commerce-through-stripe-protocol-collaboration/" target="_blank" rel="noopener">[4]</a>.</p>
+
+      <h3>Buy now, pay later climbs into the agent's cart</h3>
+      <p>The other gap being closed this week is payment choice. Agentic checkout has mostly defaulted to card-on-file, which quietly drops every other method a shopper might pick. On 16 June, Zip US extended its Stripe partnership to carry instalment payments through Stripe's Shared Payment Tokens, following Klarna and Affirm earlier in the year <a class="inline-link" href="https://www.businesswire.com/news/home/20260616176830/en/Zip-US-Expands-Partnership-with-Stripe-to-Bring-Flexible-Payments-to-Agentic-Commerce-Through-Shared-Payment-Tokens" target="_blank" rel="noopener">[5]</a>. The token lets an agent transact on a customer's chosen method without seeing the underlying credential. The number behind the rush: buy-now-pay-later runs over 300 billion dollars in transactions a year, and Stripe reports up to a 14% revenue lift on sessions where it is offered <a class="inline-link" href="https://stripe.com/blog/supporting-additional-payment-methods-for-agentic-commerce" target="_blank" rel="noopener">[6]</a>.</p>
+
+      <h3>The money underneath splits along borders</h3>
+      <p>While the front end gets crowded, the settlement money is being shaped by different rulebooks in different places. The US is finishing the GENIUS Act regime. The UK is writing its own, and it is not the same. The Bank of England's proposal requires sterling stablecoin issuers to hold at least 40% of their backing as unremunerated deposits at the Bank itself, which puts a real cost on the float and changes the economics of issuing here versus in the US <a class="inline-link" href="https://finance.yahoo.com/news/uk-crypto-regulation-2026-fca-130216051.html" target="_blank" rel="noopener">[7]</a>. An agent that settles across borders is settling across two regimes that do not yet agree.</p>
+
+      <h3>Read from the rails</h3>
+      <p>A stack with five named layers is five places a payment can fall between systems. That is not a criticism of any one protocol. It is just what happens when settlement, authorisation, and the merchant journey are each owned by a different party with its own version of the truth. The happy path is fine. The work is the seams.</p>
+      <p>The part I would press on is reconciliation across protocols. If an agent authorises under AP2, checks out under ACP, and settles under MPP onto a card through Visa, then a single purchase has touched four record-keepers, and a dispute later has to be reassembled from all four. That is the operations problem I keep coming back to, because it is the one I have actually hit: the totals only reconcile if every layer agrees on what one payment was, and at machine volume a small mismatch compounds before anyone reads the dashboard. Buy-now-pay-later sharpens it, because now the method can be an instalment plan with its own lifecycle sitting under the same agent action. The translators winning this week are right that the answer is to abstract the mess. The thing to watch is whether the abstraction also carries the audit trail through, or only the checkout.</p>
+
+      <blockquote>One agent purchase can now touch four record-keepers before it settles. The launch is the easy part. Whether they all agree on what happened is the operations part, and that is where this gets won or lost.</blockquote>
+    </div>
+
+    <div class="sources">
+      <h4>Sources</h4>
+      <ol>
+        <li><a href="https://www.crossmint.com/learn/agentic-payments-protocols-compared" target="_blank" rel="noopener">Agentic payments protocols compared: MPP, ACP, AP2, x402 · Crossmint</a></li>
+        <li><a href="https://www.openfort.io/blog/agentic-payments-landscape" target="_blank" rel="noopener">Machine Payments Protocol (MPP), x402, ACP &amp; AP2 Compared (2026) · Openfort</a></li>
+        <li><a href="https://www.pymnts.com/news/b2b-payments/2026/adyen-debuts-agentic-solutions-for-enterprise-merchants/" target="_blank" rel="noopener">Adyen Debuts Agentic Solutions for Enterprise Merchants · PYMNTS (16 Jun 2026)</a></li>
+        <li><a href="https://www.pymnts.com/visa/2026/visa-scales-agentic-commerce-through-stripe-protocol-collaboration/" target="_blank" rel="noopener">Visa Teams With Stripe on Agent Payments · PYMNTS</a></li>
+        <li><a href="https://www.businesswire.com/news/home/20260616176830/en/Zip-US-Expands-Partnership-with-Stripe-to-Bring-Flexible-Payments-to-Agentic-Commerce-Through-Shared-Payment-Tokens" target="_blank" rel="noopener">Zip US Expands Partnership with Stripe for Agentic Commerce · BusinessWire (16 Jun 2026)</a></li>
+        <li><a href="https://stripe.com/blog/supporting-additional-payment-methods-for-agentic-commerce" target="_blank" rel="noopener">Supporting additional payment methods for agentic commerce · Stripe</a></li>
+        <li><a href="https://finance.yahoo.com/news/uk-crypto-regulation-2026-fca-130216051.html" target="_blank" rel="noopener">UK Crypto Regulation in 2026: What New FCA and Bank of England Rules Mean for Circle and Tether · Yahoo Finance</a></li>
+      </ol>
+    </div>
+
+    <div class="ctaband" style="max-width:44rem;margin-top:48px">
+      <h2>Building in agentic commerce or payments?</h2>
+      <p>This is the intersection I work in. Book thirty minutes and we will scope the build worth doing.</p>
+      <a class="btn" href="https://calendly.com/josephbankole/30min" target="_blank" rel="noopener">Book an AI consultation</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right"><a href="/news/">All editions</a><a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
