@@ -253,6 +253,7 @@ h2 em { font-style: italic; color: var(--gold); }
   overflow: hidden;
 }
 .logo-circle .mark { font-size: 2.1rem; line-height: 1; }
+.logo-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .project h3 { font-family: var(--serif); font-weight: 340; font-size: 1.9rem; letter-spacing: -.02em; }
 .project .role { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin: 6px 0 14px; display: block; }
 .project p { color: var(--cream-dim); max-width: 60ch; margin-bottom: 14px; }

@@ -1,0 +1,43 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="JoeySDR badge logo">
+  <defs>
+    <linearGradient id="navyDepth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#212b4d"/>
+      <stop offset="100%" stop-color="#161d38"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="1024" height="1024" fill="#f0ecd8"/>
+
+  <!-- outer navy disc -->
+  <circle cx="512" cy="512" r="392" fill="url(#navyDepth)"/>
+  <!-- gold rings -->
+  <circle cx="512" cy="512" r="392" fill="none" stroke="#c9a84c" stroke-width="10"/>
+  <circle cx="512" cy="512" r="356" fill="none" stroke="#c9a84c" stroke-width="6"/>
+
+  <!-- side bars -->
+  <g fill="#c9a84c">
+    <rect x="118" y="486" width="70" height="9"/>
+    <rect x="118" y="503" width="70" height="9"/>
+    <rect x="118" y="520" width="70" height="9"/>
+    <rect x="836" y="486" width="70" height="9"/>
+    <rect x="836" y="503" width="70" height="9"/>
+    <rect x="836" y="520" width="70" height="9"/>
+  </g>
+
+  <!-- centered wordmark -->
+  <text x="512" y="500" text-anchor="middle"
+        font-family="Verdana, Geneva, sans-serif" font-weight="700" font-size="112"
+        letter-spacing="2" fill="#f7f3e2">Joey<tspan fill="#e6b94e">SDR</tspan></text>
+
+  <!-- tagline -->
+  <text x="512" y="575" text-anchor="middle"
+        font-family="Verdana, Geneva, sans-serif" font-weight="700" font-size="40"
+        letter-spacing="14" fill="#c9a84c">AI&#160;&#160;SDR</text>
+
+  <!-- conversion funnel arrow -->
+  <g transform="translate(512 660)" fill="none" stroke="#e6b94e" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M -120 -20 L 0 -20 M -95 8 L 0 8 M -70 36 L 0 36"/>
+    <path d="M 30 -20 L 90 8 L 30 36 Z" fill="#e6b94e" stroke="none"/>
+  </g>
+</svg>
