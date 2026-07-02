@@ -14,6 +14,7 @@
   --cream: #f2ead3;
   --cream-dim: rgba(242, 234, 211, 0.6);
   --cream-faint: rgba(242, 234, 211, 0.28);
+  --cream-soft: rgba(242, 234, 211, 0.55);
   /* gold accent (capped) */
   --gold: #c9a14a;
   --gold-soft: rgba(201, 161, 74, 0.5);
@@ -164,7 +165,7 @@ img { max-width: 100%; display: block; }
 }
 .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
 .hero-note {
-  font-family: var(--mono); font-size: 12px; color: var(--cream-faint);
+  font-family: var(--mono); font-size: 12px; color: var(--cream-soft);
   margin-top: 22px; letter-spacing: .06em;
 }
 .credrow {
@@ -279,7 +280,7 @@ h2 em { font-style: italic; color: var(--gold); }
 .bignum { font-family: var(--serif); font-weight: 340; font-size: clamp(56px, 10vw, 120px); line-height: 1; color: var(--gold); }
 .math-copy { flex: 1; min-width: 280px; }
 .math-copy p { color: var(--cream-dim); margin-top: 12px; }
-.fine { font-family: var(--mono); font-size: 11px; color: var(--cream-faint); margin-top: 14px; letter-spacing: .04em; line-height: 1.7; }
+.fine { font-family: var(--mono); font-size: 11px; color: var(--cream-soft); margin-top: 14px; letter-spacing: .04em; line-height: 1.7; }
 
 /* ---- CTA band ---- */
 .ctaband {
@@ -302,7 +303,7 @@ h2 em { font-style: italic; color: var(--gold); }
   padding: 13px 16px; border-radius: var(--r-sm);
 }
 .sub-form input[type=email]:focus { outline: none; border-color: var(--gold-soft); box-shadow: 0 0 0 3px var(--gold-faint); }
-.sub-note { font-family: var(--mono); font-size: 11px; color: var(--cream-faint); margin-top: 14px; letter-spacing: .04em; }
+.sub-note { font-family: var(--mono); font-size: 11px; color: var(--cream-soft); margin-top: 14px; letter-spacing: .04em; }
 .form-msg { margin-top: 14px; font-size: .95rem; color: var(--pitch); display: none; }
 .form-msg.show { display: block; }
 
@@ -331,7 +332,7 @@ footer { border-top: 1px solid var(--cream-faint); padding: 40px var(--gutter) 6
 .foot .fcol { display: flex; flex-direction: column; gap: 8px; }
 .foot a { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--cream-dim); }
 .foot a:hover { color: var(--gold); }
-.foot .copy { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--cream-faint); }
+.foot .copy { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--cream-soft); }
 
 /* reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease-out-expo), transform .7s var(--ease-out-expo); }
@@ -364,7 +365,7 @@ footer { border-top: 1px solid var(--cream-faint); padding: 40px var(--gutter) 6
 /* scroll cue under hero */
 .scrollcue { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px;
   font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--cream-faint); }
+  color: var(--cream-soft); }
 .scrollcue i { width: 1px; height: 26px; background: var(--gold-soft); display: inline-block;
   position: relative; overflow: hidden; }
 .scrollcue i::after { content: ""; position: absolute; top: -100%; left: 0; width: 1px; height: 100%;
