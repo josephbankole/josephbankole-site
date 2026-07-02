@@ -41,11 +41,12 @@ CNAME   www   josephbankole.github.io.
 Remove any conflicting existing A/AAAA on the apex. Propagation is usually under an hour.
 GitHub then issues the HTTPS cert automatically (can take up to ~24h).
 
-## 4. Wire the newsletter form (one value)
+## 4. Newsletter (no setup needed)
 
-`index.html` → the subscribe form posts to Web3Forms. Replace `REPLACE_WITH_WEB3FORMS_KEY`
-with a real access key from web3forms.com (free, no backend). Until then the form gracefully
-falls back to opening a pre-filled email to joseph@thearchv.ca, so it never looks broken.
+`index.html` → the subscribe section embeds the ARCHV AI Substack
+(archvai.substack.com/embed), which handles email capture directly. No Web3Forms key
+or backend required. Done 2026-07-01. Contact email across the site is
+partnerships@josephbankole.ca (Zoho mailbox).
 
 ## 5. SEO / search indexing (once the site resolves over HTTPS)
 
