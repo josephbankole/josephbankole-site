@@ -173,7 +173,12 @@ img { max-width: 100%; display: block; }
 }
 .credrow span {
   font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--cream-dim);
+  text-transform: uppercase; color: var(--cream);
+  display: inline-flex; align-items: center; gap: 9px;
+}
+.credrow span::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold-soft); flex: none;
 }
 
 /* ---- sections ---- */
