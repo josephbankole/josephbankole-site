@@ -181,6 +181,13 @@ img { max-width: 100%; display: block; }
   background: var(--gold-soft); flex: none;
 }
 
+/* Substack embed in the subscribe section (capture handled by Substack, not us) */
+.sub-embed {
+  margin-top: 26px; max-width: 480px; border-radius: 4px; overflow: hidden;
+  border: 1px solid var(--cream-faint); background: #fff;
+}
+.sub-embed iframe { display: block; width: 100%; height: 150px; border: 0; }
+
 /* ---- sections ---- */
 section { padding: clamp(56px, 8vw, 110px) 0; border-top: 1px solid var(--cream-faint); }
 .sec-head { max-width: var(--measure); margin-bottom: 44px; }

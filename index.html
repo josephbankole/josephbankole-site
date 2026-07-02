@@ -240,17 +240,11 @@
     <div class="subscribe reveal">
       <span class="index">06 / Newsletter</span>
       <h2>The week's best, once a week.</h2>
-      <p class="sub-note" style="margin-top:16px;font-size:1.05rem;color:var(--cream-dim);font-family:var(--grotesque);letter-spacing:0;text-transform:none">A short Sunday email with the best posts from the site that week, plus the one agentic-commerce story worth your attention. Every issue carries a link to book an AI consultation. No noise.</p>
-      <form class="sub-form" id="subForm" action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="REPLACE_WITH_WEB3FORMS_KEY" />
-        <input type="hidden" name="subject" value="New newsletter subscriber · josephbankole.ca" />
-        <input type="hidden" name="from_name" value="josephbankole.ca" />
-        <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
-        <input type="email" name="email" placeholder="you@work.com" required aria-label="Email address" />
-        <button class="btn" type="submit">Subscribe</button>
-      </form>
-      <p class="form-msg" id="formMsg">You are on the list. Talk Sunday.</p>
-      <p class="sub-note">Unsubscribe any time. Your email stays between us.</p>
+      <p class="sub-note" style="margin-top:16px;font-size:1.05rem;color:var(--cream-dim);font-family:var(--grotesque);letter-spacing:0;text-transform:none">The ARCHV AI newsletter: the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. Delivered through Substack. No noise.</p>
+      <div class="sub-embed">
+        <iframe src="https://archvai.substack.com/embed" title="Subscribe to the ARCHV AI newsletter" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <p class="sub-note">Trouble with the form? <a class="inline-link" href="https://archvai.substack.com" target="_blank" rel="noopener">Subscribe on Substack</a>. Unsubscribe any time.</p>
     </div>
   </div>
 </section>
@@ -274,31 +268,6 @@
 
 <script src="/assets/site.js" defer></script>
 <script>
-  // subscribe · graceful: posts to Web3Forms when a key is set, else shows confirm + mailto fallback
-  (function () {
-    var form = document.getElementById('subForm');
-    var msg = document.getElementById('formMsg');
-    if (!form) return;
-    form.addEventListener('submit', function (e) {
-      var key = form.querySelector('[name=access_key]').value;
-      if (!key || key.indexOf('REPLACE_') === 0) {
-        e.preventDefault();
-        var email = encodeURIComponent(form.querySelector('[name=email]').value);
-        msg.textContent = 'Almost there. Opening your email client to confirm.';
-        msg.classList.add('show');
-        window.location.href = 'mailto:joseph@thearchv.ca?subject=Subscribe%20me%20to%20the%20newsletter&body=Please%20add%20' + email + '%20to%20the%20weekly%20list.';
-        return;
-      }
-      // real submit handled by fetch to keep the user on-page
-      e.preventDefault();
-      var data = new FormData(form);
-      fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
-        .then(function () { msg.classList.add('show'); form.reset(); })
-        .catch(function () { msg.textContent = 'Something went wrong. Email joseph@thearchv.ca and I will add you.'; msg.classList.add('show'); });
-    });
-  })();
-</script>
-<script>
   // Explicit conversion events: consultation intent, newsletter intent, outbound project clicks.
   (function () {
     document.querySelectorAll('a[href*="calendly.com"]').forEach(function (a) {
@@ -307,9 +276,10 @@
         if (window.posthog) posthog.capture('calendly_click', { site: 'josephbankole.ca', location: u.searchParams.get('utm_content') || 'unknown' });
       });
     });
-    var form = document.getElementById('subForm');
-    if (form) form.addEventListener('submit', function () {
-      if (window.posthog) posthog.capture('newsletter_submit', { site: 'josephbankole.ca' });
+    document.querySelectorAll('a[href*="archvai.substack.com"]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (window.posthog) posthog.capture('newsletter_click', { site: 'josephbankole.ca', href: a.href });
+      });
     });
     document.querySelectorAll('a[href*="joeysdr.com"], a[href*="thearchv.ca"]').forEach(function (a) {
       a.addEventListener('click', function () {
