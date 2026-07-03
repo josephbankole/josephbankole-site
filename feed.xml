@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Joseph Bankole's blog</title>
+  <link>https://josephbankole.ca</link>
+  <description>Lived-experience write-ups on payment infrastructure and running AI agents in production, by Joseph Bankole.</description>
+  <language>en</language>
+  <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>The carousel that rendered blank</title>
+    <link>https://josephbankole.ca/blog/blank-carousel-render.html</link>
+    <guid>https://josephbankole.ca/blog/blank-carousel-render.html</guid>
+    <pubDate>Thu, 18 Jun 2026 12:00:00 GMT</pubDate>
+    <description>A renderer started shipping carousels where the first card was blank. Blank-on-the-first-one is a tell. It almost always means a race.</description>
+  </item>
+  <item>
+    <title>The production AI bug that was the context window</title>
+    <link>https://josephbankole.ca/blog/debugging-ai-context-window.html</link>
+    <guid>https://josephbankole.ca/blog/debugging-ai-context-window.html</guid>
+    <pubDate>Wed, 17 Jun 2026 12:00:00 GMT</pubDate>
+    <description>Two AI agents started failing the same way. The root cause was context-window exhaustion as a production failure mode, and the fixes were classic operations, not AI magic.</description>
+  </item>
+  <item>
+    <title>The architecture of a multi-agent content operation</title>
+    <link>https://josephbankole.ca/blog/multi-agent-architecture.html</link>
+    <guid>https://josephbankole.ca/blog/multi-agent-architecture.html</guid>
+    <pubDate>Tue, 16 Jun 2026 12:00:00 GMT</pubDate>
+    <description>A content operation that is almost entirely automated: scheduled agents that generate, queue, measure, and adjust. The models write fine. The hard part is everything around the model.</description>
+  </item>
+  <item>
+    <title>What actually happens when a payment batch fails</title>
+    <link>https://josephbankole.ca/blog/payment-batch-fails.html</link>
+    <guid>https://josephbankole.ca/blog/payment-batch-fails.html</guid>
+    <pubDate>Tue, 16 Jun 2026 09:00:00 GMT</pubDate>
+    <description>A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed.</description>
+  </item>
+  <item>
+    <title>What an ISO 20022 migration actually breaks first</title>
+    <link>https://josephbankole.ca/blog/iso-20022-migration.html</link>
+    <guid>https://josephbankole.ca/blog/iso-20022-migration.html</guid>
+    <pubDate>Thu, 11 Jun 2026 12:00:00 GMT</pubDate>
+    <description>ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first.</description>
+  </item>
+</channel>
+</rss>
