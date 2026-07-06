@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://josephbankole.ca/</loc><lastmod>2026-07-05</lastmod><priority>1.0</priority></url>
+  <url><loc>https://josephbankole.ca/</loc><lastmod>2026-07-06</lastmod><priority>1.0</priority></url>
   <url><loc>https://josephbankole.ca/blog/</loc><lastmod>2026-06-19</lastmod><priority>0.9</priority></url>
   <url><loc>https://josephbankole.ca/blog/debugging-ai-context-window.html</loc><lastmod>2026-06-17</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/blog/multi-agent-architecture.html</loc><lastmod>2026-06-16</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/blog/blank-carousel-render.html</loc><lastmod>2026-06-18</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/blog/iso-20022-migration.html</loc><lastmod>2026-06-11</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/blog/payment-batch-fails.html</loc><lastmod>2026-06-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://josephbankole.ca/news/</loc><lastmod>2026-07-05</lastmod><priority>0.9</priority></url>
+  <url><loc>https://josephbankole.ca/news/</loc><lastmod>2026-07-06</lastmod><priority>0.9</priority></url>
+  <url><loc>https://josephbankole.ca/news/2026-07-06-agentic-commerce.html</loc><lastmod>2026-07-06</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/news/2026-07-05-agentic-commerce.html</loc><lastmod>2026-07-05</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/news/2026-07-04-agentic-commerce.html</loc><lastmod>2026-07-04</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/news/2026-07-03-agentic-commerce.html</loc><lastmod>2026-07-03</lastmod><priority>0.8</priority></url>
