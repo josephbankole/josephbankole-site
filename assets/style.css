@@ -131,7 +131,23 @@ img { max-width: 100%; display: block; }
 .nav-links a:hover { color: var(--cream); }
 .nav-links .btn { color: var(--navy); white-space: nowrap; flex: none; }
 .btn-label-short { display: none; }
-@media (max-width: 760px) { .nav-links a:not(.btn) { display: none; } }
+/* Below 760px the nav wraps (see .nav flex-wrap above); the link row then
+   takes its own full-width line and scrolls horizontally instead of hiding
+   About/Blog/Projects/News. No JS, no hamburger. */
+@media (max-width: 760px) {
+  .nav-links {
+    flex-basis: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a:not(.btn) { flex: none; white-space: nowrap; }
+  /* keep the CTA pinned in view at the scroll row's right edge, so booking
+     never requires scrolling past it to find it */
+  .nav-links .btn { position: sticky; right: 0; z-index: 1; margin-left: 10px; }
+}
 @media (max-width: 420px) {
   .nav-links .btn { padding: 9px 14px; font-size: 13px; }
   .btn-label-full { display: none; }
