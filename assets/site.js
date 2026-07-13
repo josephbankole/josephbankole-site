@@ -85,14 +85,32 @@
       }
       raf = requestAnimationFrame(tick);
     }
-    var raf;
-    size(); seed(); tick();
+    /* rAF only runs while the tab is visible AND the hero is on screen --
+       a tick loop with nothing to look at is a wasted paint every frame. */
+    var raf = null;
+    var inView = true;
+    function start() {
+      if (raf === null && inView && !document.hidden) tick();
+    }
+    function stop() {
+      if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+    }
+    size(); seed(); start();
     var rt;
     window.addEventListener("resize", function () {
       clearTimeout(rt); rt = setTimeout(function () { size(); seed(); }, 200);
     });
     document.addEventListener("visibilitychange", function () {
-      if (document.hidden) { cancelAnimationFrame(raf); } else { tick(); }
+      if (document.hidden) { stop(); } else { start(); }
     });
+    if ("IntersectionObserver" in window) {
+      var dustIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          inView = en.isIntersecting;
+          if (inView) { start(); } else { stop(); }
+        });
+      }, { threshold: 0 });
+      dustIO.observe(canvas);
+    }
   }
 })();

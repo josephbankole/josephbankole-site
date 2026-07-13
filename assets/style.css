@@ -14,7 +14,7 @@
   --cream: #f2ead3;
   --cream-dim: rgba(242, 234, 211, 0.6);
   --cream-faint: rgba(242, 234, 211, 0.28);
-  --cream-soft: rgba(242, 234, 211, 0.55);
+  --cream-soft: rgba(242, 234, 211, 0.6);
   /* gold accent (capped) */
   --gold: #c9a14a;
   --gold-soft: rgba(201, 161, 74, 0.5);
@@ -188,10 +188,6 @@ img { max-width: 100%; display: block; }
   color: var(--cream-dim); max-width: 56ch; margin: 28px 0 34px; line-height: 1.5;
 }
 .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
-.hero-note {
-  font-family: var(--mono); font-size: 12px; color: var(--cream-soft);
-  margin-top: 22px; letter-spacing: .06em;
-}
 .credrow {
   display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 40px;
   padding-top: 26px; border-top: 1px solid var(--cream-faint);
