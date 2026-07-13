@@ -109,6 +109,7 @@ img { max-width: 100%; display: block; }
 .nav {
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
+  gap: 12px 16px; flex-wrap: wrap;
   padding: 18px var(--gutter);
   background: rgba(7,28,43,.72);
   backdrop-filter: blur(10px);
@@ -118,6 +119,7 @@ img { max-width: 100%; display: block; }
   font-family: var(--mono);
   letter-spacing: .16em; font-size: 14px;
   display: flex; align-items: center; gap: 10px; color: var(--cream);
+  flex: none;
 }
 .brand .mk { color: var(--gold); }
 .nav-links { display: flex; gap: 26px; align-items: center; }
@@ -127,8 +129,14 @@ img { max-width: 100%; display: block; }
   transition: color .2s var(--ease);
 }
 .nav-links a:hover { color: var(--cream); }
-.nav-links .btn { color: var(--navy); }
+.nav-links .btn { color: var(--navy); white-space: nowrap; flex: none; }
+.btn-label-short { display: none; }
 @media (max-width: 760px) { .nav-links a:not(.btn) { display: none; } }
+@media (max-width: 420px) {
+  .nav-links .btn { padding: 9px 14px; font-size: 13px; }
+  .btn-label-full { display: none; }
+  .btn-label-short { display: inline; }
+}
 
 /* ---- buttons ---- */
 .btn {
