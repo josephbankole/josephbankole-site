@@ -48,7 +48,7 @@
       <p>A renderer I run started shipping carousels where the first card's image was just... blank. Every other card was fine. Only the first.</p>
       <p>Blank-on-the-first-one is a tell. It almost always means a race: something is being captured before it is ready.</p>
 
-      <h3>What was happening</h3>
+      <h2>What was happening</h2>
       <p>The pipeline builds each slide in a headless browser, then screenshots it. The images on the cards load from a remote CDN. The screenshot was firing the instant the page reported "done," but "page loaded" and "every image finished downloading" are not the same event. The first card lost the race most often because it had the furthest to travel.</p>
 
       <h3>The fix</h3>
@@ -63,7 +63,7 @@
     </div>
 
     <div class="ctaband" style="max-width:44rem;margin-top:48px">
-      <h2>Shipping automation that has to be right?</h2>
+      <h3>Shipping automation that has to be right?</h3>
       <p>I build and debug production AI and automation for a living. Book thirty minutes.</p>
       <a class="btn" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=blog-cta" target="_blank" rel="noopener">Book an AI consultation</a>
     </div>

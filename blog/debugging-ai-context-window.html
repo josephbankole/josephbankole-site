@@ -59,7 +59,7 @@
       <p>I run a small fleet of automated AI agents. Content pipelines, analytics jobs, scheduled workflows. Recently two of them started failing the same way, and the root cause was something I do not see discussed enough: context-window exhaustion as a production failure mode.</p>
       <p>If you only ever build with AI in a chat window, this failure is invisible to you. It only shows up once a model is doing real, repeated work on a schedule, with files and tool outputs piling into its working memory. That is exactly where I found it.</p>
 
-      <h3>What was happening</h3>
+      <h2>What was happening</h2>
       <p>The first job force-loaded around 141KB of reference files before it did any actual work. A style guide, a performance log that kept growing, a few content banks. Then the tool outputs landed on top of that, and the agent's working memory overflowed mid-run. It compacted, re-read the same files, overflowed again. Three loops, then it gave up.</p>
       <p>The second job loaded a 25KB CSV, rewrote the whole file back at the end, and crashed in the gap between posting and recording that it had posted. That is the dangerous one. It left the system a single rerun away from publishing the same thing twice.</p>
       <p>Neither of these is an AI problem in the way people mean when they say "the model got confused." The model was fine. The system around the model was wasteful, and the waste had nowhere to go but the context budget.</p>
@@ -82,7 +82,7 @@
     </div>
 
     <div class="ctaband" style="max-width:44rem;margin-top:48px">
-      <h2>Putting AI into production against a real problem?</h2>
+      <h3>Putting AI into production against a real problem?</h3>
       <p>That is the work I do. Book thirty minutes and we will scope the one build worth doing.</p>
       <a class="btn" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=blog-cta" target="_blank" rel="noopener">Book an AI consultation</a>
     </div>
