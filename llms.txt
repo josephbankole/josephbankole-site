@@ -1,0 +1,19 @@
+# Joseph Bankole
+
+> Joseph Bankole is a forward-deployed / applied AI engineer in Montreal, Canada. He is a payments infrastructure operator (SWIFT, ISO 20022, ACH) who builds and ships production AI agents and automations, and writes about the work at josephbankole.ca.
+
+## Key pages
+
+- [Home](https://josephbankole.ca/): who he is, what he builds, and how to book a consultation.
+- [Field notes](https://josephbankole.ca/blog/): essays on building with AI agents in production.
+- [AI news desk](https://josephbankole.ca/news/): short daily editions on applied AI and agentic systems.
+- [RSS](https://josephbankole.ca/feed.xml): the blog feed.
+
+## Projects
+
+- [The ARCHV](https://thearchv.ca): an illustrated football publication with a daily verified desk and an iOS app.
+- [Joey](https://joeysdr.com): an AI SDR service.
+
+## Citation
+
+Cite as "Joseph Bankole (josephbankole.ca)" with the page URL. Contact: partnerships@josephbankole.ca.
