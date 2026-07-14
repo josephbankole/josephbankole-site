@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Know Your Agent is the new Know Your Customer · Joseph Bankole</title>
+<meta name="description" content="Nuvei put a payment inside the agent and called the missing piece Know Your Agent. Three protocols are competing for the merchant integration, and the OCC has put a number on what a stablecoin issuer must hold. Sourced and read from the rails." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/news/2026-07-14-agentic-commerce.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Know Your Agent is the new Know Your Customer" />
+<meta property="og:description" content="Nuvei's in-agent payment, the ACP/AP2/MCP protocol split, and the OCC's capital floor. Read from the rails." />
+<meta property="og:url" content="https://josephbankole.ca/news/2026-07-14-agentic-commerce.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/2026-07-14-agentic-commerce.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/2026-07-14-agentic-commerce.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "NewsArticle", "headline": "Know Your Agent is the new Know Your Customer", "datePublished": "2026-07-14", "author": { "@type": "Person", "name": "Joseph Bankole", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole" }, "mainEntityOfPage": "https://josephbankole.ca/news/2026-07-14-agentic-commerce.html" }
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/#projects">Projects</a><a href="/news/">News</a>
+    <a class="btn" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=news-nav" target="_blank" rel="noopener"><span class="btn-label-full">Book a consultation</span><span class="btn-label-short">Book a call</span></a>
+  </div>
+</nav>
+
+<header class="article-head wrap">
+  <a class="backlink" href="/news/">&larr; News</a>
+  <span class="index">Daily brief &middot; 14 July 2026</span>
+  <h1>Know Your Agent is the new Know Your Customer.</h1>
+  <div class="article-meta"><span>14 July 2026</span><span>Payments &middot; Agentic commerce</span><span>Sourced</span></div>
+</header>
+
+<section class="article-body" style="border-top:none">
+  <div class="wrap">
+    <div class="prose">
+      <p>Quiet news day on the network side, so today is about the layer underneath: who vouches for the agent, which protocol the merchant integrates against, and what a stablecoin issuer has to hold in reserve when the rules land on Saturday.</p>
+
+      <h2>Nuvei put the payment inside the agent</h2>
+      <p>On 2 July, Nuvei ran a live agentic proof of concept with Visa, Arvato Systems and the fashion brand Kings and Priests, in which a merchant's own agent initiated the purchase and took the payment inside the agent, with no hand-off to a separate checkout flow <a class="inline-link" href="https://www.nuvei.com/posts/nuvei-completes-first-party-in-agent-payment-with-visa-unveils-merchant-led-agentic-payments-strategy" target="_blank" rel="noopener">[1]</a>. It settled on live Visa rails with a tokenised credential inside Visa Intelligent Commerce, under shopper-set guardrails such as spend caps and approved categories, with multiple European issuers authorising <a class="inline-link" href="https://www.nuvei.com/posts/nuvei-completes-first-party-in-agent-payment-with-visa-unveils-merchant-led-agentic-payments-strategy" target="_blank" rel="noopener">[1]</a>.</p>
+      <p>The word worth stealing from the announcement is Know Your Agent. Nuvei is building a registry that credentials agents, validates the consumer's mandate, scores agent reputation and keeps the actions auditable <a class="inline-link" href="https://www.nuvei.com/posts/nuvei-completes-first-party-in-agent-payment-with-visa-unveils-merchant-led-agentic-payments-strategy" target="_blank" rel="noopener">[1]</a>. That is KYC re-pointed at software, and it is the piece nobody's demo has.</p>
+
+      <h3>Three protocols, one merchant integration</h3>
+      <p>The other half of the Nuvei plan is a compatibility layer so a merchant integrates once and accepts agents speaking ACP, AP2 or MCP, routed across networks, with certification against both Visa Intelligent Commerce and Mastercard Agent Pay <a class="inline-link" href="https://www.nuvei.com/posts/nuvei-completes-first-party-in-agent-payment-with-visa-unveils-merchant-led-agentic-payments-strategy" target="_blank" rel="noopener">[1]</a>. General availability is targeted for the second half of 2026, including the KYA registry, agent risk scoring and a developer sandbox <a class="inline-link" href="https://www.nuvei.com/posts/nuvei-completes-first-party-in-agent-payment-with-visa-unveils-merchant-led-agentic-payments-strategy" target="_blank" rel="noopener">[1]</a>. Three competing protocols and a translation layer is not a standard. It is the interregnum before one.</p>
+
+      <h3>The OCC has put a number on it</h3>
+      <p>Ahead of Saturday's GENIUS Act deadline, the OCC's proposed rule sets a five million dollar minimum capital floor for new federally approved stablecoin issuers, with a tiered liquidity framework requiring ten per cent same-day redemption capability <a class="inline-link" href="https://www.financemagnates.com/cryptocurrency/regulation/ten-days-to-the-genius-act-deadline-what-the-draft-rules-already-reveal/" target="_blank" rel="noopener">[2]</a>. The FDIC has confirmed token holders do not get deposit insurance, whether or not the issuer is bank-affiliated <a class="inline-link" href="https://www.financemagnates.com/cryptocurrency/regulation/ten-days-to-the-genius-act-deadline-what-the-draft-rules-already-reveal/" target="_blank" rel="noopener">[2]</a>. Comment periods have closed and six agencies now have to reconcile six proposed frameworks into final rules by 18 July <a class="inline-link" href="https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-3.html" target="_blank" rel="noopener">[3]</a>.</p>
+
+      <h3>Read from the rails</h3>
+      <p>Every payments system eventually asks the same question: when this goes wrong, who do I call, and what did they agree to? Card rails answered it with the issuer, the scheme and the merchant of record. Agentic commerce has been trying to skip that step, and Nuvei's registry is the first honest admission that you cannot. An agent needs an identity, a mandate you can point to, and a log you can replay.</p>
+      <p>Ten years in operations taught me that a payment you cannot reconstruct is a payment you cannot defend. That is what the KYA idea is really for. Not fraud prevention on the way in, but the ability to answer, three weeks later, why this agent bought this thing on this mandate. If you are building agent checkout and you have no audit trail of the mandate, you have built a demo.</p>
+
+      <blockquote>An agent without a credential is not a customer. It is an anonymous request with a card number attached.</blockquote>
+    </div>
+
+    <div class="sources">
+      <h4>Sources</h4>
+      <ol>
+        <li><a href="https://www.nuvei.com/posts/nuvei-completes-first-party-in-agent-payment-with-visa-unveils-merchant-led-agentic-payments-strategy" target="_blank" rel="noopener">Nuvei Completes First-Party In-Agent Payment with Visa &middot; Nuvei (2 Jul 2026)</a></li>
+        <li><a href="https://www.financemagnates.com/cryptocurrency/regulation/ten-days-to-the-genius-act-deadline-what-the-draft-rules-already-reveal/" target="_blank" rel="noopener">Ten Days to the GENIUS Act Deadline: What the Draft Rules Already Reveal &middot; Finance Magnates</a></li>
+        <li><a href="https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-3.html" target="_blank" rel="noopener">GENIUS Act Regulations: Notice of Proposed Rulemaking &middot; OCC Bulletin 2026-3</a></li>
+      </ol>
+    </div>
+
+    <div class="ctaband" style="max-width:44rem;margin-top:48px">
+      <h3>Building in agentic commerce or payments?</h3>
+      <p>This is the intersection I work in. Book thirty minutes and we will scope the build worth doing.</p>
+      <a class="btn" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=news-cta" target="_blank" rel="noopener">Book an AI consultation</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right"><a href="/news/">All editions</a><a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a><a href="/privacy.html">Privacy</a></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
