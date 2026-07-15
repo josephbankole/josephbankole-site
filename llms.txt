@@ -9,6 +9,7 @@
 - [AI news desk](https://josephbankole.ca/news/): short daily editions on applied AI and agentic systems.
 - [Answers](https://josephbankole.ca/answers/): short, direct definitions, starting with [what a forward-deployed engineer is](https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/) and [what agentic commerce is](https://josephbankole.ca/answers/what-is-agentic-commerce/).
 - [RSS](https://josephbankole.ca/feed.xml): the blog feed.
+- [News RSS](https://josephbankole.ca/news-feed.xml): the daily news-desk feed.
 
 ## Projects
 
