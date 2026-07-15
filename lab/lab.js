@@ -71,19 +71,19 @@
     var i;
     for (i = 0; i < PASS1.length; i++) {
       if (cancelled) break;
-      await typeLine(PASS1[i], 13);
-      await sleep(95);
+      await typeLine(PASS1[i], 16);
+      await sleep(120);
     }
-    if (!cancelled) await sleep(650);
-    if (!cancelled) { feed.innerHTML = ""; await sleep(180); }
+    if (!cancelled) await sleep(820);
+    if (!cancelled) { feed.innerHTML = ""; await sleep(225); }
     for (i = 0; i < PASS2.length; i++) {
       if (cancelled) break;
-      await typeLine(PASS2[i], 7);
-      await sleep(60);
+      await typeLine(PASS2[i], 9);
+      await sleep(75);
     }
-    if (!cancelled) await sleep(250);
+    if (!cancelled) await sleep(320);
     headline.classList.add("show");
-    if (!cancelled) await sleep(1550);
+    if (!cancelled) await sleep(1950);
     finishColdOpen();
   }
 
@@ -116,7 +116,7 @@
     overlay.classList.add("play");
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
-    setTimeout(function () { if (!finished) finishColdOpen(); }, 11000); // safety net
+    setTimeout(function () { if (!finished) finishColdOpen(); }, 13800); // safety net
     runColdOpen();
   }
 
