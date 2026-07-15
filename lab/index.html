@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Joseph Bankole · The operation behind the page</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#0c1f2f" />
+<meta name="description" content="A cinematic prototype: the delivery pipeline behind josephbankole.ca, from a 2am incident to an autonomous desk that publishes every morning." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/lab/lab.css" />
+</head>
+<body class="preload">
+
+<!-- ============ ACT 1 · COLD OPEN "02:00" ============ -->
+<div class="cold-open" id="coldOpen">
+  <div class="co-scanlines" aria-hidden="true"></div>
+  <div class="co-inner" aria-hidden="true">
+    <div class="co-terminal">
+      <div class="co-bar">
+        <span class="co-dot"></span><span class="co-dot"></span><span class="co-dot"></span>
+        <span class="co-tag">ops-feed</span>
+      </div>
+      <div class="co-feed" id="coFeed"></div>
+    </div>
+    <div class="co-headline" id="coHeadline">
+      <span class="co-line co-line-1">I fixed payment systems at 2am.</span>
+      <span class="co-line co-line-2">Now I build <em>AI</em> that does.<span class="co-underline"></span></span>
+    </div>
+  </div>
+  <button class="co-skip" id="coSkip" type="button" aria-label="Skip the intro">Skip <span aria-hidden="true">&rarr;</span></button>
+</div>
+
+<!-- ============ ACT 1 RESTING · slim hero band ============ -->
+<header class="hero-band" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Forward-Deployed AI &middot; Payments Infrastructure</p>
+    <h1 class="hero-h">I fixed payment systems at 2am.<br><em>Now I build AI that does.</em><span class="hero-underline"></span></h1>
+    <div class="hero-feed" aria-hidden="true">
+      <span><b>02:00:14</b> batch failure. 4,112 held.</span>
+      <span><b>02:00:16</b> agent: poison record isolated</span>
+      <span><b>02:00:31</b> agent: batch resubmitted</span>
+      <span><b>02:00:52</b> settled. human asleep.</span>
+    </div>
+    <p class="sr-only">At 2am a SWIFT MT103 batch failed with 4,112 records held. For ten years a human paged on-call, found the poison record, resubmitted the batch, and released settlement by morning with no loss and no sleep. The same job now runs as agents that isolate the record, resubmit, and settle while the human stays asleep.</p>
+    <a class="scrollcue" href="#engagement">
+      <span>Watch an engagement run</span>
+      <i aria-hidden="true"></i>
+    </a>
+  </div>
+</header>
+
+<!-- ============ ACT 2 · WATCH AN ENGAGEMENT RUN ============ -->
+<section class="act2" id="engagement" aria-label="Watch an engagement run">
+  <div class="act2-scroll" id="act2Scroll">
+    <div class="act2-pin">
+      <div class="wrap act2-head">
+        <p class="index">02 / The delivery</p>
+        <h2>Watch an engagement run.</h2>
+        <p class="act2-sub">Scope to Run, the way I actually ship. Scroll through it, or drag the timeline.</p>
+      </div>
+
+      <div class="diorama" id="diorama" style="--p:0">
+        <div class="rail" id="rail" aria-hidden="true">
+          <div class="rail-line"></div>
+          <div class="rail-fill"></div>
+          <div class="rail-pulse" id="railPulse"></div>
+        </div>
+
+        <div class="stations" id="stations">
+          <article class="station" data-i="0">
+            <div class="st-node"><span>01</span></div>
+            <h3 class="st-name">Scope</h3>
+            <div class="st-card">
+              <p>one problem, named</p>
+              <p class="st-dim">founder decides, agents build</p>
+            </div>
+          </article>
+
+          <article class="station" data-i="1">
+            <div class="st-node"><span>02</span></div>
+            <h3 class="st-name">Build</h3>
+            <div class="st-card">
+              <p>27 TestFlight builds</p>
+              <p class="st-dim">agent fleets, every diff reviewed</p>
+            </div>
+          </article>
+
+          <article class="station" data-i="2">
+            <div class="st-node"><span>03</span></div>
+            <h3 class="st-name">Verify</h3>
+            <div class="st-card">
+              <p>92 unit tests</p>
+              <p class="st-dim">fresh-install UI gates</p>
+              <p class="st-dim">review caught shipping bugs in 4 of 6 builds</p>
+            </div>
+          </article>
+
+          <article class="station" data-i="3">
+            <div class="st-node"><span>04</span></div>
+            <h3 class="st-name">Ship</h3>
+            <div class="st-card">
+              <p>App Store submission</p>
+              <p class="st-dim">deploys verify themselves before going green</p>
+            </div>
+          </article>
+
+          <article class="station" data-i="4">
+            <div class="st-node"><span>05</span></div>
+            <h3 class="st-name">Run</h3>
+            <div class="st-card">
+              <p>a desk that publishes every morning</p>
+              <p class="st-dim">health probes that email before users notice</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="scrub" id="scrub">
+          <div class="scrub-track" id="scrubTrack">
+            <div class="scrub-ticks" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="scrub-fill"></div>
+            <div class="scrub-handle" id="scrubHandle" role="slider"
+                 tabindex="0" aria-label="Engagement timeline"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+                 aria-valuetext="Scope"></div>
+          </div>
+          <div class="scrub-foot">
+            <span class="scrub-hint">Drag, or use arrow keys</span>
+            <button class="replay" id="act2Replay" type="button">Replay <span aria-hidden="true">&#8635;</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACT 3 · SCOPE YOUR BUILD ============ -->
+<section class="act3" id="scope" aria-label="Scope your build">
+  <div class="wrap">
+    <div class="act3-head">
+      <p class="index">03 / Scope your build</p>
+      <h2>Scope your build.</h2>
+      <p class="act3-sub">Answer three questions. The two-week pilot sketch fills in as you go. It is honest about what fits in a fortnight.</p>
+    </div>
+
+    <div class="configurator">
+      <form class="config-form" id="configForm">
+        <fieldset class="q" data-q="ops">
+          <legend><span class="q-n">1</span> What runs your ops today?</legend>
+          <div class="chips" role="radiogroup" aria-label="What runs your ops today?">
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="spreadsheets">Spreadsheets</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="saas">SaaS tools</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="custom">Custom systems</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="q" data-q="hours">
+          <legend><span class="q-n">2</span> What eats the most hours?</legend>
+          <div class="chips" role="radiogroup" aria-label="What eats the most hours?">
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="reporting">Reporting</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="replies">Customer replies</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="dataentry">Data entry between systems</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="monitoring">Monitoring</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="q" data-q="mode">
+          <legend><span class="q-n">3</span> How would you want it delivered?</legend>
+          <div class="chips" role="radiogroup" aria-label="How would you want it delivered?">
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="alongside">Alongside my team</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-val="handover">Built then handed over</button>
+          </div>
+        </fieldset>
+      </form>
+
+      <aside class="sketch" id="sketch" aria-live="polite">
+        <p class="sketch-kicker">Your pilot sketch</p>
+        <p class="sketch-read" id="sketchRead">Pick the three above and the two-week sketch fills in.</p>
+        <div class="weeks">
+          <div class="week">
+            <span class="week-n">Week 1</span>
+            <p>Map the workflow end to end, name the one metric that says it is working, and ship the first automation against your real data.</p>
+          </div>
+          <div class="week">
+            <span class="week-n">Week 2</span>
+            <p>Harden the failure paths, add the verification gate that has to pass before anything goes out, and hand you the runbook.</p>
+          </div>
+        </div>
+        <a class="btn sketch-cta" id="sketchCta"
+           href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=lab&utm_content=configurator"
+           target="_blank" rel="noopener">Bring this sketch to a call</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACT 4 · PROOF + CLOSE ============ -->
+<section class="act4" id="proof" aria-label="Proof and close">
+  <div class="wrap">
+    <p class="index">04 / What runs today</p>
+    <div class="proof-grid" id="proofGrid">
+      <article class="proof-card" tabindex="0">
+        <div class="pc-in">
+          <span class="pc-tag">iOS app in App Review</span>
+          <h3>The ARCHV</h3>
+          <p>An illustrated football publication. The iOS app is in App Review after 27 TestFlight builds and 92 unit tests, with push notifications and a support queue triaged by an agent under rate caps.</p>
+          <span class="pc-link">thearchv.ca</span>
+        </div>
+      </article>
+
+      <article class="proof-card" tabindex="0">
+        <div class="pc-in">
+          <span class="pc-tag">Runs every morning</span>
+          <h3>The daily desk</h3>
+          <p>An autonomous editorial desk that publishes verified articles every morning. Health probes watch it and email me before a reader would ever notice something broke.</p>
+          <span class="pc-link">Autonomous, scheduled, checked</span>
+        </div>
+      </article>
+
+      <article class="proof-card" tabindex="0">
+        <div class="pc-in">
+          <span class="pc-tag">You are on it</span>
+          <h3>This site</h3>
+          <p>The page you are reading. Written, built, and run end to end by the same operation, the same way I would build one for you.</p>
+          <span class="pc-link">josephbankole.ca</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="close">
+      <p class="close-line">The demo is the operation behind this page.</p>
+      <div class="close-cta">
+        <a class="btn" id="closeCta"
+           href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=lab&utm_content=lab-close"
+           target="_blank" rel="noopener">Book a call</a>
+        <a class="btn btn--ghost" href="https://josephbankole.ca/blog/" target="_blank" rel="noopener">Read the field notes</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lab-foot">
+    <div class="wrap foot">
+      <div class="fcol">
+        <span class="fbrand"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+        <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+      </div>
+      <div class="fcol fcol-r">
+        <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=lab&utm_content=lab-footer" target="_blank" rel="noopener">Book a consultation</a>
+        <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(lab)">partnerships@josephbankole.ca</a>
+      </div>
+    </div>
+  </footer>
+</section>
+
+<a class="book-pill" id="bookPill"
+   href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=lab&utm_content=lab-pill"
+   target="_blank" rel="noopener">Book a call</a>
+
+<script src="/assets/analytics.js" defer></script>
+<script src="/lab/lab.js" defer></script>
+</body>
+</html>
