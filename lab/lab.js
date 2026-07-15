@@ -83,7 +83,7 @@
     }
     if (!cancelled) await sleep(450);
     headline.classList.add("show");
-    if (!cancelled) await sleep(2400);
+    if (!cancelled) await sleep(3300);
     finishColdOpen();
   }
 
