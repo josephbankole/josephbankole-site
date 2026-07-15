@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Joseph Bankole's news desk</title>
+  <link>https://josephbankole.ca/news/</link>
+  <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
+  <language>en</language>
+  <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Know Your Agent is the new Know Your Customer</title>
+    <link>https://josephbankole.ca/news/2026-07-14-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-14-agentic-commerce.html</guid>
+    <pubDate>Tue, 14 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Nuvei put a payment inside the agent and called the missing piece Know Your Agent. Three protocols are competing for the merchant integration, and the OCC has put a number on what a stablecoin issuer must hold. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Agents are live on European card rails, and the rulebook is five days late to the party</title>
+    <link>https://josephbankole.ca/news/2026-07-13-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-13-agentic-commerce.html</guid>
+    <pubDate>Mon, 13 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Visa has agent-initiated purchases running at real European merchants behind passkeys and SCA, Mastercard is building for machine-to-machine payments, and six federal agencies have five days to finalise the stablecoin rules. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Six days out, the deadline is being held up by an argument about interest</title>
+    <link>https://josephbankole.ca/news/2026-07-12-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-12-agentic-commerce.html</guid>
+    <pubDate>Sun, 12 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Banks and crypto platforms are still fighting over stablecoin yield with six days left on the GENIUS Act clock, Stripe and Cross River put a bank behind agent card issuance, and the agent payment stack is splitting into rival protocols. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Seven days from the GENIUS Act deadline, the front end got its biggest release yet</title>
+    <link>https://josephbankole.ca/news/2026-07-11-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-11-agentic-commerce.html</guid>
+    <pubDate>Sat, 11 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Salesforce ships Shopper, Buyer and Merchant Agent to general availability inside ChatGPT and Google AI Mode, Visa's tokenised deposits push banks to match stablecoin speed, and the GENIUS Act's final rules are due in a week. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Settlement itself became a choice: Mastercard's 24/7 stablecoin option and the MiCA cutoff</title>
+    <link>https://josephbankole.ca/news/2026-07-10-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-10-agentic-commerce.html</guid>
+    <pubDate>Fri, 10 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Mastercard turns card settlement into a fiat-or-stablecoin, anytime product, the EU's MiCA transitional window closed on 1 July with no grace left for unlicensed crypto firms, and Nuvei completes the first in-agent Visa payment with no checkout hand-off. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Nine days out, the stablecoin rulebook finally gets numbers</title>
+    <link>https://josephbankole.ca/news/2026-07-09-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-09-agentic-commerce.html</guid>
+    <pubDate>Thu, 09 Jul 2026 08:00:00 GMT</pubDate>
+    <description>With nine days left before the GENIUS Act's 18 July deadline, the OCC's proposed capital floor and three-tier liquidity framework show what regulators actually expect a stablecoin issuer to hold, and a live USDT remittance test shows what the rails are already doing while the rules catch up. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Cloudflare is now a partner on two competing agent-payment rails at once</title>
+    <link>https://josephbankole.ca/news/2026-07-08-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-08-agentic-commerce.html</guid>
+    <pubDate>Wed, 08 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Cloudflare's new Monetization Gateway charges AI agents in stablecoins over the x402 protocol, a week after Cloudflare signed up as a partner on Mastercard's card-and-stablecoin Agent Pay for Machines. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>CaixaBank lets an AI agent pay with a real card, Swift rebuilds the remittance rail, and the GENIUS Act clock hits eleven days</title>
+    <link>https://josephbankole.ca/news/2026-07-07-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-07-agentic-commerce.html</guid>
+    <pubDate>Tue, 07 Jul 2026 08:00:00 GMT</pubDate>
+    <description>CaixaBank and Visa complete Europe's first AI-agent-initiated card payment on existing rails, Swift's new consumer framework goes live with Barclays, HSBC, Lloyds and NatWest, and six US agencies have eleven days left to finalise the GENIUS Act rulebook. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>JPMorgan pushes UPI across borders, Robinhood builds its own chain, and the UK settles its stablecoin rulebook</title>
+    <link>https://josephbankole.ca/news/2026-07-06-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-06-agentic-commerce.html</guid>
+    <pubDate>Mon, 06 Jul 2026 08:00:00 GMT</pubDate>
+    <description>JPMorgan and NPCI wire real-time FX into UPI's cross-border push, Robinhood launches its own public blockchain for tokenised stocks in 120+ countries, and the UK finalises a joint FCA and Bank of England stablecoin regime. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Congress asked who is liable when the agent gets it wrong. Nobody had a clean answer.</title>
+    <link>https://josephbankole.ca/news/2026-07-05-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-05-agentic-commerce.html</guid>
+    <pubDate>Sun, 05 Jul 2026 08:00:00 GMT</pubDate>
+    <description>A House Financial Services hearing put agentic-payment liability on the record, Adyen rated agentic commerce 0.5 out of 5, and a Know Your Agent framework is forming across WEF, NIST and the IMF. Prime Day showed the demand is already ahead of all of it. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Visa's agents can now shop for real in Europe. Here's the part that will actually break.</title>
+    <link>https://josephbankole.ca/news/2026-07-04-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-04-agentic-commerce.html</guid>
+    <pubDate>Sat, 04 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Visa settled its first live merchant agentic-commerce transactions in Europe, with an Agent Score and an Agentic Directory to vet who is trusted to buy. Meanwhile Open USD, the 140-firm stablecoin, keeps adding partners. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Square skips the marketplace cut, and picks a side in the checkout standards fight</title>
+    <link>https://josephbankole.ca/news/2026-07-03-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-03-agentic-commerce.html</guid>
+    <pubDate>Fri, 03 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Square launched a ChatGPT app and Claude plugin with zero marketplace commission, is co-developing Google's Universal Commerce Protocol, and is bringing Alexa+ into the mix. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>The stablecoin coalition goes global, and the KYC rulebook lands the same week</title>
+    <link>https://josephbankole.ca/news/2026-07-02-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-02-agentic-commerce.html</guid>
+    <pubDate>Thu, 02 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Samsung, Shinhan and Dunamu joined Open USD, Jefferies told clients not to buy the Circle dip, and five US regulators published the customer ID rules stablecoin issuers will have to run under the GENIUS Act. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>140 companies just built a stablecoin that gives the yield back</title>
+    <link>https://josephbankole.ca/news/2026-07-01-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-07-01-agentic-commerce.html</guid>
+    <pubDate>Wed, 01 Jul 2026 08:00:00 GMT</pubDate>
+    <description>Visa, Stripe, Mastercard, BlackRock and more than 140 other firms launched Open USD, a stablecoin that shares reserve income instead of keeping it. Circle's shares fell 17 percent the same day. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Credit unions line up to test stablecoins as the GENIUS clock ticks</title>
+    <link>https://josephbankole.ca/news/2026-06-25-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-06-25-agentic-commerce.html</guid>
+    <pubDate>Thu, 25 Jun 2026 08:00:00 GMT</pubDate>
+    <description>Credit unions holding 25 billion dollars start testing stablecoins, Animoca backs a stablecoin-rails firm for agentic commerce, and six US agencies sprint to a July deadline. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Fifty banks put stablecoins on the settlement layer</title>
+    <link>https://josephbankole.ca/news/2026-06-23-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-06-23-agentic-commerce.html</guid>
+    <pubDate>Tue, 23 Jun 2026 08:00:00 GMT</pubDate>
+    <description>Chainlink and 50-plus banks test same-day FX settlement in stablecoins over ISO 20022 and Swift, Mastercard widens on-chain settlement, and Juniper puts a 12-month clock on agentic commerce. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>The agent can spend. The hard part is reconciling it.</title>
+    <link>https://josephbankole.ca/news/2026-06-22-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-06-22-agentic-commerce.html</guid>
+    <pubDate>Mon, 22 Jun 2026 08:00:00 GMT</pubDate>
+    <description>MoonPay bought an AI accounting startup, Stripe and Tempo's machine-payment standard kept spreading, and Circle wired the settlement layer. The week agentic commerce moved down into the back office. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Five protocols, one checkout: the agentic-payment layer starts to crowd</title>
+    <link>https://josephbankole.ca/news/2026-06-21-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-06-21-agentic-commerce.html</guid>
+    <pubDate>Sun, 21 Jun 2026 08:00:00 GMT</pubDate>
+    <description>The agentic-payment layer is splitting into a stack of competing protocols, intermediaries are racing to translate across all of them, and BNPL just climbed into the agent's cart. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>The machine money has to show ID now: bank-grade KYC reaches stablecoin issuers</title>
+    <link>https://josephbankole.ca/news/2026-06-20-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-06-20-agentic-commerce.html</guid>
+    <pubDate>Sat, 20 Jun 2026 08:00:00 GMT</pubDate>
+    <description>US regulators proposed a bank-style customer identification rule for stablecoin issuers under the GENIUS Act. What it asks for, the scope line they drew, and what it means for agents that pay in stablecoins. Sourced and read from the rails.</description>
+  </item>
+  <item>
+    <title>Now the agents pay each other: Mastercard's machine rails and the governance question</title>
+    <link>https://josephbankole.ca/news/2026-06-19-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-06-19-agentic-commerce.html</guid>
+    <pubDate>Fri, 19 Jun 2026 08:00:00 GMT</pubDate>
+    <description>Mastercard's Agent Pay for Machines opens payments between agents, Visa ties in OpenAI, Adyen ships Agentic, JPMorgan names the delegation problem, and the GENIUS Act rulebook hardens. Sourced and read from the rails.</description>
+  </item>
+</channel>
+</rss>
