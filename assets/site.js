@@ -46,71 +46,7 @@
     sections.forEach(function (s) { if (s) spy.observe(s); });
   }
 
-  /* ---- hero gold-dust canvas (only where #dust exists) ---- */
-  var canvas = document.getElementById("dust");
-  if (canvas && !reduce && canvas.getContext) {
-    var ctx = canvas.getContext("2d");
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var particles = [];
-    function size() {
-      var r = canvas.getBoundingClientRect();
-      canvas.width = r.width * dpr; canvas.height = r.height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    function seed() {
-      var r = canvas.getBoundingClientRect();
-      var n = Math.min(70, Math.round(r.width / 16));
-      particles = [];
-      for (var i = 0; i < n; i++) {
-        particles.push({
-          x: Math.random() * r.width, y: Math.random() * r.height,
-          rad: Math.random() * 1.6 + 0.4,
-          vx: (Math.random() - 0.5) * 0.18, vy: -(Math.random() * 0.22 + 0.05),
-          a: Math.random() * 0.5 + 0.15
-        });
-      }
-    }
-    function tick() {
-      var r = canvas.getBoundingClientRect();
-      ctx.clearRect(0, 0, r.width, r.height);
-      for (var i = 0; i < particles.length; i++) {
-        var p = particles[i];
-        p.x += p.vx; p.y += p.vy;
-        if (p.y < -4) { p.y = r.height + 4; p.x = Math.random() * r.width; }
-        if (p.x < -4) p.x = r.width + 4; if (p.x > r.width + 4) p.x = -4;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.rad, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(201,161,74," + p.a + ")";
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(tick);
-    }
-    /* rAF only runs while the tab is visible AND the hero is on screen --
-       a tick loop with nothing to look at is a wasted paint every frame. */
-    var raf = null;
-    var inView = true;
-    function start() {
-      if (raf === null && inView && !document.hidden) tick();
-    }
-    function stop() {
-      if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
-    }
-    size(); seed(); start();
-    var rt;
-    window.addEventListener("resize", function () {
-      clearTimeout(rt); rt = setTimeout(function () { size(); seed(); }, 200);
-    });
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) { stop(); } else { start(); }
-    });
-    if ("IntersectionObserver" in window) {
-      var dustIO = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          inView = en.isIntersecting;
-          if (inView) { start(); } else { stop(); }
-        });
-      }, { threshold: 0 });
-      dustIO.observe(canvas);
-    }
-  }
+  /* The hero gold-dust canvas block used to live here. The homepage hero
+     was replaced by the cinematic experience (assets/experience.js) and no
+     page carries a #dust canvas any more, so the block is gone. */
 })();
