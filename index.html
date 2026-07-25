@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Joseph Bankole · Payments infrastructure operator who ships production AI</title>
-<meta name="description" content="Ten years in payments operations (SWIFT, ISO 20022, ACH). Today I build production AI agents and automations that run real work end to end. Writing on the infrastructure for agentic commerce, and booking AI consultations." />
+<meta name="description" content="Ten years in payments operations (SWIFT, ISO 20022, ACH). Today I build production AI agents and automations that run real work end to end. Writing on the infrastructure for agentic commerce. Not taking new clients right now — join the waitlist." />
 <meta name="theme-color" content="#0c2a3e" />
 <link rel="canonical" href="https://josephbankole.ca/" />
 <meta name="robots" content="index, follow" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Joseph Bankole · Payments operator who ships production AI" />
-<meta property="og:description" content="I fixed payment systems at 2am for ten years. Now I build AI that holds up in production. Writing on agentic commerce, and booking AI consultations." />
+<meta property="og:description" content="I fixed payment systems at 2am for ten years. Now I build AI that holds up in production. Writing on agentic commerce. Not taking new clients right now — join the waitlist." />
 <meta property="og:url" content="https://josephbankole.ca/" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
@@ -109,7 +109,7 @@
     <a href="/blog/">Blog</a>
     <a href="#projects">Projects</a>
     <a href="/news/">News</a>
-    <a class="btn" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=nav" target="_blank" rel="noopener"><span class="btn-label-full">Book a consultation</span><span class="btn-label-short">Book a call</span></a>
+    <a class="btn js-waitlist" data-location="nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
   </div>
 </nav>
 
@@ -125,7 +125,7 @@
     </div>
     <p class="sr-only">At 2am a SWIFT MT103 batch failed with 4,112 records held. For ten years a human paged on-call, found the poison record, resubmitted the batch, and released settlement by morning with no loss and no sleep. The same job now runs as agents that isolate the record, resubmit, and settle while the human stays asleep.</p>
     <div class="hero-cta">
-      <a class="btn" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=hero" target="_blank" rel="noopener">Book an AI consultation</a>
+      <a class="btn js-waitlist" data-location="hero" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry">Join the waitlist</a>
       <a class="btn btn--ghost" href="/blog/">Read the blog</a>
     </div>
     <div class="credrow">
@@ -147,7 +147,7 @@
       <p>That work taught me a discipline that has little to do with technology being clever and everything to do with respecting how it fails. Scope before you fix. Find the poison pill. Race the cutoffs. Tell people early, because clients forgive a delay and never forgive silence. Write the root-cause analysis, because it is the only thing standing between you and the same incident twice.</p>
       <p>What changed is that I stopped only writing about this and started building. I now design and ship production AI systems against real problems: multi-tool agent integrations, scheduled autonomous workflows, a full-stack app on a live database that my own household depends on. Not demos. Things that run real work end to end, break in real ways, and get fixed.</p>
       <p>The surprise was how familiar it felt. Running a fleet of AI agents is the same job as running payment operations. Schedule the jobs so they do not step on each other. Build idempotency so nothing posts twice. Keep a hard respect for the limits of the system, except now the budget is a context window instead of a settlement cutoff. Ten years of operations turned out to be ten years of training for this.</p>
-      <p class="dim">I write here a few times a week about the infrastructure underneath agentic payments: how autonomous systems will authenticate, transact, and settle, from someone who operated the rails and now builds on top of them. If you are putting AI into production against a real operational problem, <a class="inline-link" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=about" target="_blank" rel="noopener">book a consultation</a> or <a class="inline-link" href="#subscribe">join the weekly newsletter</a>.</p>
+      <p class="dim">I write here a few times a week about the infrastructure underneath agentic payments: how autonomous systems will authenticate, transact, and settle, from someone who operated the rails and now builds on top of them. If you are putting AI into production against a real operational problem, <a class="inline-link" href="#work">join the waitlist</a> or <a class="inline-link" href="#subscribe">join the weekly newsletter</a>.</p>
     </div>
   </div>
 </section>
@@ -256,7 +256,7 @@
           <p>An AI sales rep that works the leads a business already paid for. It answers every new lead in seconds, re-engages the no-shows everyone ignores, qualifies against the founder's own rubric, and books the ready ones straight onto the calendar, all in the founder's voice. Not a cold-email robot. It works the people who already raised a hand. Built into the funnel and run for you, on a fixed pilot priced on booked calls, not messages blasted.</p>
           <div class="links">
             <a href="https://joeysdr.com" target="_blank" rel="noopener">joeysdr.com &rarr;</a>
-            <a href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=project-joey" target="_blank" rel="noopener">Book a funnel teardown</a>
+            <a href="#work">Join the waitlist &rarr;</a>
           </div>
         </div>
       </div>
@@ -342,8 +342,7 @@
           </div>
         </div>
         <a class="btn sketch-cta" id="sketchCta"
-           href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=configurator"
-           target="_blank" rel="noopener">Bring this sketch to a call</a>
+           href="#work">Add this to the waitlist</a>
       </aside>
     </div>
   </div>
@@ -444,10 +443,10 @@
       <span class="index">07 / Work with me</span>
     </div>
     <div class="ctaband reveal">
-      <h2 class="close-line">The demo is the operation behind this page.</h2>
-      <p>Thirty minutes, no pitch deck. We scope the highest-leverage AI build for your funnel or your operation.</p>
+      <h2 class="close-line">I'm not currently taking on new clients.</h2>
+      <p>The build slate is full for now. Leave your name and the problem you're trying to solve, and I'll reach out first when a spot opens.</p>
       <div class="close-cta">
-        <a class="btn" href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=work" target="_blank" rel="noopener">Book your AI consultation</a>
+        <a class="btn js-waitlist" data-location="work" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&body=A%20line%20on%20what%20you're%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A">Join the waitlist</a>
         <a class="btn btn--ghost" href="/blog/">Read the field notes</a>
       </div>
     </div>
@@ -479,9 +478,9 @@
       <a href="/answers/">Answers</a>
       <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="/privacy.html">Privacy</a>
-      <a href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=footer" target="_blank" rel="noopener">Book a consultation</a>
+      <a class="js-waitlist" data-location="footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry">Join the waitlist</a>
       <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
-      <span class="copy">I reply within one business day.</span>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
     </div>
   </div>
   <div class="foot" style="margin-top:20px">
@@ -489,9 +488,8 @@
   </div>
 </footer>
 
-<a class="book-pill" id="bookPill"
-   href="https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site&utm_content=pill"
-   target="_blank" rel="noopener">Book a call</a>
+<a class="book-pill js-waitlist" id="bookPill" data-location="pill"
+   href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry">Join the waitlist</a>
 
 <script src="/assets/site.js" defer></script>
 <script src="/assets/analytics.js" defer></script>

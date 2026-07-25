@@ -1,6 +1,6 @@
 /* josephbankole.ca — centralised analytics.
    PostHog bootstrap (same project as thearchv.ca; segmented by `site`) plus
-   the conversion click-tracking: Calendly bookings, newsletter, outbound
+   the conversion click-tracking: waitlist clicks, newsletter, outbound
    project links, and founder social links. One file, included on every
    indexable page so events aren't blind on the blog, news, and privacy
    pages the way they used to be. 404 is intentionally excluded (noindex,
@@ -41,10 +41,13 @@
   /* ---- conversion click-tracking ----
      Loaded with `defer`, after the DOM is parsed, so every link below
      already exists when this runs. */
-  document.querySelectorAll('a[href*="calendly.com"]').forEach(function (a) {
+  /* Waitlist interest — replaces the retired calendly_click event now that
+     bookings are closed. Fires on any waitlist mailto CTA (nav, hero, work
+     band, footer, pill), tagged by data-location so Fola can see which
+     surface drives interest. */
+  document.querySelectorAll('.js-waitlist').forEach(function (a) {
     a.addEventListener('click', function () {
-      var u = new URL(a.href);
-      if (window.posthog) posthog.capture('calendly_click', { site: 'josephbankole.ca', location: u.searchParams.get('utm_content') || 'unknown' });
+      if (window.posthog) posthog.capture('waitlist_click', { site: 'josephbankole.ca', location: a.getAttribute('data-location') || 'unknown' });
     });
   });
   document.querySelectorAll('a[href*="archvai.substack.com"]').forEach(function (a) {

@@ -2,7 +2,7 @@
    Promoted from /lab/ with founder-approved pacing. No libraries.
    Animate transform + opacity only. Reduced-motion safe.
    PostHog events: hero_skip, configurator_select, configurator_cta
-   (calendly_click is bound centrally by /assets/analytics.js). */
+   (waitlist_click is bound centrally by /assets/analytics.js). */
 (function () {
   "use strict";
 
@@ -254,7 +254,8 @@
   /* ---------------------------------------------------------
      ACT 3 · CONFIGURATOR
      --------------------------------------------------------- */
-  var CTA_BASE = "https://calendly.com/josephbankole/30min?utm_source=josephbankole.ca&utm_medium=site";
+  /* Bookings are closed — the configurator CTA now routes to the waitlist. */
+  var CTA_BASE = "mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry";
   var KEYS = ["ops", "hours", "mode"];
   var OF = {
     spreadsheets: "It runs on spreadsheets",
@@ -293,10 +294,7 @@
   }
 
   function ctaUrl() {
-    var uc = "configurator";
-    if (state.ops && state.hours && state.mode)
-      uc = "configurator-" + state.ops + "-" + state.hours + "-" + state.mode;
-    return CTA_BASE + "&utm_content=" + uc;
+    return CTA_BASE;
   }
 
   function render() {
