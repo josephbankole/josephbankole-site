@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Eleven thousand stores, zero payment endpoints · Joseph Bankole</title>
+<meta name="description" content="11,414 stores have shipped Google's Universal Commerce Protocol. Not one exposes a payment capability an agent could buy against. The gap is the whole story." />
+<meta name="theme-color" content="#0c2a3e" />
+<link rel="canonical" href="https://josephbankole.ca/news/2026-08-01-agentic-commerce.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Eleven thousand stores, zero payment endpoints" />
+<meta property="og:description" content="11,414 stores have shipped Google's Universal Commerce Protocol. Not one exposes a payment capability an agent could buy against. The gap is the whole story." />
+<meta property="og:url" content="https://josephbankole.ca/news/2026-08-01-agentic-commerce.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/2026-08-01-agentic-commerce.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="11,414 stores have shipped Google's Universal Commerce Protocol. Not one exposes a payment capability an agent could buy against. The gap is the whole story." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/2026-08-01-agentic-commerce.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole&#39;s news desk" href="/news-feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "NewsArticle", "headline": "Eleven thousand stores, zero payment endpoints", "datePublished": "2026-08-01", "author": { "@type": "Person", "name": "Joseph Bankole", "@id": "https://josephbankole.ca/#person", "url": "https://josephbankole.ca/" }, "publisher": { "@type": "Person", "name": "Joseph Bankole", "@id": "https://josephbankole.ca/#person" }, "mainEntityOfPage": "https://josephbankole.ca/news/2026-08-01-agentic-commerce.html" }
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/#projects">Projects</a><a href="/news/">News</a>
+    <a class="btn js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry" data-location="news"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<header class="article-head wrap">
+  <a class="backlink" href="/news/">&larr; News</a>
+  <span class="index">Daily brief &middot; 1 August 2026</span>
+  <h1>Eleven thousand stores, zero payment endpoints</h1>
+  <div class="article-meta"><span>1 August 2026</span><span>Payments &middot; Agentic commerce</span><span>Sourced</span></div>
+</header>
+
+<section class="article-body" style="border-top:none">
+  <div class="wrap">
+    <div class="prose">
+      <p>A quiet couple of days on this beat, so it is a good moment to look at a number that has been sitting in plain sight. As of 7 July, 11,414 verified stores had shipped Google's Universal Commerce Protocol, out of 13,037 domains monitored, with 1,920 of them added in a single week and month-on-month growth of 38% <a class="inline-link" href="https://ucpchecker.com/blog/state-of-agentic-commerce-july-2026" target="_blank" rel="noopener">[1]</a>.</p>
+      <p>That is a real deployment curve. The interesting figure is the one underneath it.</p>
+
+      <h2>What those stores actually expose</h2>
+      <p>Break the fleet down by capability and it goes: checkout on 11,389 stores, order on 10,114, cart on 10,109, identity on 15, payment on zero <a class="inline-link" href="https://ucpchecker.com/blog/state-of-agentic-commerce-july-2026" target="_blank" rel="noopener">[1]</a>.</p>
+      <p>Zero. Six months in, across every verified store, not one exposes a payment capability an agent could complete a purchase against <a class="inline-link" href="https://ucpchecker.com/blog/state-of-agentic-commerce-july-2026" target="_blank" rel="noopener">[1]</a>.</p>
+      <p>Worth being precise about what that does and does not mean. It does not mean nobody can buy anything. UCP is designed to standardise the whole journey, from discovery through returns and loyalty, and a merchant can perfectly well hand the final payment step to their existing stack <a class="inline-link" href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">[2]</a>. It does mean that the part of the standard that would let an agent settle inside the protocol is, so far, universally unimplemented.</p>
+      <p>One more detail says something about how this ecosystem is being run: 99.7% of those stores are on the same spec version, 2026-04-08 <a class="inline-link" href="https://ucpchecker.com/blog/state-of-agentic-commerce-july-2026" target="_blank" rel="noopener">[1]</a>. Version fragmentation is the usual tax on an open standard at this stage, and it has not appeared here. Wix also began shipping UCP through a centralised gateway this month, the first platform to do it fleet-wide <a class="inline-link" href="https://ucpchecker.com/blog/state-of-agentic-commerce-july-2026" target="_blank" rel="noopener">[1]</a>, and Klarna has adopted the protocol as part of a deeper tie-up with Google <a class="inline-link" href="https://www.emarketer.com/content/klarna-agentic-commerce-google--adopts-universal-commerce-protocol" target="_blank" rel="noopener">[4]</a>.</p>
+
+      <h3>The other standard is narrower on purpose</h3>
+      <p>Stripe and OpenAI's Agentic Commerce Protocol takes the opposite approach. It concentrates on the checkout layer, letting an agent initiate a purchase against the payment infrastructure a merchant already runs, and it is what powers Instant Checkout in ChatGPT <a class="inline-link" href="https://stripe.com/newsroom/news/stripe-openai-instant-checkout" target="_blank" rel="noopener">[3]</a>.</p>
+      <p>So the two live standards are not really competing for the same job yet. One is broad and has the merchant count. The other is narrow and has the completed transactions. Reading either one's adoption figure as "agentic commerce adoption" gets you the wrong answer in a different direction each time.</p>
+
+      <h3>Read from the rails</h3>
+      <p>A capability matrix with a zero column in it is the most honest artefact this industry has produced in months. Most adoption reporting gives you one number and no denominator. This gives you five columns and lets you see which one is empty.</p>
+      <p>If you are a merchant, the practical read is that shipping UCP is currently a discovery and logistics decision, not a payments one. You are making your catalogue, cart and order state legible to agents. That is worth doing, it is comparatively cheap, and it does not require your finance function to sign off on anything new. The payments question has not arrived at your desk yet, whatever the briefings say.</p>
+      <p>What I would watch is that identity column, sitting at 15. Payment cannot move until identity does, because an agent that cannot prove who it is buying for cannot be allowed to settle. Fifteen stores is not a rollout, it is a pilot. When that number starts climbing, the payment column will follow within a quarter or two, and that is the point at which this stops being a catalogue exercise.</p>
+      <p>Ten years in payments operations left me with one reflex worth passing on. When a capability matrix has a zero in it, the zero is the roadmap. Everything else in the table is already solved.</p>
+
+      <blockquote>Eleven thousand stores can be found, browsed and have their orders read by an agent. None of them can be paid by one. The gap between those two sentences is where the next two years of this go.</blockquote>
+    </div>
+
+    <div class="sources">
+      <h4>Sources</h4>
+      <ol>
+        <li><a href="https://ucpchecker.com/blog/state-of-agentic-commerce-july-2026" target="_blank" rel="noopener">The State of Agentic Commerce, July 2026 &middot; UCP Checker (7 Jul 2026)</a></li>
+        <li><a href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">Under the Hood: Universal Commerce Protocol (UCP) &middot; Google Developers Blog</a></li>
+        <li><a href="https://stripe.com/newsroom/news/stripe-openai-instant-checkout" target="_blank" rel="noopener">Stripe powers Instant Checkout in ChatGPT and releases the Agentic Commerce Protocol &middot; Stripe</a></li>
+        <li><a href="https://www.emarketer.com/content/klarna-agentic-commerce-google--adopts-universal-commerce-protocol" target="_blank" rel="noopener">Klarna deepens agentic ties with Google, adopts Universal Commerce Protocol &middot; eMarketer</a></li>
+      </ol>
+    </div>
+
+    <div class="ctaband" style="max-width:44rem;margin-top:48px">
+      <h3>Building in agentic commerce or payments?</h3>
+      <p>This is the intersection I work in. Book thirty minutes and we will scope the build worth doing.</p>
+      <a class="btn js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry" data-location="news">Join the waitlist</a>
+    </div>
+    <div class="related">
+      <h4>Related</h4>
+      <div class="postlist">
+        <a class="post-row" href="/news/2026-07-31-agentic-commerce.html">
+          <span class="date">31 Jul 2026</span>
+          <span class="ttl">75 million payments, 24 million dollars<span>The transaction count is the number being quoted. The 32 cent average is the one that tells you what it is for.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/news/2026-07-30-agentic-commerce.html">
+          <span class="date">30 Jul 2026</span>
+          <span class="ttl">Two agentic commerce forecasts for 2026, a hundred times apart<span>Juniper puts the market at $8bn. PHD and WARC put agent-facilitated spending at $944bn.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/news/2026-07-29-agentic-commerce.html">
+          <span class="date">29 Jul 2026</span>
+          <span class="ttl">Consumers will let the agent browse. They will not let it buy.<span>An Adyen retail index finds 64% shopping with AI and 5% fully comfortable letting it pay.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol" style="text-align:right"><a href="/news/">All editions</a><a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a><a href="/privacy.html">Privacy</a></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
