@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 501,
+      "wordCount": 495,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -138,11 +138,9 @@
 
       <h3>Why this felt familiar</h3>
       <p>Ten years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
-      <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over. It did. Then it stopped.</p>
+      <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over, which is exactly what mine did until the fixes above went in.</p>
 
-      <blockquote>The model was never the bottleneck. The system around the model was.</blockquote>
-
-      <p class="dim">If you are running agents on real workflows, the failure mode that surprised you is probably worth writing down. That is the artifact almost nobody has, and it is the one I would want to read.</p>
+      <p class="dim">The style guide is 3KB now, the logs rotate, and the CSV never enters the model's memory. Failure write-ups like this are the artifact almost nobody keeps, and the one I always want to read.</p>
     </div>
   </div>
 </article>
