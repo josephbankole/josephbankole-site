@@ -48,6 +48,20 @@ GitHub then issues the HTTPS cert automatically (can take up to ~24h).
 or backend required. Done 2026-07-01. Contact email across the site is
 partnerships@josephbankole.ca (Zoho mailbox).
 
+## 4b. After publishing a news edition, rebuild the feed
+
+```bash
+cd ~/Claude/personal-brand/josephbankole-site
+python3 tools/build-news-feed.py
+```
+
+`news-feed.xml` is not written by hand. It is derived from the pages in `news/`
+(og:title, meta description, and the date in the filename), so the feed cannot
+drift from what is published. It was hand-written once on 14 July 2026 and then
+went 25 editions stale because the daily routine updated the page, the index and
+`sitemap.xml` but never the feed. Run the script as part of the same commit as
+the edition.
+
 ## 5. SEO / search indexing (once the site resolves over HTTPS)
 
 - Google Search Console (search.google.com/search-console): add property `josephbankole.ca`,
