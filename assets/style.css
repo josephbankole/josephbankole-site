@@ -351,6 +351,10 @@ h2 em { font-style: italic; color: var(--gold); }
 .related h4 { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 6px; }
 .related .post-row { padding: 18px 0; }
 
+/* ---- article-footer newsletter capture (one line, end of every article) ---- */
+.subline { max-width: var(--measure); margin-top: 32px; padding-top: 1.6rem;
+  border-top: 1px solid var(--cream-faint); color: var(--cream-dim); font-size: .95rem; }
+
 /* ---- footer ---- */
 footer { border-top: 1px solid var(--cream-faint); padding: 40px var(--gutter) 60px; margin-top: 20px; }
 .foot { max-width: var(--maxw); margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; align-items: center; }
