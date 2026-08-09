@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Sat, 08 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sun, 09 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Two incumbents built their own rail, and the licence queue did not move</title>
+    <link>https://josephbankole.ca/news/2026-08-09-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-09-agentic-commerce.html</guid>
+    <pubDate>Sun, 09 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Wells Fargo will launch tokenized deposits on its own permissioned chain this autumn, starting with a dollar to sterling corridor. Mastercard closed its BVNK acquisition and now owns stablecoin settlement infrastructure outright. Hong Kong's regulator declined to put a date on its second licence batch. Three moves in one week, and only one of them needed anybody's permission.</description>
+  </item>
   <item>
     <title>Three launches on one day, and none of them was about the payment</title>
     <link>https://josephbankole.ca/news/2026-08-08-agentic-commerce.html</link>
