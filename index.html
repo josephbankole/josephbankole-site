@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Joseph Bankole · Payments infrastructure operator who ships production AI</title>
 <meta name="description" content="Ten years in payments operations (SWIFT, ISO 20022, ACH). Today I build production AI agents and automations that run real work end to end. Writing on the infrastructure for agentic commerce. Not taking new clients right now — join the waitlist." />
-<meta name="theme-color" content="#0c2a3e" />
+<meta name="theme-color" content="#1E223D" />
 <link rel="canonical" href="https://josephbankole.ca/" />
 <meta name="robots" content="index, follow" />
 
@@ -31,6 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="alternate" type="application/rss+xml" title="Joseph Bankole" href="/feed.xml" />
 <link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
 <link rel="stylesheet" href="/assets/experience.css" />
 
 <script type="application/ld+json">
@@ -44,7 +45,7 @@
       "url": "https://josephbankole.ca/",
       "jobTitle": "Forward-Deployed / Applied AI Engineer",
       "description": "Payments infrastructure operator (SWIFT, ISO 20022, ACH) who builds and ships production AI agents and automations.",
-      "alumniOf": "McGill University",
+      "alumniOf": { "@type": "EducationalOrganization", "name": "McGill University", "url": "https://www.mcgill.ca/" },
       "homeLocation": { "@type": "Place", "name": "Montreal, Canada" },
       "givenName": "Joseph",
       "familyName": "Bankole",
@@ -72,6 +73,25 @@
       "publisher": { "@id": "https://josephbankole.ca/#person" }
     },
     {
+      "@type": "ProfilePage",
+      "@id": "https://josephbankole.ca/#profilepage",
+      "url": "https://josephbankole.ca/",
+      "mainEntity": { "@id": "https://josephbankole.ca/#person" },
+      "isPartOf": { "@id": "https://josephbankole.ca/#website" }
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "News desk",
+      "url": "https://josephbankole.ca/news/",
+      "isPartOf": { "@id": "https://josephbankole.ca/#website" }
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Field notes",
+      "url": "https://josephbankole.ca/blog/",
+      "isPartOf": { "@id": "https://josephbankole.ca/#website" }
+    },
+    {
       "@type": "SiteNavigationElement",
       "name": "Answers",
       "url": "https://josephbankole.ca/answers/",
@@ -82,36 +102,17 @@
 </script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<!-- COLD OPEN "02:00" — JS-only overlay; hidden without JS and under reduced motion -->
-<div class="cold-open" id="coldOpen">
-  <div class="co-scanlines" aria-hidden="true"></div>
-  <div class="co-inner" aria-hidden="true">
-    <div class="co-terminal">
-      <div class="co-bar">
-        <span class="co-dot"></span><span class="co-dot"></span><span class="co-dot"></span>
-        <span class="co-tag">ops-feed</span>
-      </div>
-      <div class="co-feed" id="coFeed"></div>
-    </div>
-    <div class="co-headline" id="coHeadline">
-      <span class="co-line co-line-1">I fixed broken payment systems live at 2am.</span>
-      <span class="co-line co-line-2">Now I build <em>AI</em> that survives production.<span class="co-underline"></span></span>
-    </div>
-  </div>
-  <button class="co-skip" id="coSkip" type="button" aria-label="Skip the intro">Skip <span aria-hidden="true">&rarr;</span></button>
-</div>
-
-<nav class="nav">
+<nav class="nav" aria-label="Primary">
   <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
   <div class="nav-links">
-    <a href="#about">About</a>
-    <a href="/blog/">Blog</a>
-    <a href="#projects">Projects</a>
-    <a href="/news/">News</a>
-    <a class="btn js-waitlist" data-location="nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+    <a href="#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="home-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
   </div>
 </nav>
+
+<main id="main">
 
 <header class="hero-band" id="top">
   <div class="wrap">
@@ -125,7 +126,7 @@
     </div>
     <p class="sr-only">At 2am a SWIFT MT103 batch failed with 4,112 records held. For ten years a human paged on-call, found the poison record, resubmitted the batch, and released settlement by morning with no loss and no sleep. The same job now runs as agents that isolate the record, resubmit, and settle while the human stays asleep.</p>
     <div class="hero-cta">
-      <a class="btn js-waitlist" data-location="hero" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry">Join the waitlist</a>
+      <a class="btn js-waitlist" data-location="hero" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
       <a class="btn btn--ghost" href="/blog/">Read the blog</a>
     </div>
     <div class="credrow">
@@ -265,8 +266,8 @@
         <div class="logo-circle"><img src="/assets/thearchv-logo.png" alt="The ARCHV crest logo" loading="lazy" width="96" height="96" /></div>
         <div>
           <h3>The ARCHV</h3>
-          <span class="role">Football history, illustrated &middot; <a href="https://instagram.com/thearchvfc" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-color:var(--gold-soft);text-underline-offset:3px">@thearchvfc</a></span>
-          <p>An immersive archive of football's greatest moments, retold for a few hundred thousand people across social. The owned site is the brand's credibility surface and link-in-bio destination, built to an awwwards-grade brief on a locked navy, cream and gold identity, with a WebGL hero and scroll choreography. The whole content operation behind it runs as a fleet of scheduled AI agents: generation, scheduling, analytics, and a performance log that breeds toward what works.</p>
+          <span class="role">Football history, illustrated &middot; <a href="https://instagram.com/thearchvfc" target="_blank" rel="noopener" class="role-link">@thearchvfc</a></span>
+          <p>An immersive archive of football's greatest moments, retold for a few hundred thousand people across social. The owned site is the brand's credibility surface and link-in-bio destination, built to an awwwards-grade brief, with a WebGL hero and scroll choreography. The whole content operation behind it runs as a fleet of scheduled AI agents: generation, scheduling, analytics, and a performance log that breeds toward what works.</p>
           <div class="links">
             <a href="https://thearchv.ca" target="_blank" rel="noopener">thearchv.ca &rarr;</a>
           </div>
@@ -277,7 +278,7 @@
         <div class="logo-circle"><img src="/assets/archv-ai-logo.png" alt="ARCHV AI logo" loading="lazy" width="96" height="96" /></div>
         <div>
           <h3>ARCHV AI</h3>
-          <span class="role">The week in AI, in plain English &middot; <a href="https://instagram.com/thearchv.ai" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-color:var(--gold-soft);text-underline-offset:3px">@thearchv.ai</a></span>
+          <span class="role">The week in AI, in plain English &middot; <a href="https://instagram.com/thearchv.ai" target="_blank" rel="noopener" class="role-link">@thearchv.ai</a></span>
           <p>An Instagram that turns recent AI news into plain, single-graphic posts, with a Substack for the longer reads. It runs on a scheduled agent that pulls the week's real stories, writes each post to a fixed brief, and checks every one against hard rules on sourcing and voice before it ships. No invented numbers, no hype, one direct question to end on.</p>
           <div class="links">
             <a href="https://instagram.com/thearchv.ai" target="_blank" rel="noopener">Instagram &rarr;</a>
@@ -341,7 +342,7 @@
             <p>Harden the failure paths, add the verification gate that has to pass before anything goes out, and hand you the runbook.</p>
           </div>
         </div>
-        <a class="btn sketch-cta" id="sketchCta"
+        <a class="btn sketch-cta js-waitlist" id="sketchCta" data-location="home-configurator"
            href="#work">Add this to the waitlist</a>
       </aside>
     </div>
@@ -516,7 +517,7 @@
       <h2 class="close-line">I'm not currently taking on new clients.</h2>
       <p>The build slate is full for now. Leave your name and the problem you're trying to solve, and I'll reach out first when a spot opens.</p>
       <div class="close-cta">
-        <a class="btn js-waitlist" data-location="work" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&body=A%20line%20on%20what%20you're%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A">Join the waitlist</a>
+        <a class="btn js-waitlist" data-location="work" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A're%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A">Join the waitlist</a>
         <a class="btn btn--ghost" href="/blog/">Read the field notes</a>
       </div>
     </div>
@@ -529,7 +530,7 @@
     <div class="subscribe reveal">
       <span class="index">08 / Newsletter</span>
       <h2>The week's best, once a week.</h2>
-      <p class="sub-note" style="margin-top:16px;font-size:1.05rem;color:var(--cream-dim);font-family:var(--grotesque);letter-spacing:0;text-transform:none">The ARCHV AI newsletter: the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. Delivered through Substack. No noise.</p>
+      <p class="sub-intro">The ARCHV AI newsletter: the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. Delivered through Substack. No noise.</p>
       <div class="sub-embed">
         <iframe src="https://archvai.substack.com/embed" title="Subscribe to the ARCHV AI newsletter" scrolling="no" loading="lazy"></iframe>
       </div>
@@ -538,28 +539,30 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="foot">
     <div class="fcol">
-      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
       <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
     </div>
-    <div class="fcol" style="text-align:right">
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
       <a href="/answers/">Answers</a>
       <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="/privacy.html">Privacy</a>
-      <a class="js-waitlist" data-location="footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry">Join the waitlist</a>
+      <a class="js-waitlist" data-location="home-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
       <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
       <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
     </div>
   </div>
-  <div class="foot" style="margin-top:20px">
-    <span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span>
-  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
 </footer>
 
 <a class="book-pill js-waitlist" id="bookPill" data-location="pill"
-   href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry">Join the waitlist</a>
+   href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
 
 <script src="/assets/site.js" defer></script>
 <script src="/assets/analytics.js" defer></script>

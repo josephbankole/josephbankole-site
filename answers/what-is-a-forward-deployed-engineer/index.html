@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>What is a forward-deployed engineer? · Joseph Bankole</title>
 <meta name="description" content="A forward-deployed engineer is a software engineer who works inside a customer's environment to ship a working system against their specific problem, rather than shipping a generic product from behind a wall." />
-<meta name="theme-color" content="#0c2a3e" />
-<link rel="canonical" href="https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/" />
+<meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/" />
 <meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="What is a forward-deployed engineer?" />
 <meta property="og:description" content="The definition, how it differs from a solutions engineer and a consultant, and why AI made the role prominent." />
 <meta property="og:url" content="https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/" />
@@ -16,6 +17,8 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="What is a forward-deployed engineer?" />
+<meta name="twitter:description" content="The definition, how it differs from a solutions engineer and a consultant, and why AI made the role prominent." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -23,8 +26,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="alternate" type="application/rss+xml" title="Joseph Bankole" href="/feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
 <link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -63,48 +68,46 @@
 </script>
 </head>
 <body>
-<nav class="nav">
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
   <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
   <div class="nav-links">
-    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/#projects">Projects</a><a href="/news/">News</a>
-    <a class="btn js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry" data-location="answers"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="answers-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
   </div>
 </nav>
 
-<header class="article-head wrap">
-  <a class="backlink" href="/answers/">&larr; Answers</a>
-  <span class="index">Answers</span>
-  <h1>What is a forward-deployed engineer?</h1>
-  <p class="lede" style="max-width:56ch;margin-top:20px">A forward-deployed engineer is a software engineer who works inside a customer's environment to ship a working system against their specific problem, rather than shipping a generic product from behind a wall. They write the integration, work inside the customer's existing infrastructure, and stay accountable for whether the system runs in production, not just whether it demoed well.</p>
-</header>
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
+    <span class="index">Answers</span>
+    <h1>What is a forward-deployed engineer?</h1>
+    <p class="standfirst">A forward-deployed engineer is a software engineer who works inside a customer's environment to ship a working system against their specific problem, rather than shipping a generic product from behind a wall. They write the integration, work inside the customer's existing infrastructure, and stay accountable for whether the system runs in production, not just whether it demoed well.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-09">Updated 9 August 2026</time><span>1 min read</span></p>
+  </header>
 
-<section class="article-body">
-  <div class="wrap">
+  <div class="article-body wrap">
     <div class="prose">
-
-      <h3>How this differs from a solutions engineer</h3>
+      <h2>How this differs from a solutions engineer</h2>
       <p>A solutions engineer usually sits on the sales side: configuring a product enough to win the deal, then handing the account to someone else. A forward-deployed engineer stays after the deal closes. I write the integration myself, and I do not hand the pager to somebody else once the contract is signed.</p>
 
-      <h3>How this differs from a consultant</h3>
+      <h2>How this differs from a consultant</h2>
       <p>A consultant usually leaves a recommendation. A forward-deployed engineer leaves running code. A consultant's deliverable is a document that somebody else still has to build. A forward-deployed engineer's deliverable is a system that is already live and carrying real traffic by the time the engagement ends.</p>
 
-      <h3>Why AI made the role prominent</h3>
+      <h2>Why AI made the role prominent</h2>
       <p>The role existed quietly for years inside places like Palantir, doing integration work nobody wanted to name. AI made it visible because AI agents fail in ways specific to a company's own data and its own edge cases, and no generic product can be pre-built to handle that. Somebody has to sit close to the problem, and increasingly that somebody is a forward-deployed engineer.</p>
 
-      <h3>What a payments background brings to it</h3>
+      <h2>What a payments background brings to it</h2>
       <p>Ten years inside payment operations, at HSBC and Société Générale, taught me the discipline this role needs: scope the failure before you touch the fix, respect the cutoff, and never trust a system that only looks correct in the happy path. Payments infrastructure is one of the least forgiving environments in software, because a mistake moves real money. I bring that same respect for failure into every AI system I deploy.</p>
-
     </div>
+  </div>
+</article>
 
-    <div class="ctaband" style="max-width:44rem;margin-top:48px">
-      <h3>Need a forward-deployed engineer on a real problem?</h3>
-      <p>That is the work I do, applied to payments and agentic commerce. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry" data-location="answers-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
-      <a class="btn js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry" data-location="answers">Join the waitlist</a>
-    </div>
-
-    <div class="related">
-      <h4>Related</h4>
-      <div class="postlist">
+<div class="article-tail wrap">
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Related</h2>
+    <div class="postlist">
         <a class="post-row" href="/answers/what-is-agentic-commerce/">
           <span class="date">Answers</span>
           <span class="ttl">What is agentic commerce?<span>AI agents that find the item, agree the price, and settle the payment, inside limits a person set in advance.</span></span>
@@ -115,23 +118,44 @@
           <span class="ttl">The architecture of a multi-agent content operation<span>The models write fine. The hard part is everything around the model.</span></span>
           <span class="arrow">&rarr;</span>
         </a>
-      </div>
     </div>
-    <div class="subline">
-      <p>The weekly version of this beat goes out in the <a class="inline-link" href="https://archvai.substack.com" target="_blank" rel="noopener">ARCHV AI newsletter</a>.</p>
-    </div>
-
-  </div>
-</section>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Need a forward-deployed engineer on a real problem?</h2>
+    <p>That is the work I do, applied to payments and agentic commerce. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="answers-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="answers-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
 
 <footer>
   <div class="foot">
     <div class="fcol">
-      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
       <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
     </div>
-    <div class="fcol" style="text-align:right"><a href="/answers/">All answers</a><a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a><a href="/privacy.html">Privacy</a></div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="answers-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
   </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
 </footer>
 <script src="/assets/site.js" defer></script>
 <script src="/assets/analytics.js" defer></script>

@@ -1,8 +1,12 @@
-/* josephbankole.ca — homepage cinematic experience behaviour.
-   Promoted from /lab/ with founder-approved pacing. No libraries.
-   Animate transform + opacity only. Reduced-motion safe.
-   PostHog events: hero_skip, configurator_select, configurator_cta
-   (waitlist_click is bound centrally by /assets/analytics.js). */
+/* josephbankole.ca — homepage experience behaviour. No libraries.
+   Animate transform and colour only. Reduced-motion safe.
+   PostHog events: configurator_select, configurator_cta
+   (waitlist_click is bound centrally by /assets/analytics.js).
+
+   The cold open was cut on 2026-08-09 (founder ruling). It held scroll for
+   13.9 seconds behind an overlay that covered the navigation, on every
+   visit, with no session guard. The page now opens on content and nothing
+   replaces the animation. */
 (function () {
   "use strict";
 
@@ -18,111 +22,14 @@
     }
   }
 
-  /* JS is running: unlock the JS-only states (dimmed station cards,
+  /* JS is running: unlock the JS-only states (station card dimming,
      hero underline draw, scrubber). Without this class the page is
      fully static and fully visible. */
   document.body.classList.add("xp-js");
 
   var pill = $("bookPill");
   var heroBand = $("top");
-
-  /* ---------------------------------------------------------
-     ACT 1 · COLD OPEN
-     --------------------------------------------------------- */
-  var overlay = $("coldOpen");
-  var feed = $("coFeed");
-  var headline = $("coHeadline");
-  var skipBtn = $("coSkip");
-  var finished = false, cancelled = false;
-
-  var PASS1 = [
-    { t: "02:00:14", s: "  SWIFT MT103 batch failure. 4,112 records held." },
-    { t: "02:01:02", s: "  paging on-call" },
-    { t: "02:03:19", s: "  poison record found: malformed field 59" },
-    { t: "02:04:50", s: "  batch resubmitted, bad record quarantined" },
-    { t: "05:47:08", s: "  settlement released. loss: none. sleep: none." }
-  ];
-  var PASS2 = [
-    { t: "02:00:14", s: "  SWIFT MT103 batch failure. 4,112 records held." },
-    { t: "02:00:16", s: "  agent: poison record isolated", agent: true },
-    { t: "02:00:31", s: "  agent: batch resubmitted", agent: true },
-    { t: "02:00:52", s: "  settled. human asleep.", agent: true }
-  ];
-
-  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
-
-  async function typeLine(line, perChar) {
-    var el = document.createElement("span");
-    el.className = "fl" + (line.agent ? " agent" : "");
-    var b = document.createElement("b");
-    b.textContent = line.t;
-    el.appendChild(b);
-    var txt = document.createTextNode("");
-    el.appendChild(txt);
-    var caret = document.createElement("span");
-    caret.className = "caret";
-    el.appendChild(caret);
-    feed.appendChild(el);
-    for (var i = 0; i < line.s.length; i++) {
-      if (cancelled) { txt.textContent = line.s; break; }
-      txt.textContent += line.s.charAt(i);
-      await sleep(perChar);
-    }
-    if (el.contains(caret)) el.removeChild(caret);
-  }
-
-  async function runColdOpen() {
-    var i;
-    for (i = 0; i < PASS1.length; i++) {
-      if (cancelled) break;
-      await typeLine(PASS1[i], 26);
-      await sleep(300);
-    }
-    if (!cancelled) await sleep(1100);
-    if (!cancelled) { feed.innerHTML = ""; await sleep(300); }
-    for (i = 0; i < PASS2.length; i++) {
-      if (cancelled) break;
-      await typeLine(PASS2[i], 13);
-      await sleep(130);
-    }
-    if (!cancelled) await sleep(450);
-    headline.classList.add("show");
-    if (!cancelled) await sleep(3300);
-    finishColdOpen();
-  }
-
-  function litHero() {
-    if (heroBand) heroBand.classList.add("lit");
-  }
-
-  function finishColdOpen() {
-    if (finished) return;
-    finished = true;
-    cancelled = true;
-    if (headline) headline.classList.add("show");
-    litHero();
-    if (overlay) overlay.classList.add("done");
-    document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
-    setTimeout(function () { if (overlay) overlay.classList.remove("play"); }, 760);
-  }
-
-  if (skipBtn) {
-    skipBtn.addEventListener("click", function () {
-      if (!finished) cap("hero_skip", {});
-      finishColdOpen();
-    });
-  }
-
-  if (reduce || !overlay || !feed) {
-    litHero();
-  } else {
-    overlay.classList.add("play");
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    setTimeout(function () { if (!finished) finishColdOpen(); }, 20000); // safety net
-    runColdOpen();
-  }
+  if (heroBand) heroBand.classList.add("lit");
 
   /* ---------------------------------------------------------
      Floating book pill — appears once the hero scrolls away
@@ -254,8 +161,10 @@
   /* ---------------------------------------------------------
      ACT 3 · CONFIGURATOR
      --------------------------------------------------------- */
-  /* Bookings are closed — the configurator CTA now routes to the waitlist. */
+  /* Bookings are closed — the configurator CTA routes to the waitlist. */
   var CTA_BASE = "mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry";
+  var CTA_PROMPT =
+    "A line on what you're building, the operational problem, and how to reach you:\n\n";
   var KEYS = ["ops", "hours", "mode"];
   var OF = {
     spreadsheets: "It runs on spreadsheets",
@@ -278,6 +187,15 @@
     alongside: "built alongside your team so they own it after",
     handover: "built, documented, and handed over so it runs without me"
   };
+  /* Plain labels, for the email body rather than the on-page sketch. */
+  var OL = { spreadsheets: "spreadsheets", saas: "SaaS tools", custom: "custom systems" };
+  var HL = {
+    reporting: "reporting",
+    replies: "customer replies",
+    dataentry: "data entry between systems",
+    monitoring: "monitoring"
+  };
+  var ML = { alongside: "alongside my team", handover: "built then handed over" };
 
   var state = { ops: null, hours: null, mode: null };
   var readEl = $("sketchRead");
@@ -293,8 +211,18 @@
     return parts.join(" ");
   }
 
+  /* The three answers used to be sent to PostHog, written into the address
+     bar, and then dropped: ctaUrl() returned CTA_BASE unchanged, so someone
+     who answered every question got a blanker email than someone who
+     answered none. They now travel into the message body. */
   function ctaUrl() {
-    return CTA_BASE;
+    var lines = [];
+    if (state.ops) lines.push("What runs our ops today: " + OL[state.ops]);
+    if (state.hours) lines.push("What eats the most hours: " + HL[state.hours]);
+    if (state.mode) lines.push("How I would want it delivered: " + ML[state.mode]);
+    if (!lines.length) return CTA_BASE + "&body=" + encodeURIComponent(CTA_PROMPT);
+    var body = lines.join("\n") + "\n\n" + CTA_PROMPT;
+    return CTA_BASE + "&body=" + encodeURIComponent(body);
   }
 
   function render() {
