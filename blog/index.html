@@ -5,42 +5,90 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blog · Joseph Bankole</title>
 <meta name="description" content="Lived-experience write-ups on payment infrastructure and running AI agents in production, by Joseph Bankole." />
-<meta name="theme-color" content="#0c2a3e" />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/blog/" />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="Blog · Joseph Bankole" />
 <meta property="og:description" content="Field notes on payment infrastructure and shipping AI agents in production." />
 <meta property="og:url" content="https://josephbankole.ca/blog/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Blog · Joseph Bankole" />
+<meta name="twitter:description" content="Field notes on payment infrastructure and shipping AI agents in production." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="alternate" type="application/rss+xml" title="Joseph Bankole" href="/feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
 <link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://josephbankole.ca/blog/",
+      "name": "Field notes from building in production",
+      "description": "Lived-experience write-ups on payment infrastructure and running AI agents in production, by Joseph Bankole.",
+      "url": "https://josephbankole.ca/blog/",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "author": {
+        "@id": "https://josephbankole.ca/#person"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
-<nav class="nav">
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
   <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
   <div class="nav-links">
-    <a href="/#about">About</a>
-    <a href="/blog/">Blog</a>
-    <a href="/#projects">Projects</a>
-    <a href="/news/">News</a>
-    <a class="btn js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry" data-location="blog"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="blog-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
   </div>
 </nav>
 
-<header class="article-head wrap">
-  <span class="index">Blog</span>
-  <h1>Field notes from building in production.</h1>
-  <p class="lede" style="max-width:54ch;margin-top:20px">Payment infrastructure and AI agents, written the way I learned them: from the exceptions, not the happy path. No invented stories, no rounded-up numbers.</p>
-</header>
+<main id="main">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <span aria-current="page">Field notes</span></nav>
+    <span class="index">Blog</span>
+    <h1>Field notes from building in production.</h1>
+    <p class="standfirst">Payment infrastructure and AI agents, written the way I learned them: from the exceptions, not the happy path. No invented stories, no rounded-up numbers.</p>
+    <p class="article-meta"><span>5 posts</span></p>
+  </header>
 
-<section style="border-top:none;padding-top:10px">
-  <div class="wrap">
+  <div class="article-body wrap">
     <div class="postlist">
       <a class="post-row" href="/blog/blank-carousel-render.html">
         <span class="date">Jun 2026</span>
@@ -68,33 +116,46 @@
         <span class="arrow">&rarr;</span>
       </a>
     </div>
-    <p style="margin-top:28px"><a class="inline-link" href="/answers/">Looking for a short, direct definition instead? See Answers &rarr;</a></p>
+    <p class="hub-note"><a class="inline-link" href="/answers/">Looking for a short, direct definition instead? See Answers &rarr;</a></p>
   </div>
-</section>
 
-<section id="subscribe">
-  <div class="wrap">
-    <div class="ctaband">
-      <h2>Get these in your inbox.</h2>
-      <p>A short Sunday email with the week's best posts and the one agentic-commerce story worth your attention.</p>
-      <a class="btn" href="/#subscribe">Join the newsletter</a>
-    </div>
-  </div>
-</section>
+<div class="article-tail wrap">
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Get these in your inbox.</h2>
+    <p>A short Sunday email with the week's best posts and the one agentic-commerce story worth your attention.</p>
+    <a class="btn js-waitlist" data-location="blog-hub-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
 
 <footer>
   <div class="foot">
     <div class="fcol">
-      <span style="font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--cream)"><span class="gold">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
       <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
     </div>
-    <div class="fcol" style="text-align:right">
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
       <a href="/answers/">Answers</a>
       <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="/privacy.html">Privacy</a>
-      <a class="js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry" data-location="blog">Join the waitlist</a>
+      <a class="js-waitlist" data-location="blog-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
     </div>
   </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
 </footer>
 <script src="/assets/site.js" defer></script>
 <script src="/assets/analytics.js" defer></script>
