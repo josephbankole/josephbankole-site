@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anthropic is watermarking everything Claude writes, and half of it will not survive your build pipeline · Joseph Bankole</title>
+<meta name="description" content="Anthropic began marking Claude output on 11 August 2026 with text watermarks and C2PA metadata. OpenAI priced Premium ChatGPT Business seats at $125." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/news/2026-08-12-agentic-commerce.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="Anthropic is watermarking everything Claude writes, and half of it will not survive your build pipeline" />
+<meta property="og:description" content="Anthropic began marking Claude output on 11 August 2026 with text watermarks and C2PA metadata. OpenAI priced Premium ChatGPT Business seats at $125." />
+<meta property="og:url" content="https://josephbankole.ca/news/2026-08-12-agentic-commerce.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-12T12:30:00-04:00" />
+<meta property="article:modified_time" content="2026-08-12T12:30:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Anthropic is watermarking everything Claude writes, and half of it will not survive your build pipeline" />
+<meta name="twitter:description" content="Anthropic began marking Claude output on 11 August 2026 with text watermarks and C2PA metadata. OpenAI priced Premium ChatGPT Business seats at $125." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "NewsArticle",
+      "headline": "Anthropic is watermarking everything Claude writes, and half of it will not survive your build pipeline",
+      "description": "Anthropic began marking Claude output on 11 August 2026 with text watermarks and C2PA metadata. OpenAI priced Premium ChatGPT Business seats at $125.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 964,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/news/2026-08-12-agentic-commerce.html"
+      },
+      "datePublished": "2026-08-12T12:30:00-04:00",
+      "dateModified": "2026-08-12T12:30:00-04:00",
+      "articleSection": "Agentic commerce"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "News desk",
+          "item": "https://josephbankole.ca/news/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Anthropic is watermarking everything Claude writes, and half of it will not survive your build pipeline",
+          "item": "https://josephbankole.ca/news/2026-08-12-agentic-commerce.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="news-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/news/">News desk</a></nav>
+    <span class="index">Daily brief &middot; 12 August 2026</span>
+    <h1>Anthropic is watermarking everything Claude writes, and half of it will not survive your build pipeline</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-12">12 August 2026</time><span>4 min read</span><span>7 sources</span><span>Agentic commerce &middot; Payments</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>Anthropic said on 11 August 2026 that it is putting machine-readable marks into what Claude produces, and that the marks apply worldwide rather than only in Europe <a class="inline-link" href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content" target="_blank" rel="noopener">[3]</a><a class="inline-link" href="https://www.euronews.com/next/2026/08/11/eu-compliance-delivered-globally-anthropic-to-watermark-claudes-output-worldwide" target="_blank" rel="noopener">[5]</a>.</p>
+      <p>I run Claude inside a publishing pipeline every day, so I went looking for what actually changes at the file level. The answer is not the same for text as it is for images.</p>
+
+      <h2>Two marks, and only one of them is durable</h2>
+      <p>Claude models launched in the European Union on or after 2 August 2026 carry the marks at launch, and Anthropic says the behaviour extends across the Claude Platform API, Claude, Claude Code, Claude Cowork and Claude Tag, including where Claude is served through Amazon, Google and Microsoft <a class="inline-link" href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content" target="_blank" rel="noopener">[3]</a><a class="inline-link" href="https://www.searchenginejournal.com/anthropic-claude-watermarks-eu-ai-act-code/585355/" target="_blank" rel="noopener">[7]</a>. The legal hook is Article 50(2) of the EU AI Act and its Code of Practice on Transparency of AI-Generated Content, which took effect on 2 August 2026 and which Anthropic signed as a provider of both models and systems <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/anthropic-adds-watermarks-to-denote-ai-generated-content/" target="_blank" rel="noopener">[4]</a><a class="inline-link" href="https://www.searchenginejournal.com/anthropic-claude-watermarks-eu-ai-act-code/585355/" target="_blank" rel="noopener">[7]</a>.</p>
+      <p>There are two mechanisms and they behave differently. Generated text carries an invisible watermark embedded in the text itself, which does not change how the text reads and which travels with it when somebody copies and pastes <a class="inline-link" href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content" target="_blank" rel="noopener">[3]</a><a class="inline-link" href="https://www.searchenginejournal.com/anthropic-claude-watermarks-eu-ai-act-code/585355/" target="_blank" rel="noopener">[7]</a>. Generated files in supported formats, named as .svg, .png and .jpg, carry digitally signed provenance metadata following the C2PA standard <a class="inline-link" href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content" target="_blank" rel="noopener">[3]</a><a class="inline-link" href="https://www.searchenginejournal.com/anthropic-claude-watermarks-eu-ai-act-code/585355/" target="_blank" rel="noopener">[7]</a>.</p>
+      <p>That second one is the half that will quietly go missing. C2PA lives in the file container, and almost everything in a normal web build re-encodes the container: the image optimiser in your framework, the resize step in your CDN, the thumbnail generator, the social platform that strips metadata on upload as a matter of policy. The text watermark rides inside the words and survives being pasted into a form. The signed metadata survives until the first process that rewrites the bytes, which on most sites is the step immediately after the file is written. Nobody is doing anything wrong when that happens. It just means the provenance you believe you are publishing may only ever have reached your build server.</p>
+
+      <h2>Meanwhile the regulator has written no AI rule and is enforcing anyway</h2>
+      <p>On 12 August, PYMNTS published a piece on what financial services firms are meant to retain when an AI system does the work, and the honest answer is that neither the Securities and Exchange Commission nor FINRA has issued AI-specific recordkeeping rules <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-recordkeeping-raises-compliance-questions-for-financial-services-firms/" target="_blank" rel="noopener">[6]</a>. What exists is the general obligation, applied to a new actor: supervision, communications, recordkeeping and fiduciary duty attach to the work regardless of whether a person or a model performed it <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-recordkeeping-raises-compliance-questions-for-financial-services-firms/" target="_blank" rel="noopener">[6]</a>.</p>
+      <p>The specific pointers are worth writing down. FINRA Regulatory Notice 24-09 tells firms using generative AI in supervisory systems to address technology governance, model-risk management, data privacy, data integrity and model reliability, and FINRA's 2026 Regulatory Oversight Report treats generative AI as a standalone area of focus <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-recordkeeping-raises-compliance-questions-for-financial-services-firms/" target="_blank" rel="noopener">[6]</a>. Enforcement has not waited for a rulebook: the SEC has brought cases over exaggerated AI claims, and FINRA has pursued an anti-money-laundering matter involving deficient automated identity verification <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-recordkeeping-raises-compliance-questions-for-financial-services-firms/" target="_blank" rel="noopener">[6]</a>. Brian Rubin of Eversheds Sutherland, a former SEC and NASD enforcement lawyer, calls it a show-your-work environment, where an examiner wants to see how the model was used, approved and validated, and where a named human still owns the outcome <a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-recordkeeping-raises-compliance-questions-for-financial-services-firms/" target="_blank" rel="noopener">[6]</a>.</p>
+      <p>Read that alongside the watermarking and you get the shape of the year. One party has decided to stamp what the model produced, the other wants to see how the model came to be running, and a log line recording that the API was called satisfies neither of them.</p>
+
+      <h2>OpenAI has now priced how much machine time you get</h2>
+      <p>On 10 August, OpenAI introduced Premium seats for ChatGPT Business at $125 per user per month, or $100 per user per month billed annually, alongside the existing Standard seat at $25 and $20 <a class="inline-link" href="https://openai.com/index/premium-seats-chatgpt-business/" target="_blank" rel="noopener">[1]</a><a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/openai-courts-business-users-with-premium-chatgpt/" target="_blank" rel="noopener">[2]</a>. A Premium seat carries five times the usage of a Standard one and removes the five-hour usage limit, and the two seat types can be mixed inside one workspace <a class="inline-link" href="https://openai.com/index/premium-seats-chatgpt-business/" target="_blank" rel="noopener">[1]</a>. There is a launch offer of $100 in workspace credits for each Premium seat added early, capped at $500 across five seats <a class="inline-link" href="https://openai.com/index/premium-seats-chatgpt-business/" target="_blank" rel="noopener">[1]</a>.</p>
+      <p>The five-hour cap is the number I would look at before the $125. Somebody typing questions into a chat box and reading the replies is unlikely to run into a five-hour ceiling, because a human reading speed paces the whole session. Somebody who hands a long job to an agent and goes to lunch will find it, since nothing in that loop is waiting for a person. Removing the cap is priced at exactly five times the Standard seat, which tells you what OpenAI thinks the unattended workload is worth.</p>
+
+      <h2>Read from the rails</h2>
+      <p>The practical job this week is smaller than any of the three announcements. Find out whether your image pipeline preserves C2PA metadata, which takes about ten minutes with a file you generated yesterday and a metadata reader. If it does not, you have a choice to make about whether that matters to you, and it is better to make it now than to discover it in a dispute.</p>
+      <p>On the seat question, count the hours your agents run before you count the people who will hold the seats. And on recordkeeping, the record an examiner is likely to ask for is the approval trail: who signed off on the model running against that workflow, when, and against what validation. Most stacks store the answer and nothing about the permission.</p>
+      <p>Anthropic's marks apply to Claude models launched in the EU on or after 2 August 2026 <a class="inline-link" href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content" target="_blank" rel="noopener">[3]</a>. Anything a Claude model wrote for you before that carries no mark at all.</p>
+    </div>
+    <section class="sources" aria-labelledby="sources-h">
+      <h2 id="sources-h">Sources</h2>
+      <ol>
+        <li><a href="https://openai.com/index/premium-seats-chatgpt-business/" target="_blank" rel="noopener">Premium seats are coming to ChatGPT Business &middot; OpenAI, 10 August 2026</a></li>
+        <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/openai-courts-business-users-with-premium-chatgpt/" target="_blank" rel="noopener">OpenAI Courts Business Users With Premium ChatGPT &middot; PYMNTS, 11 August 2026</a></li>
+        <li><a href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content" target="_blank" rel="noopener">How Claude marks AI-generated content &middot; Claude Help Center, Anthropic, read 12 August 2026</a></li>
+        <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/anthropic-adds-watermarks-to-denote-ai-generated-content/" target="_blank" rel="noopener">Anthropic Adds Watermarks to Denote AI-Generated Content &middot; PYMNTS, 11 August 2026</a></li>
+        <li><a href="https://www.euronews.com/next/2026/08/11/eu-compliance-delivered-globally-anthropic-to-watermark-claudes-output-worldwide" target="_blank" rel="noopener">EU compliance, delivered globally: Anthropic to watermark Claude&#x27;s output worldwide &middot; Euronews, 11 August 2026</a></li>
+        <li><a href="https://www.pymnts.com/news/artificial-intelligence/2026/ai-recordkeeping-raises-compliance-questions-for-financial-services-firms/" target="_blank" rel="noopener">AI Recordkeeping Raises Compliance Questions for Financial Services Firms &middot; PYMNTS, 12 August 2026</a></li>
+        <li><a href="https://www.searchenginejournal.com/anthropic-claude-watermarks-eu-ai-act-code/585355/" target="_blank" rel="noopener">Anthropic To Mark Claude Text &amp; Files Under EU AI Act Code &middot; Search Engine Journal, 11 August 2026</a></li>
+      </ol>
+    </section>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <nav class="pager" aria-label="Neighbouring editions">
+    <a class="pager-prev" href="/news/2026-08-11-agentic-commerce.html"><span class="pager-dir">&larr; Earlier edition</span><span class="pager-ttl">Revolut bought a French banking licence, and I owe you a correction with a deadline on it</span><span class="pager-date">11 Aug 2026</span></a>
+  </nav>
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Latest from the desk</h2>
+    <div class="postlist">
+        <a class="post-row" href="/news/2026-08-10-agentic-commerce.html">
+          <time class="date" datetime="2026-08-10">10 Aug 2026</time>
+          <span class="ttl">Japan built a department, Washington missed its deadline, and Brussels moved the date you wrote down<span>Japan&#x27;s FSA stood up a dedicated crypto division, the GENIUS Act tracker sat empty, and the EU pushed a compliance date you had already planned around.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/news/2026-08-09-agentic-commerce.html">
+          <time class="date" datetime="2026-08-09">9 Aug 2026</time>
+          <span class="ttl">Two incumbents built their own rail, and the licence queue did not move<span>Wells Fargo will launch tokenized deposits on its own permissioned chain this autumn, Mastercard closed its BVNK acquisition, and Hong Kong set no licence date.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/news/2026-08-08-agentic-commerce.html">
+          <time class="date" datetime="2026-08-08">8 Aug 2026</time>
+          <span class="ttl">Three launches on one day, and none of them was about the payment<span>Sionic and Agentix brought pay-by-bank to AI shopping agents, Marqeta put spend controls in Google Wallet, and Klarna went live on J.P. Morgan Payments.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="news-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="news-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="news-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
