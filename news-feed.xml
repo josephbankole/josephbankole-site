@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 12 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 13 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>An agent now decides which chargebacks are worth fighting, and Apple wants to pay publishers by the use</title>
+    <link>https://josephbankole.ca/news/2026-08-13-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-13-agentic-commerce.html</guid>
+    <pubDate>Thu, 13 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Maverick Payments added Findustry AI's Chargeback Agent on 13 August 2026. Apple is in talks to pay publishers per use for Siri, and Anthropic eyes Decart.</description>
+  </item>
   <item>
     <title>Anthropic is watermarking everything Claude writes, and half of it will not survive your build pipeline</title>
     <link>https://josephbankole.ca/news/2026-08-12-agentic-commerce.html</link>
