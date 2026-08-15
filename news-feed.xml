@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 14 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sat, 15 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>An agent can pay a Coinbase merchant today, and most bank AI still only reads and scores</title>
+    <link>https://josephbankole.ca/news/2026-08-15-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-15-agentic-commerce.html</guid>
+    <pubDate>Sat, 15 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Coinbase Business now takes payments from AI agents over x402, settling in USDC. Deloitte's EMEA survey shows where banks put AI: fraud and chat, not spending.</description>
+  </item>
   <item>
     <title>Two banks sold the payments company and kept the customers, and DeepSeek put a clock on the bill</title>
     <link>https://josephbankole.ca/news/2026-08-14-agentic-commerce.html</link>
