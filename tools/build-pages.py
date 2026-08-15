@@ -36,9 +36,6 @@ import sys
 REPO = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://josephbankole.ca"
 
-# The date this pass touched every page. Written into dateModified only when a
-# page does not already carry one, so a rerun never churns the value.
-BUILD_DATE = "2026-08-09"
 TZ = "-04:00"  # Montreal, August
 
 WAITLIST = (
@@ -568,7 +565,23 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
             day = dt.date.fromisoformat(date_attr)
             date_display = human_date(day)
             published_iso = "%sT09:00:00%s" % (date_attr, TZ)
-    modified = existing_modified(src) or "%sT09:00:00%s" % (BUILD_DATE, TZ)
+
+    # This script does not invent dates. It used to fall back to a hardcoded
+    # BUILD_DATE, which pinned both answers pages to "Updated 9 August 2026"
+    # for as long as the constant sat there. A page's own datePublished is the
+    # only fallback, and a page carrying neither date is an error, not a guess.
+    modified = existing_modified(src)
+    if not modified:
+        if not date_attr:
+            try:
+                where = path.relative_to(REPO)
+            except ValueError:
+                where = path
+            raise SystemExit(
+                "%s carries neither dateModified nor datePublished in its JSON-LD.\n"
+                "Add both. This script will not invent a date for it." % where
+            )
+        modified = date_attr
     if re.match(r"^\d{4}-\d{2}-\d{2}$", modified):
         modified = "%sT09:00:00%s" % (modified, TZ)
 
@@ -592,14 +605,17 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
 
     # ---- article head
     meta_bits = ['<span class="byline">Joseph Bankole</span>']
-    if date_attr and date_display:
-        label = date_display if kind != "answers" else "Updated %s" % date_display
-        meta_bits.append('<time datetime="%s">%s</time>' % (date_attr, label))
-    elif kind == "answers":
+    if kind == "answers":
+        # An answers page shows when it was last revised, so the label is built
+        # from dateModified. Building it from datePublished, as this did until
+        # 2026-08-15, published a publication date under an "Updated" label.
+        updated_attr = modified[:10]
         meta_bits.append(
             '<time datetime="%s">Updated %s</time>'
-            % (BUILD_DATE, human_date(dt.date.fromisoformat(BUILD_DATE)))
+            % (updated_attr, human_date(dt.date.fromisoformat(updated_attr)))
         )
+    elif date_attr and date_display:
+        meta_bits.append('<time datetime="%s">%s</time>' % (date_attr, date_display))
     meta_bits.append("<span>%d min read</span>" % minutes)
     if source_count:
         meta_bits.append(

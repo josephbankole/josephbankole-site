@@ -2,3 +2,4 @@
 .DS_Store
 personal-brand
 news/.sf/
+__pycache__/
