@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Sun, 16 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Tue, 18 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Visa and Mastercard joined an alliance about who your agent answers to, and the law still says nobody</title>
+    <link>https://josephbankole.ca/news/2026-08-18-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-18-agentic-commerce.html</guid>
+    <pubDate>Tue, 18 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Rain launched the Agentic Payments Alliance on 18 August 2026 with Visa, Mastercard, Fiserv, Circle and Solana. AI agents still cannot carry liability.</description>
+  </item>
   <item>
     <title>The OCC made bunq prove it understood its own product, and an AI agent needs only a consent screen</title>
     <link>https://josephbankole.ca/news/2026-08-16-agentic-commerce.html</link>
