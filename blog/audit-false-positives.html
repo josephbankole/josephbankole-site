@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Automated audits fail toward false positives · Joseph Bankole</title>
+<meta name="description" content="Five checks in my own site audit failed in five runs. Every one was confidently wrong, and every one invented work. The tells that catch them, and the fixes." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/blog/audit-false-positives.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="Automated audits fail toward false positives" />
+<meta property="og:description" content="Five audit checks failed in five runs, all confidently, all inventing work. The uniform-failure tell and the fixes that closed them." />
+<meta property="og:url" content="https://josephbankole.ca/blog/audit-false-positives.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-19T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-08-19T15:00:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Automated audits fail toward false positives" />
+<meta name="twitter:description" content="Five audit checks failed in five runs, all confidently, all inventing work. The uniform-failure tell and the fixes that closed them." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "My audit said all 64 pages were dead. Every one was live",
+      "description": "Five audit checks failed in five runs, all confidently, all inventing work. The uniform-failure tell and the fixes that closed them.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 841,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/blog/audit-false-positives.html"
+      },
+      "datePublished": "2026-08-19T09:00:00-04:00",
+      "dateModified": "2026-08-19T15:00:00-04:00",
+      "articleSection": "Payments and applied AI"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "My audit said all 64 pages were dead. Every one was live",
+          "item": "https://josephbankole.ca/blog/audit-false-positives.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="blog-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
+    <span class="index">Build in public</span>
+    <h1>My audit said all 64 pages were dead. Every one was live.</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-19">19 August 2026</time><span>4 min read</span><span>Tooling &middot; Production</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>The crawler came back with 0 of 64 sitemap URLs alive and 0 of 72 internal links alive, every feed and every asset dead alongside them. I read the output twice and started writing the incident note. The site was serving all 64 of those pages the entire time.</p>
+      <p>The real error was sitting inside an exception I had not unwrapped. <code>SSLCertVerificationError: unable to get local issuer certificate</code>. Python in that sandbox has no CA bundle, so every https fetch fails verification, and a verification failure raises the same <code>URLError</code> that a dead host does. Curl carries the system trust store. It answered 200 on all 64 immediately.</p>
+      <p>That was the first of five broken checks in five runs of the same daily audit, all of them mine, all of them confidently wrong.</p>
+
+      <h2>The other four</h2>
+      <p><strong>A character class where a backreference belonged.</strong> The meta-description reader matched <code>content=["\'](.*?)["\']</code>. A character class matches either quote, so the capture stops at the first apostrophe inside the value. A description opening "Mastercard's Agent Pay for Machines lets software pay software" was read as <code>Mastercard</code>, ten characters, and reported as far under the length band. Sixteen healthy pages were flagged in a single pass. Requiring the closing delimiter to match the opening one, <code>content=(["\'])(.*?)\1</code>, then unescaping entities so the count is of rendered characters, took that run's finding count from 75 to 10. None of the surviving ten was a defect either.</p>
+      <p><strong>A length rule measuring the branding.</strong> Nearly every title on this site carries the same 17 characters of site name. The check measured the whole string against a 50-to-60 target and flagged eight pages. Two were real, and both were hub pages whose editorial half is a single word. The other six were the suffix.</p>
+      <p><strong>A check reading the wrong element.</strong> The answer-first extractor pulled the first 60 words out of <code>div.prose</code> and reported that both answer pages opened on a subheading instead of an answer. On that template the answer sits in <code>p.standfirst</code>, above <code>.prose</code>. Both pages were already correct, and the recommendation would have sent me to rewrite two pages that needed nothing.</p>
+      <p><strong>A flag that does not exist on this platform.</strong> <code>sed 's|&lt;/\?loc&gt;||g'</code> silently does nothing under BSD sed, which has no <code>\?</code> in basic regular expressions. The sitemap crawl returned 000 on all 65 URLs and looked exactly like a total outage.</p>
+
+      <h3>They all failed toward more work</h3>
+      <p>Not one of these ever said a broken page was fine. They said fine pages were broken, sixteen at a time, and two of them were one approval away from producing a commit that edited correct pages into worse ones. A check with a bug does not fail evenly in both directions. It fails toward more work, because the code path that raises a finding is the one carrying the assumption, and the code path that stays quiet is usually just an early return.</p>
+      <p>A person reading that report over coffee glances at an implausible line and moves on. An agent reading the same output opens the file and fixes it, because fixing things is the job I gave it.</p>
+
+      <h3>What actually catches them</h3>
+      <ol>
+        <li><strong>Treat uniform failure as a bug in the checker.</strong> A real outage is rarely total and never that tidy. 0 of 64, 0 of 72, every feed, every asset, including the page open in the browser tab beside the terminal. That is one broken assumption applied 136 times. The tell has now caught three of these before they reached a report.</li>
+        <li><strong>Make the check print the text it read, beside the verdict.</strong> The answer-first bug survived because it published a conclusion without the evidence. Show me the 60 words the check measured and I can settle it in a second.</li>
+        <li><strong>Confirm with a second tool before believing a negative.</strong> One <code>curl -o /dev/null -w '%{http_code}'</code> would have ended the certificate incident before the incident note existed.</li>
+        <li><strong>Write retired rules down where the checker can see them.</strong> I retired the 50-to-60 title rule on measurement four days ago. The script running the daily pass still carries it, so this afternoon it produced fourteen findings, of which two were real and both were already open. The other twelve were the branding suffix again, or pages that are supposed to look exactly as they do.</li>
+      </ol>
+
+      <h3>The cost of the good version</h3>
+      <p>Every fix above is cheap. Print the evidence, use curl, distrust a total failure, keep the retired rules where the code can reach them. Together they are perhaps forty lines. The expensive part was the five runs it took to notice that on those checks the audit was not measuring the site at all, because a report full of findings feels like a working audit, and I wanted it to be working.</p>
+
+      <p class="dim">The 64 URLs from that first run are still there. They answered 200 on the day the crawler called them dead, and they answered 200 again this afternoon. The only thing that has ever changed is the code doing the asking.</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Related</h2>
+    <div class="postlist">
+        <a class="post-row" href="/blog/debugging-ai-context-window.html">
+          <span class="date">Jun 2026</span>
+          <span class="ttl">The production AI bug that was the context window<span>Two agents started failing the same way. The root cause was something I do not see discussed enough.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/blank-carousel-render.html">
+          <span class="date">Jun 2026</span>
+          <span class="ttl">The carousel that rendered blank<span>Blank-on-the-first-one is a tell. It almost always means a race.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/multi-agent-architecture.html">
+          <span class="date">Jun 2026</span>
+          <span class="ttl">The architecture of a multi-agent content operation<span>The models write fine. The hard part is everything around the model.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="blog-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="blog-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="blog-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>

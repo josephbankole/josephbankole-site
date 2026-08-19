@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Thu, 18 Jun 2026 12:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 19 Aug 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Automated audits fail toward false positives</title>
+    <link>https://josephbankole.ca/blog/audit-false-positives.html</link>
+    <guid>https://josephbankole.ca/blog/audit-false-positives.html</guid>
+    <pubDate>Wed, 19 Aug 2026 13:00:00 GMT</pubDate>
+    <description>Five checks in my own site audit failed in five runs. Every one was confidently wrong, and every one invented work. The tells that catch them, and the fixes.</description>
+  </item>
   <item>
     <title>The carousel that rendered blank</title>
     <link>https://josephbankole.ca/blog/blank-carousel-render.html</link>
