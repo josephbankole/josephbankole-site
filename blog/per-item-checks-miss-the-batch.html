@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Per-item checks cannot see the batch · Joseph Bankole</title>
+<meta name="description" content="Nine pieces of copy passed nine rotation checks on the same morning, and six of the nine ended the same way. Why item-scoped validation misses a collapsing distribution." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="Per-item checks cannot see the batch" />
+<meta property="og:description" content="Nine units, nine green checks, six identical endings. What item-scoped validation cannot measure, and the two mechanisms that hid it." />
+<meta property="og:url" content="https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-21T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-08-21T15:00:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Per-item checks cannot see the batch" />
+<meta name="twitter:description" content="Nine units, nine green checks, six identical endings. What item-scoped validation cannot measure, and the two mechanisms that hid it." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Nine checks passed. Six of nine posts ended the same way",
+      "description": "Nine units, nine green checks, six identical endings. What item-scoped validation cannot measure, and the two mechanisms that hid it.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 759,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html"
+      },
+      "datePublished": "2026-08-21T09:00:00-04:00",
+      "dateModified": "2026-08-21T15:00:00-04:00",
+      "articleSection": "Payments and applied AI"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Nine checks passed. Six of nine posts ended the same way",
+          "item": "https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="blog-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
+    <span class="index">Build in public</span>
+    <h1>Nine checks passed. Six of nine posts ended the same way.</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-21">21 August 2026</time><span>3 min read</span><span>Tooling &middot; Production</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>This morning the operation shipped nine pieces of copy carrying a logged ending type, one on each of nine channels. Every one of them passed the check that exists to stop the writing sounding the same. Six of the nine closed on the same kind of sentence.</p>
+      <p>The rule they passed is not vague. Six sanctioned ending types, logged by name against every unit: cold fact, callback, reversal, forward line, question fork, hard stop. Never the same type twice running on one channel. Each desk reads the last closer recorded for its own channel before it writes, and every desk did that today.</p>
+
+      <p>The nine sat on nine separate properties: four Instagram accounts, three Threads accounts, a YouTube community post, and the news desk on this site. Six closed on a cold fact. The remaining three closed on a question fork. Callback, reversal, forward line and hard stop were used zero times between them.</p>
+
+      <h2>Why nine green checks meant nothing</h2>
+      <p>The rule is scoped to the channel. On a morning when every channel ships exactly one unit, "the same type twice running on one channel" describes an event that cannot occur. Nine desks each compared one unit against a different channel's history. Nine comparisons came back clean, and no one held the nine of them side by side.</p>
+      <p>A green result from that comparison carries no information about the day. It reports clean precisely on the mornings when each channel ships once, which are the mornings the batch has the most room to converge.</p>
+
+      <h2>How the token spellings hid it</h2>
+      <p>The closer type is recorded as a free-text token. Grepping the whole ledger returns nine distinct spellings for six types. Cold fact is written as <code>cold</code>, as <code>cold-fact</code>, and as <code>cold-fact-cta</code>. Question fork appears as <code>question</code> and as <code>question-fork</code>.</p>
+      <p>A rotation enforced by comparing one string against the previous string reads <code>cold</code> and <code>cold-fact</code> as two different endings. Two of this morning's units carry the bare <code>cold</code> token, and either would have passed the same-type check against a <code>cold-fact</code> predecessor on its own channel. Nothing validates the token against the six sanctioned names at the point it is written.</p>
+
+      <h2>What 119 units say</h2>
+      <p>Normalising those spellings and counting every closer the ledger holds gives 119 units: cold fact 37, forward line 27, callback 24, question fork 19, hard stop 11, reversal 1.</p>
+      <p>Reversal is the type with an explicit ceiling, one in five per channel. At that ceiling more than twenty of the 119 could have been reversals without breaking anything. It has been used once. A cap written to prevent a tic has been read as a prohibition, which leaves five working endings where the specification calls for six, and pushes weight onto the default.</p>
+
+      <h2>Where else this shows up</h2>
+      <p>A check whose unit is the item measures the item accurately. The distribution those items form is not a property any single item has, so nothing the check reads can contain it.</p>
+      <p>The same failure turns up wherever volume is generated and reviewed one piece at a time. Retry logic can be defensible on every individual attempt and still concentrate a thundering herd on one endpoint. A model router can pick correctly for each request on its own terms and route four fifths of the day's traffic to one model.</p>
+      <p>The tell is a review that has never failed. If a check has been green since it was written, the useful question is whether it is scoped to something capable of failing, and the cheapest way to answer that is to feed it a batch you already know is bad.</p>
+
+      <h2>What it still needs</h2>
+      <p>Nothing is fixed. Two desks noticed the collapse independently after the nine units were already live, which is how I know about it at all, and both filed it as a flag rather than a defect with an owner.</p>
+      <p>What it needs is small and specific. The token has to be normalised to a closed set at the moment it is written, so that <code>cold</code> and <code>cold-fact</code> cannot be two things. Then one comparison has to run whose unit is the day rather than the channel, reading every closer logged since midnight and failing when any single type carries more than about a third of them.</p>
+      <p>Run against this morning's nine it would have failed, six of one type against a threshold of three. Writing it would take less of an afternoon than this essay did.</p>
+
+      <p class="dim">The nine units are still live, and the check that would have caught them has not been written.</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Related</h2>
+    <div class="postlist">
+        <a class="post-row" href="/blog/debugging-ai-context-window.html">
+          <span class="date">Jun 2026</span>
+          <span class="ttl">The production AI bug that was the context window<span>Two agents started failing the same way. The root cause was something I do not see discussed enough.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/blank-carousel-render.html">
+          <span class="date">Jun 2026</span>
+          <span class="ttl">The carousel that rendered blank<span>Blank-on-the-first-one is a tell. It almost always means a race.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/multi-agent-architecture.html">
+          <span class="date">Jun 2026</span>
+          <span class="ttl">The architecture of a multi-agent content operation<span>The models write fine. The hard part is everything around the model.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="blog-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="blog-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="blog-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>

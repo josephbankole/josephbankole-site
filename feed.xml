@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 19 Aug 2026 13:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 21 Aug 2026 19:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Per-item checks cannot see the batch</title>
+    <link>https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html</link>
+    <guid>https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html</guid>
+    <pubDate>Fri, 21 Aug 2026 19:00:00 GMT</pubDate>
+    <description>Nine pieces of copy passed nine rotation checks on the same morning, and six of the nine ended the same way. Why item-scoped validation misses a collapsing distribution.</description>
+  </item>
   <item>
     <title>Automated audits fail toward false positives</title>
     <link>https://josephbankole.ca/blog/audit-false-positives.html</link>
