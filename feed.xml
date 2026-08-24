@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 21 Aug 2026 19:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 24 Aug 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>The IntersectionObserver threshold my content outgrew</title>
+    <link>https://josephbankole.ca/blog/intersection-observer-threshold.html</link>
+    <guid>https://josephbankole.ca/blog/intersection-observer-threshold.html</guid>
+    <pubDate>Mon, 24 Aug 2026 13:00:00 GMT</pubDate>
+    <description>A homepage block rendered as 6,164 pixels of empty background. The IntersectionObserver threshold never changed; the list under it grew one row a day.</description>
+  </item>
   <item>
     <title>Per-item checks cannot see the batch</title>
     <link>https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html</link>
