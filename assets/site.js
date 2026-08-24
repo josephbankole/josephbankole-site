@@ -22,9 +22,15 @@
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+        if (!en.isIntersecting) return;
+        /* A block taller than the viewport can never put 12% of itself on screen
+           at once, so it would stay hidden forever. Those reveal on entry. */
+        var rootH = en.rootBounds ? en.rootBounds.height : window.innerHeight;
+        if (en.intersectionRatio >= 0.12 || en.boundingClientRect.height > rootH) {
+          en.target.classList.add("in"); io.unobserve(en.target);
+        }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: [0, 0.12], rootMargin: "0px 0px -8% 0px" });
     els.forEach(function (e) { io.observe(e); });
   }
 
