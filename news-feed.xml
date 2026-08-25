@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 24 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Tue, 25 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Google’s agent payment protocol writes a very good receipt, and nobody has said who pays when the agent buys the wrong thing</title>
+    <link>https://josephbankole.ca/news/2026-08-25-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-25-agentic-commerce.html</guid>
+    <pubDate>Tue, 25 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Google’s Agent Payments Protocol records approved limits and what each party saw, but does not decide who bears the loss or how long the evidence is kept. Cloudflare’s MCP server portals took the stateless MCP 2026-07-28 specification on 25 August 2026.</description>
+  </item>
   <item>
     <title>Cloudflare made OAuth scopes optional for its MCP server, and the MCP roadmap admits the consent screen was built for somebody who is not there</title>
     <link>https://josephbankole.ca/news/2026-08-24-agentic-commerce.html</link>
