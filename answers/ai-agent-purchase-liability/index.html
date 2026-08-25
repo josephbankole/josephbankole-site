@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Who is liable when an AI agent buys the wrong thing? · Joseph Bankole</title>
+<meta name="description" content="Nobody has assigned it yet. AP2 puts dispute resolution outside its own scope, and the US rules that cap your loss define unauthorised very narrowly." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/answers/ai-agent-purchase-liability/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="Who is liable when an AI agent buys the wrong thing?" />
+<meta property="og:description" content="The agent protocols produce evidence, not a liability rule. The consumer rules that allocate loss turn on a word that was written about strangers, not about your own agent." />
+<meta property="og:url" content="https://josephbankole.ca/answers/ai-agent-purchase-liability/" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-25T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-08-25T17:30:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Who is liable when an AI agent buys the wrong thing?" />
+<meta name="twitter:description" content="The agent protocols produce evidence, not a liability rule. The consumer rules that allocate loss turn on a word that was written about strangers, not about your own agent." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-08-25T17:30:00-04:00",
+      "dateModified": "2026-08-25T17:30:00-04:00",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who is liable when an AI agent buys the wrong thing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nobody has assigned it yet. The protocols carrying agent purchases are built to produce evidence rather than to allocate loss: the AP2 specification places dispute resolution, retention and retrieval expressly outside its own scope. The United States consumer rules that do allocate loss, Regulation E and Regulation Z, turn on whether a transaction was unauthorised, and both define that as spending by a person acting without the account holder's authority. An agent you configured and funded is acting with your authority, so the caps written for a stolen card do not obviously reach it.",
+            "author": { "@id": "https://josephbankole.ca/#person" }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does AP2 decide who pays when an agent purchase is disputed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The AP2 specification says that the Checkout Mandate and Receipt and the Payment Mandate and Receipt can be brought together to give a non-repudiable picture of a disputed transaction, and that the details of how this is used for dispute resolution, retention and retrieval are outside the scope of the specification. AP2's own FAQ describes the goal as supplying evidence that helps payment networks establish accountability and liability principles, with a network adjudicator such as a card network making the call.",
+            "author": { "@id": "https://josephbankole.ca/#person" }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who does an agent purchase dispute actually reach?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The merchant, in most designs shipping today. The Agentic Commerce Protocol states that businesses maintain their customer relationships as the merchant of record and that an AI platform embeds commerce without being the merchant of record, so the existing path is unchanged: the cardholder complains to the issuer, the issuer raises the chargeback, and it lands on the business that fulfilled the order. The agent platform that produced the instruction sits outside that chain.",
+            "author": { "@id": "https://josephbankole.ca/#person" }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://josephbankole.ca/" },
+        { "@type": "ListItem", "position": 2, "name": "Answers", "item": "https://josephbankole.ca/answers/" },
+        { "@type": "ListItem", "position": 3, "name": "Who is liable when an AI agent buys the wrong thing?", "item": "https://josephbankole.ca/answers/ai-agent-purchase-liability/" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="answers-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
+    <span class="index">Answers</span>
+    <h1>Who is liable when an AI agent buys the wrong thing?</h1>
+    <p class="standfirst">Nobody has assigned it yet. The protocols carrying agent purchases are built to produce evidence rather than to allocate loss, and the consumer rules that do allocate loss turn on whether a transaction was unauthorised. Both of the American definitions of that word describe spending by a person acting without the account holder&#x27;s authority. An agent you configured and funded is acting with your authority. The caps written for a stolen card number were drafted for a thief, and the standards now carrying agent purchases leave the other case open on purpose.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-25">Updated 25 August 2026</time><span>4 min read</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <h2>What do the agent payment protocols say about liability?</h2>
+      <p>Less than the write-ups imply. Google&#x27;s Agent Payments Protocol, AP2, is the one built specifically for the argument that happens after the purchase, and its own specification is careful about where it stops. In a dispute, it says, the Checkout Mandate and Receipt and the Payment Mandate and Receipt can be brought together to give a non-repudiable picture of the transaction. Then, immediately: &ldquo;Specific details of how this is used for dispute resolution, retention, and retrieval requirements are outside the scope of this specification&rdquo; (<a class="inline-link" href="https://ap2-protocol.org/ap2/specification/" target="_blank" rel="noopener">the AP2 specification</a>).</p>
+      <p>The project&#x27;s FAQ is equally plain about the intent. A primary objective, it says, is to supply evidence that helps payment networks establish accountability and liability principles, with a network adjudicator such as a card network comparing the user-signed Checkout Mandate against what is claimed in the dispute (<a class="inline-link" href="https://ap2-protocol.org/faq/" target="_blank" rel="noopener">AP2 FAQ</a>). That is a handoff rather than a gap in the design. AP2 assembles the exhibit and passes it to whoever already adjudicates the dispute.</p>
+      <p>An analysis by Aashis Luitel, republished by Fortune from The Conversation on 24 August 2026, reaches the same reading from outside the project: AP2 shows how the evidence could travel, and it does not decide who bears the loss or specify how long each company must keep that evidence and how it can be retrieved later (<a class="inline-link" href="https://fortune.com/2026/08/24/google-ai-agent-payment-protocol-gap/" target="_blank" rel="noopener">Fortune</a>). Retention is the part builders underrate. On card rails a dispute routinely arrives months after the purchase, by which point most application log policies have rotated the instruction away, so a mandate that every party can generate and none is required to store may not exist any more when someone finally asks for it.</p>
+
+      <h2>Why does the word &ldquo;unauthorised&rdquo; decide the outcome?</h2>
+      <p>Because in the United States the consumer protections are written to trigger on that one word, and both of the definitions describe a stranger.</p>
+      <p>Regulation Z caps a cardholder&#x27;s liability for unauthorised use of a credit card at the lesser of $50 or the amount obtained before the issuer is notified. The term itself is narrow: &ldquo;the use of a credit card by a person, other than the cardholder, who does not have actual, implied, or apparent authority for such use, and from which the cardholder receives no benefit&rdquo; (12 CFR 1026.12(b), <a class="inline-link" href="https://www.ecfr.gov/current/title-12/section-1026.12" target="_blank" rel="noopener">eCFR</a>, <a class="inline-link" href="https://www.law.cornell.edu/cfr/text/12/1026.12" target="_blank" rel="noopener">Cornell LII</a>).</p>
+      <p>Regulation E covers debit cards and other electronic fund transfers, and reaches the same shape by a different route. An unauthorised transfer is one initiated by a person other than the consumer without actual authority and from which the consumer receives no benefit, and the definition then excludes, expressly, a transfer initiated &ldquo;by a person who was furnished the access device to the consumer&#x27;s account by the consumer, unless the consumer has notified the financial institution that transfers by that person are no longer authorized&rdquo; (12 CFR 1005.2(m), <a class="inline-link" href="https://www.ecfr.gov/current/title-12/section-1005.2" target="_blank" rel="noopener">eCFR</a>, <a class="inline-link" href="https://www.law.cornell.edu/cfr/text/12/1005.2" target="_blank" rel="noopener">Cornell LII</a>).</p>
+      <p>Now put an agent in those sentences. You configured it, you handed it a credential, and you told it to buy running shoes under $120. It bought the wrong shoes, or the right shoes four times. Actual authority is precisely what you granted, and a benefit did arrive. Whether that reads as unauthorised is a question of fact about your specific instruction, which is a much harder question than the one the $50 cap was written to settle. These are the American rules; other jurisdictions allocate consumer loss differently, and this page describes what the rules say rather than advising on any particular dispute.</p>
+
+      <h2>Who does the dispute actually reach?</h2>
+      <p>The merchant, in most designs shipping today, and the standards say so deliberately. The Agentic Commerce Protocol, the one behind ChatGPT&#x27;s Instant Checkout (<a class="inline-link" href="https://stripe.com/newsroom/news/stripe-openai-instant-checkout" target="_blank" rel="noopener">Stripe</a>, <a class="inline-link" href="https://www.paymentsdive.com/news/stripe-pushes-agentic-ai-sales-via-chatgpt-openai-artificial-intelligence/761439/" target="_blank" rel="noopener">Payments Dive</a>), states that businesses maintain their customer relationships as the merchant of record, and that an AI platform embeds commerce into its application without being the merchant of record (<a class="inline-link" href="https://www.agenticcommerce.dev/" target="_blank" rel="noopener">agenticcommerce.dev</a>, and the same wording in the <a class="inline-link" href="https://github.com/agentic-commerce-protocol/agentic-commerce-protocol" target="_blank" rel="noopener">ACP specification repository</a>).</p>
+      <p>So the path is the familiar one. The cardholder complains to the issuer, the issuer raises the chargeback, and it lands on the business that fulfilled the order. The agent platform that produced the instruction is not in that chain, and nothing in the standards obliges it to keep the instruction or to hand it over. The merchant defends a purchase it did not originate using records it does not hold.</p>
+
+      <h2>What can you do before the rules catch up?</h2>
+      <p>Three things, and all of them are logging discipline rather than law.</p>
+      <p>Keep the instruction beside the transaction. Not in an application log with a fourteen-day retention, but in the same store as the payment record and under the same retention rule. Disputes reach you long after the sale. An instruction that rotated out after a fortnight is evidence of nothing.</p>
+      <p>Scope the credential to the task rather than to the agent. The token your agent holds is written for everything it might ever need to do, while the prompt covers only this minute. The payment network sees the token.</p>
+      <p>Write down your own liability position before a customer asks for it. Every dispute I have handled on card rails collapsed into the same three questions: what was authorised, by whom, and can you show it. AP2 and the work around it are solving the third question and leaving the first two to you, so decide now what you will say when a customer asks the first one.</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Related</h2>
+    <div class="postlist">
+        <a class="post-row" href="/answers/acp-vs-ap2/">
+          <span class="date">Answers</span>
+          <span class="ttl">What is the difference between ACP and AP2?<span>One standardises the agent checkout, the other the authorisation underneath it. They are two layers of one purchase.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/answers/what-is-agentic-commerce/">
+          <span class="date">Answers</span>
+          <span class="ttl">What is agentic commerce?<span>AI agents that find the item, agree the price, and settle the payment, inside limits a person set in advance.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="answers-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="answers-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="answers-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
