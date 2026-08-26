@@ -251,7 +251,7 @@ def footer_block(location: str) -> str:
         '  <div class="foot">\n'
         '    <div class="fcol">\n'
         '      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>\n'
-        '      <span class="copy">Payments infrastructure &middot; Applied AI &middot; Montreal</span>\n'
+        '      <span class="copy">Fintech operations &middot; Applied AI &middot; Montreal</span>\n'
         "    </div>\n"
         '    <div class="fcol fcol-end">\n'
         '      <a href="/news/">News desk</a>\n'
