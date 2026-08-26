@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Tue, 25 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 26 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Shinhan will test its stablecoin on Visa’s platform, and the crypto industry told Treasury where identity checks should stop</title>
+    <link>https://josephbankole.ca/news/2026-08-26-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-26-agentic-commerce.html</guid>
+    <pubDate>Wed, 26 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Shinhan Financial Group signed a strategic agreement with Visa in Seoul on 26 August 2026 to validate stablecoin issuance, transfers and redemption on Visa’s platform. The Blockchain Association asked Treasury to limit customer identification to the primary market. OpenAI’s Assistants API shut down today.</description>
+  </item>
   <item>
     <title>Google’s agent payment protocol writes a very good receipt, and nobody has said who pays when the agent buys the wrong thing</title>
     <link>https://josephbankole.ca/news/2026-08-25-agentic-commerce.html</link>
