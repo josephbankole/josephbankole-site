@@ -1,6 +1,6 @@
 # Joseph Bankole
 
-> Joseph Bankole is a forward-deployed / applied AI engineer in Montreal, Canada. He is a fintech operations operator (SWIFT, ISO 20022, ACH) who builds and ships production AI agents and automations, and writes about the work at josephbankole.ca.
+> Joseph Bankole is a forward-deployed / applied AI engineer in Montreal, Canada. He is a fintech operator (SWIFT, ISO 20022, ACH) who builds and ships production AI agents and automations, and writes about the work at josephbankole.ca.
 
 ## Key pages
 
