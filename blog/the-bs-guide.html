@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 861,
+      "wordCount": 984,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -124,7 +124,7 @@
       <p>I run my own version of this. A set of automated agents drafts my content and checks my facts while I am at my day job. You do not need any of that on day one. You need one assistant that actually knows your job, and that takes about an hour to set up.</p>
 
       <h2>Step one: set Claude up properly</h2>
-      <p>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and make an account. The free tier is enough to prove the point. The paid plan lifts the limits once you are relying on it.</p>
+      <p>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and make an account. The free tier is enough. The paid plan lifts the limits once you are relying on it.</p>
       <p>Then do the one thing most people skip. Stop using one-off chats and open a Project instead. A Project is a workspace that remembers context you load into it once, so every chat inside it starts already knowing your job. One-off chats are why most people think AI gives generic answers. It was generic because it knew nothing about you.</p>
 
       <h2>Step two: write the handover document</h2>
@@ -177,6 +177,85 @@ Rules:
 
       <p>Pick one task from step three and hand it over this week. That is the whole method: one boring job at a time.</p>
       <p class="dim">From @folabankole on Instagram. If this helped, send me a DM and tell me which task you handed over first.</p>
+
+      <h2>Questions people ask</h2>
+      <h3>Is Claude free to use?</h3>
+      <p>There is a free tier and it includes Projects, so everything in steps one to three works without paying. Paid plans lift the usage limits.</p>
+      <h3>Do I need to know how to code?</h3>
+      <p>No. Steps one to four happen entirely in the claude.ai interface. Code only enters at step five, and that level is optional.</p>
+      <h3>Can Claude send emails for me?</h3>
+      <p>Once Gmail is connected it can, and by default it asks for your approval before anything goes out. My rule stays the same either way: it drafts, you send.</p>
+      <h3>What should I never put into it?</h3>
+      <p>Passwords, card numbers, and client data your contract says stays internal. Check what your employer allows before connecting a work account.</p>
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type": "Question", "name": "Is Claude free to use?", "acceptedAnswer": {"@type": "Answer", "text": "There is a free tier and it includes Projects, so the first three steps of this guide work without paying. Paid plans lift the usage limits."}},
+          {"@type": "Question", "name": "Do I need to know how to code to use Claude for my job?", "acceptedAnswer": {"@type": "Answer", "text": "No. Setting up a Project, writing a handover document, delegating tasks and connecting Gmail, Calendar and Drive all happen in the claude.ai interface. Code only enters at the optional final step, Claude Code."}},
+          {"@type": "Question", "name": "Can Claude send emails for me?", "acceptedAnswer": {"@type": "Answer", "text": "Once Gmail is connected Claude can send, reply to and forward emails, and by default it asks for approval before anything goes out. The guide's standing rule is that it drafts and you send."}},
+          {"@type": "Question", "name": "What should I never put into an AI assistant?", "acceptedAnswer": {"@type": "Answer", "text": "Passwords, card numbers, and client data your contract says stays internal. Check what your employer allows before connecting a work account."}}
+        ]
+      }
+      </script>
+      <script>
+      (function () {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var canvas = document.createElement('canvas');
+        canvas.setAttribute('aria-hidden', 'true');
+        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;';
+        document.body.appendChild(canvas);
+        var ctx = canvas.getContext('2d');
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var flakes = [];
+        var running = true;
+        function size() {
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+        }
+        function make(randomY) {
+          return {
+            x: Math.random() * canvas.width,
+            y: randomY ? Math.random() * canvas.height : -10 * dpr,
+            r: (0.8 + Math.random() * 1.9) * dpr,
+            vy: (0.25 + Math.random() * 0.55) * dpr,
+            drift: Math.random() * 2 * Math.PI,
+            driftSpeed: 0.003 + Math.random() * 0.006,
+            alpha: 0.18 + Math.random() * 0.35
+          };
+        }
+        function reset() {
+          size();
+          flakes = [];
+          var count = Math.min(70, Math.floor(window.innerWidth / 18));
+          for (var i = 0; i < count; i++) flakes.push(make(true));
+        }
+        function tick() {
+          if (!running) return;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (var i = 0; i < flakes.length; i++) {
+            var f = flakes[i];
+            f.drift += f.driftSpeed;
+            f.x += Math.sin(f.drift) * 0.3 * dpr;
+            f.y += f.vy;
+            if (f.y > canvas.height + 10 * dpr) flakes[i] = f = make(false);
+            ctx.beginPath();
+            ctx.arc(f.x, f.y, f.r, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(245,242,243,' + f.alpha + ')';
+            ctx.fill();
+          }
+          requestAnimationFrame(tick);
+        }
+        document.addEventListener('visibilitychange', function () {
+          running = !document.hidden;
+          if (running) requestAnimationFrame(tick);
+        });
+        window.addEventListener('resize', reset);
+        reset();
+        requestAnimationFrame(tick);
+      })();
+      </script>
     </div>
   </div>
 </article>
