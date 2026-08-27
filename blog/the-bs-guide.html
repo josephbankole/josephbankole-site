@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 984,
+      "wordCount": 1061,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -115,21 +115,30 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
     <span class="index">Applied AI</span>
     <h1>The BS Guide: hand the boring parts of your job to Claude</h1>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-27">27 August 2026</time><span>4 min read</span><span>Applied AI &middot; Guides</span></p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-27">27 August 2026</time><span>5 min read</span><span>Applied AI &middot; Guides</span></p>
   </header>
 
   <div class="article-body wrap">
     <div class="prose">
       <p>You commented BS on the reel, or somebody sent you this. The promise was the same either way: set up an AI assistant so the boring parts of your job stop being your job.</p>
       <p>I run my own version of this. A set of automated agents drafts my content and checks my facts while I am at my day job. You do not need any of that on day one. You need one assistant that actually knows your job, and that takes about an hour to set up.</p>
+      <p class="bsg-tally">Three quick wins are marked through this page. <strong id="bsg-tally-n">0 of 3</strong> banked so far.</p>
 
       <h2>Step one: set Claude up properly</h2>
       <p>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and make an account. The free tier is enough. The paid plan lifts the limits once you are relying on it.</p>
       <p>Then do the one thing most people skip. Stop using one-off chats and open a Project instead. A Project is a workspace that remembers context you load into it once, so every chat inside it starts already knowing your job. One-off chats are why most people think AI gives generic answers. It was generic because it knew nothing about you.</p>
+      <div class="bsg-win" id="bsg-win-account">
+        <span class="bsg-win-label">Made your account? That is the first win.</span>
+        <button type="button" class="bsg-btn" data-win="account" aria-pressed="false">Done, count it</button>
+      </div>
 
       <h2>Step two: write the handover document</h2>
       <p>Inside your Project, open the project instructions and describe your job the way you would brief a new hire on their first day. This single document is most of the setup. Copy this and fill in the brackets:</p>
-      <pre><code>You are my work assistant.
+      <div class="bsg-win" id="bsg-win-copy">
+        <span class="bsg-win-label">One tap beats select-and-drag on a phone.</span>
+        <button type="button" class="bsg-btn" data-win="copy" aria-pressed="false">Copy the template</button>
+      </div>
+      <pre id="bsg-template"><code>You are my work assistant.
 
 About me: [your role, the kind of company, who you report to]
 
@@ -150,7 +159,7 @@ Rules:
 
       <h2>Step three: hand over the first five boring tasks</h2>
       <p>Start with tasks where a decent draft saves you real minutes and a mistake costs you nothing, because you review before anything leaves your hands.</p>
-      <ul>
+      <ul id="bsg-tasks">
         <li><strong>Email replies.</strong> Paste the thread. "Draft my reply. Two short paragraphs, my tone, and commit to nothing beyond what I already said in the thread."</li>
         <li><strong>Meeting notes.</strong> Paste your rough notes or the transcript. "Pull out every action item with an owner and a date. Then write a five-line summary for people who were not there."</li>
         <li><strong>Status reports.</strong> "Here is what I did this week, as bullets. Turn it into my weekly status format." After step two, it knows the format.</li>
@@ -158,6 +167,7 @@ Rules:
         <li><strong>First drafts of anything.</strong> "Give me a rough first draft of [the doc]. I will rewrite it. Your job is to kill the blank page."</li>
       </ul>
       <p>A week of this and the pattern shows up. You have stopped producing drafts and started reviewing them. Reviewing is faster.</p>
+      <p class="bsg-tasks-count">Tap each task above as you hand it over. <strong id="bsg-tasks-n">0 of 5</strong> handed over.</p>
 
       <h2>Step four: connect your actual tools</h2>
       <p>In Claude's settings you can connect the places your work already lives, like Gmail, Google Calendar and Google Drive. Once connected, you stop pasting things in. "Find the latest thread from [client] and draft my reply" works directly, and "what does my week look like" reads your real calendar.</p>
@@ -176,8 +186,115 @@ Rules:
       </ul>
 
       <p>Pick one task from step three and hand it over this week. That is the whole method: one boring job at a time.</p>
-      <p class="dim">From @folabankole on Instagram. If this helped, send me a DM and tell me which task you handed over first.</p>
+      <p>If this worked, the next read is how the whole fleet fits together: <a href="/blog/multi-agent-architecture.html"><strong>The architecture of a multi-agent content operation</strong></a>.</p>
+      <div class="bsg-win bsg-win-final" id="bsg-win-follow">
+        <span class="bsg-win-label">The last win: new automations land on my Instagram first.</span>
+        <a class="bsg-btn" href="https://www.instagram.com/folabankole/" target="_blank" rel="noopener" data-win="follow" aria-pressed="false">Follow @folabankole</a>
+      </div>
+      <p class="dim">If this helped, <a href="https://ig.me/m/folabankole" target="_blank" rel="noopener">send me a DM</a> and tell me which task you handed over first.</p>
 
+      <style>
+      .bsg-tally, .bsg-tasks-count { color: var(--ink-dim); }
+      .bsg-win { display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+        border: 1px solid var(--ink-rule); border-radius: 8px; padding: 14px 18px; margin: 0 0 22px; }
+      .bsg-win-label { color: var(--ink-soft); }
+      .bsg-btn { display: inline-block; font: inherit; cursor: pointer; text-decoration: none;
+        color: var(--ink); background: transparent; border: 1px solid var(--accent);
+        border-radius: 6px; padding: 8px 16px; }
+      .bsg-btn:hover { background: var(--accent); color: var(--ground-deep, #171A2F); }
+      .bsg-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .bsg-win.is-done { border-color: var(--accent); }
+      .bsg-win.is-done .bsg-btn { background: var(--accent); color: var(--ground-deep, #171A2F); cursor: default; }
+      #bsg-tasks li { cursor: pointer; }
+      #bsg-tasks li::marker { content: "\2610  "; color: var(--accent); }
+      #bsg-tasks li.is-done::marker { content: "\2611  "; }
+      #bsg-tasks li.is-done { color: var(--ink-quiet); }
+      @media (prefers-reduced-motion: no-preference) {
+        .bsg-win.is-done { transition: border-color 0.3s; }
+      }
+      </style>
+      <script>
+      (function () {
+        var KEY = 'bsguide.v1';
+        function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+        function save(st) { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+        var state = load();
+        state.wins = state.wins || {};
+        state.tasks = state.tasks || [false, false, false, false, false];
+
+        var winButtons = document.querySelectorAll('[data-win]');
+        var doneLabels = { account: 'Win 1 of 3 banked', copy: 'Copied. Win 2 of 3 banked', follow: 'Win 3 of 3 banked' };
+
+        function winCount() {
+          var n = 0;
+          ['account', 'copy', 'follow'].forEach(function (k) { if (state.wins[k]) n++; });
+          return n;
+        }
+        function paint() {
+          winButtons.forEach(function (btn) {
+            var k = btn.getAttribute('data-win');
+            if (state.wins[k]) {
+              btn.textContent = doneLabels[k];
+              btn.setAttribute('aria-pressed', 'true');
+              var box = btn.closest('.bsg-win');
+              if (box) box.classList.add('is-done');
+            }
+          });
+          var tally = document.getElementById('bsg-tally-n');
+          if (tally) tally.textContent = winCount() + ' of 3';
+          var list = document.getElementById('bsg-tasks');
+          if (list) {
+            var items = list.querySelectorAll('li');
+            var done = 0;
+            items.forEach(function (li, i) {
+              li.classList.toggle('is-done', !!state.tasks[i]);
+              li.setAttribute('aria-checked', state.tasks[i] ? 'true' : 'false');
+              if (state.tasks[i]) done++;
+            });
+            var count = document.getElementById('bsg-tasks-n');
+            if (count) count.textContent = done + ' of 5';
+          }
+        }
+        function bank(k) { if (!state.wins[k]) { state.wins[k] = true; save(state); paint(); } }
+
+        winButtons.forEach(function (btn) {
+          var k = btn.getAttribute('data-win');
+          btn.addEventListener('click', function () {
+            if (k === 'copy') {
+              var pre = document.getElementById('bsg-template');
+              var text = pre ? pre.textContent : '';
+              function done() { bank('copy'); }
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+              } else { fallback(); }
+              function fallback() {
+                var ta = document.createElement('textarea');
+                ta.value = text; document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta); done();
+              }
+            } else {
+              bank(k);
+            }
+          });
+        });
+
+        var list = document.getElementById('bsg-tasks');
+        if (list) {
+          list.setAttribute('role', 'group');
+          list.querySelectorAll('li').forEach(function (li, i) {
+            li.setAttribute('role', 'checkbox');
+            li.setAttribute('tabindex', '0');
+            function toggle() { state.tasks[i] = !state.tasks[i]; save(state); paint(); }
+            li.addEventListener('click', toggle);
+            li.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+            });
+          });
+        }
+        paint();
+      })();
+      </script>
       <h2>Questions people ask</h2>
       <h3>Is Claude free to use?</h3>
       <p>There is a free tier and it includes Projects, so everything in steps one to three works without paying. Paid plans lift the usage limits.</p>
