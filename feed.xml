@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 26 Aug 2026 19:30:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 27 Aug 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>The BS Guide</title>
+    <link>https://josephbankole.ca/blog/the-bs-guide.html</link>
+    <guid>https://josephbankole.ca/blog/the-bs-guide.html</guid>
+    <pubDate>Thu, 27 Aug 2026 13:00:00 GMT</pubDate>
+    <description>A practical guide to setting Claude up to handle the boring parts of your job: a project, a handover document, the first five tasks to delegate, connected tools, and the rules that keep you out of trouble.</description>
+  </item>
   <item>
     <title>A search summary is not a source</title>
     <link>https://josephbankole.ca/blog/a-search-summary-is-not-a-source.html</link>
@@ -27,13 +34,6 @@
     <guid>https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html</guid>
     <pubDate>Fri, 21 Aug 2026 19:00:00 GMT</pubDate>
     <description>Nine pieces of copy passed nine rotation checks on the same morning, and six of the nine ended the same way. Why item-scoped validation misses a collapsing distribution.</description>
-  </item>
-  <item>
-    <title>The BS Guide</title>
-    <link>https://josephbankole.ca/blog/the-bs-guide.html</link>
-    <guid>https://josephbankole.ca/blog/the-bs-guide.html</guid>
-    <pubDate>Fri, 21 Aug 2026 13:00:00 GMT</pubDate>
-    <description>A practical guide to setting Claude up to handle the boring parts of your job: a project, a handover document, the first five tasks to delegate, connected tools, and the rules that keep you out of trouble.</description>
   </item>
   <item>
     <title>Automated audits fail toward false positives</title>
