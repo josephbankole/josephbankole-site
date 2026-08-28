@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Thu, 27 Aug 2026 13:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 28 Aug 2026 19:30:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>git add -A in a repo two AI agents share</title>
+    <link>https://josephbankole.ca/blog/git-add-a-shared-repo.html</link>
+    <guid>https://josephbankole.ca/blog/git-add-a-shared-repo.html</guid>
+    <pubDate>Fri, 28 Aug 2026 19:30:00 GMT</pubDate>
+    <description>Four times in three weeks, git add -A swept one agent's leftover files into another agent's commit on this site. Fonts included. Stage named paths.</description>
+  </item>
   <item>
     <title>The BS Guide</title>
     <link>https://josephbankole.ca/blog/the-bs-guide.html</link>
