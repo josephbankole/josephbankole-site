@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Thu, 27 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 28 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Visa takes a second Korean stablecoin partner in three days, and Salesforce puts Claude behind the CRM</title>
+    <link>https://josephbankole.ca/news/2026-08-28-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-28-agentic-commerce.html</guid>
+    <pubDate>Fri, 28 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Dunamu, operator of the Upbit exchange, announced a strategic partnership with Visa on 28 August 2026 covering stablecoin payments, remittances and agentic commerce, two days after Shinhan. Salesforce and Anthropic announced Claudeforce on 26 August, with a 37-skill Salesforce plugin for Claude. Temporal's survey puts daily AI agent use at 80.8 per cent of engineers.</description>
+  </item>
   <item>
     <title>Britain hands the Bank of England a duty to help stablecoins along, and 3,283 American banks answer with a chain of their own</title>
     <link>https://josephbankole.ca/news/2026-08-27-agentic-commerce.html</link>
