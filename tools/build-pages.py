@@ -236,6 +236,7 @@ RECIPE_HUBS = (
     "sides-and-starters",
     "desserts",
     "kitchen-basics",
+    "credits",
     "trinidadian",
     "nigerian",
 )
