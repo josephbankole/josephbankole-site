@@ -646,3 +646,19 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 .postlist h2.listhead:first-child{margin-top:.4rem;}
 .postlist h2.listhead a{text-decoration:none;}
+
+/* Recipe hero photo and its attribution. CC BY and BY-SA require the author
+   named; the Unsplash licence requires photographer and Unsplash, both linked. */
+.prose figure.recipe-hero{margin:0 0 1.6rem;padding:0;}
+.prose figure.recipe-hero img{
+  display:block;width:100%;height:auto;
+  aspect-ratio:16/10;object-fit:cover;
+  border-radius:3px;
+}
+.prose p.credit{
+  margin:.5rem 0 0;
+  font-size:.76rem;
+  color:var(--ink-quiet);
+  letter-spacing:.01em;
+}
+.prose p.credit a{color:inherit;text-decoration:underline;text-underline-offset:2px;}
