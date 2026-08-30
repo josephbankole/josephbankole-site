@@ -826,7 +826,8 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
     if count:
         parts.append(
             '    <p class="article-meta"><span>%d %s</span></p>'
-            % (count, {"news": "editions", "blog": "posts", "answers": "definitions"}[kind])
+            % (count, {"news": "editions", "blog": "posts", "answers": "definitions",
+                       "recipes": "recipes"}[kind])
         )
     parts.append("  </header>")
     parts.append("")
