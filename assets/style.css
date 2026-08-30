@@ -585,3 +585,32 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .scrollcue i::after { animation: none; }
   .btn::after { transition: none; }
 }
+
+/* Recipe metadata strip: prep, cook and yield under the standfirst.
+   Rows that do not apply are omitted upstream, so a no-cook recipe
+   shows Prep and Makes only. */
+.prose ul.recipe-meta{
+  list-style:none;
+  display:flex;
+  flex-wrap:wrap;
+  gap:0 1.6rem;
+  margin:0 0 1.6rem;
+  padding:.7rem 0;
+  border-top:1px solid var(--ink-hair);
+  border-bottom:1px solid var(--ink-hair);
+}
+.prose ul.recipe-meta li{
+  margin:0;
+  padding:0;
+  font-size:.92rem;
+  color:var(--ink-dim);
+}
+.prose ul.recipe-meta li::before{content:none;}
+.prose ul.recipe-meta b{
+  display:block;
+  font-size:.72rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-quiet);
+  font-weight:500;
+}
