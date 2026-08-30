@@ -634,3 +634,15 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   font-size:.92rem;
   text-decoration:none;
 }
+
+/* Category headings on the recipe hubs need air above them, otherwise the
+   first row of a category sits hard against the last row of the previous one. */
+.postlist h2.listhead{
+  margin:2.8rem 0 .9rem;
+  padding-bottom:.5rem;
+  border-bottom:1px solid var(--ink-hair);
+  font-size:1.05rem;
+  letter-spacing:.02em;
+}
+.postlist h2.listhead:first-child{margin-top:.4rem;}
+.postlist h2.listhead a{text-decoration:none;}
