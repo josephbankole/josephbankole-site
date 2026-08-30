@@ -603,9 +603,12 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
     page["og_type"] = "article"
 
     # ---- schema
-    if kind == "answers":
+    if kind in ("answers", "recipes"):
         # The answers @graph (DefinedTerm + FAQPage + BreadcrumbList) is the
         # best-built schema on the site. It is lifted through untouched.
+        # Recipes joined it 2026-08-30: their @graph carries Article +
+        # BreadcrumbList + FAQPage, generated per page, and rebuilding it here
+        # would silently drop the FAQPage node.
         existing = re.search(
             r'<script type="application/ld\+json">\s*(.*?)\s*</script>', src, re.S
         )
