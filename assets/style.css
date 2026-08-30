@@ -614,3 +614,23 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   color:var(--ink-quiet);
   font-weight:500;
 }
+
+/* Related recipes: taxonomy-matched, shown as a plain list. */
+.prose ul.related-recipes{
+  list-style:none;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem .9rem;
+  margin:0;
+  padding:0;
+}
+.prose ul.related-recipes li{margin:0;padding:0;}
+.prose ul.related-recipes li::before{content:none;}
+.prose ul.related-recipes a{
+  display:inline-block;
+  padding:.42rem .8rem;
+  border:1px solid var(--ink-hair);
+  border-radius:2px;
+  font-size:.92rem;
+  text-decoration:none;
+}
