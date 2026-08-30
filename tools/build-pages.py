@@ -224,8 +224,20 @@ NAV_ITEMS = [
     ("Blog", "/blog/"),
     ("News", "/news/"),
     ("Answers", "/answers/"),
+    ("Recipes", "/recipes/"),
     ("Projects", "{root}#projects"),
 ]
+
+# Sub-hubs inside recipes/. These are hubs, not articles, so the article glob
+# below must skip them or they get rebuilt with an article shell.
+RECIPE_HUBS = (
+    "breakfast",
+    "mains",
+    "sides-and-starters",
+    "desserts",
+    "trinidadian",
+    "nigerian",
+)
 
 
 def nav_block(location: str, root: str = "/") -> str:
@@ -1060,10 +1072,33 @@ def build(check: bool) -> int:
             ),
         )
 
+    # ---- recipes
+    for path in sorted((REPO / "recipes").glob("*/index.html")):
+        if path.parent.name in RECIPE_HUBS:
+            continue
+        emit(
+            path,
+            render_article(
+                path,
+                "recipes",
+                {
+                    "crumb": ("Recipes", "/recipes/"),
+                    "related_rows": None,
+                    "related_heading": "Related recipes",
+                },
+            ),
+        )
+
     # ---- hubs
     emit(REPO / "news" / "index.html", render_hub(REPO / "news" / "index.html", "news", ("News desk", "/news/")))
     emit(REPO / "blog" / "index.html", render_hub(REPO / "blog" / "index.html", "blog", ("Field notes", "/blog/")))
     emit(REPO / "answers" / "index.html", render_hub(REPO / "answers" / "index.html", "answers", ("Answers", "/answers/")))
+    if (REPO / "recipes" / "index.html").exists():
+        emit(REPO / "recipes" / "index.html", render_hub(REPO / "recipes" / "index.html", "recipes", ("Recipes", "/recipes/")))
+    for slug in RECIPE_HUBS:
+        hub = REPO / "recipes" / slug / "index.html"
+        if hub.exists():
+            emit(hub, render_hub(hub, "recipes", ("Recipes", "/recipes/")))
 
     # ---- prose page and bespoke pages
     emit(REPO / "privacy.html", render_doc(REPO / "privacy.html", "privacy"))
