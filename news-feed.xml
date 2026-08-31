@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Sun, 30 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 31 Aug 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Cloudflare's crawler now returns a 400 when robots.txt says no, and MiniMax H3 halves on Vercel until 13 September</title>
+    <link>https://josephbankole.ca/news/2026-08-31-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-08-31-agentic-commerce.html</guid>
+    <pubDate>Mon, 31 Aug 2026 08:00:00 GMT</pubDate>
+    <description>Cloudflare's Browser Run /crawl endpoint began honouring the Content Signals use directive on 31 August 2026: a new contentUse parameter takes reference or full, defaults to full, and a target whose robots.txt declares a stricter level now returns a 400. Vercel cut MiniMax H3 and H3 Max by 50 per cent on AI Gateway on 30 August, running to 13 September, model IDs unchanged. No agentic commerce or payments item dated 29 to 31 August cleared verification.</description>
+  </item>
   <item>
     <title>The agentic commerce wire takes a quiet weekend, and the GENIUS Act calendar keeps running</title>
     <link>https://josephbankole.ca/news/2026-08-30-agentic-commerce.html</link>
