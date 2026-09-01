@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 31 Aug 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Tue, 01 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Singapore says a regulated stablecoin pays no interest, and India is a week from letting agents spend on UPI</title>
+    <link>https://josephbankole.ca/news/2026-09-01-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-01-agentic-commerce.html</guid>
+    <pubDate>Tue, 01 Sep 2026 08:00:00 GMT</pubDate>
+    <description>The Monetary Authority of Singapore opened a consultation on 1 September 2026 on amendments to the Payment Services Act 2019, proposing that regulated stablecoin issuers hold minimum capital and liquid assets, run stress tests, keep wind-down plans and pay no interest. Comments close 16 October. Reuters reports that India's NPCI will unveil a Unified Agent Protocol for AI-led UPI payments at the Global Fintech Fest in Mumbai next week.</description>
+  </item>
   <item>
     <title>Cloudflare's crawler now returns a 400 when robots.txt says no, and MiniMax H3 halves on Vercel until 13 September</title>
     <link>https://josephbankole.ca/news/2026-08-31-agentic-commerce.html</link>
