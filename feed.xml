@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 31 Aug 2026 19:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 02 Sep 2026 19:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>The check I asked for would have passed the work I rejected</title>
+    <link>https://josephbankole.ca/blog/reading-level-was-the-wrong-check.html</link>
+    <guid>https://josephbankole.ca/blog/reading-level-was-the-wrong-check.html</guid>
+    <pubDate>Wed, 02 Sep 2026 19:00:00 GMT</pubDate>
+    <description>I rejected a slide deck for being too wordy and asked for a reading-level ceiling. The rejected deck and the rebuild I shipped score the same grade.</description>
+  </item>
   <item>
     <title>A disabled task and a dead one look the same</title>
     <link>https://josephbankole.ca/blog/disabled-and-broken-look-the-same.html</link>
