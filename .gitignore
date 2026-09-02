@@ -3,3 +3,9 @@
 personal-brand
 news/.sf/
 __pycache__/
+.env
+.env.*
+*.p8
+*.pem
+secrets/
+.sf/
