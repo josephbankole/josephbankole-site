@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How do merchants detect AI agents? Web Bot Auth and Visa TAP · Joseph Bankole</title>
+<meta name="description" content="A merchant detects an AI agent three ways: a signed request it can verify, an integration it already agreed to, or a guess. Only 23 per cent manage any of them." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="How do merchants detect AI agents?" />
+<meta property="og:description" content="Three mechanisms: a cryptographically signed request, a pre-agreed integration, or inference from behaviour. Only one of them works on an agent you have never met." />
+<meta property="og:url" content="https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-03T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-03T15:45:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How do merchants detect AI agents?" />
+<meta name="twitter:description" content="Three mechanisms: a cryptographically signed request, a pre-agreed integration, or inference from behaviour. Only one of them works on an agent you have never met." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-03T15:45:00-04:00",
+      "dateModified": "2026-09-03T15:45:00-04:00",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do merchants detect AI agents?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests and the merchant verifies the signature against a key the agent publishes, which is what Web Bot Auth and Visa's Trusted Agent Protocol implement. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Most merchants run none of the three: 23 per cent can identify both AI-driven traffic and AI-driven purchases.",
+            "author": { "@id": "https://josephbankole.ca/#person" }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does a signed agent request look like?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An agent that wants to be recognised sends three headers. Signature-Input carries the metadata: a keyid naming the public key, created and expires timestamps, a nonce against replay, a tag describing the request, and the algorithm, in practice Ed25519. Signature carries the signature itself. Signature-Agent points at the directory holding the key, which the origin fetches from /.well-known/http-message-signatures-directory before verifying. Web Bot Auth sits in three Internet-Drafts at the IETF and builds on RFC 9421, HTTP Message Signatures.",
+            "author": { "@id": "https://josephbankole.ca/#person" }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does Visa's Trusted Agent Protocol add?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A directory and a purpose. Visa published the Trusted Agent Protocol on 14 October 2025, built on HTTP Message Signatures and aligned with Web Bot Auth. Under plain Web Bot Auth an agent points at its own key directory, so trust reduces to trusting that directory. Under the Trusted Agent Protocol the agent registers with a payment network, and Visa and Mastercard each host the directory for their own registered agents. The tag in the signature also tells the merchant whether the agent has come to browse or to pay.",
+            "author": { "@id": "https://josephbankole.ca/#person" }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many merchants can identify agent traffic today?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Twenty-three per cent can identify both AI-driven traffic and AI-driven purchases. Another 21 per cent see the traffic and cannot connect it to a completed purchase. The figures come from the Global Digital Shopping Index: Merchant Edition, PYMNTS Intelligence's survey of 1,185 retail merchants in the United States, Brazil and the United Arab Emirates, fielded in March 2026 and commissioned by Visa Acceptance Solutions.",
+            "author": { "@id": "https://josephbankole.ca/#person" }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://josephbankole.ca/" },
+        { "@type": "ListItem", "position": 2, "name": "Answers", "item": "https://josephbankole.ca/answers/" },
+        { "@type": "ListItem", "position": 3, "name": "How do merchants detect AI agents?", "item": "https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/recipes/">Recipes</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="answers-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
+    <span class="index">Answers</span>
+    <h1>How do merchants detect AI agents?</h1>
+    <p class="standfirst">Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests, and the merchant verifies the signature against a key the agent publishes. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Signing is the open-web answer, and it is what Web Bot Auth and Visa's Trusted Agent Protocol implement. Most merchants run none of the three: 23 per cent can identify both AI-driven traffic and AI-driven purchases today.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-03">Updated 3 September 2026</time><span>5 min read</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <h2>What does a signed agent request look like?</h2>
+      <p>An agent that wants to be recognised sends three headers. <code>Signature-Input</code> carries the metadata: a <code>keyid</code> naming the public key, a <code>created</code> and an <code>expires</code> timestamp, a <code>nonce</code> so the request cannot be replayed, a <code>tag</code> describing what kind of request this is, and the algorithm, which in practice is Ed25519. <code>Signature</code> carries the signature itself. <code>Signature-Agent</code> points at the directory where the key lives, and the origin fetches that directory from <code>/.well-known/http-message-signatures-directory</code>, takes the public key and checks the signature against the request it has just received (<a class="inline-link" href="https://developers.cloudflare.com/bots/concepts/bot/verified-bots/web-bot-auth/" target="_blank" rel="noopener">Cloudflare</a>, <a class="inline-link" href="https://datatracker.ietf.org/doc/draft-meunier-webbotauth-httpsig-protocol/" target="_blank" rel="noopener">IETF</a>).</p>
+      <p>None of that is one vendor's invention. Web Bot Auth sits in three Internet-Drafts at the IETF: an architecture draft, a protocol draft that defines the <code>Signature-Agent</code> header and the JWKS-shaped key directory, and a registry draft for the signature agent card. Underneath them is RFC 9421, HTTP Message Signatures, which is a published standard rather than a proposal.</p>
+      <p>What a merchant learns from a valid signature is narrow, and worth stating precisely. It says the request came from the holder of a key that a named directory vouches for. It does not say the agent is honest, and it does not say the person behind it approved this particular purchase. It rules out the impersonator, and nothing further.</p>
+
+      <h2>What does Visa's Trusted Agent Protocol add?</h2>
+      <p>Visa published the Trusted Agent Protocol on 14 October 2025, built on the HTTP Message Signature standard and aligned with Web Bot Auth, naming twelve early partners across acquiring and platforms: Adyen, Ant International, Checkout.com, Coinbase, CyberSource, Elavon, Fiserv, Microsoft, Nuvei, Shopify, Stripe and Worldpay (<a class="inline-link" href="https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.21716.html" target="_blank" rel="noopener">Visa</a>, <a class="inline-link" href="https://blog.cloudflare.com/secure-agentic-commerce/" target="_blank" rel="noopener">Cloudflare</a>).</p>
+      <p>Two additions do the work. The first is the directory. Under plain Web Bot Auth the agent points at its own key directory, so trust reduces to whether you trust that directory. Under the Trusted Agent Protocol the agent registers with a payment network, and Visa and Mastercard each host the directory for the agents registered with them, which moves the thing being trusted from the agent to the network. That is the card model applied to a header.</p>
+      <p>The second is the <code>tag</code>. The same field Web Bot Auth uses to say this is automated traffic now also says whether the agent has come to browse or to pay, so a merchant can treat a crawl and a checkout differently at the edge instead of at the payment page. Visa also describes linking a registered agent to a consumer identity, which is the step that turns detection into authorisation.</p>
+
+      <h2>Why is a closed integration not the general answer?</h2>
+      <p>Because it only identifies the agents you have already signed something with. The Agentic Checkout specification says a merchant's endpoints receive an <code>Authorization</code> header carrying an API key, a <code>User-Agent</code> naming the client (its own example value is <code>ChatGPT/2.0</code>), a <code>Signature</code> header holding a base64 signature of the request body and a <code>Timestamp</code> for replay protection, with webhooks returning an HMAC signature computed from a key the platform issued (<a class="inline-link" href="https://developers.openai.com/commerce/specs/checkout/" target="_blank" rel="noopener">Agentic Commerce Protocol, agentic checkout specification</a>).</p>
+      <p>That is a sound design for what it is. The merchant knows exactly who is calling, because the merchant provisioned the key. But the identification comes out of the commercial relationship rather than out of the request itself, so it says nothing about the next agent, from a different vendor, arriving tomorrow. A merchant with three such integrations can identify three agents and is blind to the rest of the web.</p>
+      <p>Signing runs the other way round. The merchant needs no prior relationship with the agent, only with the directory that vouches for it.</p>
+
+      <h2>What if the agent does not announce itself?</h2>
+      <p>Then the merchant is inferring, and the inference is weak. An agent driving a real browser inside a session where a real customer is logged in looks like that customer, because in every respect the server can see, it is that customer. User-agent strings are self-reported and cost nothing to change. Behavioural heuristics catch the crude cases and miss anything built by somebody who read the heuristics first.</p>
+      <p>Volume is what makes that gap expensive. Adobe Analytics put AI-referred traffic to United States retail sites up 138 per cent year on year in May 2026, measured across more than a trillion visits, and found it converting at a rate 54 per cent better than traffic from non-AI sources (<a class="inline-link" href="https://www.digitalcommerce360.com/2026/06/17/adobe-ai-referred-traffic-to-retail-sites-doubles-in-a-year/" target="_blank" rel="noopener">Digital Commerce 360</a>, <a class="inline-link" href="https://www.marketingtechnews.net/news/ai-referrals-ecommerce-traffic-conversions/" target="_blank" rel="noopener">MarketingTech News</a>). Traffic a merchant cannot label is traffic it cannot attribute, which means the best-converting channel on the site is the one nobody can defend a budget for.</p>
+
+      <h2>How many merchants can identify agent traffic today?</h2>
+      <p>Twenty-three per cent can identify both AI-driven traffic and AI-driven purchases. A further 21 per cent can see the traffic and cannot connect it to a completed purchase, which is the more dangerous half of the two, because it produces a number that looks like measurement. The figures come from the Global Digital Shopping Index: Merchant Edition, PYMNTS Intelligence's survey of 1,185 retail merchants in the United States, Brazil and the United Arab Emirates, fielded in March 2026 and commissioned by Visa Acceptance Solutions (<a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/how-23-percent-of-merchants-captuared-retails-next-agentic-commerce-advantage/" target="_blank" rel="noopener">PYMNTS</a>, <a class="inline-link" href="https://www.visaacceptance.com/en-us/insights/global-digital-shopping-index-form.html" target="_blank" rel="noopener">Visa Acceptance Solutions</a>).</p>
+      <p>So the specifications are a long way ahead of the deployments. The signing standard is drafted, the network directories exist, the acquirers are named in a press release, and roughly three quarters of surveyed merchants still cannot say whether a sale came from a person or a program.</p>
+
+      <h2>What should a merchant do first?</h2>
+      <p>Log the headers before building anything on them. <code>Signature-Input</code>, <code>Signature</code>, <code>Signature-Agent</code> and <code>User-Agent</code> cost nothing to record, and they answer the question that decides everything after it: how much signed agent traffic is arriving at your origin today. Every conversation I have sat in on this has run on assumption rather than on a count. People argue about whether the traffic has arrived yet, and in the rooms I have been in, nobody had opened a log before arguing.</p>
+      <p>Verification comes after that. If the answer is a handful of requests a day, there is time to implement the directory fetch properly and to decide what an unverified agent is allowed to do (<a class="inline-link" href="/answers/ai-agent-purchase-liability/">who is liable when an agent buys the wrong thing</a>). If it is already a meaningful share of checkout, that decision is overdue, and it sits with whoever owns risk rather than with the team wiring up the header.</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Related</h2>
+    <div class="postlist">
+        <a class="post-row" href="/answers/acp-vs-ap2/">
+          <span class="date">Answers</span>
+          <span class="ttl">What is the difference between ACP and AP2?<span>Two agent payment protocols, one built around a checkout session and one around a signed mandate.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/answers/ai-agent-purchase-liability/">
+          <span class="date">Answers</span>
+          <span class="ttl">Who is liable when an AI agent buys the wrong thing?<span>Nobody has assigned it yet. The protocols produce evidence; the rules that allocate loss were written about strangers.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="answers-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="answers-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Fintech operations &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="answers-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
