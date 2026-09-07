@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 04 Sep 2026 19:45:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 07 Sep 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>797 tests passed on a gate that had never read the policy</title>
+    <link>https://josephbankole.ca/blog/a-green-suite-that-guarded-nothing.html</link>
+    <guid>https://josephbankole.ca/blog/a-green-suite-that-guarded-nothing.html</guid>
+    <pubDate>Mon, 07 Sep 2026 13:00:00 GMT</pubDate>
+    <description>Phase one of my pipeline rebuild shipped 275 files and 797 passing tests. Two review agents then found seven defects, all in code whose job was to refuse.</description>
+  </item>
   <item>
     <title>The check passed, then the post published itself</title>
     <link>https://josephbankole.ca/blog/a-read-back-that-proved-nothing.html</link>
