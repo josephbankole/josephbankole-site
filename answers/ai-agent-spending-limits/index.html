@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How do you set spending limits for an AI agent? &middot; Joseph Bankole</title>
+<meta name="description" content="A spending limit is only real where something other than the agent enforces it. Five layers can hold one, from the prompt down to the payment rail." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/answers/ai-agent-spending-limits/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="How do you set spending limits for an AI agent?" />
+<meta property="og:description" content="Five layers can hold an agent's spending limit: the prompt, the agent's code, a signed mandate, the payment credential and the rail. Only the lower ones enforce." />
+<meta property="og:url" content="https://josephbankole.ca/answers/ai-agent-spending-limits/" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-08T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-08T17:30:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How do you set spending limits for an AI agent?" />
+<meta name="twitter:description" content="Five layers can hold an agent's spending limit: the prompt, the agent's code, a signed mandate, the payment credential and the rail. Only the lower ones enforce." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-08T17:30:00-04:00",
+      "dateModified": "2026-09-08T17:30:00-04:00",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do you set spending limits for an AI agent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Five layers can hold one, and they are not equal. A number in the prompt is a suggestion, because nothing other than the model checks it. A check inside the agent's own code is real enforcement that holds until the first route to the payment API that skips it. A signed mandate, which is what AP2 calls an Intent Mandate, is verified by the merchant and the payment network rather than by the agent. A network token puts the cap in the credential itself, so the card network declines anything outside it. Underneath all of that the payment rail sets its own ceiling: UPI Circle caps a delegated spender at 5,000 rupees per transaction and 15,000 rupees a month.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is a limit written into the prompt not a real limit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because you have asked the thing being constrained to apply the constraint, and nothing else checks the instruction was honoured. The commoner failure is duller than a jailbreak: a limit that was never wired to anything and passes review because the review reads the same file the limit was declared in. The mechanical test is to name the component that returns an error when the limit is breached and then trigger that error deliberately. If you cannot make it fire, you have not established that it exists.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does an AP2 Intent Mandate constrain?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google published the Agent Payments Protocol on 16 September 2025 with more than sixty payments and technology partners. For a delegated task the user signs an Intent Mandate up front, which Google says specifies price limits, timing and other conditions, its worked example being a trip booking with a total budget of 700 dollars. A Cart Mandate later pins the specific items at the specific price. What this adds over in-agent code is a check performed by the merchant and the network rather than by the agent. Its scope is one delegated task, not a budget across every agent you run.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can a card credential hold an AI agent's spending limit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, and this is the layer that does not depend on protocol adoption. Visa's Intelligent Commerce describes agentic commerce enabled through spending limits, approval workflows, authentication requirements and trusted identity signals, with the agent handed a tokenised credential rather than a card number. Mastercard announced Agent Pay on 29 April 2025 with Microsoft, IBM, Braintree and Checkout.com, and says consumers will have complete control over what the agent is allowed to purchase on their behalf. The operational gain is revocation: a token belongs to one agent, so you can stop that agent spending without reissuing the card.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What spending caps do payment rails apply to delegated users?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The rail sets a ceiling below whatever you negotiated above it. India's UPI Circle is the clearest live example: a primary user delegates payment authority to a secondary user, and under NPCI's rules that secondary user is capped at 5,000 rupees per transaction and 15,000 rupees a month, whether the delegation is full or partial. India has been reported as preparing a Unified Agent Protocol extending delegated UPI payments to AI agents, but NPCI has not confirmed the framework or published limits for it.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How do you set spending limits for an AI agent?",
+          "item": "https://josephbankole.ca/answers/ai-agent-spending-limits/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/recipes/">Recipes</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="answers-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
+    <span class="index">Answers</span>
+    <h1>How do you set spending limits for an AI agent?</h1>
+    <p class="standfirst">A spending limit is only real where something other than the agent enforces it. Five layers can hold one, and they are not equal. A number in the prompt is a suggestion. A check inside the agent's own code holds until the first code path that skips it. A signed mandate, which is what AP2 calls an Intent Mandate, binds the agent to a price ceiling and an expiry that the merchant and the network can verify for themselves. A network token puts the cap in the credential, so the card network declines anything outside it. Underneath all of that, the payment rail has its own ceiling: UPI Circle caps a delegate at 5,000 rupees a payment whatever you agreed above it.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-08">Updated 8 September 2026</time><span>5 min read</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <h2>Where can a spending limit actually live?</h2>
+      <p>Five layers, weakest first.</p>
+      <p><strong>The prompt.</strong> You write "never spend more than 200 dollars" into the system message. Nothing checks it. The model treats the instruction as context, and over a long enough run, as context it can be argued out of.</p>
+      <p><strong>The agent's own code.</strong> A function totals the basket before it calls the payment API. This is real enforcement, and it holds for exactly as long as every route to that API runs through that function.</p>
+      <p><strong>The mandate.</strong> The user signs a statement of what the agent may do, and the payment side compares the purchase against it before authorising. The agent has stopped being the party that decides.</p>
+      <p><strong>The credential.</strong> The card the agent holds is not the user's card. It is a token minted with a spend ceiling, a merchant scope and an expiry attached, and the network declines anything outside them.</p>
+      <p><strong>The rail.</strong> The payment system caps the delegated spender itself, regardless of what the four layers above it agreed.</p>
+      <p>The useful property of the lower layers is that the party enforcing the limit is not the party being limited.</p>
+
+      <h2>Why is a limit in the prompt not a limit?</h2>
+      <p>Because you have asked the thing being constrained to apply the constraint. There is no step at which anything else checks the instruction was honoured, and the system you asked is one that produces plausible continuations.</p>
+      <p>The version of this I have actually watched fail is duller than a jailbreak. On my own pipeline earlier this month I reviewed a safety configuration naming forty-five checks. Seventeen resolved to nothing: the names sat in the config file, the functions were not in the codebase, and the suite reported green, because a check that is missing is not a check that fails. One banned-word list shipped without the two most obvious words in its own category. The test fixture had them, the shipped file did not, and every test still passed.</p>
+      <p>No component in that run was lying to me. Each one reported accurately on what it could see, and the limit had simply never been wired to anything, which is what makes this class of failure survive review. The review reads the same file the limit was declared in.</p>
+      <p>So the check worth running is mechanical. Name the component that returns an error when the limit is breached, then trigger that error deliberately. If you cannot make it fire, you have not established that it exists.</p>
+
+      <h2>What does a signed mandate constrain?</h2>
+      <p>Google published the Agent Payments Protocol on 16 September 2025 with more than sixty payments and technology partners behind it (<a class="inline-link" href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" target="_blank" rel="noopener">Google Cloud</a>, <a class="inline-link" href="https://www.cmswire.com/digital-experience/google-pushes-standards-for-agentic-ai-commerce-with-ap2/" target="_blank" rel="noopener">CMSWire</a>). Its answer to the authority problem is the mandate, a cryptographically signed record of what the user agreed to, which travels with the transaction.</p>
+      <p>For a delegated task the user signs an Intent Mandate up front. Google's own description says it specifies "price limits, timing, and other conditions", and its worked example is a trip booking with a total budget of 700 dollars. When the agent later assembles a basket, a Cart Mandate pins those items at that price, so the merchant sees a signed approval of an exact amount rather than an agent's account of its own authority.</p>
+      <p>What a mandate adds over in-agent code is a check performed by somebody else. The merchant and the payment network can each verify the signature and test the cart against the constraints without taking the agent's word for anything. The limit becomes evidence.</p>
+      <p>Its scope is narrow. A mandate covers one delegated task, which is not the same thing as a monthly budget across every agent you run (<a class="inline-link" href="/answers/what-is-agentic-commerce/">how AP2 differs from ACP</a>).</p>
+
+      <h2>What can the payment credential enforce?</h2>
+      <p>At this layer the limit stops depending on protocol adoption. It depends on the card network, which declines transactions for a living.</p>
+      <p>Visa's Intelligent Commerce puts the controls in the credential. Visa describes agentic commerce enabled through "spending limits, approval workflows, authentication requirements and trusted identity signals", with the agent handed a tokenised credential rather than a card number, and the platform confirming the agent is inside the consumer's instructions before that credential reaches the merchant (<a class="inline-link" href="https://www.visa.com/en-us/solutions/intelligent-commerce" target="_blank" rel="noopener">Visa</a>, <a class="inline-link" href="https://venturebeat.com/ai/visa-launches-intelligent-commerce-platform-letting-ai-agents-swipe-your-card-safely-it-says" target="_blank" rel="noopener">VentureBeat</a>).</p>
+      <p>Mastercard announced Agent Pay on 29 April 2025, naming Microsoft, IBM, Braintree and Checkout.com. Its Agentic Tokens build on the tokenisation already running contactless and card-on-file payments, and Mastercard's own claim for them is that consumers "will have complete control over what the agent is allowed to purchase on their behalf", alongside agent registration and verification (<a class="inline-link" href="https://newsroom.mastercard.com/news/press/2025/april/mastercard-unveils-agent-pay-pioneering-agentic-payments-technology-to-power-commerce-in-the-age-of-ai" target="_blank" rel="noopener">Mastercard</a>, <a class="inline-link" href="https://www.pymnts.com/mastercard/2025/mastercard-debuts-agent-pay-to-promote-agentic-commerce-future/" target="_blank" rel="noopener">PYMNTS</a>). The press release does not publish the control set, so what a cap can express in practice is a question for whoever issues you a token.</p>
+      <p>The operational gain here is revocation. When a token belongs to one agent, you can stop that agent spending without reissuing the card or disturbing any other integration. A limit you can withdraw in one place at three in the morning beats a stricter limit spread across four systems.</p>
+
+      <h2>What do the rails cap underneath all of this?</h2>
+      <p>There is usually a ceiling below whatever you negotiated, set by the payment system, and it does not ask your permission.</p>
+      <p>India's UPI Circle is the clearest live example of delegated spending with hard caps. A primary user delegates payment authority to a secondary user, and under NPCI's rules that secondary user is capped at 5,000 rupees per transaction and 15,000 rupees a month, whether the delegation is full or partial (<a class="inline-link" href="https://razorpay.com/blog/what-is-upi-circle/" target="_blank" rel="noopener">Razorpay</a>, <a class="inline-link" href="https://www.ujjivansfb.bank.in/banking-blogs/banking-services/upi-circle-delegated-payments-how-it-works-limits" target="_blank" rel="noopener">Ujjivan Small Finance Bank</a>).</p>
+      <p>Those numbers were written for a family member without a bank account rather than for software. India has been reported as preparing a Unified Agent Protocol to extend delegated UPI payments to AI agents under rules the user sets, possibly presented at the Global Fintech Fest running in Mumbai from 8 to 11 September 2026 (<a class="inline-link" href="https://www.freepressjournal.in/tech/india-may-soon-let-ai-agents-make-upi-payments-without-manual-approval-each-time" target="_blank" rel="noopener">Free Press Journal</a>, <a class="inline-link" href="https://www.ibtimes.sg/india-upi-ai-payments-how-npcis-unified-agent-protocol-could-let-ai-agents-pay-you-93261" target="_blank" rel="noopener">IBTimes</a>; dates per <a class="inline-link" href="https://www.globalfintechfest.com/" target="_blank" rel="noopener">Global Fintech Fest</a> and the <a class="inline-link" href="https://www.hcimale.gov.in/page/global-fintech-fest-2026-invitation-to-the-global-fintech-ecosystem-9-11-september-2026/" target="_blank" rel="noopener">High Commission of India</a>). NPCI has published no limits for it and has not confirmed the framework, so the shape is reported rather than settled.</p>
+      <p>The general point holds whatever India announces. Find out what the rail already refuses before you design a budget on top of it, because a 200,000 rupee mandate on a rail that stops at 5,000 rupees a payment is not a 200,000 rupee mandate.</p>
+
+      <h2>What should you do first?</h2>
+      <p>Write down where each limit lives, one line each, before writing any code.</p>
+      <p>Most agent budgets I have seen described exist in two places at once and are enforced in neither: a number in a prompt, a number in a config file, and nothing that returns an error when either is breached. Naming the enforcing component for each limit takes an afternoon, and it usually deletes half of them, because half turn out to be the same number written twice.</p>
+      <p>Then push each limit as far down the stack as it will go. If the credential can hold it, the credential should hold it, because that layer keeps working when the agent is wrong, compromised, or running code you never reviewed. Everything above the credential is a control you are asking the agent to apply to itself (<a class="inline-link" href="/answers/ai-agent-purchase-liability/">and who carries the loss when it gets it wrong</a>).</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Related</h2>
+    <div class="postlist">
+        <a class="post-row" href="/answers/what-is-agentic-commerce/">
+          <span class="date">Answers</span>
+          <span class="ttl">What is agentic commerce?<span>Software that shops and pays on your behalf, and the identity layer it is still missing.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/answers/ai-agent-purchase-liability/">
+          <span class="date">Answers</span>
+          <span class="ttl">Who is liable when an AI agent buys the wrong thing?<span>Nobody has assigned it yet. The protocols produce evidence; the rules that allocate loss were written about strangers.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="answers-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="answers-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Fintech operations &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="answers-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
