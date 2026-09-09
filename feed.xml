@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 07 Sep 2026 13:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 09 Sep 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>The quota got stricter when six clean clips expired</title>
+    <link>https://josephbankole.ca/blog/rolling-window-quota-expiry.html</link>
+    <guid>https://josephbankole.ca/blog/rolling-window-quota-expiry.html</guid>
+    <pubDate>Wed, 09 Sep 2026 13:00:00 GMT</pubDate>
+    <description>A 45 per cent player cap blocked my goal-reel build at 55.4. Modelling the window forward showed expiry tightening it, and a floor that turns it off.</description>
+  </item>
   <item>
     <title>797 tests passed on a gate that had never read the policy</title>
     <link>https://josephbankole.ca/blog/a-green-suite-that-guarded-nothing.html</link>
