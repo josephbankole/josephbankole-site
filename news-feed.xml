@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 09 Sep 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 10 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Visa, Mastercard and Ant International want one way to check whose AI agent is paying, and India is building a register of them</title>
+    <link>https://josephbankole.ca/news/2026-09-10-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-10-agentic-commerce.html</guid>
+    <pubDate>Thu, 10 Sep 2026 08:00:00 GMT</pubDate>
+    <description>Visa, Mastercard and Ant International said on 9 September 2026 they will work towards common Know-Your-Agent principles for AI agents that pay, building on Visa's Trusted Agent Protocol, Mastercard Verifiable Intent and Ant International's Agentic Mobile Protocol. Reuters reported on 10 September that India's NPCI plans a registry to verify AI agents paying on UPI. Meta's Muse checks out on Stripe's Link with a single-use card, and Visa's own research puts consumer trust in AI payments at 23 per cent.</description>
+  </item>
   <item>
     <title>India's NPCI is putting an AI agent in the slot UPI built for trusted humans, and Mastercard shipped the merchant end the same day</title>
     <link>https://josephbankole.ca/news/2026-09-09-agentic-commerce.html</link>
