@@ -17,7 +17,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-09-08T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-09-08T17:30:00-04:00" />
+<meta property="article:modified_time" content="2026-09-12T15:13:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="How do you set spending limits for an AI agent?" />
@@ -40,7 +40,7 @@
     {
       "@type": "FAQPage",
       "datePublished": "2026-09-08T17:30:00-04:00",
-      "dateModified": "2026-09-08T17:30:00-04:00",
+      "dateModified": "2026-09-12T15:13:00-04:00",
       "mainEntity": [
         {
           "@type": "Question",
@@ -91,7 +91,7 @@
           "name": "What spending caps do payment rails apply to delegated users?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The rail sets a ceiling below whatever you negotiated above it. India's UPI Circle is the clearest live example: a primary user delegates payment authority to a secondary user, and under NPCI's rules that secondary user is capped at 5,000 rupees per transaction and 15,000 rupees a month, whether the delegation is full or partial. India has been reported as preparing a Unified Agent Protocol extending delegated UPI payments to AI agents, but NPCI has not confirmed the framework or published limits for it.",
+            "text": "The rail sets a ceiling below whatever you negotiated above it. India's UPI Circle is the clearest live example: a primary user delegates payment authority to a secondary user, and under NPCI's rules that secondary user is capped at 5,000 rupees per transaction and 15,000 rupees a month, whether the delegation is full or partial. India has been reported as preparing a Unified Agent Protocol extending delegated UPI payments to AI agents. NPCI has published no limits or specification for it, though its non-executive chairman said on 10 September 2026 that NPCI is examining protocols to identify and authorise digital agents within UPI.",
             "author": {
               "@id": "https://josephbankole.ca/#person"
             }
@@ -143,7 +143,7 @@
     <span class="index">Answers</span>
     <h1>How do you set spending limits for an AI agent?</h1>
     <p class="standfirst">A spending limit is only real where something other than the agent enforces it. Five layers can hold one, and they are not equal. A number in the prompt is a suggestion. A check inside the agent's own code holds until the first code path that skips it. A signed mandate, which is what AP2 calls an Intent Mandate, binds the agent to a price ceiling and an expiry that the merchant and the network can verify for themselves. A network token puts the cap in the credential, so the card network declines anything outside it. Underneath all of that, the payment rail has its own ceiling: UPI Circle caps a delegate at 5,000 rupees a payment whatever you agreed above it.</p>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-08">Updated 8 September 2026</time><span>5 min read</span></p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-12">Updated 12 September 2026</time><span>5 min read</span></p>
   </header>
 
   <div class="article-body wrap">
@@ -178,7 +178,7 @@
       <h2>What do the rails cap underneath all of this?</h2>
       <p>There is usually a ceiling below whatever you negotiated, set by the payment system, and it does not ask your permission.</p>
       <p>India's UPI Circle is the clearest live example of delegated spending with hard caps. A primary user delegates payment authority to a secondary user, and under NPCI's rules that secondary user is capped at 5,000 rupees per transaction and 15,000 rupees a month, whether the delegation is full or partial (<a class="inline-link" href="https://razorpay.com/blog/what-is-upi-circle/" target="_blank" rel="noopener">Razorpay</a>, <a class="inline-link" href="https://www.ujjivansfb.bank.in/banking-blogs/banking-services/upi-circle-delegated-payments-how-it-works-limits" target="_blank" rel="noopener">Ujjivan Small Finance Bank</a>).</p>
-      <p>Those numbers were written for a family member without a bank account rather than for software. India has been reported as preparing a Unified Agent Protocol to extend delegated UPI payments to AI agents under rules the user sets, possibly presented at the Global Fintech Fest running in Mumbai from 8 to 11 September 2026 (<a class="inline-link" href="https://www.freepressjournal.in/tech/india-may-soon-let-ai-agents-make-upi-payments-without-manual-approval-each-time" target="_blank" rel="noopener">Free Press Journal</a>, <a class="inline-link" href="https://www.ibtimes.sg/india-upi-ai-payments-how-npcis-unified-agent-protocol-could-let-ai-agents-pay-you-93261" target="_blank" rel="noopener">IBTimes</a>; dates per <a class="inline-link" href="https://www.globalfintechfest.com/" target="_blank" rel="noopener">Global Fintech Fest</a> and <a class="inline-link" href="https://vajiramandravi.com/current-affairs/global-fintech-fest-2026/" target="_blank" rel="noopener">Vajiram &amp; Ravi</a>). NPCI has published no limits for it and has not confirmed the framework, so the shape is reported rather than settled.</p>
+      <p>Those numbers were written for a family member without a bank account rather than for software. India has been reported as preparing a Unified Agent Protocol to extend delegated UPI payments to AI agents under rules the user sets (<a class="inline-link" href="https://www.freepressjournal.in/tech/india-may-soon-let-ai-agents-make-upi-payments-without-manual-approval-each-time" target="_blank" rel="noopener">Free Press Journal</a>, <a class="inline-link" href="https://www.ibtimes.sg/india-upi-ai-payments-how-npcis-unified-agent-protocol-could-let-ai-agents-pay-you-93261" target="_blank" rel="noopener">IBTimes</a>). At the <a class="inline-link" href="https://www.globalfintechfest.com/" target="_blank" rel="noopener">Global Fintech Fest</a> in Mumbai on 10 September 2026, NPCI's non-executive chairman, Ajay Kumar Choudhary, said NPCI is examining protocols to identify and authorise digital agents within UPI (<a class="inline-link" href="https://www.medianama.com/2026/09/223-npci-ai-agents-upi-payments/" target="_blank" rel="noopener">MediaNama</a>, <a class="inline-link" href="https://businessnewsweek.in/business/trust-beyond-payments-intelligence-programmability-ajay-kumar-choudhary-npci/" target="_blank" rel="noopener">Business News Week</a>). NPCI has published no limits or specification for it, so the shape is reported rather than settled. How a network identifies the agent in the first place is covered on the <a class="inline-link" href="/answers/what-is-know-your-agent/">Know Your Agent</a> page.</p>
       <p>The general point holds whatever India announces. Find out what the rail already refuses before you design a budget on top of it, because a 200,000 rupee mandate on a rail that stops at 5,000 rupees a payment is not a 200,000 rupee mandate.</p>
 
       <h2>What should you do first?</h2>
