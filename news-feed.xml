@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Sun, 13 Sep 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 14 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Worldline will take an AI agent's order through one set-up, and Paysera lets an agent draft the payment but not send it</title>
+    <link>https://josephbankole.ca/news/2026-09-14-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-14-agentic-commerce.html</guid>
+    <pubDate>Mon, 14 Sep 2026 08:00:00 GMT</pubDate>
+    <description>Worldline launched a Universal Commerce Protocol payment handler on 14 September 2026, so Global Collect merchants can accept AI-initiated purchases across UCP platforms with one configuration. Paysera now lets clients hand an AI assistant a personal access token that prepares transfers, while every payment still needs the client's two-factor confirmation.</description>
+  </item>
   <item>
     <title>Ant's agent payment protocol is live in ten wallets through seven acquirers, and Nu is paying 3.50% on USDC before the Senate's yield vote</title>
     <link>https://josephbankole.ca/news/2026-09-13-agentic-commerce.html</link>
