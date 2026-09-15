@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 14 Sep 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Tue, 15 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>The CLARITY Act failed in the Senate on 15 September, and Coinbase is already wiring small banks for stablecoins</title>
+    <link>https://josephbankole.ca/news/2026-09-15-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-15-agentic-commerce.html</guid>
+    <pubDate>Tue, 15 Sep 2026 08:00:00 GMT</pubDate>
+    <description>The Digital Asset Market Clarity Act failed its Senate cloture vote on 15 September 2026, short of the 60 votes it needed, and took with it a Treasury circuit breaker on stablecoin rewards that eight banking groups said was no safeguard at all. Five days earlier Coinbase and Moov agreed to put stablecoin payments into more than 1,000 US community banks and credit unions.</description>
+  </item>
   <item>
     <title>Worldline will take an AI agent's order through one set-up, and Paysera lets an agent draft the payment but not send it</title>
     <link>https://josephbankole.ca/news/2026-09-14-agentic-commerce.html</link>
