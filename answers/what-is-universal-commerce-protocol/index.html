@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What is the Universal Commerce Protocol (UCP)? &middot; Joseph Bankole</title>
+<meta name="description" content="The Universal Commerce Protocol (UCP) is Google&#x27;s open standard for AI agents that shop. One file tells the agent what a store supports and how it is paid." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/answers/what-is-universal-commerce-protocol/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="What is the Universal Commerce Protocol (UCP)?" />
+<meta property="og:description" content="The Universal Commerce Protocol (UCP) is Google&#x27;s open standard for AI agents that shop. One file tells the agent what a store supports and how it is paid." />
+<meta property="og:url" content="https://josephbankole.ca/answers/what-is-universal-commerce-protocol/" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-15T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-15T17:50:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="What is the Universal Commerce Protocol (UCP)?" />
+<meta name="twitter:description" content="The Universal Commerce Protocol (UCP) is Google&#x27;s open standard for AI agents that shop. One file tells the agent what a store supports and how it is paid." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-15T17:50:00-04:00",
+      "dateModified": "2026-09-15T17:50:00-04:00",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the Universal Commerce Protocol (UCP)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Universal Commerce Protocol, or UCP, is an open standard that lets an AI agent buy from a store it has no custom integration with. The agent can look up products, fill a cart, run the checkout and follow the order, and the payment goes through a processor the store already accepts. Google announced it on 11 January 2026 at the National Retail Federation conference, co-developed with Shopify, Etsy, Wayfair, Target and Walmart. A store declares what it supports in one file at /.well-known/ucp, and an agent that speaks UCP reads it there. It is the protocol behind checkout in Google's AI Mode and the Gemini app.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who is behind UCP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google says it co-developed UCP with Shopify, Etsy, Wayfair, Target and Walmart, and that more than 20 other companies endorsed it at launch. The specification is open source under the Apache 2.0 licence. A Tech Council steers it: the founding members were Google, Shopify, Etsy, Target and Wayfair, and Amazon, Meta, Microsoft, Salesforce and Stripe joined on 24 April 2026.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does UCP work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A business publishes a JSON profile at /.well-known/ucp listing the services it supports, the capabilities inside them and the payment handlers it accepts. An agent reads that file and uses the store without a hard-coded integration. The first capabilities were checkout, identity linking and order management; Cart and Catalog were added on 19 March 2026 as draft specifications. Capabilities can run over a REST API, MCP or A2A.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a payment handler?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "UCP keeps the payment instrument, such as a card or wallet, separate from the handler, the processor that takes it. A store lists the handlers it accepts, and each checkout response says which are available. Worldline launched a UCP payment handler through Global Collect on 14 September 2026, so its merchants declare their payment configuration once for any UCP-connected AI platform.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is UCP different from ACP and AP2?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ACP is the checkout standard OpenAI and Stripe published with Instant Checkout in ChatGPT on 29 September 2025. PPC Land says ACP has merchants apply and submit catalogues while UCP relies on the agent discovering the store itself. AP2, the Agent Payments Protocol, sits under UCP for the payment, and Google says UCP is compatible with it.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can shoppers use UCP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In the United States first: UCP-powered checkout began rolling out on 11 February 2026 for Etsy and Wayfair in AI Mode in Search and the Gemini app. In May Google said checkout would reach Canada and Australia in the coming months and the UK later, and on 15 September its business page still says Canada and Australia are coming soon.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does UCP leave unsolved?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Who pays when an agent's purchase goes wrong. The store stays merchant of record and keeps the customer relationship, but the protocol does not set how fraud and liability are handled, and Worldline's handler release says nothing about disputes on agent-initiated purchases. Google puts the merchant-of-record duties on the store, so the dispute terms that matter sit in its processor contract.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What should a merchant do now?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If you sell through Google Merchant Center, onboarding runs there. Before building a checkout of your own, ask your processor whether it publishes a UCP payment handler and what its terms say about a disputed agent purchase.",
+            "author": {
+              "@id": "https://josephbankole.ca/#person"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What is the Universal Commerce Protocol (UCP)?",
+          "item": "https://josephbankole.ca/answers/what-is-universal-commerce-protocol/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/recipes/">Recipes</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="answers-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
+    <span class="index">Answers</span>
+    <h1>What is the Universal Commerce Protocol (UCP)?</h1>
+    <p class="standfirst">The Universal Commerce Protocol, or UCP, is an open standard that lets an AI agent buy from a store it has no custom integration with. The agent can look up products, fill a cart, run the checkout and follow the order, and the payment goes through a processor the store already accepts. Google announced it on 11 January 2026 at the National Retail Federation conference, co-developed with Shopify, Etsy, Wayfair, Target and Walmart. A store declares what it supports in one file at /.well-known/ucp, and an agent that speaks UCP reads it there. It is the protocol behind checkout in Google&#x27;s AI Mode and the Gemini app.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-15">Updated 15 September 2026</time><span>4 min read</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <h2>Who is behind UCP?</h2>
+      <p>Google says it co-developed UCP with Shopify, Etsy, Wayfair, Target and Walmart, and that more than 20 other companies endorsed it at launch (<a class="inline-link" href="https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://techcrunch.com/2026/01/11/google-announces-a-new-protocol-to-facilitate-commerce-using-ai-agents/" target="_blank" rel="noopener">TechCrunch</a>, <a class="inline-link" href="https://www.infoq.com/news/2026/01/google-ucp" target="_blank" rel="noopener">InfoQ</a>).</p>
+      <p>The specification is open source, published on GitHub under the Apache 2.0 licence (<a class="inline-link" href="https://github.com/universal-commerce-protocol/ucp" target="_blank" rel="noopener">the repository</a>, <a class="inline-link" href="https://ppc.land/ucp/" target="_blank" rel="noopener">PPC Land</a>). A Tech Council steers its technical direction. The founding members were Google, Shopify, Etsy, Target and Wayfair, so Walmart helped write the standard without a founding seat on the council. Amazon, Meta, Microsoft, Salesforce and Stripe joined on 24 April 2026 (<a class="inline-link" href="https://www.newsfilecorp.com/release/294133/Amazon-Meta-Microsoft-Salesforce-and-Stripe-Join-the-Universal-Commerce-Protocol-Tech-Council" target="_blank" rel="noopener">the UCP release</a>, <a class="inline-link" href="https://ppc.land/amazon-meta-microsoft-salesforce-and-stripe-join-ucp-tech-council/" target="_blank" rel="noopener">PPC Land</a>).</p>
+
+      <h2>How does UCP work?</h2>
+      <p>A business publishes a JSON profile at /.well-known/ucp that lists the services it supports, the capabilities inside them and the payment handlers it accepts (<a class="inline-link" href="https://ucp.dev/documentation/core-concepts/" target="_blank" rel="noopener">the UCP specification</a>, <a class="inline-link" href="https://ppc.land/ucp/" target="_blank" rel="noopener">PPC Land</a>). An agent reads that file and finds the store's features, endpoints and payment options without a hard-coded integration (<a class="inline-link" href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">Google Developers Blog</a>, <a class="inline-link" href="https://shopify.engineering/ucp" target="_blank" rel="noopener">Shopify Engineering</a>).</p>
+      <p>Google's launch post named checkout, identity linking and order management as the first capabilities (<a class="inline-link" href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">Google Developers Blog</a>), and TechCrunch described the standard as covering discovery through to post-purchase support (<a class="inline-link" href="https://techcrunch.com/2026/01/11/google-announces-a-new-protocol-to-facilitate-commerce-using-ai-agents/" target="_blank" rel="noopener">TechCrunch</a>). On 19 March 2026 Google added Cart, so an agent can put several items from one store in a basket, and Catalog, which pulls live prices and stock. Identity linking lets a shopper carry loyalty pricing and member benefits across platforms (<a class="inline-link" href="https://blog.google/products-and-platforms/products/shopping/ucp-updates/" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://www.searchenginejournal.com/google-expands-ucp-with-cart-catalog-onboarding/570084/" target="_blank" rel="noopener">Search Engine Journal</a>). Search Engine Journal notes that Cart and Catalog were published as draft specifications.</p>
+      <p>The same capability can be offered over a REST API, the Model Context Protocol (MCP) or Agent2Agent (A2A) (<a class="inline-link" href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">Google Developers Blog</a>, <a class="inline-link" href="https://techcrunch.com/2026/01/11/google-announces-a-new-protocol-to-facilitate-commerce-using-ai-agents/" target="_blank" rel="noopener">TechCrunch</a>).</p>
+
+      <h2>What is a payment handler?</h2>
+      <p>UCP keeps the payment instrument, such as a card or a wallet, separate from the handler, the processor that takes it (<a class="inline-link" href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">Google Developers Blog</a>, <a class="inline-link" href="https://www.infoq.com/news/2026/01/google-ucp" target="_blank" rel="noopener">InfoQ</a>). A store lists the handlers it accepts in its profile, and each checkout response says which ones are available for that basket (<a class="inline-link" href="https://ppc.land/ucp/" target="_blank" rel="noopener">PPC Land</a>, <a class="inline-link" href="https://shopify.engineering/ucp" target="_blank" rel="noopener">Shopify Engineering</a>).</p>
+      <p>The handler is the part a merchant's existing processor supplies. Worldline launched one on 14 September 2026 through Global Collect, its cross-border platform, so a Global Collect merchant declares its payment configuration once and takes cards, mobile wallets and European payment methods on any UCP-connected AI platform (<a class="inline-link" href="https://worldline.com/en/home/top-navigation/media-relations/press-release/pr-2026_09_14_01" target="_blank" rel="noopener">Worldline</a>, <a class="inline-link" href="https://www.electronicpaymentsinternational.com/news/worldline-launches-ucp-payment-handler-for-agentic-commerce-payments/" target="_blank" rel="noopener">Electronic Payments International</a>). Worldline describes itself as one of the first in Europe to do it. <a class="inline-link" href="/news/2026-09-14-agentic-commerce.html">The 14 September brief</a> covers what the release left out.</p>
+
+      <h2>How is UCP different from ACP and AP2?</h2>
+      <p>ACP, the Agentic Commerce Protocol, is the checkout standard OpenAI and Stripe published with Instant Checkout in ChatGPT on 29 September 2025 (<a class="inline-link" href="https://stripe.com/newsroom/news/stripe-openai-instant-checkout" target="_blank" rel="noopener">Stripe</a>, <a class="inline-link" href="https://ppc.land/ucp/" target="_blank" rel="noopener">PPC Land</a>). The difference the sources draw is how the agent finds the store. PPC Land's explainer says ACP has merchants apply and submit catalogues while UCP relies on the agent discovering the store for itself, and Forrester describes OpenAI compressing the path from discovery to instant checkout (<a class="inline-link" href="https://ppc.land/ucp/" target="_blank" rel="noopener">PPC Land</a>, <a class="inline-link" href="https://www.forrester.com/blogs/agentic-commerces-success-centers-on-overcoming-key-frontiers-in-consumer-trust/" target="_blank" rel="noopener">Forrester</a>).</p>
+      <p>AP2, the Agent Payments Protocol Google announced in 2025, sits under UCP for the payment itself. Google says UCP is compatible with it, and InfoQ describes UCP integrating with it for secure payments (<a class="inline-link" href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">Google Developers Blog</a>, <a class="inline-link" href="https://www.infoq.com/news/2026/01/google-ucp" target="_blank" rel="noopener">InfoQ</a>, <a class="inline-link" href="https://techcrunch.com/2026/01/11/google-announces-a-new-protocol-to-facilitate-commerce-using-ai-agents/" target="_blank" rel="noopener">TechCrunch</a>). <a class="inline-link" href="/answers/acp-vs-ap2/">The ACP and AP2 page</a> sets those two side by side.</p>
+
+      <h2>Where can shoppers use UCP?</h2>
+      <p>In the United States first. UCP-powered checkout began rolling out on 11 February 2026 for Etsy and Wayfair in AI Mode in Search and the Gemini app, with Shopify, Target and Walmart named as coming soon (<a class="inline-link" href="https://blog.google/products/ads-commerce/digital-advertising-commerce-2026/" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://www.pymnts.com/artificial-intelligence-2/2026/google-launches-agentic-commerce-with-etsy-and-wayfair/" target="_blank" rel="noopener">PYMNTS</a>).</p>
+      <p>At Google Marketing Live in May, Google said checkout would reach Canada and Australia in the coming months and the UK later (<a class="inline-link" href="https://blog.google/products-and-platforms/products/shopping/google-shopping-cart/" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://ppc.land/google-expands-ucp-to-hotels-food-delivery-and-three-new-countries/" target="_blank" rel="noopener">PPC Land</a>). On 15 September Google's business page still says checkout rolls out to Canada and Australia soon (<a class="inline-link" href="https://business.google.com/us/accelerate/announcements/universal-commerce-protocol-powered-features-on-google/" target="_blank" rel="noopener">Google Business</a>), and its Merchant Center help tells merchants in the United States, Canada and Australia that shoppers may see it soon (<a class="inline-link" href="https://support.google.com/merchants/answer/16837055" target="_blank" rel="noopener">Merchant Center help</a>).</p>
+
+      <h2>What does UCP leave unsolved?</h2>
+      <p>Who pays when an agent's purchase goes wrong. The store stays merchant of record (<a class="inline-link" href="https://developers.google.com/merchant/ucp/faq" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://ppc.land/ucp/" target="_blank" rel="noopener">PPC Land</a>), and Google's FAQ adds that it keeps full control of the customer relationship. The protocol does not set how fraud and liability are handled. Merkle lists it among the things UCP leaves undefined, and Forrester asks who is liable for processing the return when an agent places a wrong order because the product content it read was generated inaccurately (<a class="inline-link" href="https://www.merkle.com/en/merkle-now/articles-blogs/2026/ucp-how-european-commerce-leaders-should-respond.html" target="_blank" rel="noopener">Merkle</a>, <a class="inline-link" href="https://www.forrester.com/blogs/agentic-commerces-success-centers-on-overcoming-key-frontiers-in-consumer-trust/" target="_blank" rel="noopener">Forrester</a>).</p>
+      <p>Worldline's release says nothing about disputes on agent-initiated purchases either (<a class="inline-link" href="https://worldline.com/en/home/top-navigation/media-relations/press-release/pr-2026_09_14_01" target="_blank" rel="noopener">Worldline</a>), a gap <a class="inline-link" href="/news/2026-09-14-agentic-commerce.html">the news desk</a> flagged the day it came out. Google's FAQ puts the merchant-of-record duties on the store, so the dispute terms that matter sit in the store's own processor contract. <a class="inline-link" href="/answers/ai-agent-purchase-liability/">The liability page</a> covers the wider question.</p>
+
+      <h2>What should a merchant do now?</h2>
+      <p>If you sell through Google Merchant Center, onboarding runs there, and Google said in March it was simplifying that process over the coming months (<a class="inline-link" href="https://blog.google/products-and-platforms/products/shopping/ucp-updates/" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://www.searchenginejournal.com/google-expands-ucp-with-cart-catalog-onboarding/570084/" target="_blank" rel="noopener">Search Engine Journal</a>). Before building a checkout of your own, ask your processor whether it publishes a UCP payment handler and what its terms say about a disputed agent purchase. The second answer is the one Worldline's release left blank.</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <section class="related" aria-labelledby="related-h">
+    <h2 id="related-h">Related</h2>
+    <div class="postlist">
+        <a class="post-row" href="/answers/how-merchants-detect-ai-agents/">
+          <span class="date">Answers</span>
+          <span class="ttl">How do merchants detect AI agents?<span>A signed request the merchant can verify, an integration it already agreed to, or a guess. Only one works on an unknown agent.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/answers/ai-agent-purchase-liability/">
+          <span class="date">Answers</span>
+          <span class="ttl">Who is liable when an AI agent buys the wrong thing?<span>Nobody has assigned it yet. The agent protocols produce evidence; the rules that allocate loss were written about strangers.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="answers-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="answers-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Fintech operations &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="answers-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
