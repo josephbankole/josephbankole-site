@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 11 Sep 2026 19:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 14 Sep 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Reproducing an AI portrait took the whole job record</title>
+    <link>https://josephbankole.ca/blog/reproducing-an-ai-portrait.html</link>
+    <guid>https://josephbankole.ca/blog/reproducing-an-ai-portrait.html</guid>
+    <pubDate>Mon, 14 Sep 2026 13:00:00 GMT</pubDate>
+    <description>Two batches of AI portraits ran on the same model with the same prompt, and only one reached the bar. The difference sat in three settings fields.</description>
+  </item>
   <item>
     <title>Moving a daily job to midnight skipped the day I moved it</title>
     <link>https://josephbankole.ca/blog/moving-a-daily-job-to-midnight.html</link>
