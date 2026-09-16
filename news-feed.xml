@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Tue, 15 Sep 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 16 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>India held back the protocol that lets an AI agent pay on UPI, and its fintechs shipped agent payments anyway</title>
+    <link>https://josephbankole.ca/news/2026-09-16-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-16-agentic-commerce.html</guid>
+    <pubDate>Wed, 16 Sep 2026 08:00:00 GMT</pubDate>
+    <description>NPCI held the Unified Agent Protocol back pending Reserve Bank of India clearance, India Fintech Diaries reported on 15 September 2026. The national standard for AI agents paying on UPI without per-transaction approval was due at Global Fintech Fest in Mumbai. Amazon Pay, Razorpay, Pine Labs and BharatPe shipped agent payment products at the same event, and Sokin put its licensed rails behind a Model Context Protocol connector on 14 September with a human still in the approval step.</description>
+  </item>
   <item>
     <title>The CLARITY Act failed in the Senate on 15 September, and Coinbase is already wiring small banks for stablecoins</title>
     <link>https://josephbankole.ca/news/2026-09-15-agentic-commerce.html</link>
