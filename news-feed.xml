@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 16 Sep 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 17 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Google will hand an AI shopper’s cart back to the merchant’s own site, and Mastercard built Trip.com’s travel agent on its merchant suite</title>
+    <link>https://josephbankole.ca/news/2026-09-17-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-17-agentic-commerce.html</guid>
+    <pubDate>Thu, 17 Sep 2026 08:00:00 GMT</pubDate>
+    <description>Google said on 16 September 2026 that merchants using the Universal Commerce Protocol integration hub for UCP-powered checkout can now enable cart transfer to their own site, rolling out in the US with Australia and Canada early in 2027. Mastercard and Trip.com showed Trip.com's TripGenie agent booking travel on Mastercard's Agent Suite for Merchants in Dubai the same day, with a commercial launch expected in early 2027.</description>
+  </item>
   <item>
     <title>India held back the protocol that lets an AI agent pay on UPI, and its fintechs shipped agent payments anyway</title>
     <link>https://josephbankole.ca/news/2026-09-16-agentic-commerce.html</link>
