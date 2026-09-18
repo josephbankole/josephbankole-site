@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 16 Sep 2026 19:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 18 Sep 2026 19:13:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>38 stills in one ffmpeg graph broke a 34-minute render</title>
+    <link>https://josephbankole.ca/blog/ffmpeg-overlays-memory.html</link>
+    <guid>https://josephbankole.ca/blog/ffmpeg-overlays-memory.html</guid>
+    <pubDate>Fri, 18 Sep 2026 19:13:00 GMT</pubDate>
+    <description>A podcast edit built as one ffmpeg graph with 38 looped stills died three minutes in. Reading each still as one frame and rendering 85 chunks fixed it.</description>
+  </item>
   <item>
     <title>A retried job did Tuesday's work in Monday's run</title>
     <link>https://josephbankole.ca/blog/retried-job-did-tuesdays-work.html</link>
