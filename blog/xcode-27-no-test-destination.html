@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Xcode 27 broke every test destination · Joseph Bankole</title>
+<meta name="description" content="An Xcode 27 upgrade left CoreSimulator stale, simctl hanging on a password prompt, and a release script pointing at a phone the new runtime does not ship." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/blog/xcode-27-no-test-destination.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="Xcode 27 broke every test destination" />
+<meta property="og:description" content="An Xcode 27 upgrade left CoreSimulator stale, simctl hanging on a password prompt, and a release script pointing at a phone the new runtime does not ship." />
+<meta property="og:url" content="https://josephbankole.ca/blog/xcode-27-no-test-destination.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-21T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-21T15:12:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Xcode 27 broke every test destination" />
+<meta name="twitter:description" content="An Xcode 27 upgrade left CoreSimulator stale, simctl hanging on a password prompt, and a release script pointing at a phone the new runtime does not ship." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Xcode 27 broke every test destination",
+      "description": "An Xcode 27 upgrade left CoreSimulator stale, simctl hanging on a password prompt, and a release script pointing at a phone the new runtime does not ship.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 846,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/blog/xcode-27-no-test-destination.html"
+      },
+      "datePublished": "2026-09-21T09:00:00-04:00",
+      "dateModified": "2026-09-21T15:12:00-04:00",
+      "articleSection": "Payments and applied AI"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Xcode 27 broke every test destination",
+          "item": "https://josephbankole.ca/blog/xcode-27-no-test-destination.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/recipes/">Recipes</a><a href="/#projects">Projects</a>
+    <a class="btn js-waitlist" data-location="blog-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
+    <span class="index">Build in public</span>
+    <h1>Xcode 27 broke every test destination</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-21">21 September 2026</time><span>4 min read</span><span>Tooling &middot; iOS releases</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>On 20 September my weekly app release job ran from start to finish and submitted nothing. The code compiled. Version 1.5.4 build 39 was already live on the App Store. What the job could not find was anywhere to run the tests, and my release script will not submit a build whose tests have not gone green.</p>
+
+      <p>Xcode 27.0 had installed on the machine three days earlier, on 17 September. Build 27A266a, by <code>xcodebuild -version</code>. Updating Xcode replaces the app in <code>/Applications</code>. It does not replace the privileged components that app depends on, which sit under <code>/Library/Developer/PrivateFrameworks</code> and are owned by <code>root:wheel</code>. CoreSimulator was still at 1051.55 where Xcode 27 wants 1171.7.0. CoreDevice was at 518.33.</p>
+
+      <p><code>xcodebuild</code> said so plainly enough. "Current version (1051.55.0) is older than build version (1171.7.0)", it reported, and then that simulator device support was disabled. After that it could not find a device to test on. The macOS fallback in my script failed too, because with CoreDevice stale the <code>DVTCoreDeviceCore</code> plugin that resolves real devices would not load.</p>
+
+      <h2>The hang</h2>
+
+      <p>My first instinct was to look at the simulators themselves, so I ran <code>xcrun simctl list devices</code>. It never came back.</p>
+
+      <p><code>simctl</code> in Xcode&#x27;s bin directory is not a binary. It is a 32-line bash wrapper. Line 9 pins <code>EXPECTED_VERSION</code> to 1171.7. Line 10 reads the installed CoreSimulator version out of that root-owned Info.plist. If the installed version is missing or older, line 30 runs <code>xcodebuild</code> <code>-runFirstLaunch</code> before handing off to the real <code>simctl</code> underneath.</p>
+
+      <p><code>-runFirstLaunch</code> installs system components into root-owned directories, and the process list showed what that costs: <code>SecurityAgent</code>, the macOS password panel, running as a child of the runFirstLaunch process. Nothing about that panel reaches a scheduled run&#x27;s stdout. The job sits there. I killed it, called the real <code>simctl</code> directly, and every simulator and runtime was present. Nothing had been deleted. The wrapper was trying to repair the machine and waiting for a human to let it.</p>
+
+      <h2>The check that needs no password</h2>
+
+      <p><code>man xcodebuild</code> documents the thing I should have been calling all along. Of <code>-checkFirstLaunchStatus</code> it says: "Exits with a non-zero code if additional system content needs to be installed, using <code>-runFirstLaunch</code>. Exits with 0 if system components are up-to-date." The published mirror of the Xcode man pages at keith.github.io/xcode-man-pages carries the same wording.</p>
+
+      <p>It takes no password and returns immediately. On this machine it now exits 0. Called before the test step, it turns a job that hangs into a job that stops on its first line with a message a person can act on. The password itself is unavoidable. I ran <code>sudo xcodebuild -runFirstLaunch</code> on 21 September, CoreSimulator went to 1171.7 and CoreDevice to 642.16, and for about two minutes afterwards <code>xcodebuild</code> still saw no devices at all while CoreSimulator rebuilt its device set.</p>
+
+      <h2>The second trap</h2>
+
+      <p>Two release attempts failed after that fix, and the cause was sitting on line 44 of my release script. <code>SIM_DESTINATION="platform=iOS Simulator,name=iPhone 17 Pro"</code>. It names a device and no OS version. The man page says the OS key takes "the string latest (the default) to indicate the most recent version of iOS supported by this version of Xcode", and the mirror agrees. Latest had just become 27.0.</p>
+
+      <p>The iOS 27.0 runtime ships no iPhone 17 Pro. Its device set is iPhone 18 Pro, 18 Pro Max, 17, 17e and Air. The 17 Pro and 17 Pro Max existed on 26.5 and did not carry forward. That line went into the script on 6 September and resolved cleanly through the 1.5.4 release on 15 September. It resolved to nothing on 21 September, because the phone it named had aged out of the newest runtime.</p>
+
+      <p>The error text sends you the wrong way. It prints the specifier it failed on, <code>{ platform:iOS Simulator, OS:latest, name:iPhone 17 Pro }</code>, and then a line about My Mac&#x27;s macOS platform not matching, which starts you investigating a Mac destination that was never in play. Read the specifier. When a failure prints <code>OS:latest</code>, look for the device on the newest runtime before assuming it has left the machine.</p>
+
+      <p>One command fixes it. <code>xcrun simctl create "iPhone 17 Pro" com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro com.apple.CoreSimulator.SimRuntime.iOS-27-0</code>. The device type and the runtime both still exist and nobody had paired them. 238 tests ran, none failed, and 1.5.5 build 40 went to review in the same session.</p>
+
+      <p>A major Xcode release changes which components count as current and which runtime counts as latest, and a script that names neither finds out by failing somewhere deep. Two lines cover it. <code>-checkFirstLaunchStatus</code> before the test step, so a stale machine stops on a message instead of a password prompt. An explicit OS on the destination, so a device that ages out of the newest runtime fails by name. Both go into the release script before Xcode 28.</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">The weekly email</h2>
+    <p>The ARCHV AI newsletter is the week in AI in plain English, plus the agentic-commerce stories that touch how money moves. It goes out on Substack.</p>
+    <a class="btn btn--ghost" href="https://archvai.substack.com" target="_blank" rel="noopener">Read it on Substack</a>
+  </section>
+  <section class="ctaband" aria-labelledby="cta-h">
+    <h2 id="cta-h">Building in agentic commerce or payments?</h2>
+    <p>This is the intersection I work in. I'm not taking new clients at the moment, so write to <a class="inline-link js-waitlist" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A" data-location="blog-cta-copy">partnerships@josephbankole.ca</a> and I'll add you to the waitlist.</p>
+    <a class="btn js-waitlist" data-location="blog-cta" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">Fintech operations &middot; Applied AI &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="js-waitlist" data-location="blog-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
+      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
