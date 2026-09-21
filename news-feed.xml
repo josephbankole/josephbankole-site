@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Sun, 20 Sep 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 21 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Stripe’s Link wallet now checks out for three different AI agents, and each one buys with a card number that works once</title>
+    <link>https://josephbankole.ca/news/2026-09-21-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-21-agentic-commerce.html</guid>
+    <pubDate>Mon, 21 Sep 2026 08:00:00 GMT</pubDate>
+    <description>Stripe put Link inside Meta’s Muse agent on 8 September 2026, after wiring xAI’s Grok Bot on 28 August and Instinct, a text-message assistant from Spear Street Technology, earlier the same month. In every case the consumer approves the total in the chat and the agent is issued a single-use virtual card scoped to that purchase. Stripe puts Link at 300 million users and more than 1 million businesses. Stripe and Advent International’s $53 billion offer for PayPal was rejected on 15 July 2026.</description>
+  </item>
   <item>
     <title>HM Treasury laid a draft instrument taking UK stablecoin payments out of the cryptoasset dealing rules, and PYMNTS puts merchants with agent-readable product data at 15%</title>
     <link>https://josephbankole.ca/news/2026-09-20-agentic-commerce.html</link>
