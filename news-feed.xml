@@ -5,8 +5,15 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 21 Sep 2026 08:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Tue, 22 Sep 2026 08:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Amazon shut Meta’s Muse out of Amazon.com, and Shopify put Shop Pay behind it the next morning</title>
+    <link>https://josephbankole.ca/news/2026-09-22-agentic-commerce.html</link>
+    <guid>https://josephbankole.ca/news/2026-09-22-agentic-commerce.html</guid>
+    <pubDate>Tue, 22 Sep 2026 08:00:00 GMT</pubDate>
+    <description>Amazon began blocking Meta’s Muse agent from buying on Amazon.com on the night of 20 September 2026 and asked Meta to remove Amazon from the product. On the morning of 21 September Shopify’s chief executive said Shop Pay will do agentic checkout with Muse across every Shopify store. The Commodity Futures Trading Commission announced a roundtable series the same day, with artificial intelligence and agentic finance as the first session on 28 October 2026.</description>
+  </item>
   <item>
     <title>Stripe’s Link wallet now checks out for three different AI agents, and each one buys with a card number that works once</title>
     <link>https://josephbankole.ca/news/2026-09-21-agentic-commerce.html</link>
