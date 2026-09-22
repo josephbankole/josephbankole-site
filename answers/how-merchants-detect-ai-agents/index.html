@@ -17,7 +17,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-09-03T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-09-03T15:45:00-04:00" />
+<meta property="article:modified_time" content="2026-09-22T15:45:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="How do merchants detect AI agents?" />
@@ -40,7 +40,7 @@
     {
       "@type": "FAQPage",
       "datePublished": "2026-09-03T15:45:00-04:00",
-      "dateModified": "2026-09-03T15:45:00-04:00",
+      "dateModified": "2026-09-22T15:45:00-04:00",
       "mainEntity": [
         {
           "@type": "Question",
@@ -56,7 +56,7 @@
           "name": "What does a signed agent request look like?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "An agent that wants to be recognised sends three headers. Signature-Input carries the metadata: a keyid naming the public key, created and expires timestamps, a nonce against replay, a tag describing the request, and the algorithm, in practice Ed25519. Signature carries the signature itself. Signature-Agent points at the directory holding the key, which the origin fetches from /.well-known/http-message-signatures-directory before verifying. Web Bot Auth sits in three Internet-Drafts at the IETF and builds on RFC 9421, HTTP Message Signatures.",
+            "text": "An agent that wants to be recognised sends three headers. Signature-Input carries the metadata: a keyid naming the public key, created and expires timestamps, a nonce against replay, a tag describing the request, and the algorithm, in practice Ed25519. Signature carries the signature itself. Signature-Agent points at the directory holding the key, which the origin fetches from /.well-known/http-message-signatures-directory before verifying. Web Bot Auth is now an adopted IETF working-group draft, draft-ietf-webbotauth-httpsig-protocol-00 of 1 September 2026, and builds on RFC 9421, HTTP Message Signatures.",
             "author": { "@id": "https://josephbankole.ca/#person" }
           }
         },
@@ -109,14 +109,14 @@
     <span class="index">Answers</span>
     <h1>How do merchants detect AI agents?</h1>
     <p class="standfirst">Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests, and the merchant verifies the signature against a key the agent publishes. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Signing is the open-web answer, and it is what Web Bot Auth and Visa's Trusted Agent Protocol implement. Most merchants run none of the three: 23 per cent can identify both AI-driven traffic and AI-driven purchases today.</p>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-03">Updated 3 September 2026</time><span>5 min read</span></p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-22">Updated 22 September 2026</time><span>5 min read</span></p>
   </header>
 
   <div class="article-body wrap">
     <div class="prose">
       <h2>What does a signed agent request look like?</h2>
       <p>An agent that wants to be recognised sends three headers. <code>Signature-Input</code> carries the metadata: a <code>keyid</code> naming the public key, a <code>created</code> and an <code>expires</code> timestamp, a <code>nonce</code> so the request cannot be replayed, a <code>tag</code> describing what kind of request this is, and the algorithm, which in practice is Ed25519. <code>Signature</code> carries the signature itself. <code>Signature-Agent</code> points at the directory where the key lives, and the origin fetches that directory from <code>/.well-known/http-message-signatures-directory</code>, takes the public key and checks the signature against the request it has just received (<a class="inline-link" href="https://developers.cloudflare.com/bots/concepts/bot/verified-bots/web-bot-auth/" target="_blank" rel="noopener">Cloudflare</a>, <a class="inline-link" href="https://datatracker.ietf.org/doc/draft-meunier-webbotauth-httpsig-protocol/" target="_blank" rel="noopener">IETF</a>).</p>
-      <p>None of that is one vendor's invention. Web Bot Auth sits in three Internet-Drafts at the IETF: an architecture draft, a protocol draft that defines the <code>Signature-Agent</code> header and the JWKS-shaped key directory, and a registry draft for the signature agent card. Underneath them is RFC 9421, HTTP Message Signatures, which is a published standard rather than a proposal.</p>
+      <p>None of that is one vendor's invention. Web Bot Auth now has a chartered IETF working group, <code>webbotauth</code>, and an adopted working-group draft, <code>draft-ietf-webbotauth-httpsig-protocol-00</code>, dated 1 September 2026, which defines the <code>Signature-Agent</code> header and the JWKS-shaped key directory. It replaces the earlier individual architecture and protocol drafts; a registry draft for the signature agent card remains individual. Underneath all of it is RFC 9421, HTTP Message Signatures, which is a published standard rather than a proposal.</p>
       <p>What a merchant learns from a valid signature is narrow, and worth stating precisely. It says the request came from the holder of a key that a named directory vouches for. It does not say the agent is honest, and it does not say the person behind it approved this particular purchase. It rules out the impersonator, and nothing further.</p>
 
       <h2>What does Visa's Trusted Agent Protocol add?</h2>
