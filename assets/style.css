@@ -256,6 +256,8 @@ img { max-width: 100%; display: block; }
    gave each of them 82px of padding and a stray top border. */
 main > section { padding: clamp(56px, 8vw, 110px) 0; border-top: 1px solid var(--ink-rule); }
 .sec-head { max-width: var(--measure-wide); margin-bottom: 44px; }
+.sec-head .portrait { display: block; width: 128px; height: 128px; border-radius: 50%; object-fit: cover; margin-bottom: 22px; border: 2px solid var(--accent-soft); background: var(--ground-soft); }
+@media (min-width: 760px) { .sec-head .portrait { width: 152px; height: 152px; } }
 h2 {
   font-family: var(--serif); font-weight: 340;
   font-size: var(--t-h2); line-height: 1.1; letter-spacing: -.02em;

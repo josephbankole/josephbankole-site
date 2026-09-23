@@ -66,7 +66,7 @@
   /* Any other Substack newsletter link (the ARCHV Dispatch). Kept so a
      Dispatch link, if one is ever placed, is not lost in outbound_click. */
   function isNewsletter(a) { return !isSubscribe(a) && host(a) === 'thearchvdispatch.substack.com'; }
-  var PROJECT = 'a[href*="joeysdr.com"], a[href*="thearchv.ca"]';
+  var PROJECT = 'a[href*="thearchv.ca"]';
   var FOUNDER = 'a[href*="linkedin.com"], a[href*="instagram.com"]';
 
   document.querySelectorAll('a[href]').forEach(function (a) {

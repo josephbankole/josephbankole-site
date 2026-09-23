@@ -1,6 +1,6 @@
 # Joseph Bankole
 
-> Joseph Bankole is an AI engineer in Montreal, Canada. He is a fintech operator (SWIFT, ISO 20022, ACH) who builds and ships production AI agents and automations, and writes about the work at josephbankole.ca.
+> Joseph Bankole is an AI engineer in Montreal, Canada. He spent ten years keeping bank systems running, the last five in payments (SWIFT, ISO 20022, ACH), and now builds and ships production AI agents and automations, and writes about the work at josephbankole.ca.
 
 ## Key pages
 
@@ -16,7 +16,6 @@
 ## Projects
 
 - [The ARCHV](https://thearchv.ca): an illustrated football publication with a daily verified desk and an [iOS app on the App Store](https://apps.apple.com/ca/app/the-archv/id6786508653).
-- [Joey](https://joeysdr.com): an AI SDR service.
 
 ## Citation
 
