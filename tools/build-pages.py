@@ -18,9 +18,22 @@ It is idempotent. Running it twice produces byte-identical output, because it
 parses its own output the same way it parses the original hand-written page.
 
     python3 tools/build-pages.py            # rewrite in place
-    python3 tools/build-pages.py --check    # fail if anything would change
+    python3 tools/build-pages.py --check    # fail if anything would change,
+                                            # or if a gate below fails
 
 Run tools/build-news-feed.py afterwards if you added an edition.
+
+Gates (added 2026-09-22, after the daily desk undid three August fixes that
+nothing enforced):
+
+  - A news edition dated today or later (Montreal time) must carry a <title> of
+    60 characters or fewer before the " · Joseph Bankole" suffix and a meta
+    description of 155 or fewer. --check exits non-zero if it does not. Older
+    editions, blog posts and answers pages only print a warning.
+  - The homepage news teaser holds at most 6 rows. The build drops the oldest
+    rows past six, so --check fails whenever the teaser has grown.
+
+Warnings go to stderr and never change the exit code of a normal run.
 """
 
 from __future__ import annotations
@@ -33,10 +46,43 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import sitelib  # noqa: E402  (shared clock and block finder, tools/sitelib.py)
+
 REPO = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://josephbankole.ca"
 
-TZ = "-04:00"  # Montreal, August
+# The offset used to be a constant, "-04:00  # Montreal, August", which would
+# have stamped every page from November with the wrong time. It is now read
+# per date from the time zone database (America/Toronto) by sitelib.local_iso.
+
+PERSON_ID = "%s/#person" % SITE
+# Google's parser does not follow an @id to another document, so a bare
+# {"@id": ".../#person"} left the author nameless on every answers, recipe and
+# hub page. Every author node is written out in full.
+PERSON = {
+    "@type": "Person",
+    "name": "Joseph Bankole",
+    "@id": PERSON_ID,
+    "url": "%s/" % SITE,
+}
+
+DEFAULT_OG = "%s/assets/og/default.png" % SITE
+RECIPES_OG = "%s/assets/og/recipes.png" % SITE
+
+TITLE_MAX = 60   # characters before the " · Joseph Bankole" suffix
+DESC_MAX = 155   # characters in the meta description
+TEASER_MAX = 6   # rows in the homepage news teaser
+
+TITLE_SUFFIX_RE = re.compile(r"\s*(?:·|&middot;|&#183;|&#xB7;)\s*Joseph Bankole\s*$")
+
+# Collected during a run and printed to stderr at the end, grouped by kind.
+WARNINGS: dict[str, list[str]] = {}
+GATE_FAILURES: list[str] = []
+
+
+def warn(kind: str, message: str) -> None:
+    WARNINGS.setdefault(kind, []).append(message)
 
 WAITLIST = (
     "mailto:partnerships@josephbankole.ca"
@@ -147,11 +193,18 @@ def normalise_waitlist(doc: str) -> str:
     them here rather than per template keeps CTA copy a human wrote intact
     while still fixing the href underneath it.
     """
-    return re.sub(
-        r"mailto:partnerships@josephbankole\.ca\?subject=Waitlist(?:%20|&amp;|[^\"'\s])*",
-        WAITLIST.replace("&", "&amp;"),
-        doc,
-    )
+    # The whole quoted value is replaced, up to its closing quote. The old
+    # pattern stopped at a raw apostrophe, so an href whose body still read
+    # "you're" kept its tail after the rewrite and the homepage #work CTA
+    # shipped with a duplicated body fragment (a44192e to 2026-09-22).
+    target = WAITLIST.replace("&", "&amp;")
+    for quote in ('"', "'"):
+        doc = re.sub(
+            r"%smailto:partnerships@josephbankole\.ca\?subject=Waitlist[^%s<>]*%s" % (quote, quote, quote),
+            lambda m, q=quote: q + target + q,
+            doc,
+        )
+    return doc
 
 
 # ------------------------------------------------------------------- shell
@@ -169,33 +222,35 @@ def head_block(page) -> str:
     if page.get("canonical"):
         lines.append('<link rel="canonical" href="%s" />' % page["canonical"])
 
-    og_type = page.get("og_type", "website")
+    # A page nobody should share (the 404) gets no share-card metadata.
+    if page.get("social", True):
+        og_type = page.get("og_type", "website")
+        lines += [
+            '<meta property="og:type" content="%s" />' % og_type,
+            '<meta property="og:site_name" content="Joseph Bankole" />',
+            '<meta property="og:title" content="%s" />' % page.get("og_title", page["title"]),
+        ]
+        if page.get("og_description"):
+            lines.append('<meta property="og:description" content="%s" />' % page["og_description"])
+        if page.get("canonical"):
+            lines.append('<meta property="og:url" content="%s" />' % page["canonical"])
+        lines += [
+            '<meta property="og:image" content="%s" />' % page["og_image"],
+            '<meta property="og:image:width" content="1200" />',
+            '<meta property="og:image:height" content="630" />',
+        ]
+        if page.get("published_iso"):
+            lines.append('<meta property="article:published_time" content="%s" />' % page["published_iso"])
+            lines.append('<meta property="article:modified_time" content="%s" />' % page["modified_iso"])
+            lines.append('<meta property="article:author" content="Joseph Bankole" />')
+        lines += [
+            '<meta name="twitter:card" content="summary_large_image" />',
+            '<meta name="twitter:title" content="%s" />' % page.get("og_title", page["title"]),
+        ]
+        if page.get("og_description"):
+            lines.append('<meta name="twitter:description" content="%s" />' % page["og_description"])
+        lines.append('<meta name="twitter:image" content="%s" />' % page["og_image"])
     lines += [
-        '<meta property="og:type" content="%s" />' % og_type,
-        '<meta property="og:site_name" content="Joseph Bankole" />',
-        '<meta property="og:title" content="%s" />' % page.get("og_title", page["title"]),
-    ]
-    if page.get("og_description"):
-        lines.append('<meta property="og:description" content="%s" />' % page["og_description"])
-    if page.get("canonical"):
-        lines.append('<meta property="og:url" content="%s" />' % page["canonical"])
-    lines += [
-        '<meta property="og:image" content="%s" />' % page["og_image"],
-        '<meta property="og:image:width" content="1200" />',
-        '<meta property="og:image:height" content="630" />',
-    ]
-    if page.get("published_iso"):
-        lines.append('<meta property="article:published_time" content="%s" />' % page["published_iso"])
-        lines.append('<meta property="article:modified_time" content="%s" />' % page["modified_iso"])
-        lines.append('<meta property="article:author" content="Joseph Bankole" />')
-    lines += [
-        '<meta name="twitter:card" content="summary_large_image" />',
-        '<meta name="twitter:title" content="%s" />' % page.get("og_title", page["title"]),
-    ]
-    if page.get("og_description"):
-        lines.append('<meta name="twitter:description" content="%s" />' % page["og_description"])
-    lines += [
-        '<meta name="twitter:image" content="%s" />' % page["og_image"],
         '<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />',
         '<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />',
         '<link rel="apple-touch-icon" href="/apple-touch-icon.png" />',
@@ -383,28 +438,96 @@ def promote_headings(prose: str) -> str:
     return prose
 
 
+def rel_name(path: pathlib.Path) -> str:
+    try:
+        return path.relative_to(REPO).as_posix()
+    except ValueError:
+        return str(path)
+
+
+SHARE_TITLE_MIN = 20
+
+
+def title_body(title: str) -> str:
+    """The <title> without the site-name suffix, still HTML-escaped."""
+    return TITLE_SUFFIX_RE.sub("", title).strip()
+
+
+def share_title(title: str) -> str:
+    """og:title and twitter:title.
+
+    The site-name suffix comes off, because og:site_name carries it, except
+    where the rest is too short to say whose page it is: a card reading only
+    "Privacy" or "Blog" names nobody.
+    """
+    body = title_body(title)
+    if not body:
+        return title
+    return body if text_len(body) > SHARE_TITLE_MIN else title
+
+
+def text_len(value: str) -> int:
+    """Length as a reader or a search result sees it: entities decoded."""
+    return len(html.unescape(strip_tags(value)).strip())
+
+
 def parse_common(path: pathlib.Path, src: str) -> dict:
     canonical = link_href(src, "canonical")
     title = tag_text(src, "title") or ""
+    if not title:
+        # Only when a page has no <title> at all is one derived from its h1.
+        h1 = re.search(r"<h1[^>]*>(.*?)</h1>", src, re.S)
+        if h1:
+            title = "%s &middot; Joseph Bankole" % strip_tags(h1.group(1)).strip()
+            warn("pages with no <title>, derived from the h1", rel_name(path))
     og_image = meta_content(src, "property", "og:image") or ""
     # 26 news pages pointed at a per-edition card that was never rendered.
     if og_image.startswith(SITE):
         on_disk = REPO / og_image[len(SITE) + 1:]
         if not on_disk.exists():
-            og_image = "%s/assets/og/default.png" % SITE
+            og_image = DEFAULT_OG
     if not og_image:
-        og_image = "%s/assets/og/default.png" % SITE
+        og_image = DEFAULT_OG
+    description = meta_content(src, "name", "description")
+    # The authored <title> and meta description are the source of truth. The
+    # share-card title follows the <title> (minus the site-name suffix, which
+    # og:site_name already carries) and the share-card description follows the
+    # meta description, so a trimmed meta cannot leave a 699-character
+    # og:description behind it.
     return {
         "path": path,
         "title": title,
-        "description": meta_content(src, "name", "description"),
+        "description": description,
         "canonical": canonical,
-        "og_title": meta_content(src, "property", "og:title") or title,
-        "og_description": meta_content(src, "property", "og:description")
-        or meta_content(src, "name", "description"),
+        "og_title": share_title(title),
+        "og_description": description or meta_content(src, "property", "og:description"),
         "og_image": og_image,
         "og_type": meta_content(src, "property", "og:type") or "website",
     }
+
+
+def check_lengths(page: dict, kind: str, day: dt.date | None, today: dt.date) -> None:
+    """The title and description caps. A gate for today's news, a warning elsewhere."""
+    name = rel_name(page["path"])
+    problems = []
+    title_chars = text_len(title_body(page["title"]))
+    if title_chars > TITLE_MAX:
+        problems.append("title %d chars (max %d)" % (title_chars, TITLE_MAX))
+    desc = page.get("description") or ""
+    desc_chars = text_len(desc)
+    if not desc:
+        problems.append("no meta description")
+    elif desc_chars > DESC_MAX:
+        problems.append("meta description %d chars (max %d)" % (desc_chars, DESC_MAX))
+    if not problems:
+        if desc and not re.search(r"[.?!][\"'’”)]?$", html.unescape(desc).strip()):
+            warn("meta descriptions that do not end on a full sentence", name)
+        return
+    line = "%s: %s" % (name, "; ".join(problems))
+    if kind == "news" and day is not None and day >= today:
+        GATE_FAILURES.append(line)
+    else:
+        warn("%s pages over the title or description cap" % kind, line)
 
 
 def parse_article_head(src: str) -> dict:
@@ -545,7 +668,7 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
     src = path.read_text(encoding="utf-8")
     page = parse_common(path, src)
     head = parse_article_head(src)
-    prose = promote_headings(block_text(inner(src, "div", "prose")) or "")
+    prose = label_citations(promote_headings(block_text(inner(src, "div", "prose")) or ""))
 
     sources_block = inner(src, "div", "sources") or inner(src, "section", "sources")
     sources_ol = None
@@ -566,18 +689,20 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
     published_iso = None
     date_display = None
     date_attr = None
+    day = None
     if kind == "news":
         edition = ctx["edition"]
+        day = edition["date"]
         date_attr = edition["iso"]
         date_display = human_date(edition["date"])
-        published_iso = "%sT08:00:00%s" % (edition["iso"], TZ)
+        published_iso = sitelib.local_iso(day, 8)
     else:
         raw = existing_published(src)
         if raw and re.match(r"^\d{4}-\d{2}-\d{2}", raw):
             date_attr = raw[:10]
             day = dt.date.fromisoformat(date_attr)
             date_display = human_date(day)
-            published_iso = "%sT09:00:00%s" % (date_attr, TZ)
+            published_iso = sitelib.local_iso(day, 9)
 
     # This script does not invent dates. It used to fall back to a hardcoded
     # BUILD_DATE, which pinned both answers pages to "Updated 9 August 2026"
@@ -596,12 +721,23 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
             )
         modified = date_attr
     if re.match(r"^\d{4}-\d{2}-\d{2}$", modified):
-        modified = "%sT09:00:00%s" % (modified, TZ)
+        modified = sitelib.local_iso(dt.date.fromisoformat(modified), 9)
 
     page["published_iso"] = published_iso
     page["modified_iso"] = modified
     page["location"] = location
     page["og_type"] = "article"
+
+    # ---- share card
+    if kind == "news" and page["og_image"] == DEFAULT_OG:
+        warn("news pages falling back to the default share card", rel_name(path))
+    if kind == "recipes" and page["og_image"] == DEFAULT_OG:
+        # A payments card on a recipe is off-topic. Pages with their own photo
+        # keep it; the rest get the food-neutral card.
+        page["og_image"] = RECIPES_OG
+
+    if kind in ("news", "blog", "answers"):
+        check_lengths(page, kind, day, ctx["today"])
 
     # ---- schema
     if kind in ("answers", "recipes"):
@@ -613,7 +749,11 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         existing = re.search(
             r'<script type="application/ld\+json">\s*(.*?)\s*</script>', src, re.S
         )
-        page["jsonld"] = existing.group(1) if existing else ""
+        page["jsonld"] = (
+            normalise_jsonld(existing.group(1), kind, page, head, crumb_label, crumb_href)
+            if existing
+            else ""
+        )
     else:
         page["jsonld"] = article_jsonld(
             kind, page, head, published_iso, modified, words, crumb_label, crumb_href
@@ -671,42 +811,64 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
     parts.append("")
     parts.append('<div class="article-tail wrap">')
 
-    # ---- pager (news only): the desk now reads in both directions
-    if kind == "news":
-        pager = ctx["pager"]
-        if pager["prev"] or pager["next"]:
-            parts.append('  <nav class="pager" aria-label="Neighbouring editions">')
-            if pager["prev"]:
-                parts.append(
-                    '    <a class="pager-prev" href="%s"><span class="pager-dir">'
-                    "&larr; Earlier edition</span><span class=\"pager-ttl\">%s</span>"
-                    '<span class="pager-date">%s</span></a>'
-                    % (pager["prev"]["href"], pager["prev"]["title"], pager["prev"]["date"])
-                )
-            if pager["next"]:
-                parts.append(
-                    '    <a class="pager-next" href="%s"><span class="pager-dir">'
-                    "Later edition &rarr;</span><span class=\"pager-ttl\">%s</span>"
-                    '<span class="pager-date">%s</span></a>'
-                    % (pager["next"]["href"], pager["next"]["title"], pager["next"]["date"])
-                )
-            parts.append("  </nav>")
+    # ---- pager: news editions and blog posts both read in both directions
+    pager = ctx.get("pager")
+    if pager and (pager["prev"] or pager["next"]):
+        noun = "edition" if kind == "news" else "post"
+        parts.append(
+            '  <nav class="pager" aria-label="Neighbouring %ss">' % noun
+        )
+        if pager["prev"]:
+            parts.append(
+                '    <a class="pager-prev" href="%s"><span class="pager-dir">'
+                "&larr; Earlier %s</span><span class=\"pager-ttl\">%s</span>"
+                '<span class="pager-date">%s</span></a>'
+                % (pager["prev"]["href"], noun, pager["prev"]["title"], pager["prev"]["date"])
+            )
+        if pager["next"]:
+            parts.append(
+                '    <a class="pager-next" href="%s"><span class="pager-dir">'
+                "Later %s &rarr;</span><span class=\"pager-ttl\">%s</span>"
+                '<span class="pager-date">%s</span></a>'
+                % (pager["next"]["href"], noun, pager["next"]["title"], pager["next"]["date"])
+            )
+        parts.append("  </nav>")
 
     # ---- related
+    # Rows a human picked are lifted and kept. Rows this script generated carry
+    # data-generated, so the next run regenerates them rather than freezing
+    # them as if someone had chosen them.
     related_rows = ctx.get("related_rows")
+    related_heading = ctx["related_heading"]
+    generated = related_rows is not None
     if related_rows is None:
-        block = inner(src, "div", "related") or inner(src, "section", "related")
-        related_rows = inner(block or "", "div", "postlist")
-        if related_rows:
-            related_rows = block_text(related_rows)
+        found = find_block(src, "section", "related") or find_block(src, "div", "related")
+        block = src[found[0]:found[3]] if found else ""
+        if block and "data-generated" not in block[: block.index(">") + 1]:
+            related_rows = inner(block, "div", "postlist")
+            if related_rows:
+                related_rows = block_text(related_rows)
+        if not related_rows and ctx.get("fallback_rows"):
+            related_rows = ctx["fallback_rows"]
+            related_heading = ctx["fallback_heading"]
+            generated = True
     if related_rows:
-        parts.append('  <section class="related" aria-labelledby="related-h">')
-        parts.append('    <h2 id="related-h">%s</h2>' % ctx["related_heading"])
+        parts.append(
+            '  <section class="related" aria-labelledby="related-h"%s>'
+            % (' data-generated="latest"' if generated and kind != "news" else "")
+        )
+        parts.append('    <h2 id="related-h">%s</h2>' % related_heading)
         parts.append('    <div class="postlist">')
         parts.append(related_rows)
         parts.append("    </div>")
         parts.append("  </section>")
 
+    if kind == "recipes":
+        # A recipe page links up to the hubs it sits in, then the recipes index.
+        # The newsletter band and waitlist CTA below still close it: what a
+        # recipe ends on is a founder decision (review 2026-09-22, Decision 6),
+        # so the build does not drop them on its own.
+        parts.append(indent(recipe_links(ctx.get("recipe_hubs", []), ctx.get("recipe_total", 0)), 2))
     parts.append(indent(subscribe_block(), 2))
     cta_h, cta_p = existing_cta(
         src,
@@ -721,6 +883,85 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
     parts.append("</main>")
 
     return document(page, "\n".join(parts))
+
+
+def label_citations(prose: str) -> str:
+    """Give each [n] citation link an accessible name.
+
+    The visible text is only "[1]", so a screen reader's link list read out a
+    column of bracketed numbers. The author's text is untouched; the label is
+    an attribute on the same anchor, added once.
+    """
+    return re.sub(
+        r"<a\b((?:(?!aria-label=)[^>])*)>\[(\d+)\]</a>",
+        r'<a\1 aria-label="Source \2">[\2]</a>',
+        prose,
+    )
+
+
+def recipe_links(hubs: list[dict], total: int) -> str:
+    rows = [
+        '  <a href="%s"><span class="hl-t">%s</span><span class="hl-d">%d recipe%s</span></a>'
+        % (hub["href"], hub["name"], hub["count"], "" if hub["count"] == 1 else "s")
+        for hub in hubs
+    ]
+    rows.append(
+        '  <a href="/recipes/"><span class="hl-t">All recipes</span>'
+        '<span class="hl-d">%d recipes</span></a>' % total
+    )
+    return (
+        '<nav class="hublinks" aria-label="More recipes">\n%s\n</nav>' % "\n".join(rows)
+    )
+
+
+def normalise_jsonld(raw: str, kind: str, page: dict, head: dict,
+                     crumb_label: str, crumb_href: str) -> str:
+    """Tidy a lifted answers or recipes @graph without rebuilding it.
+
+    Three repairs, nothing else changes:
+      - every bare author {"@id": ".../#person"} is written out in full;
+      - recipeCategory comes off nodes typed Article (it is a Recipe property,
+        and the pages without a photo are typed Article);
+      - a graph with no BreadcrumbList gets one. The answers desk wrote
+        what-is-mastercard-agent-pay with a FAQPage only, and this script
+        lifted answers JSON-LD verbatim, so nothing ever added it.
+    """
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as err:
+        warn("JSON-LD that does not parse (left as written)", "%s: %s" % (rel_name(page["path"]), err))
+        return raw
+
+    def fix(node):
+        if isinstance(node, dict):
+            author = node.get("author")
+            if isinstance(author, dict) and author.get("@id") == PERSON_ID and set(author) <= {"@id", "@type", "name", "url"}:
+                node["author"] = dict(PERSON)
+            if node.get("@type") == "Article":
+                node.pop("recipeCategory", None)
+            for value in node.values():
+                fix(value)
+        elif isinstance(node, list):
+            for value in node:
+                fix(value)
+
+    fix(data)
+    graph = data.get("@graph") if isinstance(data, dict) else None
+    if isinstance(graph, list) and not any(
+        isinstance(node, dict) and node.get("@type") == "BreadcrumbList" for node in graph
+    ):
+        name = html.unescape(strip_tags(head["h1"])).strip() or html.unescape(page["og_title"])
+        graph.append(
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Home", "item": "%s/" % SITE},
+                    {"@type": "ListItem", "position": 2, "name": crumb_label, "item": SITE + crumb_href},
+                    {"@type": "ListItem", "position": 3, "name": name, "item": page["canonical"]},
+                ],
+            }
+        )
+    return json.dumps(data, indent=2, ensure_ascii=False).replace("</", "<\\/")
 
 
 def indent(block: str, spaces: int) -> str:
@@ -786,6 +1027,8 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
     head = parse_article_head(src)
     page["location"] = kind
     page["og_type"] = "website"
+    if kind == "recipes" and page["og_image"] == DEFAULT_OG:
+        page["og_image"] = RECIPES_OG
 
     listing = None
     found = find_block(src, "div", "postlist")
@@ -812,6 +1055,7 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
 
         listing = re.sub(r'<(?:span|time)[^>]*class="date"[^>]*>(.*?)</(?:span|time)>',
                          stamp, listing)
+        listing = group_by_month(listing)
 
     cta_h, cta_p = existing_cta(src, "The weekly read", "")
     count = len(re.findall(r'class="post-row"', listing or ""))
@@ -833,6 +1077,16 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
             % (count, {"news": "editions", "blog": "posts", "answers": "definitions",
                        "recipes": "recipes"}[kind])
         )
+    if kind == "news":
+        # One link per month heading, so a phone reader can skip the 40-screen
+        # scroll to reach July (UX-11). Built from the headings group_by_month
+        # wrote, so the strip and the list cannot disagree.
+        months = re.findall(r'<h2 class="listhead" id="(m-[\w-]+)">([^<]+)</h2>', listing or "")
+        if len(months) > 1:
+            parts.append(
+                '    <nav class="monthjump" aria-label="Jump to a month">%s</nav>'
+                % "".join('<a href="#%s">%s</a>' % (anchor, label) for anchor, label in months)
+            )
     parts.append("  </header>")
     parts.append("")
     parts.append('  <div class="article-body wrap">')
@@ -873,7 +1127,7 @@ def hub_jsonld(page, head, crumb, kind, src) -> str:
                 "url": page["canonical"],
                 "inLanguage": "en",
                 "isPartOf": {"@id": "%s/#website" % SITE},
-                "author": {"@id": "%s/#person" % SITE},
+                "author": dict(PERSON),
             },
             {
                 "@type": "BreadcrumbList",
@@ -885,6 +1139,44 @@ def hub_jsonld(page, head, crumb, kind, src) -> str:
         ],
     }
     return json.dumps(graph, indent=2, ensure_ascii=False)
+
+
+HUB_ROW_RE = re.compile(r'[ \t]*<a class="post-row"[^>]*>.*?</a>', re.S)
+
+
+def group_by_month(listing: str) -> str:
+    """The news hub, newest month first, each month under its own h2.
+
+    88 editions in one flat list ran to 40 phone screens with no heading
+    between the h1 and the footer. Rows are re-sorted by their own datetime
+    and re-grouped on every run, so a row the desk prepends anywhere in the
+    list lands in the right month. h2.listhead is the class the recipe hubs
+    already style for in-list headings.
+    """
+    rows = []
+    for position, match in enumerate(HUB_ROW_RE.finditer(listing)):
+        text = match.group(0).strip()
+        stamp = re.search(r'datetime="(\d{4}-\d{2}-\d{2})"', text)
+        if not stamp:
+            href = re.search(r'href="/news/(\d{4}-\d{2}-\d{2})-', text)
+            stamp = href
+        rows.append((stamp.group(1) if stamp else "", position, text))
+    if not rows:
+        return listing
+    rows.sort(key=lambda row: (row[0], -row[1]), reverse=True)
+    out = []
+    current = None
+    for iso, _, text in rows:
+        month = iso[:7]
+        if month != current:
+            current = month
+            if iso:
+                label = "%s %s" % (MONTHS[int(iso[5:7]) - 1], iso[:4])
+                out.append('      <h2 class="listhead" id="m-%s">%s</h2>' % (month, label))
+            else:
+                out.append('      <h2 class="listhead" id="m-undated">Undated</h2>')
+        out.append("      " + text)
+    return block_text("\n".join(out))
 
 
 INDEX_DATE_RE = re.compile(r"^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$")
@@ -954,9 +1246,105 @@ def render_doc(path: pathlib.Path, location: str) -> str:
     return document(page, "\n".join(parts))
 
 
-def shell_pass(path: pathlib.Path, location: str, nav_root: str = "/") -> str:
-    """Swap the nav and footer on a bespoke page without touching its body."""
+def render_404(path: pathlib.Path, latest_rows: str) -> str:
+    """The not-found page, in the same shell as everything else.
+
+    It used to be a centred card with one link home: no nav, no <main>, no
+    footer and no analytics.js, so a broken inbound link was a dead end and was
+    never recorded. Its own copy (kicker, headline, line, button) is lifted and
+    kept; the shell, the latest editions and the section links are added.
+    It stays noindex and carries no share-card metadata.
+    """
     src = path.read_text(encoding="utf-8")
+    page = parse_common(path, src)
+    page["location"] = "404"
+    page["robots"] = meta_content(src, "name", "robots") or "noindex"
+    page["social"] = False
+    page["jsonld"] = ""
+
+    body = src[src.find("<body"):] if "<body" in src else src
+    kicker = re.search(r'<span class="index"[^>]*>(.*?)</span>', body, re.S)
+    h1 = re.search(r"<h1[^>]*>(.*?)</h1>", body, re.S)
+    after_h1 = body[h1.end():] if h1 else body
+    line = re.search(r'<p class="standfirst">(.*?)</p>', after_h1, re.S) or re.search(
+        r"<p\b[^>]*>(?!\s*<a)(.*?)</p>", after_h1, re.S
+    )
+    button = re.search(r'<a class="btn" href="/">(.*?)</a>', body, re.S)
+
+    parts = [
+        '<main id="main">',
+        '  <header class="article-head wrap">',
+        '    <span class="index">%s</span>' % (kicker.group(1).strip() if kicker else "Error 404"),
+        "    <h1>%s</h1>" % (h1.group(1).strip() if h1 else "Not found"),
+    ]
+    if line:
+        parts.append('    <p class="standfirst">%s</p>' % line.group(1).strip())
+    parts += [
+        "  </header>",
+        "",
+        '  <div class="article-body wrap">',
+        '    <p><a class="btn" href="/">%s</a></p>' % (button.group(1).strip() if button else "Back to home"),
+        "  </div>",
+        "",
+        '<div class="article-tail wrap">',
+        '  <section class="related" aria-labelledby="related-h">',
+        '    <h2 id="related-h">Latest from the desk</h2>',
+        '    <div class="postlist">',
+        latest_rows,
+        "    </div>",
+        "  </section>",
+        indent(HUBLINKS, 2),
+        "</div>",
+        "</main>",
+    ]
+    return document(page, "\n".join(parts))
+
+
+def cap_teaser(src: str) -> str:
+    """Hold the homepage news teaser at TEASER_MAX rows, newest kept.
+
+    It was cut from 36 rows to 6 on 2026-08-24 and grew back to 17, one row a
+    day, because the daily desk prepends a row and nothing ever took one away.
+    """
+    section = find_block(src, "section")
+    start = 0
+    while section:
+        opening = src[section[0]:section[1]]
+        if 'id="news"' in opening:
+            break
+        start = section[3]
+        section = find_block(src, "section", start=start)
+    if not section:
+        return src
+    region = src[section[1]:section[2]]
+    rows = list(re.finditer(r'[ \t]*<a class="post-row"[^>]*>.*?</a>\n?', region, re.S))
+    if len(rows) <= TEASER_MAX:
+        return src
+    GATE_FAILURES.append(
+        "index.html: homepage news teaser holds %d rows (max %d)" % (len(rows), TEASER_MAX)
+    )
+
+    def stamp(match):
+        found = re.search(r'datetime="(\d{4}-\d{2}-\d{2})"', match.group(0)) or re.search(
+            r'href="/news/(\d{4}-\d{2}-\d{2})-', match.group(0)
+        )
+        return found.group(1) if found else ""
+
+    ranked = sorted(range(len(rows)), key=lambda i: (stamp(rows[i]), -i), reverse=True)
+    drop = set(ranked[TEASER_MAX:])
+    for i in sorted(drop, reverse=True):
+        region = region[: rows[i].start()] + region[rows[i].end():]
+    return src[: section[1]] + region + src[section[2]:]
+
+
+def shell_pass(path: pathlib.Path, location: str, nav_root: str = "/") -> str:
+    """Swap the nav and footer on a bespoke page without touching its body.
+
+    The one exception is the homepage news teaser, which is capped.
+    """
+    src = path.read_text(encoding="utf-8")
+    if path.name == "index.html" and path.parent == REPO:
+        src = cap_teaser(src)
 
     found = find_block(src, "nav", "nav")
     if found:
@@ -986,7 +1374,44 @@ def shell_pass(path: pathlib.Path, location: str, nav_root: str = "/") -> str:
 
 # ---------------------------------------------------------------------- main
 
-def build(check: bool) -> int:
+def blog_posts() -> list[dict]:
+    """Every blog post with its publication date, oldest first."""
+    posts = []
+    for path in sorted((REPO / "blog").glob("*.html")):
+        if path.name == "index.html":
+            continue
+        raw = existing_published(path.read_text(encoding="utf-8")) or ""
+        day = dt.date.fromisoformat(raw[:10]) if re.match(r"^\d{4}-\d{2}-\d{2}", raw) else None
+        posts.append({"path": path, "date": day, "href": "/blog/%s" % path.name})
+    posts.sort(key=lambda p: (p["date"] or dt.date.min, p["path"].name))
+    return posts
+
+
+def recipe_hub_map() -> tuple[dict[str, list[dict]], int]:
+    """recipe href -> the hubs that list it, cuisine hubs before course hubs."""
+    cuisine = ("trinidadian", "nigerian")
+    order = [h for h in RECIPE_HUBS if h in cuisine] + [h for h in RECIPE_HUBS if h not in cuisine]
+    membership: dict[str, list[dict]] = {}
+    for slug in order:
+        hub = REPO / "recipes" / slug / "index.html"
+        if not hub.exists():
+            continue
+        src = hub.read_text(encoding="utf-8")
+        name = tag_text(inner(src, "header", "article-head") or src, "h1") or slug
+        hrefs = []
+        for href in re.findall(r'<a class="post-row" href="([^"]+)"', src):
+            if href not in hrefs:
+                hrefs.append(href)
+        entry = {"href": "/recipes/%s/" % slug, "name": strip_tags(name).strip(), "count": len(hrefs)}
+        for href in hrefs:
+            membership.setdefault(href, []).append(entry)
+    total = sum(
+        1 for path in (REPO / "recipes").glob("*/index.html") if path.parent.name not in RECIPE_HUBS
+    )
+    return membership, total
+
+
+def build(check: bool, today: dt.date) -> int:
     changed = []
 
     def emit(path: pathlib.Path, text: str):
@@ -1009,7 +1434,8 @@ def build(check: bool) -> int:
         return {
             "href": edition["href"],
             "date": short_date(edition["date"]),
-            "title": meta_content(src, "property", "og:title") or "",
+            "title": title_body(tag_text(src, "title") or "")
+            or meta_content(src, "property", "og:title") or "",
             "dek": meta_content(src, "name", "description") or "",
         }
 
@@ -1041,23 +1467,58 @@ def build(check: bool) -> int:
                     "pager": pager,
                     "related_rows": rows,
                     "related_heading": "Latest from the desk",
+                    "today": today,
                 },
             ),
         )
 
-    # ---- blog posts
-    for path in sorted((REPO / "blog").glob("*.html")):
-        if path.name == "index.html":
-            continue
+    # ---- blog posts: the same tail as a news edition. A pager both ways, then
+    # the curated Related rows where a human picked them, else the newest three.
+    blog_index_rows = read_index_rows(REPO / "blog" / "index.html")
+    posts = blog_posts()
+
+    def blog_row(post, full_date=False):
+        row = blog_index_rows.get(post["href"])
+        if row:
+            row = dict(row)
+        else:
+            src = post["path"].read_text(encoding="utf-8")
+            row = {
+                "href": post["href"],
+                "date": "%s %d" % (SHORT_MONTHS[post["date"].month - 1], post["date"].year)
+                if post["date"] else "",
+                "title": title_body(tag_text(src, "title") or ""),
+                "dek": meta_content(src, "name", "description") or "",
+            }
+        if full_date and post["date"]:
+            row["date"] = short_date(post["date"])
+        return row
+
+    newest_posts = list(reversed(posts))
+    for position, post in enumerate(posts):
+        prev_p = posts[position - 1] if position > 0 else None
+        next_p = posts[position + 1] if position + 1 < len(posts) else None
+        skip = {post["href"]} | {p["href"] for p in (prev_p, next_p) if p}
+        picks = [p for p in newest_posts if p["href"] not in skip][:3]
+        fallback = block_text(
+            "".join(post_row(blog_row(p), p["date"].isoformat() if p["date"] else None) for p in picks)
+        )
         emit(
-            path,
+            post["path"],
             render_article(
-                path,
+                post["path"],
                 "blog",
                 {
                     "crumb": ("Field notes", "/blog/"),
+                    "pager": {
+                        "prev": blog_row(prev_p, True) if prev_p else None,
+                        "next": blog_row(next_p, True) if next_p else None,
+                    },
                     "related_rows": None,
                     "related_heading": "Related",
+                    "fallback_rows": fallback,
+                    "fallback_heading": "Latest field notes",
+                    "today": today,
                 },
             ),
         )
@@ -1073,11 +1534,18 @@ def build(check: bool) -> int:
                     "crumb": ("Answers", "/answers/"),
                     "related_rows": None,
                     "related_heading": "Related",
+                    "today": today,
                 },
             ),
         )
 
     # ---- recipes
+    membership, recipe_total = recipe_hub_map()
+    if not (REPO / "assets" / "og" / "recipes.png").exists():
+        warn(
+            "missing share card",
+            "assets/og/recipes.png is referenced by recipe pages without a photo but is not on disk",
+        )
     for path in sorted((REPO / "recipes").glob("*/index.html")):
         if path.parent.name in RECIPE_HUBS:
             continue
@@ -1090,6 +1558,9 @@ def build(check: bool) -> int:
                     "crumb": ("Recipes", "/recipes/"),
                     "related_rows": None,
                     "related_heading": "Related recipes",
+                    "recipe_hubs": membership.get("/recipes/%s/" % path.parent.name, []),
+                    "recipe_total": recipe_total,
+                    "today": today,
                 },
             ),
         )
@@ -1108,15 +1579,37 @@ def build(check: bool) -> int:
     # ---- prose page and bespoke pages
     emit(REPO / "privacy.html", render_doc(REPO / "privacy.html", "privacy"))
     emit(REPO / "index.html", shell_pass(REPO / "index.html", "home", "" ))
+    if (REPO / "404.html").exists():
+        latest = block_text("".join(post_row(row_for(e), e["iso"]) for e in newest_first[:3]))
+        emit(REPO / "404.html", render_404(REPO / "404.html", latest))
 
     print(("would rewrite " if check else "rewrote ") + "%d page(s)" % len(changed))
     for name in changed:
         print("  " + name)
-    return 1 if (check and changed) else 0
+
+    for kind, lines in WARNINGS.items():
+        print("warning: %d %s" % (len(lines), kind), file=sys.stderr)
+        for line in lines:
+            print("  " + line, file=sys.stderr)
+    if GATE_FAILURES:
+        label = "gate failed" if check else "gate (enforced by --check)"
+        print("%s: %d" % (label, len(GATE_FAILURES)), file=sys.stderr)
+        for line in GATE_FAILURES:
+            print("  " + line, file=sys.stderr)
+
+    if check and (changed or GATE_FAILURES):
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="report drift without writing")
+    parser.add_argument(
+        "--today",
+        type=dt.date.fromisoformat,
+        default=None,
+        help="date the news gate treats as today (YYYY-MM-DD, default: today in Montreal)",
+    )
     args = parser.parse_args()
-    sys.exit(build(args.check))
+    sys.exit(build(args.check, args.today or sitelib.montreal_today()))

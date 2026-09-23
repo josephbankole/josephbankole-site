@@ -180,7 +180,16 @@ img { max-width: 100%; display: block; }
   /* the CTA rides the brand line so the header stays two rows deep */
   .nav-links .btn { position: absolute; top: 10px; right: var(--gutter); }
 }
+/* At phone width the six links used to wrap onto a second line of their own,
+   so the "two rows" above rendered as three and the sticky header measured
+   131px at 375 (16% of the screen). Tighter tracking and a flexible gap put
+   all six on one line from a 350px viewport up (they need about 310px); the
+   header is two rows again at 95px. Narrower than that they still wrap
+   rather than scroll. The 12px label size and the 28px tap height are unchanged. */
 @media (max-width: 460px) {
+  .nav { row-gap: 6px; }
+  .nav-links { justify-content: space-between; gap: 2px 8px; }
+  .nav-links a:not(.btn) { letter-spacing: .04em; }
   .nav-links .btn { padding: 9px 14px; font-size: 14px; }
   .btn-label-full { display: none; }
   .btn-label-short { display: inline; }
@@ -281,6 +290,13 @@ h2 em { font-style: italic; color: var(--ink); }
   font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
 }
 .prose strong { font-weight: 600; }
+/* Code wraps instead of running off the measure. body has overflow-x:hidden,
+   so a scrolling <pre> could not be panned on a phone and the right half of
+   the BS Guide prompt and the Xcode fix command were simply cut off at
+   375px. pre-wrap keeps the prompt's own line breaks; overflow-wrap:anywhere
+   breaks a long path or command only when nothing else fits. */
+.prose pre { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; }
+.prose code { overflow-wrap: anywhere; }
 
 /* ---- links in running text ----
    Signal Orange on the page ground is 4.45:1, under the floor for body-size
@@ -430,6 +446,14 @@ h2 em { font-style: italic; color: var(--ink); }
 .article-meta .byline { color: var(--ink); }
 .article-meta time { color: var(--ink-dim); }
 .article-body { padding-top: 8px; padding-bottom: 8px; }
+/* Month jump strip under the news hub's edition count (UX-11). */
+.monthjump {
+  font-family: var(--mono); font-size: var(--t-label); letter-spacing: .12em;
+  text-transform: uppercase; margin-top: 14px;
+  display: flex; gap: 6px 18px; flex-wrap: wrap;
+}
+.monthjump a { color: var(--ink-dim); border-bottom: 1px solid transparent; padding: 6px 0; }
+.monthjump a:hover, .monthjump a:focus-visible { color: var(--ink); border-bottom-color: var(--accent); }
 
 /* ---- sources ---- */
 .sources { max-width: var(--measure); margin-top: 3em; padding-top: 1.6em; border-top: 1px solid var(--ink-rule); }

@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="The production AI bug that was the context window" />
-<meta property="og:description" content="Context-window exhaustion as a production failure mode, and the classic-ops fixes that closed it." />
+<meta property="og:description" content="Two AI agents failed the same way. The cause was context-window exhaustion as a production failure mode, and the fixes were ordinary operations work." />
 <meta property="og:url" content="https://josephbankole.ca/blog/debugging-ai-context-window.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/debugging-ai-context-window.png" />
 <meta property="og:image:width" content="1200" />
@@ -21,7 +21,7 @@
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="The production AI bug that was the context window" />
-<meta name="twitter:description" content="Context-window exhaustion as a production failure mode, and the classic-ops fixes that closed it." />
+<meta name="twitter:description" content="Two AI agents failed the same way. The cause was context-window exhaustion as a production failure mode, and the fixes were ordinary operations work." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/debugging-ai-context-window.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -40,7 +40,7 @@
     {
       "@type": "BlogPosting",
       "headline": "The production AI bug that was the context window",
-      "description": "Context-window exhaustion as a production failure mode, and the classic-ops fixes that closed it.",
+      "description": "Two AI agents failed the same way. The cause was context-window exhaustion as a production failure mode, and the fixes were ordinary operations work.",
       "image": [
         "https://josephbankole.ca/assets/og/debugging-ai-context-window.png"
       ],
@@ -137,7 +137,7 @@
       </ol>
 
       <h3>Why this felt familiar</h3>
-      <p>Ten years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
+      <p>Five years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
       <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over, which is exactly what mine did until the fixes above went in.</p>
 
       <p class="dim">The style guide is 3KB now, the logs rotate, and the CSV never enters the model's memory. Failure write-ups like this are the artifact almost nobody keeps, and the one I always want to read.</p>
@@ -146,6 +146,10 @@
 </article>
 
 <div class="article-tail wrap">
+  <nav class="pager" aria-label="Neighbouring posts">
+    <a class="pager-prev" href="/blog/payment-batch-fails.html"><span class="pager-dir">&larr; Earlier post</span><span class="pager-ttl">What actually happens when a payment batch fails</span><span class="pager-date">16 Jun 2026</span></a>
+    <a class="pager-next" href="/blog/blank-carousel-render.html"><span class="pager-dir">Later post &rarr;</span><span class="pager-ttl">The carousel that rendered blank</span><span class="pager-date">18 Jun 2026</span></a>
+  </nav>
   <section class="related" aria-labelledby="related-h">
     <h2 id="related-h">Related</h2>
     <div class="postlist">

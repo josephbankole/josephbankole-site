@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="How do you set spending limits for an AI agent?" />
-<meta property="og:description" content="Five layers can hold an agent's spending limit: the prompt, the agent's code, a signed mandate, the payment credential and the rail. Only the lower ones enforce." />
+<meta property="og:description" content="A spending limit is only real where something other than the agent enforces it. Five layers can hold one, from the prompt down to the payment rail." />
 <meta property="og:url" content="https://josephbankole.ca/answers/ai-agent-spending-limits/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
@@ -21,7 +21,7 @@
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="How do you set spending limits for an AI agent?" />
-<meta name="twitter:description" content="Five layers can hold an agent's spending limit: the prompt, the agent's code, a signed mandate, the payment credential and the rail. Only the lower ones enforce." />
+<meta name="twitter:description" content="A spending limit is only real where something other than the agent enforces it. Five layers can hold one, from the prompt down to the payment rail." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -49,7 +49,10 @@
             "@type": "Answer",
             "text": "Five layers can hold one, and they are not equal. A number in the prompt is a suggestion, because nothing other than the model checks it. A check inside the agent's own code is real enforcement that holds until the first route to the payment API that skips it. A signed mandate, which is what AP2 calls an Intent Mandate, is verified by the merchant and the payment network rather than by the agent. A network token puts the cap in the credential itself, so the card network declines anything outside it. Underneath all of that the payment rail sets its own ceiling: UPI Circle caps a delegated spender at 5,000 rupees per transaction and 15,000 rupees a month.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -60,7 +63,10 @@
             "@type": "Answer",
             "text": "Because you have asked the thing being constrained to apply the constraint, and nothing else checks the instruction was honoured. The commoner failure is duller than a jailbreak: a limit that was never wired to anything and passes review because the review reads the same file the limit was declared in. The mechanical test is to name the component that returns an error when the limit is breached and then trigger that error deliberately. If you cannot make it fire, you have not established that it exists.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -71,7 +77,10 @@
             "@type": "Answer",
             "text": "Google published the Agent Payments Protocol on 16 September 2025 with more than sixty payments and technology partners. For a delegated task the user signs an Intent Mandate up front, which Google says specifies price limits, timing and other conditions, its worked example being a trip booking with a total budget of 700 dollars. A Cart Mandate later pins the specific items at the specific price. What this adds over in-agent code is a check performed by the merchant and the network rather than by the agent. Its scope is one delegated task, not a budget across every agent you run.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -82,7 +91,10 @@
             "@type": "Answer",
             "text": "Yes, and this is the layer that does not depend on protocol adoption. Visa's Intelligent Commerce describes agentic commerce enabled through spending limits, approval workflows, authentication requirements and trusted identity signals, with the agent handed a tokenised credential rather than a card number. Mastercard announced Agent Pay on 29 April 2025 with Microsoft, IBM, Braintree and Checkout.com, and says consumers will have complete control over what the agent is allowed to purchase on their behalf. The operational gain is revocation: a token belongs to one agent, so you can stop that agent spending without reissuing the card.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -93,7 +105,10 @@
             "@type": "Answer",
             "text": "The rail sets a ceiling below whatever you negotiated above it. India's UPI Circle is the clearest live example: a primary user delegates payment authority to a secondary user, and under NPCI's rules that secondary user is capped at 5,000 rupees per transaction and 15,000 rupees a month, whether the delegation is full or partial. India has been reported as preparing a Unified Agent Protocol extending delegated UPI payments to AI agents. NPCI has published no limits or specification for it, though its non-executive chairman said on 10 September 2026 that NPCI is examining protocols to identify and authorise digital agents within UPI.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         }

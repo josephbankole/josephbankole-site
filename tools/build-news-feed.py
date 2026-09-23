@@ -8,11 +8,20 @@ so 25 consecutive editions (2026-07-15 to 2026-08-08) never entered it. This
 script derives the whole feed from the pages themselves, so the feed can never
 drift from what is published.
 
-Run it after adding an edition, from the repo root:
+Run it after adding an edition, and after tools/build-pages.py, from the repo
+root:
 
     python3 tools/build-news-feed.py
 
 It rewrites news-feed.xml in place and prints the item count.
+
+Two fixes from the 2026-09-22 review:
+  - pubDate is the page's own article:published_time converted to GMT. It used
+    to write 08:00 Montreal time as if it were 08:00 GMT, four hours early on
+    every item.
+  - Each item carries the full edition in content:encoded (the prose and the
+    sources list), so <description> can stay a short summary without shrinking
+    what subscribers read.
 """
 
 from __future__ import annotations
@@ -22,6 +31,9 @@ import html
 import pathlib
 import re
 import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import sitelib  # noqa: E402  (shared clock and block finder, tools/sitelib.py)
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 NEWS_DIR = REPO / "news"
@@ -42,6 +54,7 @@ TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
 DESC_RE = re.compile(r'<meta\s+name="description"\s+content="([^"]*)"')
 
 TITLE_SUFFIX = " · Joseph Bankole"
+CONTENT_NS = "http://purl.org/rss/1.0/modules/content/"
 
 
 def unescape(value: str) -> str:
@@ -77,17 +90,28 @@ def read_edition(path: pathlib.Path) -> dict | None:
         print(f"  skipped (no description): {path.name}", file=sys.stderr)
         return None
 
-    published = dt.datetime(year, month, day, 8, 0, 0, tzinfo=dt.timezone.utc)
+    stamp = sitelib.meta_property(source, "article:published_time")
+    published = sitelib.parse_iso(stamp) if stamp else None
+    if published is None:
+        # No stamp on the page yet: 08:00 in Montreal, the desk's publish time.
+        published = sitelib.parse_iso(sitelib.local_iso(dt.date(year, month, day), 8))
+        print(f"  no article:published_time, used 08:00 Montreal: {path.name}", file=sys.stderr)
+
+    content = sitelib.article_html(source)
+    if content is None:
+        print(f"  no prose block, feed item has no content:encoded: {path.name}", file=sys.stderr)
+
     return {
         "url": f"{SITE}/news/{path.name}",
         "title": title,
         "description": unescape(desc_match.group(1)),
         "published": published,
+        "content": content,
     }
 
 
 def rfc822(moment: dt.datetime) -> str:
-    return moment.strftime("%a, %d %b %Y %H:%M:%S GMT")
+    return sitelib.rfc822(moment)
 
 
 def build() -> int:
@@ -104,7 +128,7 @@ def build() -> int:
 
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+        f'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="{CONTENT_NS}">',
         "<channel>",
         f"  <title>{esc(CHANNEL_TITLE)}</title>",
         f"  <link>{CHANNEL_LINK}</link>",
@@ -121,8 +145,10 @@ def build() -> int:
             f"    <guid>{edition['url']}</guid>",
             f"    <pubDate>{rfc822(edition['published'])}</pubDate>",
             f"    <description>{esc(edition['description'])}</description>",
-            "  </item>",
         ]
+        if edition["content"]:
+            lines.append(f"    <content:encoded>{sitelib.cdata(edition['content'])}</content:encoded>")
+        lines.append("  </item>")
     lines += ["</channel>", "</rss>", ""]
 
     FEED_PATH.write_text("\n".join(lines), encoding="utf-8")

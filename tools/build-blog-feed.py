@@ -7,12 +7,15 @@ hand-copying an <item> and getting the RFC-822 pubDate right by eye. That is
 the same drift that let 25 news editions fall out of news-feed.xml before its
 generator was written.
 
-One rule makes this safe to run on a feed that already exists: an item already
-in the feed keeps its published pubDate and description verbatim. Those were
-written by hand, they are what subscribers already received, and rederiving
-them would re-date old posts in every reader. Only posts absent from the feed
-are derived from the page, and only the channel description is resynced, from
-blog/index.html, so the hub and the feed cannot drift apart.
+Every item is derived from its page. Until 2026-09-22 an item already in the
+feed kept its hand-written pubDate and description verbatim, which is how the
+Xcode 27 post came to say 19:12 GMT while its page said 09:00 Montreal (13:00
+GMT). Most readers deduplicate on <guid>, which does not change, so fixing a
+pubDate does not re-deliver a post. pubDate is now the page's own
+article:published_time converted to GMT, <description> is the page's meta
+description, and content:encoded carries the full post. Only the channel
+description comes from elsewhere, blog/index.html, so the hub and the feed
+cannot drift apart.
 
 It is deterministic. lastBuildDate is taken from the newest item rather than
 from the clock, so running it twice produces byte-identical output.
@@ -32,6 +35,9 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import sitelib  # noqa: E402  (shared clock and block finder, tools/sitelib.py)
+
 REPO = pathlib.Path(__file__).resolve().parent.parent
 BLOG_DIR = REPO / "blog"
 FEED_PATH = REPO / "feed.xml"
@@ -46,13 +52,8 @@ TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
 DESC_RE = re.compile(r'<meta\s+name="description"\s+content="([^"]*)"')
 PUBLISHED_RE = re.compile(r'"datePublished"\s*:\s*"([^"]+)"')
 
-ITEM_RE = re.compile(r"<item>(.*?)</item>", re.S)
-LINK_RE = re.compile(r"<link>(.*?)</link>", re.S)
-PUBDATE_RE = re.compile(r"<pubDate>(.*?)</pubDate>", re.S)
-ITEM_DESC_RE = re.compile(r"<description>(.*?)</description>", re.S)
-ITEM_TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
-
 TITLE_SUFFIX = " · Joseph Bankole"
+CONTENT_NS = "http://purl.org/rss/1.0/modules/content/"
 
 
 def unescape(value: str) -> str:
@@ -73,37 +74,10 @@ def label(path: pathlib.Path) -> str:
 
 
 def rfc822(moment: dt.datetime) -> str:
-    return moment.astimezone(dt.timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
+    return sitelib.rfc822(moment)
 
 
-def parse_rfc822(value: str) -> dt.datetime:
-    return dt.datetime.strptime(value.strip(), "%a, %d %b %Y %H:%M:%S GMT").replace(
-        tzinfo=dt.timezone.utc
-    )
-
-
-def read_existing() -> dict[str, dict]:
-    """Map url -> the item exactly as subscribers already received it."""
-    if not FEED_PATH.exists():
-        return {}
-    source = FEED_PATH.read_text(encoding="utf-8")
-    kept = {}
-    for body in ITEM_RE.findall(source):
-        link = LINK_RE.search(body)
-        pub = PUBDATE_RE.search(body)
-        desc = ITEM_DESC_RE.search(body)
-        title = ITEM_TITLE_RE.search(body)
-        if not (link and pub):
-            continue
-        kept[link.group(1).strip()] = {
-            "title": unescape(title.group(1)) if title else "",
-            "description": unescape(desc.group(1)) if desc else "",
-            "published": parse_rfc822(pub.group(1)),
-        }
-    return kept
-
-
-def read_post(path: pathlib.Path, existing: dict[str, dict]) -> dict | None:
+def read_post(path: pathlib.Path) -> dict | None:
     url = f"{SITE}/blog/{path.name}"
     source = path.read_text(encoding="utf-8")
 
@@ -115,31 +89,32 @@ def read_post(path: pathlib.Path, existing: dict[str, dict]) -> dict | None:
     if title.endswith(TITLE_SUFFIX):
         title = title[: -len(TITLE_SUFFIX)].strip()
 
-    was = existing.get(url)
-    if was:
-        # Already published to subscribers. Its pubDate and description stand.
-        return {
-            "url": url,
-            "title": was["title"] or title,
-            "description": was["description"],
-            "published": was["published"],
-        }
-
     desc_match = DESC_RE.search(source)
     if not desc_match:
         print(f"  skipped (no description): {path.name}", file=sys.stderr)
         return None
-    published_match = PUBLISHED_RE.search(source)
-    if not published_match:
+
+    stamp = sitelib.meta_property(source, "article:published_time")
+    published = sitelib.parse_iso(stamp) if stamp else None
+    if published is None:
+        published_match = PUBLISHED_RE.search(source)
+        published = sitelib.parse_iso(published_match.group(1)) if published_match else None
+    if published is None:
         raise SystemExit(
-            f"{label(path)} carries no datePublished in its JSON-LD.\n"
+            f"{label(path)} carries no article:published_time and no datePublished with an offset.\n"
             "Add one. This script will not invent a date for it."
         )
+
+    content = sitelib.article_html(source)
+    if content is None:
+        print(f"  no prose block, feed item has no content:encoded: {path.name}", file=sys.stderr)
+
     return {
         "url": url,
         "title": title,
         "description": unescape(desc_match.group(1)),
-        "published": dt.datetime.fromisoformat(published_match.group(1)),
+        "published": published,
+        "content": content,
     }
 
 
@@ -152,22 +127,21 @@ def channel_description() -> str:
 
 
 def build() -> int:
-    existing = read_existing()
     posts = []
     for path in sorted(BLOG_DIR.glob("*.html")):
         if path.name == "index.html":
             continue
-        post = read_post(path, existing)
+        post = read_post(path)
         if post:
             posts.append(post)
     if not posts:
         raise SystemExit("no posts found in blog/. Refusing to write an empty feed.")
 
-    posts.sort(key=lambda item: item["published"], reverse=True)
+    posts.sort(key=lambda item: (item["published"], item["url"]), reverse=True)
 
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+        f'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="{CONTENT_NS}">',
         "<channel>",
         f"  <title>{esc(CHANNEL_TITLE)}</title>",
         f"  <link>{CHANNEL_LINK}</link>",
@@ -184,8 +158,10 @@ def build() -> int:
             f"    <guid>{post['url']}</guid>",
             f"    <pubDate>{rfc822(post['published'])}</pubDate>",
             f"    <description>{esc(post['description'])}</description>",
-            "  </item>",
         ]
+        if post["content"]:
+            lines.append(f"    <content:encoded>{sitelib.cdata(post['content'])}</content:encoded>")
+        lines.append("  </item>")
     lines += ["</channel>", "</rss>", ""]
 
     FEED_PATH.write_text("\n".join(lines), encoding="utf-8")

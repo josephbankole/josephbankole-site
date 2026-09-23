@@ -11,17 +11,17 @@
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="Who is liable when an AI agent buys the wrong thing?" />
-<meta property="og:description" content="The agent protocols produce evidence, not a liability rule. The consumer rules that allocate loss turn on a word that was written about strangers, not about your own agent." />
+<meta property="og:description" content="Nobody has assigned it yet. AP2 puts dispute resolution outside its own scope, and the US rules that cap your loss define unauthorised very narrowly." />
 <meta property="og:url" content="https://josephbankole.ca/answers/ai-agent-purchase-liability/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-08-25T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-08-25T17:30:00-04:00" />
+<meta property="article:modified_time" content="2026-09-22T09:00:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Who is liable when an AI agent buys the wrong thing?" />
-<meta name="twitter:description" content="The agent protocols produce evidence, not a liability rule. The consumer rules that allocate loss turn on a word that was written about strangers, not about your own agent." />
+<meta name="twitter:description" content="Nobody has assigned it yet. AP2 puts dispute resolution outside its own scope, and the US rules that cap your loss define unauthorised very narrowly." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -40,7 +40,7 @@
     {
       "@type": "FAQPage",
       "datePublished": "2026-08-25T17:30:00-04:00",
-      "dateModified": "2026-08-25T17:30:00-04:00",
+      "dateModified": "2026-09-22T09:00:00-04:00",
       "mainEntity": [
         {
           "@type": "Question",
@@ -48,7 +48,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Nobody has assigned it yet. The protocols carrying agent purchases are built to produce evidence rather than to allocate loss: the AP2 specification places dispute resolution, retention and retrieval expressly outside its own scope. The United States consumer rules that do allocate loss, Regulation E and Regulation Z, turn on whether a transaction was unauthorised, and both define that as spending by a person acting without the account holder's authority. An agent you configured and funded is acting with your authority, so the caps written for a stolen card do not obviously reach it.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -57,7 +62,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "No. The AP2 specification says that the Checkout Mandate and Receipt and the Payment Mandate and Receipt can be brought together to give a non-repudiable picture of a disputed transaction, and that the details of how this is used for dispute resolution, retention and retrieval are outside the scope of the specification. AP2's own FAQ describes the goal as supplying evidence that helps payment networks establish accountability and liability principles, with a network adjudicator such as a card network making the call.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -66,7 +76,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "The merchant, in most designs shipping today. The Agentic Commerce Protocol states that businesses maintain their customer relationships as the merchant of record and that an AI platform embeds commerce without being the merchant of record, so the existing path is unchanged: the cardholder complains to the issuer, the issuer raises the chargeback, and it lands on the business that fulfilled the order. The agent platform that produced the instruction sits outside that chain.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         }
       ]
@@ -74,9 +89,24 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://josephbankole.ca/" },
-        { "@type": "ListItem", "position": 2, "name": "Answers", "item": "https://josephbankole.ca/answers/" },
-        { "@type": "ListItem", "position": 3, "name": "Who is liable when an AI agent buys the wrong thing?", "item": "https://josephbankole.ca/answers/ai-agent-purchase-liability/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Who is liable when an AI agent buys the wrong thing?",
+          "item": "https://josephbankole.ca/answers/ai-agent-purchase-liability/"
+        }
       ]
     }
   ]
@@ -100,11 +130,12 @@
     <span class="index">Answers</span>
     <h1>Who is liable when an AI agent buys the wrong thing?</h1>
     <p class="standfirst">Nobody has assigned it yet. The protocols carrying agent purchases are built to produce evidence rather than to allocate loss, and the consumer rules that do allocate loss turn on whether a transaction was unauthorised. Both of the American definitions of that word describe spending by a person acting without the account holder&#x27;s authority. An agent you configured and funded is acting with your authority. The caps written for a stolen card number were drafted for a thief, and the standards now carrying agent purchases leave the other case open on purpose.</p>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-25">Updated 25 August 2026</time><span>4 min read</span></p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-22">Updated 22 September 2026</time><span>4 min read</span></p>
   </header>
 
   <div class="article-body wrap">
     <div class="prose">
+      <p>Update, 22 September 2026: Ant International launched AgentSafePay on 18 September 2026. Its release calls the product a &quot;100% fund guarantee against losses arising from intent misinterpretation, malicious prompt injection or other agent-specific risks&quot;. Neither the release nor FinTech Global&#x27;s report gives a cap, a claims window or the test for deciding that an agent caused the loss (<a class="inline-link" href="https://en.prnasia.com/releases/apac/ant-international-launches-industry-s-first-full-stack-ai-native-solutions-for-payment-account-fx-treasury-and-growth-operations-for-global-businesses-548466.shtml" target="_blank" rel="noopener">Ant International</a>, <a class="inline-link" href="https://fintech.global/2026/09/18/ant-international-hands-payment-control-to-ai-agents/" target="_blank" rel="noopener">FinTech Global</a>).</p>
       <h2>What do the agent payment protocols say about liability?</h2>
       <p>Less than the write-ups imply. Google&#x27;s Agent Payments Protocol, AP2, is the one built specifically for the argument that happens after the purchase, and its own specification is careful about where it stops. In a dispute, it says, the Checkout Mandate and Receipt and the Payment Mandate and Receipt can be brought together to give a non-repudiable picture of the transaction. Then, immediately: &ldquo;Specific details of how this is used for dispute resolution, retention, and retrieval requirements are outside the scope of this specification&rdquo; (<a class="inline-link" href="https://ap2-protocol.org/ap2/specification/" target="_blank" rel="noopener">the AP2 specification</a>).</p>
       <p>The project&#x27;s FAQ is equally plain about the intent. A primary objective, it says, is to supply evidence that helps payment networks establish accountability and liability principles, with a network adjudicator such as a card network comparing the user-signed Checkout Mandate against what is claimed in the dispute (<a class="inline-link" href="https://ap2-protocol.org/faq/" target="_blank" rel="noopener">AP2 FAQ</a>). That is a handoff rather than a gap in the design. AP2 assembles the exhibit and passes it to whoever already adjudicates the dispute.</p>

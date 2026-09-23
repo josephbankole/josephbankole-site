@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cloudflare's crawler now returns a 400 when robots.txt says no, and MiniMax H3 halves on Vercel until 13 September &middot; Joseph Bankole</title>
-<meta name="description" content="Cloudflare's Browser Run /crawl endpoint began honouring the Content Signals use directive on 31 August 2026: a new contentUse parameter takes reference or full, defaults to full, and a target whose robots.txt declares a stricter level now returns a 400. Vercel cut MiniMax H3 and H3 Max by 50 per cent on AI Gateway on 30 August, running to 13 September, model IDs unchanged. No agentic commerce or payments item dated 29 to 31 August cleared verification." />
+<title>Cloudflare&#x27;s crawler returns a 400 when robots.txt says no</title>
+<meta name="description" content="Cloudflare&#x27;s Browser Run /crawl endpoint began honouring Content Signals on 31 August 2026. A stricter robots.txt use level now returns a 400." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/news/2026-08-31-agentic-commerce.html" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
-<meta property="og:title" content="Cloudflare's crawler now returns a 400 when robots.txt says no, and MiniMax H3 halves on Vercel until 13 September" />
-<meta property="og:description" content="Cloudflare's Browser Run /crawl endpoint began honouring the Content Signals use directive on 31 August 2026: a new contentUse parameter takes reference or full, defaults to full, and a target whose robots.txt declares a stricter level now returns a 400. Vercel cut MiniMax H3 and H3 Max by 50 per cent on AI Gateway on 30 August, running to 13 September, model IDs unchanged. No agentic commerce or payments item dated 29 to 31 August cleared verification." />
+<meta property="og:title" content="Cloudflare&#x27;s crawler returns a 400 when robots.txt says no" />
+<meta property="og:description" content="Cloudflare&#x27;s Browser Run /crawl endpoint began honouring Content Signals on 31 August 2026. A stricter robots.txt use level now returns a 400." />
 <meta property="og:url" content="https://josephbankole.ca/news/2026-08-31-agentic-commerce.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
@@ -20,8 +20,8 @@
 <meta property="article:modified_time" content="2026-08-31T12:20:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Cloudflare's crawler now returns a 400 when robots.txt says no, and MiniMax H3 halves on Vercel until 13 September" />
-<meta name="twitter:description" content="Cloudflare's Browser Run /crawl endpoint began honouring the Content Signals use directive on 31 August 2026: a new contentUse parameter takes reference or full, defaults to full, and a target whose robots.txt declares a stricter level now returns a 400. Vercel cut MiniMax H3 and H3 Max by 50 per cent on AI Gateway on 30 August, running to 13 September, model IDs unchanged. No agentic commerce or payments item dated 29 to 31 August cleared verification." />
+<meta name="twitter:title" content="Cloudflare&#x27;s crawler returns a 400 when robots.txt says no" />
+<meta name="twitter:description" content="Cloudflare&#x27;s Browser Run /crawl endpoint began honouring Content Signals on 31 August 2026. A stricter robots.txt use level now returns a 400." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -40,7 +40,7 @@
     {
       "@type": "NewsArticle",
       "headline": "Cloudflare’s crawler now returns a 400 when robots.txt says no, and MiniMax H3 halves on Vercel until 13 September",
-      "description": "Cloudflare's Browser Run /crawl endpoint began honouring the Content Signals use directive on 31 August 2026: a new contentUse parameter takes reference or full, defaults to full, and a target whose robots.txt declares a stricter level now returns a 400. Vercel cut MiniMax H3 and H3 Max by 50 per cent on AI Gateway on 30 August, running to 13 September, model IDs unchanged. No agentic commerce or payments item dated 29 to 31 August cleared verification.",
+      "description": "Cloudflare's Browser Run /crawl endpoint began honouring Content Signals on 31 August 2026. A stricter robots.txt use level now returns a 400.",
       "image": [
         "https://josephbankole.ca/assets/og/default.png"
       ],
@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 496,
+      "wordCount": 497,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -120,18 +120,18 @@
 
   <div class="article-body wrap">
     <div class="prose">
-      <p>Cloudflare changed the <code>/crawl</code> endpoint today so that it reads the target&rsquo;s robots.txt and, where the answer is no, refuses. The changelog entry is dated 31 August 2026 <a class="inline-link" href="https://developers.cloudflare.com/changelog/post/2026-08-31-crawl-content-use/" target="_blank" rel="noopener">[1]</a>. There is a new parameter, <code>contentUse</code>. It takes <code>reference</code> or <code>full</code>, least permissive first, and it defaults to <code>full</code>. If the site you are pointing at sets a <code>use</code> level in its robots.txt that is stricter than the one you declared, the request comes back as a <code>400</code> rather than as content <a class="inline-link" href="https://developers.cloudflare.com/changelog/post/2026-08-31-crawl-content-use/" target="_blank" rel="noopener">[1]</a>.</p>
+      <p>Cloudflare changed the <code>/crawl</code> endpoint today so that it reads the target&rsquo;s robots.txt and, where the answer is no, refuses. The changelog entry is dated 31 August 2026 <a class="inline-link" href="https://developers.cloudflare.com/changelog/post/2026-08-31-crawl-content-use/" target="_blank" rel="noopener" aria-label="Source 1">[1]</a>. There is a new parameter, <code>contentUse</code>. It takes <code>reference</code> or <code>full</code>, least permissive first, and it defaults to <code>full</code>. If the site you are pointing at sets a <code>use</code> level in its robots.txt that is stricter than the one you declared, the request comes back as a <code>400</code> rather than as content <a class="inline-link" href="https://developers.cloudflare.com/changelog/post/2026-08-31-crawl-content-use/" target="_blank" rel="noopener" aria-label="Source 1">[1]</a>.</p>
 
       <h2>A robots.txt line is now an API error</h2>
       <p>The Robots Exclusion Protocol has always been voluntary. A crawler read the file, and the crawler decided, which meant the decision lived in code you owned. This one lives on Cloudflare&rsquo;s side of the API. Nothing you run today stops working, because the default is the permissive value, so the first you will hear of it is a <code>400</code> in a nightly job pointed at a domain nobody audited.</p>
-      <p>The check worth doing this week is small. Take the domains at the top of your fetch list, read what each one now declares under the Content Signals standard <a class="inline-link" href="https://contentsignals.org/" target="_blank" rel="noopener">[3]</a>, and set <code>contentUse</code> per call rather than leaving the default in place. Asking for <code>reference</code> where reference is all the pipeline needs costs nothing and turns a hard <code>400</code> into a crawl that finishes.</p>
+      <p>The check worth doing this week is small. Take the domains at the top of your fetch list, read what each one now declares under the Content Signals standard <a class="inline-link" href="https://contentsignals.org/" target="_blank" rel="noopener" aria-label="Source 3">[3]</a>, and set <code>contentUse</code> per call rather than leaving the default in place. Asking for <code>reference</code> where reference is all the pipeline needs costs nothing and turns a hard <code>400</code> into a crawl that finishes.</p>
 
       <h2>Half price on MiniMax H3, until 13 September</h2>
-      <p>The other weekend item is money. Vercel cut MiniMax H3 and H3 Max by 50 per cent on AI Gateway on 30 August 2026, at every duration and in every aspect ratio the models support, running through 13 September <a class="inline-link" href="https://vercel.com/changelog/minimax-h3-and-h3-max-are-50-off-on-ai-gateway" target="_blank" rel="noopener">[2]</a>. The model IDs are unchanged, <code>minimax/minimax-h3</code> and <code>minimax/minimax-h3-max</code>, so requests you already send collect the discount without a deploy <a class="inline-link" href="https://vercel.com/changelog/minimax-h3-and-h3-max-are-50-off-on-ai-gateway" target="_blank" rel="noopener">[2]</a>. Vercel prints no per-model rate on the AI Gateway pricing page, which sends you to the model list in the dashboard for the figure you will actually be billed <a class="inline-link" href="https://vercel.com/docs/ai-gateway/pricing" target="_blank" rel="noopener">[4]</a>.</p>
+      <p>The other weekend item is money. Vercel cut MiniMax H3 and H3 Max by 50 per cent on AI Gateway on 30 August 2026, at every duration and in every aspect ratio the models support, running through 13 September <a class="inline-link" href="https://vercel.com/changelog/minimax-h3-and-h3-max-are-50-off-on-ai-gateway" target="_blank" rel="noopener" aria-label="Source 2">[2]</a>. The model IDs are unchanged, <code>minimax/minimax-h3</code> and <code>minimax/minimax-h3-max</code>, so requests you already send collect the discount without a deploy <a class="inline-link" href="https://vercel.com/changelog/minimax-h3-and-h3-max-are-50-off-on-ai-gateway" target="_blank" rel="noopener" aria-label="Source 2">[2]</a>. Vercel prints no per-model rate on the AI Gateway pricing page, which sends you to the model list in the dashboard for the figure you will actually be billed <a class="inline-link" href="https://vercel.com/docs/ai-gateway/pricing" target="_blank" rel="noopener" aria-label="Source 4">[4]</a>.</p>
       <p>Fourteen days will not carry a production workload onto a new video model, but it comfortably covers the evaluation most teams keep deferring, on the same model ID and at half the bill, with nothing to migrate afterwards and nothing to roll back.</p>
 
       <h2>Nothing at all from Visa, Mastercard or Stripe</h2>
-      <p>I ran the sweep this morning, Monday 31 August, across agentic commerce announcements, AI payments at Visa, Mastercard and Stripe, stablecoin regulation and the protocol trackers. No payments item dated 29, 30 or 31 August cleared verification. The freshest verified items in the window are the ones earlier editions already carried: Dunamu and Visa on Friday, and Treasury&rsquo;s GENIUS Act section 3 rulemaking, still open for comment.</p>
+      <p>The desk ran its sweep this morning, Monday 31 August, across agentic commerce announcements, AI payments at Visa, Mastercard and Stripe, stablecoin regulation and the protocol trackers. No payments item dated 29, 30 or 31 August cleared verification. The freshest verified items in the window are the ones earlier editions already carried: Dunamu and Visa on Friday, and Treasury&rsquo;s GENIUS Act section 3 rulemaking, still open for comment.</p>
       <p>Neither of these two changes needs anything from you to take effect. The discount lands on requests you already send, and the <code>400</code> waits inside a job you already scheduled. So how many of the domains at the top of your crawl list have you read the robots.txt of this year?</p>
     </div>
     <section class="sources" aria-labelledby="sources-h">
@@ -148,25 +148,25 @@
 
 <div class="article-tail wrap">
   <nav class="pager" aria-label="Neighbouring editions">
-    <a class="pager-prev" href="/news/2026-08-30-agentic-commerce.html"><span class="pager-dir">&larr; Earlier edition</span><span class="pager-ttl">The agentic commerce wire takes a quiet weekend, and the GENIUS Act calendar keeps running</span><span class="pager-date">30 Aug 2026</span></a>
-    <a class="pager-next" href="/news/2026-09-01-agentic-commerce.html"><span class="pager-dir">Later edition &rarr;</span><span class="pager-ttl">Singapore says a regulated stablecoin pays no interest, and India is a week from letting agents spend on UPI</span><span class="pager-date">1 Sep 2026</span></a>
+    <a class="pager-prev" href="/news/2026-08-30-agentic-commerce.html"><span class="pager-dir">&larr; Earlier edition</span><span class="pager-ttl">GENIUS Act dates hold on a quiet agentic commerce weekend</span><span class="pager-date">30 Aug 2026</span></a>
+    <a class="pager-next" href="/news/2026-09-01-agentic-commerce.html"><span class="pager-dir">Later edition &rarr;</span><span class="pager-ttl">Singapore proposes no interest on regulated stablecoins</span><span class="pager-date">1 Sep 2026</span></a>
   </nav>
   <section class="related" aria-labelledby="related-h">
     <h2 id="related-h">Latest from the desk</h2>
     <div class="postlist">
         <a class="post-row" href="/news/2026-09-22-agentic-commerce.html">
           <time class="date" datetime="2026-09-22">22 Sep 2026</time>
-          <span class="ttl">Amazon shut Meta&rsquo;s Muse out of Amazon.com, and Shopify put Shop Pay behind it the next morning<span>Amazon began blocking Meta&rsquo;s Muse agent from buying on Amazon.com on the night of 20 September 2026 and asked Meta to remove Amazon from the product. On the morning of 21 September Shopify&rsquo;s chief executive said Shop Pay will do agentic checkout with Muse across every Shopify store. The Commodity Futures Trading Commission announced a roundtable series the same day, with artificial intelligence and agentic finance as the first session on 28 October 2026.</span></span>
+          <span class="ttl">Amazon blocks Meta&#x27;s Muse agent from Amazon.com<span>Amazon blocked Meta&#x27;s Muse agent from buying on Amazon.com on 20 September 2026. Shopify said the next morning that Shop Pay will check out with Muse.</span></span>
           <span class="arrow">&rarr;</span>
         </a>
         <a class="post-row" href="/news/2026-09-21-agentic-commerce.html">
           <time class="date" datetime="2026-09-21">21 Sep 2026</time>
-          <span class="ttl">Stripe&rsquo;s Link wallet now checks out for three different AI agents, and each one buys with a card number that works once<span>Stripe put Link inside Meta&rsquo;s Muse agent on 8 September 2026, after wiring xAI&rsquo;s Grok Bot on 28 August and Instinct, a text-message assistant from Spear Street Technology, earlier the same month. In every case the consumer approves the total in the chat and the agent is issued a single-use virtual card scoped to that purchase. Stripe puts Link at 300 million users and more than 1 million businesses. Stripe and Advent International&rsquo;s $53 billion offer for PayPal was rejected on 15 July 2026.</span></span>
+          <span class="ttl">Stripe&#x27;s Link now checks out for three AI agents<span>Stripe&#x27;s Link wallet checks out for Meta&#x27;s Muse, xAI&#x27;s Grok Bot and Instinct. Each agent buys with a single-use virtual card scoped to that purchase.</span></span>
           <span class="arrow">&rarr;</span>
         </a>
         <a class="post-row" href="/news/2026-09-20-agentic-commerce.html">
           <time class="date" datetime="2026-09-20">20 Sep 2026</time>
-          <span class="ttl">HM Treasury laid a draft instrument taking UK stablecoin payments out of the cryptoasset dealing rules, and PYMNTS puts merchants with agent-readable product data at 15%<span>HM Treasury laid a draft statutory instrument on 15 September 2026 excluding UK qualifying stablecoins from dealing as principal, dealing as agent and arranging deals in qualifying cryptoassets, and from cryptoasset safeguarding where they are held for a payment transaction. Lending and borrowing stay in scope. PYMNTS Intelligence reports that 15% of merchants have structured product data an agent can read, and that 59% of AI-assisted purchases still end at Amazon.</span></span>
+          <span class="ttl">HM Treasury drafts carve-out for UK stablecoin payments<span>HM Treasury laid a draft instrument on 15 September 2026 taking UK qualifying stablecoins out of the cryptoasset dealing and arranging rules.</span></span>
           <span class="arrow">&rarr;</span>
         </a>
     </div>

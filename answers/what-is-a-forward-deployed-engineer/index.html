@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="What is a forward-deployed engineer?" />
-<meta property="og:description" content="The definition, how it differs from a solutions engineer and a consultant, and why AI made the role prominent." />
+<meta property="og:description" content="A forward-deployed engineer works inside a customer&#x27;s environment, building a system against their specific problem rather than shipping a generic product." />
 <meta property="og:url" content="https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
@@ -21,7 +21,7 @@
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="What is a forward-deployed engineer?" />
-<meta name="twitter:description" content="The definition, how it differs from a solutions engineer and a consultant, and why AI made the role prominent." />
+<meta name="twitter:description" content="A forward-deployed engineer works inside a customer&#x27;s environment, building a system against their specific problem rather than shipping a generic product." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -55,7 +55,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "A forward-deployed engineer is a software engineer who works inside a customer's environment to ship a working system against their specific problem, rather than shipping a generic product from behind a wall. They write the integration, work inside the customer's existing infrastructure, and stay accountable for whether the system runs in production, not just whether it demoed well.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         }
       ]
@@ -63,9 +68,24 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://josephbankole.ca/" },
-        { "@type": "ListItem", "position": 2, "name": "Answers", "item": "https://josephbankole.ca/answers/" },
-        { "@type": "ListItem", "position": 3, "name": "What is a forward-deployed engineer?", "item": "https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What is a forward-deployed engineer?",
+          "item": "https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/"
+        }
       ]
     }
   ]
@@ -104,7 +124,7 @@
       <p>The role existed quietly for years inside places like Palantir, doing integration work nobody wanted to name. AI made it visible because AI agents fail in ways specific to a company's own data and its own edge cases, and no generic product can be pre-built to handle that. Somebody has to sit close to the problem, and increasingly that somebody is a forward-deployed engineer.</p>
 
       <h2>What a payments background brings to it</h2>
-      <p>Ten years inside payment operations, at HSBC and Société Générale, taught me the discipline this role needs: scope the failure before you touch the fix, respect the cutoff, and never trust a system that only looks correct in the happy path. Payments infrastructure is one of the least forgiving environments in software, because a mistake moves real money. I bring that same respect for failure into every AI system I deploy.</p>
+      <p>Ten years keeping bank systems running at HSBC and Société Générale, the last five of them in payments, taught me the discipline this role needs: scope the failure before you touch the fix, respect the cutoff, and never trust a system that only looks correct in the happy path. Payments infrastructure is one of the least forgiving environments in software, because a mistake moves real money. I bring that same respect for failure into every AI system I deploy.</p>
     </div>
   </div>
 </article>

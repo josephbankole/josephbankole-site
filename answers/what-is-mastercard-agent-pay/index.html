@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>What is Mastercard Agent Pay? Agentic tokens &middot; Joseph Bankole</title>
-<meta name="description" content="Mastercard Agent Pay lets a verified AI agent pay with a card on your behalf. An agentic token carries the authority, so the merchant can see who approved it." />
+<title>Mastercard Agent Pay: tokens, AP2 and launch partners</title>
+<meta name="description" content="Mastercard Agent Pay lets AI agents pay by card, with Microsoft, Braintree and Checkout.com at launch and Adyen in its machine network. It works with AP2." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/answers/what-is-mastercard-agent-pay/" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
-<meta property="og:title" content="What is Mastercard Agent Pay?" />
-<meta property="og:description" content="Mastercard Agent Pay lets a verified AI agent pay with a card on your behalf. An agentic token carries the authority, so the merchant can see who approved it." />
+<meta property="og:title" content="Mastercard Agent Pay: tokens, AP2 and launch partners" />
+<meta property="og:description" content="Mastercard Agent Pay lets AI agents pay by card, with Microsoft, Braintree and Checkout.com at launch and Adyen in its machine network. It works with AP2." />
 <meta property="og:url" content="https://josephbankole.ca/answers/what-is-mastercard-agent-pay/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
@@ -20,8 +20,8 @@
 <meta property="article:modified_time" content="2026-09-17T15:19:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="What is Mastercard Agent Pay?" />
-<meta name="twitter:description" content="Mastercard Agent Pay lets a verified AI agent pay with a card on your behalf. An agentic token carries the authority, so the merchant can see who approved it." />
+<meta name="twitter:title" content="Mastercard Agent Pay: tokens, AP2 and launch partners" />
+<meta name="twitter:description" content="Mastercard Agent Pay lets AI agents pay by card, with Microsoft, Braintree and Checkout.com at launch and Adyen in its machine network. It works with AP2." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -49,7 +49,10 @@
             "@type": "Answer",
             "text": "Mastercard Agent Pay is Mastercard's programme for letting a verified AI agent pay with a card on someone's behalf. Mastercard announced it on 29 April 2025 as its Agentic Payments Program. The payment travels as an agentic token, a credential tied to a registered agent rather than a raw card number, so a merchant and an issuer can both see that an agent was involved and that the cardholder authorised it. Microsoft, IBM, Braintree and Checkout.com were named at launch. It has since grown a merchant side, Agent Suite for Merchants, and a network for software paying software, Agent Pay for Machines.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -60,7 +63,10 @@
             "@type": "Answer",
             "text": "They are the credential the agent actually carries. Mastercard says an agent has to be registered and verified before it can transact on the network, after which it is uniquely identified and pays using agentic tokens, which Mastercard describes as dynamic, cryptographically secure credentials that make every transaction traceable and authenticated (Mastercard). The tokens are an extension of the tokenisation Mastercard already runs rather than a new rail. Both trade reports of the launch describe them as building on the capabilities behind mobile contactless payments, and on programmable payments such as recurring expenses and subscriptions (PYMNTS, The Paypers). The Paypers also lists secure card-on-file and Mastercard Payment Passkeys.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -71,7 +77,10 @@
             "@type": "Answer",
             "text": "Mastercard named four, in two groups. It said it would work with Microsoft on new use cases and with IBM, through its watsonx Orchestrate product, on business-to-business ones; and with acquirers and checkout providers, Braintree and Checkout.com among them, to extend the tokenisation those firms already run for merchants (PYMNTS, The Paypers). The Paypers reports the Microsoft work as integrating Azure OpenAI Service and Copilot Studio with Mastercard's payment products. Salesforce is sometimes listed as a fifth launch partner. Neither of those two reports names it, so it is left out here.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -82,7 +91,10 @@
             "@type": "Answer",
             "text": "Without writing code, if Mastercard's preferred route is taken. The Agent Pay Acceptance Framework, published on 14 October 2025, asks merchants to implement the Web Bot Auth standard at the content delivery network layer, which lets them verify an agent is genuine and block untrusted traffic without deploying anything new. A verified agent then submits a Dynamic Token Verification Code, an agentic token formatted to fit the ordinary card fields on a checkout form (Mastercard). An existing checkout page can therefore take an agent payment without being rebuilt, because the agent is filling in a field the form already has. Mastercard also says the framework passes purchase intent data, including cart contents, transaction limits and validity windows, and that the merchant can use it as an audit trail in a dispute.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -93,7 +105,10 @@
             "@type": "Answer",
             "text": "These are the merchant-facing half of the stack. Agent Suite for Merchants lets a business bring agent-powered shopping, including product discovery, research and consumer-authorised purchases, into the e-commerce environment it already runs, and it is sold through Mastercard Merchant Cloud alongside fraud protection, authentication, tokenisation, data and partner services (TradeArabia, TechAfrica News). On 9 September 2026 Mastercard added Agent Connect to it, a single integration through which merchants, AI agents, platforms and payment providers connect and transact (PYMNTS, Digital Transactions). PYMNTS dates the original Agent Suite to January.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -104,7 +119,10 @@
             "@type": "Answer",
             "text": "It is a separate network, built for software paying software. Mastercard launched it on 10 June 2026, and it settles across cards, bank accounts and stablecoins while authenticating the agent, enforcing spending rules and guaranteeing settlement (CoinDesk). Fortune, which ran it as an exclusive that morning, describes it as meant to make smaller transfers easier, its example being an agent paying to pull a website's data piecemeal (Fortune). The permissions do not sit in Mastercard's own database. Both reports say the authority a person grants an agent is recorded on a blockchain, initially Polygon, Solana and Base, so that any party to a transaction can check for itself whether the agent is acting within instructions (CoinDesk, Fortune). CoinDesk counts more than 30 participating firms, including Coinbase, Stripe, Adyen, Checkout.com, Cloudflare, Polygon Labs, the Solana Foundation and OKX.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -115,7 +133,10 @@
             "@type": "Answer",
             "text": "No, and Mastercard has said so directly. Writing on 20 January 2026, its chief digital officer and its global head of digital commercialization said Mastercard had joined Google's Universal Commerce Protocol the week before, and that it continues to collaborate across Google's Agent Payments Protocol and Agent2Agent Protocol and OpenAI's Agentic Commerce Protocol, so that all of them meet the same standards for clear user intent, secure credentials and verifiable agent identity (Mastercard). Mastercard is named among the sixty-odd organisations in Google's AP2 launch post (Google Cloud). A protocol describes how an agent and a merchant talk. Agent Pay is the credential and the network underneath, and Mastercard says its acceptance framework was built to be compatible with those protocols rather than to replace them. The ACP and AP2 page and the UCP page cover that layer.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
         },
@@ -126,9 +147,35 @@
             "@type": "Answer",
             "text": "Less widely than the announcement count suggests. Mastercard said in January 2026 that it was working with Microsoft to bring Agent Pay to Copilot Checkout (Mastercard), and that is the company's own account of work in progress rather than a shipped product. The clearest dated deployment is travel. Trip.com's TripGenie agent, running on Agent Suite for Merchants with Network International as acquirer, was shown at Arabian Travel Market as a global first, and the partners expect a phased rollout and commercial launch in early 2027 (TradeArabia, TechAfrica News). A showcase carrying a 2027 date is roughly where the whole field currently sits.",
             "author": {
-              "@id": "https://josephbankole.ca/#person"
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
             }
           }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What is Mastercard Agent Pay?",
+          "item": "https://josephbankole.ca/answers/what-is-mastercard-agent-pay/"
         }
       ]
     }

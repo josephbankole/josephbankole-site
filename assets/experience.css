@@ -71,8 +71,13 @@
 .act2 { position: relative; padding: 0; }
 .act2-pin { padding: clamp(56px, 8vw, 110px) 0; }
 .xp-js .act2-scroll { height: 220vh; }
+/* The pin sticks below the sticky nav, not under it. experience.js writes
+   the nav's measured height into --xp-nav-h; 82px is the desktop nav. With
+   top:0 the "02 / The delivery" label and the h2 sat under the nav for the
+   whole pinned stretch whenever the nav was taller than the gap above them. */
 .xp-js .act2-pin {
-  position: sticky; top: 0; height: 100vh; min-height: 640px; padding: 0;
+  position: sticky; top: var(--xp-nav-h, 82px);
+  height: calc(100vh - var(--xp-nav-h, 82px)); min-height: 560px; padding: 0;
   display: flex; flex-direction: column; justify-content: center;
   overflow: hidden;
 }
@@ -263,13 +268,22 @@
 }
 
 @media (max-width: 760px) {
-  /* Act 2 goes vertical */
-  .xp-js .act2-scroll { height: 300vh; }
-  .xp-js .act2-pin { justify-content: flex-start; padding-top: clamp(20px, 5vh, 40px); overflow-y: hidden; }
+  /* Act 2 goes vertical, and it is NOT pinned. The pinned version was 812px
+     tall with overflow hidden inside a 300vh scroll at 375x812, so station
+     05 "Run" sat below the fold for the whole section and never showed, and
+     the heading sat under the sticky nav. Here the stations stack in normal
+     flow, all five on the page, and experience.js lights each one as it
+     crosses the reading line. The scrubber still lights them when dragged. */
+  .xp-js .act2-scroll { height: auto; }
+  .xp-js .act2-pin {
+    position: static; top: auto; height: auto; min-height: 0;
+    padding: clamp(56px, 8vw, 110px) 0; overflow: visible;
+    justify-content: flex-start;
+  }
   .act2-head { margin-bottom: 24px; }
   .diorama { display: grid; grid-template-columns: 22px 1fr; gap: 0 18px; align-items: start; }
   .act2-head { grid-column: 1 / -1; }
-  .rail { grid-column: 1; grid-row: 2; width: 3px; height: auto; align-self: stretch; margin: 6px 0 0; min-height: 46vh; }
+  .rail { grid-column: 1; grid-row: 2; width: 3px; height: auto; align-self: stretch; margin: 6px 0 0; }
   .rail-fill { transform: scaleY(var(--p)); transform-origin: top; }
   .rail-pulse { top: 0; left: 50%; margin: -6px 0 0 -6px; }
   .stations { grid-column: 2; grid-row: 2; grid-template-columns: 1fr; gap: 14px; margin: 0; }

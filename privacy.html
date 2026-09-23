@@ -11,14 +11,14 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="Privacy · Joseph Bankole" />
-<meta property="og:description" content="What this site collects, what it does not, and who else sees your visit." />
+<meta property="og:description" content="What this site measures with PostHog, what it deliberately does not, and who else sees your visit. Plain English, and Do Not Track is honoured." />
 <meta property="og:url" content="https://josephbankole.ca/privacy.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Privacy · Joseph Bankole" />
-<meta name="twitter:description" content="What this site collects, what it does not, and who else sees your visit." />
+<meta name="twitter:description" content="What this site measures with PostHog, what it deliberately does not, and who else sees your visit. Plain English, and Do Not Track is honoured." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -60,8 +60,8 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <span aria-current="page">Privacy</span></nav>
     <span class="index">Privacy</span>
     <h1>What this site knows about you.</h1>
-    <p class="standfirst">Short version: it counts that a page was viewed and whether anyone clicked a link. It does not know who you are, and there is nothing here to sign up for, log into, or download.</p>
-    <p class="article-meta"><span>Last updated: 13 July 2026</span><span>josephbankole.ca</span></p>
+    <p class="standfirst">Short version: it counts that a page was viewed and whether anyone clicked a link. It does not know who you are. There is nothing to log into or download, and the only sign-up is the newsletter box on the homepage, which Substack runs.</p>
+    <p class="article-meta"><span>Last updated: 22 September 2026</span><span>josephbankole.ca</span></p>
   </header>
 
   <div class="article-body wrap">
@@ -73,10 +73,13 @@
       <p>There are no accounts and no login. There is no contact form, no comment section, and nothing you can upload or post. There are no files to download. I do not run advertising, and no advertising or data-broker trackers are loaded anywhere on this site. I never sell, rent, or trade information about visitors, because I do not hold anything worth selling.</p>
 
       <h2>Analytics: what I actually measure</h2>
-      <p>Every page on this site except the 404 page loads <a href="https://posthog.com/" target="_blank" rel="noopener">PostHog</a>, a product-analytics tool, through one shared script. I use it to answer two questions: how many people read a page, and did anyone click through to join the waitlist, open the newsletter, or visit a project or social link. That is the whole list. Specifically it records:</p>
+      <p>Every page on this site, the "page not found" page included, loads <a href="https://posthog.com/" target="_blank" rel="noopener">PostHog</a>, a product-analytics tool, through one shared script. I use it to answer two questions: how many people read a page, and which links they click on the way out. Specifically it records:</p>
       <ul>
         <li>A page view when any page loads.</li>
         <li>A click event if you click a "join the waitlist" link, a newsletter link, a link out to one of my projects, or a link to my LinkedIn or Instagram. The event stores which link and which page it was on, not who clicked it.</li>
+        <li>A click event if you click my email address anywhere other than a waitlist link. It stores where on the site the click came from.</li>
+        <li>A click event if you follow any other link off this site, such as a source cited in a news edition. It stores the other site's domain name and the page you left from, never the full address you went to.</li>
+        <li>An event when the "page not found" page loads. It stores the address that was not found and the page that sent you there (the referrer), so I can find and fix broken links.</li>
       </ul>
       <p>PostHog also receives the technical basics that any web request carries: your IP address, browser, and rough location derived from that IP. I have deliberately turned <em>off</em> autocapture, which means PostHog is not recording every click, scroll, keystroke, or form field on the page. It only sees the events listed above. I honour Do Not Track, so if your browser sends that signal, PostHog is disabled entirely for your visit.</p>
 
@@ -91,14 +94,14 @@
         <li><strong>PostHog</strong> receives the analytics events described above.</li>
         <li><strong>Google Fonts</strong> serves the typefaces. Loading them means Google sees your IP address.</li>
         <li><strong>Substack</strong> serves the newsletter embed on the homepage.</li>
-        <li><strong>Your email client</strong> only if you click a waitlist link, which opens a pre-addressed message to partnerships@josephbankole.ca. Nothing is sent until you send it, and what you write is between you and me.</li>
+        <li><strong>Your email client</strong> only if you click a waitlist link or my email address, which opens a pre-addressed message to partnerships@josephbankole.ca. Nothing is sent until you send it, and what you write is between you and me.</li>
       </ul>
 
       <h2>Email</h2>
       <p>If you email me at <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>, I have your message and your email address, for the obvious reason that you sent them to me. I use them to reply to you and nothing else. I do not add you to a mailing list, and I do not pass your address to anyone.</p>
 
       <h2>Links to other sites</h2>
-      <p>This site links out to LinkedIn, GitHub, Instagram, Substack, and to my other projects, along with sources cited in the writing. Once you follow a link, you are on someone else's site under their rules. I have no control over what they collect and no visibility into it.</p>
+      <p>This site links out to LinkedIn, Instagram, Substack, and to my other projects, along with sources cited in the writing. My GitHub profile is listed only in the homepage's structured data, not as a link. Once you follow a link, you are on someone else's site under their rules. I have no control over what they collect and no visibility into it.</p>
 
       <h2>Children</h2>
       <p>This site is aimed at working professionals. It is not directed at children, and I do not knowingly collect anything from them.</p>

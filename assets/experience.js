@@ -56,12 +56,20 @@
   var stations = Array.prototype.slice.call(document.querySelectorAll(".station"));
   var NAMES = ["Scope", "Build", "Verify", "Ship", "Run"];
   var THRESH = [0, 0.24, 0.48, 0.72, 0.94];
+  var navEl = document.querySelector(".nav");
+  /* Below 760px the diorama is not pinned (experience.css). It stacks in
+     normal flow and each station lights as its top crosses this line,
+     measured as a share of the viewport height from the top. */
+  var READ_LINE = 0.7;
 
   if (scrollEl && dio && pulse && rail && track && handle) {
-    var vAxis = false, railLen = 0, scrubLen = 0, ticking = false, dragging = false;
+    var vAxis = false, railLen = 0, scrubLen = 0, navH = 0, cur = 0, ticking = false, dragging = false;
 
     function measure() {
       vAxis = window.matchMedia("(max-width:760px)").matches;
+      /* the pin sticks below the sticky nav; the CSS reads this value */
+      navH = navEl ? navEl.offsetHeight : 0;
+      document.documentElement.style.setProperty("--xp-nav-h", navH + "px");
       railLen = vAxis ? rail.clientHeight : rail.clientWidth;
       scrubLen = track.clientWidth;
     }
@@ -72,29 +80,47 @@
       return idx;
     }
 
-    function applyP(p) {
+    /* fromScroll: on the unpinned phone layout a station lights when its
+       own top crosses the reading line, so each one lights while it is on
+       screen. Dragging the scrubber or using the keys lights by THRESH. */
+    function applyP(p, fromScroll) {
+      cur = p;
       dio.style.setProperty("--p", p.toFixed(4));
       var px = p * railLen;
       pulse.style.transform = vAxis ? ("translateY(" + px + "px)") : ("translateX(" + px + "px)");
       handle.style.transform = "translateX(" + (p * scrubLen) + "px)";
+      var line = window.innerHeight * READ_LINE, lastLit = 0;
       for (var i = 0; i < stations.length; i++) {
-        stations[i].classList.toggle("lit", p >= THRESH[i] - 0.001);
+        var on = (vAxis && fromScroll)
+          ? stations[i].getBoundingClientRect().top <= line
+          : p >= THRESH[i] - 0.001;
+        stations[i].classList.toggle("lit", on);
+        if (on) lastLit = i;
       }
       handle.setAttribute("aria-valuenow", Math.round(p * 100));
-      handle.setAttribute("aria-valuetext", NAMES[activeIndex(p)]);
+      handle.setAttribute("aria-valuetext", NAMES[(vAxis && fromScroll) ? lastLit : activeIndex(p)]);
     }
 
+    /* Desktop: the pin holds from the moment the wrapper's top reaches the
+       nav's bottom edge until its bottom reaches the viewport's, so that
+       stretch is 0 to 1. Phone: how far the reading line has travelled
+       down the rail. */
     function scrollProgress() {
+      if (vAxis) {
+        var rr = rail.getBoundingClientRect();
+        if (rr.height <= 0) return 0;
+        return clamp((window.innerHeight * READ_LINE - rr.top) / rr.height, 0, 1);
+      }
       var r = scrollEl.getBoundingClientRect();
-      var dist = scrollEl.offsetHeight - window.innerHeight;
+      var dist = scrollEl.offsetHeight - window.innerHeight + navH;
       if (dist <= 0) return 0;
-      return clamp(-r.top / dist, 0, 1);
+      return clamp((navH - r.top) / dist, 0, 1);
     }
 
     function onScroll() {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(function () { applyP(scrollProgress()); ticking = false; });
+      requestAnimationFrame(function () { applyP(scrollProgress(), true); ticking = false; });
     }
 
     function sectionTop() {
@@ -104,8 +130,11 @@
     }
 
     function scrollToP(p) {
-      var dist = scrollEl.offsetHeight - window.innerHeight;
-      var y = sectionTop() + p * dist;
+      /* unpinned on phones: the scrubber lights the stations in place and
+         leaves the page where the reader put it */
+      if (vAxis) return;
+      var dist = scrollEl.offsetHeight - window.innerHeight + navH;
+      var y = sectionTop() - navH + p * dist;
       // bypass CSS smooth-scroll so scrubbing tracks the pointer 1:1
       var prev = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = "auto";
@@ -131,7 +160,7 @@
     track.addEventListener("pointercancel", function () { dragging = false; });
 
     handle.addEventListener("keydown", function (e) {
-      var p = scrollProgress(), np = null, step = 0.02;
+      var p = cur, np = null, step = 0.02;
       if (e.key === "ArrowRight" || e.key === "ArrowUp") np = clamp(p + step, 0, 1);
       else if (e.key === "ArrowLeft" || e.key === "ArrowDown") np = clamp(p - step, 0, 1);
       else if (e.key === "PageUp") np = clamp(p + 0.12, 0, 1);
@@ -143,19 +172,19 @@
 
     if (replayBtn) {
       replayBtn.addEventListener("click", function () {
-        window.scrollTo({ top: sectionTop(), behavior: reduce ? "auto" : "smooth" });
+        window.scrollTo({ top: sectionTop() - navH, behavior: reduce ? "auto" : "smooth" });
       });
     }
 
     var rt;
     window.addEventListener("resize", function () {
       clearTimeout(rt);
-      rt = setTimeout(function () { measure(); applyP(scrollProgress()); }, 150);
+      rt = setTimeout(function () { measure(); applyP(scrollProgress(), true); }, 150);
     });
     window.addEventListener("scroll", onScroll, { passive: true });
 
     measure();
-    applyP(scrollProgress());
+    applyP(scrollProgress(), true);
   }
 
   /* ---------------------------------------------------------

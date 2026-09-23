@@ -11,7 +11,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="Why do AI agents use stablecoins?" />
-<meta property="og:description" content="Two rails carry agent payments today. Stablecoins win the machine-to-machine end: payments too small and too frequent for a card checkout." />
+<meta property="og:description" content="Because a stablecoin is money an agent can hold and spend itself. Settlement in about a second at near-zero fees fits pay-per-request pricing in cents." />
 <meta property="og:url" content="https://josephbankole.ca/answers/why-do-ai-agents-use-stablecoins/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
@@ -21,7 +21,7 @@
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Why do AI agents use stablecoins?" />
-<meta name="twitter:description" content="Two rails carry agent payments today. Stablecoins win the machine-to-machine end: payments too small and too frequent for a card checkout." />
+<meta name="twitter:description" content="Because a stablecoin is money an agent can hold and spend itself. Settlement in about a second at near-zero fees fits pay-per-request pricing in cents." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -48,7 +48,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Because a stablecoin is a payment instrument an agent can hold and spend itself, over the channel it already works in. A card checkout assumes a person is present; a stablecoin transfer is an API call. The x402 project says its payments settle in about one second at near-zero fees, which is the arithmetic pay-per-request pricing needs when single payments are measured in cents. That is why x402 carries stablecoins among its payment types and why Amazon's AgentCore Payments ships with stablecoin wallets from Coinbase and Stripe. Agents do not have to use them: ChatGPT's Instant Checkout runs on card rails. Stablecoins win the machine-to-machine end.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -57,7 +62,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "No. The Agentic Commerce Protocol, the standard behind ChatGPT's Instant Checkout, runs on existing card rails, with businesses maintaining their customer relationships as the merchant of record. And x402 itself is written as an open standard aiming to support crypto and fiat networks alike, stablecoins, tokens and fiat among its forms of value. In practice the two rails split by job: consumer retail purchases stay on cards, which carry established dispute rights, while machine-to-machine, pay-per-request payments go to stablecoins, where the per-transaction economics work at cent scale.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -66,7 +76,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "The framework exists and the detailed rulebook is being written now. The GENIUS Act establishes a licensing regime for payment stablecoin issuers in the United States: from the Act's expected effective date of 18 January 2027, a person generally may not issue a payment stablecoin in the United States without an appropriate federal or state licence. The Comptroller of the Currency has said the OCC intends to publish its final stablecoin rules by November, so it can start processing issuer applications in the new year.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         }
       ]
@@ -74,9 +89,24 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://josephbankole.ca/" },
-        { "@type": "ListItem", "position": 2, "name": "Answers", "item": "https://josephbankole.ca/answers/" },
-        { "@type": "ListItem", "position": 3, "name": "Why do AI agents use stablecoins?", "item": "https://josephbankole.ca/answers/why-do-ai-agents-use-stablecoins/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Why do AI agents use stablecoins?",
+          "item": "https://josephbankole.ca/answers/why-do-ai-agents-use-stablecoins/"
+        }
       ]
     }
   ]

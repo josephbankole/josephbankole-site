@@ -1,0 +1,40 @@
+# GitHub Pages builds this repo with Jekyll (there is no .nojekyll), so
+# without this file every tracked file is published: /DEPLOY.md,
+# /ANIMATION-PLAN.md and /tools/*.py all returned 200 on 2026-09-22.
+#
+# No page here starts with YAML front matter, so Jekyll copies every HTML,
+# XML and text file byte for byte. This file only decides what is left out.
+# Kept in: CNAME, robots.txt, llms.txt, sitemap.xml, feed.xml,
+# news-feed.xml, 404.html, favicons, assets/ and every content folder.
+#
+# Jekyll version caveat: GitHub Pages runs Jekyll 3.x, where a user
+# `exclude` list REPLACES Jekyll's default exclude list instead of adding to
+# it (Jekyll 4 merges them). The defaults that matter are restated at the end
+# so the behaviour is the same on either version. Paths starting with "." or
+# "_" are skipped by Jekyll regardless, so news/.sf/ and .gitignore never
+# ship; .sf is listed anyway in case a future build changes that.
+
+exclude:
+  # internal runbooks and plans
+  - DEPLOY.md
+  - ANIMATION-PLAN.md
+  - README.md
+  # build and audit scripts
+  - tools
+  - "*.py"
+  - __pycache__
+  # local state
+  - .sf
+  - news/.sf
+  - personal-brand
+  # Jekyll's own defaults, restated for Jekyll 3.x
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

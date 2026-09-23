@@ -1,32 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
   <title>Joseph Bankole's blog</title>
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 21 Sep 2026 19:12:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 21 Sep 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
   <item>
     <title>Xcode 27 broke every test destination</title>
     <link>https://josephbankole.ca/blog/xcode-27-no-test-destination.html</link>
     <guid>https://josephbankole.ca/blog/xcode-27-no-test-destination.html</guid>
-    <pubDate>Mon, 21 Sep 2026 19:12:00 GMT</pubDate>
+    <pubDate>Mon, 21 Sep 2026 13:00:00 GMT</pubDate>
     <description>An Xcode 27 upgrade left CoreSimulator stale, simctl hanging on a password prompt, and a release script pointing at a phone the new runtime does not ship.</description>
+    <content:encoded><![CDATA[<p>On 20 September my weekly app release job ran from start to finish and submitted nothing. The code compiled. Version 1.5.4 build 39 was already live on the App Store. What the job could not find was anywhere to run the tests, and my release script will not submit a build whose tests have not gone green.</p>
+
+      <p>Xcode 27.0 had installed on the machine three days earlier, on 17 September. Build 27A266a, by <code>xcodebuild -version</code>. Updating Xcode replaces the app in <code>/Applications</code>. It does not replace the privileged components that app depends on, which sit under <code>/Library/Developer/PrivateFrameworks</code> and are owned by <code>root:wheel</code>. CoreSimulator was still at 1051.55 where Xcode 27 wants 1171.7.0. CoreDevice was at 518.33.</p>
+
+      <p><code>xcodebuild</code> said so plainly enough. "Current version (1051.55.0) is older than build version (1171.7.0)", it reported, and then that simulator device support was disabled. After that it could not find a device to test on. The macOS fallback in my script failed too, because with CoreDevice stale the <code>DVTCoreDeviceCore</code> plugin that resolves real devices would not load.</p>
+
+      <h2>The hang</h2>
+
+      <p>My first instinct was to look at the simulators themselves, so I ran <code>xcrun simctl list devices</code>. It never came back.</p>
+
+      <p><code>simctl</code> in Xcode&#x27;s bin directory is not a binary. It is a 32-line bash wrapper. Line 9 pins <code>EXPECTED_VERSION</code> to 1171.7. Line 10 reads the installed CoreSimulator version out of that root-owned Info.plist. If the installed version is missing or older, line 30 runs <code>xcodebuild</code> <code>-runFirstLaunch</code> before handing off to the real <code>simctl</code> underneath.</p>
+
+      <p><code>-runFirstLaunch</code> installs system components into root-owned directories, and the process list showed what that costs: <code>SecurityAgent</code>, the macOS password panel, running as a child of the runFirstLaunch process. Nothing about that panel reaches a scheduled run&#x27;s stdout. The job sits there. I killed it, called the real <code>simctl</code> directly, and every simulator and runtime was present. Nothing had been deleted. The wrapper was trying to repair the machine and waiting for a human to let it.</p>
+
+      <h2>The check that needs no password</h2>
+
+      <p><code>man xcodebuild</code> documents the thing I should have been calling all along. Of <code>-checkFirstLaunchStatus</code> it says: "Exits with a non-zero code if additional system content needs to be installed, using <code>-runFirstLaunch</code>. Exits with 0 if system components are up-to-date." The published mirror of the Xcode man pages at keith.github.io/xcode-man-pages carries the same wording.</p>
+
+      <p>It takes no password and returns immediately. On this machine it now exits 0. Called before the test step, it turns a job that hangs into a job that stops on its first line with a message a person can act on. The password itself is unavoidable. I ran <code>sudo xcodebuild -runFirstLaunch</code> on 21 September, CoreSimulator went to 1171.7 and CoreDevice to 642.16, and for about two minutes afterwards <code>xcodebuild</code> still saw no devices at all while CoreSimulator rebuilt its device set.</p>
+
+      <h2>The second trap</h2>
+
+      <p>Two release attempts failed after that fix, and the cause was sitting on line 44 of my release script. <code>SIM_DESTINATION="platform=iOS Simulator,name=iPhone 17 Pro"</code>. It names a device and no OS version. The man page says the OS key takes "the string latest (the default) to indicate the most recent version of iOS supported by this version of Xcode", and the mirror agrees. Latest had just become 27.0.</p>
+
+      <p>The iOS 27.0 runtime ships no iPhone 17 Pro. Its device set is iPhone 18 Pro, 18 Pro Max, 17, 17e and Air. The 17 Pro and 17 Pro Max existed on 26.5 and did not carry forward. That line went into the script on 6 September and resolved cleanly through the 1.5.4 release on 15 September. It resolved to nothing on 21 September, because the phone it named had aged out of the newest runtime.</p>
+
+      <p>The error text sends you the wrong way. It prints the specifier it failed on, <code>{ platform:iOS Simulator, OS:latest, name:iPhone 17 Pro }</code>, and then a line about My Mac&#x27;s macOS platform not matching, which starts you investigating a Mac destination that was never in play. Read the specifier. When a failure prints <code>OS:latest</code>, look for the device on the newest runtime before assuming it has left the machine.</p>
+
+      <p>One command fixes it. <code>xcrun simctl create "iPhone 17 Pro" com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro com.apple.CoreSimulator.SimRuntime.iOS-27-0</code>. The device type and the runtime both still exist and nobody had paired them. 238 tests ran, none failed, and 1.5.5 build 40 went to review in the same session.</p>
+
+      <p>A major Xcode release changes which components count as current and which runtime counts as latest, and a script that names neither finds out by failing somewhere deep. Two lines cover it. <code>-checkFirstLaunchStatus</code> before the test step, so a stale machine stops on a message instead of a password prompt. An explicit OS on the destination, so a device that ages out of the newest runtime fails by name. Both go into the release script before Xcode 28.</p>]]></content:encoded>
   </item>
   <item>
     <title>38 stills in one ffmpeg graph broke a 34-minute render</title>
     <link>https://josephbankole.ca/blog/ffmpeg-overlays-memory.html</link>
     <guid>https://josephbankole.ca/blog/ffmpeg-overlays-memory.html</guid>
-    <pubDate>Fri, 18 Sep 2026 19:13:00 GMT</pubDate>
+    <pubDate>Fri, 18 Sep 2026 13:00:00 GMT</pubDate>
     <description>A podcast edit built as one ffmpeg graph with 38 looped stills died three minutes in. Reading each still as one frame and rendering 85 chunks fixed it.</description>
+    <content:encoded><![CDATA[<p>The first render of my podcast's long-form edit ran for about three minutes and left 626,524,208 bytes on disk. ffprobe would not open the file. It said "moov atom not found". The Python wrapper that had launched ffmpeg printed an empty stderr.</p>
+
+      <p>The episode was recorded on 13 September, about 34 minutes of two people talking football. The edit put 38 graphics over it, name straps, stat panels and context notes, plus five 10 per cent punch-ins on the lines that land. Twelve licence-clean photos were added later. Each one's start time and duration sat in one Python spec.</p>
+
+      <h2>The obvious build</h2>
+
+      <p>The obvious way to build that is one ffmpeg command. Each graphic is a PNG added as its own input with <code>-loop 1 -t &lt;duration&gt;</code>, and a chain of <code>overlay</code> filters stacks them on the base video at their times. One graph, one encode. The filter saved from that first attempt has 39 overlay steps, one per graphic and one for the punch-in layer.</p>
+
+      <p>A looped PNG input is a stream of full frames for as long as <code>-t</code> says. At 1920 by 1080 with an alpha channel, one frame is 8.3 MB. The longest panel in the edit, a match result card, stays on screen for 40 seconds. At 30 frames a second that is 1,200 frames and about 10 GB for one card. The 38 stills add up to 376.5 seconds of screen time.</p>
+
+      <p>My working explanation was that ffmpeg produced those frames as fast as it could read them, whether or not the overlay chain was ready for them, and they queued in memory while the main video was still near the start. I did not confirm that in ffmpeg's source, and the only measurements I have come from the next attempt.</p>
+
+      <h2>The change that did nothing</h2>
+
+      <p>The first change put <code>-itsoffset</code> on each graphic input, so each still would begin at its own time. <a href="https://ffmpeg.org/ffmpeg.html" target="_blank" rel="noopener">ffmpeg's documentation</a> says the offset is added to the input's timestamps, and <a href="https://wjwoodrow.wordpress.com/2013/02/04/correcting-for-audiovideo-sync-issues-with-the-ffmpeg-programs-itsoffset-switch/" target="_blank" rel="noopener">a 2013 guide to fixing audio sync</a> calls it a nudge to a stream's start time. Neither says it stops ffmpeg reading an input early, and here it did not. Two seconds into the rerun the ffmpeg process held 2,665 MB. At four seconds it held 4,551 MB, and the render was stopped by hand.</p>
+
+      <h2>What went in</h2>
+
+      <p>Both of the changes that worked are still in the build script. The first reads each still as one frame and repeats it inside the graph. The <a href="https://ffmpeg.org/ffmpeg-filters.html#loop" target="_blank" rel="noopener"><code>loop</code> filter</a> takes a loop count, a size in frames and a start frame, and <a href="http://johnriselvato.com/ffmpeg-how-to-loop-a-section-of-video-multiple-times/" target="_blank" rel="noopener">John Riselvato's 2020 walkthrough</a> describes size as the number of frames that get repeated. A five-second graphic becomes <code>loop=loop=149:size=1:start=0</code>, and <code>setpts</code> moves it to its place on the timeline. The input is one decoded image instead of 150.</p>
+
+      <p>The second cuts the timeline up. The script merges overlay windows that overlap into groups, cuts the body at the edges of each group, splits any plain stretch into pieces of 90 seconds or less, and renders each piece with only the graphics that fall inside it. The body came out as 85 chunks of ProRes LT, from a tenth of a second to 90 seconds long, and no chunk carried more than five graphics. The concat demuxer joins them, and the audio comes from the uncut edit rather than from the chunks, which carry picture only.</p>
+
+      <p>With both in place the process memory held steady, and the body rendered through to the end.</p>
+
+      <h2>Checking the joins</h2>
+
+      <p>With 85 joins against an audio track that was never cut, picture and sound could slip apart by a frame without a quick watch showing it. The check grabs the same moment from the source edit and from the finished file, shrinks both to 192 by 108 in greyscale, correlates them across three frames either side, and reports where the peak falls. At 10:00 in the source edit it fell at zero offset with a score of 0.9998. A sample at 33:10 scored below zero at every offset, because a full-screen card covers the picture there, so the check moved to 23:20 and 33:35. Those scored 0.9999 and 0.9998, both at zero.</p>
+
+      <h2>What the chunks were for</h2>
+
+      <p>An environment variable names the chunks to rebuild, and the rest are reused from disk. When a name strap's wording changed, one chunk was rendered again.</p>
+
+      <p>Later on 17 September my co-host asked for two passages to come out of the finished episode. The cuts removed 11.85 and 8.98 seconds, and the recut runs 34:12 against 34:33 before it. Every graphic after the first cut had to move, so all 85 chunks rendered again. The spec kept its times in the original timeline, and a two-line function subtracts whatever was removed before each one.</p>
+
+      <p>The cold open needed the same treatment, in a place the first pass missed. Its clips are found by searching the transcript for a phrase after a given time, and those times were still in the old timeline. The search failed with "not found" until they went through the same function.</p>]]></content:encoded>
   </item>
   <item>
     <title>A retried job did Tuesday's work in Monday's run</title>
     <link>https://josephbankole.ca/blog/retried-job-did-tuesdays-work.html</link>
     <guid>https://josephbankole.ca/blog/retried-job-did-tuesdays-work.html</guid>
-    <pubDate>Wed, 16 Sep 2026 19:00:00 GMT</pubDate>
-    <description>A scheduled run stopped on a usage limit on Monday and was retried 34 hours later. It read the clock, did Tuesday's work, and Monday's article was never filed.</description>
+    <pubDate>Wed, 16 Sep 2026 13:00:00 GMT</pubDate>
+    <description>A scheduled run hit a usage limit on Monday and was retried 34 hours later. It read the clock, did Tuesday's work, and never filed Monday's article.</description>
+    <content:encoded><![CDATA[<p>At 06:28 Eastern on Monday 14 September, the job that writes the multisport answer articles for thearchv.ca started and stopped five seconds later. The only thing it produced was one line: "You've hit your weekly limit · resets Sep 15 at 5pm (America/Toronto)".</p>
+
+      <p>That job files an article a day each for the NFL, Formula 1, tennis and golf, and a basketball article on Mondays only, with the WNBA and the NBA taking turns week to week. 14 September was to be the first WNBA Monday. There is no basketball article for it.</p>
+
+      <h2>What the limit stopped</h2>
+
+      <p>The weekly usage limit on the account my scheduled jobs run under was already spent by early Sunday. Between 00:47 and 06:04 on 13 September, six scheduled runs stopped on that message.</p>
+
+      <p>The Mac powered up at 06:15 on Monday, and the scheduler fired the runs it had missed. Seven of them stopped between 06:26 and 06:28. Two, the AI news desk and the football desk, had "Try again" sent into their sessions within four minutes, and both finished that morning. Nothing was sent to the other five on Monday.</p>
+
+      <p>The message gives a reset time, so it reads like a pause. The run does not wait for the reset. It is recorded as failed, and nothing more happens in that session until a message goes into it.</p>
+
+      <h2>What the retry did</h2>
+
+      <p>At 17:04 on Tuesday 15 September, "Try again" went into three of the stopped Monday sessions within 11 seconds of each other: the multisport desk, the daily AI company feature and a film carousel job. The limit had reset at 17:00.</p>
+
+      <p>The multisport run carried on in the session it had opened on Monday. The first date note in that session told the agent it was 14 September. The note on resume said the date had changed to 15 September. The job's spec says to read the clock first and date every entry from it, and to treat basketball as due only when the weekday number is 1. The clock said 2.</p>
+
+      <p>So the run did Tuesday properly. It filed four articles, for the NFL, Formula 1, tennis and golf, and logged basketball as not due. Its log row notes the 05:00 slot was missed and that no run had happened on 13 or 14 September, written from a session that opened on the 14th.</p>
+
+      <p>At 18:04 the scheduler fired Tuesday's own run, which found the day's four articles already live and shipped nothing, the second run of the desk that Tuesday.</p>
+
+      <h2>The explanation written that night</h2>
+
+      <p>My nightly review of the desks recorded that the Mac went into clamshell sleep on battery at 21:46 on Monday, that every desk ran about 11 hours late, and that the basketball Monday was missed. The next day's decision moved the first WNBA Monday to 21 September and named the sleep as the reason the desk never ran.</p>
+
+      <p>The power log does show that sleep. The session record puts the multisport stop at 06:28, more than 15 hours before the lid closed. The Mac fully woke at 17:00:43 on Tuesday and the limit reset at 17:00, so a late afternoon run fits either account until you read the run's first timestamp.</p>
+
+      <h2>What a date-dependent job needs</h2>
+
+      <p>A job whose work depends on the weekday needs two dates, the one it was fired for and the one it is running on. When they differ, the run should say which it is doing, either the missed day's work under the missed day's date, or today's work with the missed day written down as missed. My multisport spec reads only the clock, so a retry takes the second route without saying so.</p>
+
+      <p>The fired-for date is already in the session. The first date note is written when the run opens, and a resumed run can compare it with the clock before its first step.</p>
+
+      <p>A limit stop needs a log row of its own, naming the task and the time. The multisport stop on Monday left nothing in my agent logs, so the scoring desk could report the answer desk as dark for 14 September but had no line saying why.</p>
+
+      <p>A run retried after its day has passed is a catch-up, and its report should open with both dates.</p>
+
+      <p>The Monday session is still dated 14 September. It holds five seconds of Monday and four articles from Tuesday.</p>]]></content:encoded>
   </item>
   <item>
     <title>Reproducing an AI portrait took the whole job record</title>
@@ -34,13 +139,89 @@
     <guid>https://josephbankole.ca/blog/reproducing-an-ai-portrait.html</guid>
     <pubDate>Mon, 14 Sep 2026 13:00:00 GMT</pubDate>
     <description>Two batches of AI portraits ran on the same model with the same prompt, and only one reached the bar. The difference sat in three settings fields.</description>
+    <content:encoded><![CDATA[<p>On 13 September I asked for every headshot the ARCHV desks use to be remade the way the Shelton x Rodman art was made: same model, same prompt. Both were already the same.</p>
+
+      <p>The Shelton x Rodman carousel went out on 9 September, built on illustrated portraits of Ben Shelton and Trinity Rodman. With 44 shares it is the most-shared post on its account, and on 13 September it became the house rule for carousels on two ARCHV accounts, with an illustrated portrait across the full width of every slide, at least 1080 pixels deep in a 2700-pixel frame. Two days earlier, on 11 September, I had fixed the portrait prompt. It is 22 words, and the order said nothing could be added to it, including by the platform's own prompt enhancer. The desks generated 46 portraits against that order on the first day, and the written order told them to read the prompt back from each job to confirm nothing had been appended.</p>
+
+      <p>By the 13th I did not like some of the faces, and the bar I named was the Shelton and Rodman art.</p>
+
+      <h2>What was different between the two sets of jobs?</h2>
+
+      <p>The image platform keeps the parameters of every job it runs, so the record answers the question. Put a Max Verstappen portrait job from 11 September beside an Alexander Zverev job from the rebuild, made to the Shelton x Rodman settings.</p>
+
+      <p>Both ran on gpt_image_2 with the same 22 words as the prompt. The Verstappen job asked for a 1:1 image at 2k resolution and medium quality. The Zverev job asked for 3:2, 4k and high. The output follows from those three fields: 2048 by 2048 pixels, about 4.2 megapixels, against 3504 by 2336, about 8.2. So does the price. My credit ledger charges 2 credits for the first and 11 for the second.</p>
+
+      <p>The order written down on 11 September carried the Shelton x Rodman prompt word for word and, beside it, settings of 1:1, 2k and medium. Only the prompt matched the original job.</p>
+
+      <p>I cannot tell you which of the three made the difference. They changed together, and the rebuild moved all three back at once.</p>
+
+      <h2>Why a square portrait fought the layout</h2>
+
+      <p>The shape was a problem before the quality was. A carousel slide on these accounts is 2160 by 2700 pixels, and the portrait crosses it edge to edge as a band at least 1080 pixels deep, and 1540 on the opening slide. A 3:2 image is already close to that shape. A square one has to be cropped hard or made wider.</p>
+
+      <p>On the morning of 13 September my ledger shows a run of outpaint jobs, which paint new canvas around an existing image, and one upscale. Then, at 07:51 Eastern, the first jobs at the Shelton x Rodman settings went through. The rule written that day bans both repairs for faces. A portrait that falls short is generated again at the recipe settings or the post waits, and an old face is never widened or enlarged to fit.</p>
+
+      <h2>The reference photo is part of the recipe</h2>
+
+      <p>The model repaints what it is shown. The first rebuilt Wayne Rooney came back with the Champions League starball from the background of his 2009 reference photo painted in behind him. Painting it out of the finished portrait left a visible patch. The version that shipped came from a reference whose whole background had been blurred before generation, and the starball never appeared.</p>
+
+      <p>So crests, sponsors and maker's marks now come off the reference photo before the job runs, and never by adding words to the prompt. A reference whose face is too small or too soft to carry a likeness is replaced rather than enlarged.</p>
+
+      <h2>What each bank row keeps now</h2>
+
+      <p>Each headshot bank row made since 13 September names the job id and the id of the cleaned reference as it was uploaded. The settings are checked against the job record itself rather than against a note about it. The cleaned reference is stored because it is an input to the job, and a fresh download of the original photo is a different file.</p>
+
+      <p>The rebuild was eight jobs and 88 credits, for seven faces. The eighth was the Rooney with the starball.</p>
+
+      <p>Between the Verstappen job and the Zverev job, the prompt field differs by one trailing space.</p>]]></content:encoded>
   </item>
   <item>
     <title>Moving a daily job to midnight skipped the day I moved it</title>
     <link>https://josephbankole.ca/blog/moving-a-daily-job-to-midnight.html</link>
     <guid>https://josephbankole.ca/blog/moving-a-daily-job-to-midnight.html</guid>
-    <pubDate>Fri, 11 Sep 2026 19:00:00 GMT</pubDate>
+    <pubDate>Fri, 11 Sep 2026 13:00:00 GMT</pubDate>
     <description>I moved four scheduled jobs on 11 September. The one moved from noon to midnight lost its day, because the new slot had passed and the old one was gone.</description>
+    <content:encoded><![CDATA[<p>This site has no agentic-commerce brief dated 11 September, and nothing broke to cause it.</p>
+
+      <p>The brief is written by a scheduled agent job, one of 15 recurring jobs on my scheduler. Until this week it fired at noon Eastern. On 11 September I moved it to midnight, along with three other jobs, before its noon slot came round. The scheduler took the new cron expression, looked at the clock and set the next fire for the first midnight still ahead of it. The job last ran at 12:05 on 10 September. Its next run is 00:05 on 12 September. That is 36 hours on a job that runs every 24, and the day in the middle has no run in it.</p>
+
+      <h2>When does moving a cron job skip a run?</h2>
+
+      <p>A daily job has one fire time, and the scheduler works out the next one from the moment you save. So the day of the edit depends on where the clock sits between the old time and the new one. If both are still ahead, only the hour changes. If both have passed, today ran at the old time and tomorrow runs at the new one. The trouble is an edit made in between. Move a job earlier, to a time the clock has already passed, before the old slot has fired, and the old slot is deleted while the new one is already behind you. The same arithmetic says a job moved later, past a slot that already fired that day, runs twice.</p>
+
+      <p>Noon to midnight is the reliable version of the skip, because midnight has always passed by the time a daytime edit is saved.</p>
+
+      <h2>The other three moves</h2>
+
+      <p>The rest of that day's moves came out differently, which makes them a better test than the one that failed.</p>
+
+      <p>The scoring desk moved from 13:30 to 01:30, and on the same day changed what it measures. It used to score the day so far; now it scores the day that just ended. It lost its 11 September run as well: it last fired at 13:35 on the 10th and fires next at 01:34 on the 12th. The 11th still gets scored, by the run on the 12th, because the new job looks backwards. Its spec now carries a paragraph written for one date only. If the noon job has no log row for 11 September, its two lanes resolve as paused rather than failed, and no alert is raised. The monitor had to be told in writing that the hole was deliberate.</p>
+
+      <p>The multisport answer desk was revived on the 11th with an 08:00 slot and moved to 05:00 the same day. It has never fired. Its first run is 05:06 on 12 September, and nothing was lost, because its work was handed over from another desk with an effective date of 12 September, the first day the new slot could fire.</p>
+
+      <p>The weekly expense sweep moved from Monday 08:00 to Monday 04:00. The edit happened on a Friday. No Monday sat between the old slot and the new one, so none of the cases applied.</p>
+
+      <h2>Why the carousel survived the skip</h2>
+
+      <p>The noon job produces two things. One is the day's news brief for this site, published the day it is written. The other is the next carousel for the @thearchv.ai Instagram account, which is built ahead of its slot. The deck for 12 September at 15:00 was already queued in Buffer on the 10th. When the run vanished, the carousel lane lost nothing and the brief lane lost its day.</p>
+
+      <h2>The dependency nobody edited</h2>
+
+      <p>The job that publishes this essay has its own spec, and its opening paragraph says it fires after the noon desk has normally landed the day's brief, so its review covers that page too. The spec is mine, and that sentence is now wrong twice. From tomorrow the brief lands 15 hours before this job fires, and today it did not land at all.</p>
+
+      <p>The specs of three of the jobs that moved were updated on the day, along with the liveness notes that watch them. This one was not on the list. Its own schedule never moved; it depends on the noon job through a sentence of prose, and a cron edit touches the schedule and nothing that reads it. The same spec refers to that job by its noon slot five times.</p>
+
+      <h2>What I check before saving a schedule now</h2>
+
+      <p>The scheduler reports each job's last and next run, so the first check is one subtraction after the edit. On a daily job, a gap over 24 hours is a skipped day and a gap under 24 is a double. This one read 36.</p>
+
+      <p>A handover of work from one job to another gets dated to the first fire the new schedule can make, which is what the multisport move did and why it cost nothing.</p>
+
+      <p>Before saving, I search every other spec for the job's name and its old time. A search for the word "noon" would have found my own desk.</p>
+
+      <p>And a job that must not lose a day gets moved after its old slot has fired, or run once by hand on the day of the move.</p>
+
+      <p>The next brief is due at 00:05 on 12 September, and it will carry that date.</p>]]></content:encoded>
   </item>
   <item>
     <title>The quota got stricter when six clean clips expired</title>
@@ -48,55 +229,386 @@
     <guid>https://josephbankole.ca/blog/rolling-window-quota-expiry.html</guid>
     <pubDate>Wed, 09 Sep 2026 13:00:00 GMT</pubDate>
     <description>A 45 per cent player cap blocked my goal-reel build at 55.4. Modelling the window forward showed expiry tightening it, and a floor that turns it off.</description>
+    <content:encoded><![CDATA[<p>My goal-reel series was blocked today at 55.4 per cent, and the footage was fine.</p>
+
+      <p>The series is a Manchester United goal archive that ships short reels from a bank of detected clips. One rule in the build refuses a reel if any single player would make up more than 45 per cent of the clips in a rolling thirty-day window, that reel included. When I ran the check this morning the window held 56 clips across eleven reels, and 31 of them were Wayne Rooney. That is 55.4 per cent. Nothing shipped.</p>
+
+      <h2>The cap and the bank it draws from</h2>
+
+      <p>The bank holds 527 clips and 214 of them are Rooney, so the source material is 40.6 per cent one player. The cap sits about four points above that, which is deliberate: a themed reel is allowed to be lopsided, and what the rule exists to stop is a whole month quietly becoming one player. The month I had actually shipped ran to 55.4, almost fifteen points above the bank it draws from.</p>
+
+      <p>Today's run was not short of material. It opened an untouched band of the source footage, auditioned nine clips and passed three through verification on native crops. It could have built a reel. What it could not do was arithmetic: holding the numerator at 31, the window has to reach 69 clips before Rooney falls under the cap, which meant 13 new clips with no Rooney in them. A reel in this series is three to seven clips.</p>
+
+      <h2>Where the window goes next</h2>
+
+      <p>So I modelled the window forward a fortnight instead of guessing. On 12 September the window drops to 44 clips and 22 Rooney, 50 per cent, and five clean clips clear the cap. On 15 September it shuts again at 26 clips and 16 Rooney, 61.5 per cent, needing ten. On 16 September it opens wider than at any other point in the fortnight, 20 clips and 10 Rooney, where three clean clips are enough.</p>
+
+      <p>The 15 September spike is one reel leaving. On 15 August I shipped six clips and every one of them was Bruno Fernandes. That reel is pure denominator: it holds no Rooney at all, so when it ages out it takes six clips off the bottom of the ratio and nothing off the top. Rooney goes from 50 per cent of the window to 61.5 without my shipping anything.</p>
+
+      <p>I had been reading expiry as relief, the way a cooldown expires and hands something back. A share over a rolling window does not work that way. Whether an item ageing out helps or hurts depends on which side of the current ratio it sat on. The reel that expires and makes my position worse is the most balanced reel I have shipped.</p>
+
+      <h2>The line I found while modelling it</h2>
+
+      <p>To model the window I had to read the check rather than call it, and there is a guard in front of the player loop I had forgotten writing. The share test only runs when the window holds twelve clips or more. Under twelve, the loop is skipped and no player share is computed at all.</p>
+
+      <p>It is there so that the first few reels of a new series cannot fail on a sample of four. The effect in production is the opposite of the rule's purpose. The quota is at full strength when the series is busy and concentration is hardest to achieve. It switches itself off when the series goes quiet and one reel can be the entire record. Stop shipping for thirty days and the window empties. The first reel back is measured against nothing, and six clips of one player pass without a complaint.</p>
+
+      <p>The reels have been getting smaller on their own: six clips each through mid August, then five, then four, and the last two were three apiece. Smaller reels drain the window faster, and the check counts the candidate reel's own clips towards the twelve, so a six-clip reel arriving into an empty window is measured against six clips.</p>
+
+      <h2>What I am changing</h2>
+
+      <p>The cap stays. It did its job today and refused a reel I would have shipped without thinking about it. The floor is the defect, and skipping the test is the wrong behaviour at a small sample. A twelve-clip minimum protects a brand new series and there is no new series here, so the fix is to hold the last computed ruling when the window is too thin to compute a fresh one, rather than returning silence.</p>
+
+      <p>The forward model is the other change. I had been running the check against today and reading a pass or a fail, which tells me nothing about a Tuesday when a clean reel expires. Running it across the next fortnight took one pass and turned a blocked build into three dated windows and a known number of clips to find for each.</p>
+
+      <p>The series has shipped eleven reels in the last thirty days. The check that keeps one player under 45 per cent of them does not run below twelve clips.</p>]]></content:encoded>
   </item>
   <item>
-    <title>797 tests passed on a gate that had never read the policy</title>
+    <title>797 green tests, 7 defects: when fixtures drift from config</title>
     <link>https://josephbankole.ca/blog/a-green-suite-that-guarded-nothing.html</link>
     <guid>https://josephbankole.ca/blog/a-green-suite-that-guarded-nothing.html</guid>
     <pubDate>Mon, 07 Sep 2026 13:00:00 GMT</pubDate>
     <description>Phase one of my pipeline rebuild shipped 275 files and 797 passing tests. Two review agents then found seven defects, all in code whose job was to refuse.</description>
+    <content:encoded><![CDATA[<p>At ten to nine last Tuesday morning the first phase of my pipeline rebuild went in as one commit: 275 files and 797 passing tests. Two review agents read it before lunch and came back with seven blocking defects. Five of the seven sat in the gate, the code whose only job is to refuse a unit, and the other two in the measurement that feeds it. In every case the code had been running against something empty.</p>
+
+      <h2>What the gate had been reading</h2>
+
+      <p>The gate suite never loaded the repository's own config directory. It built a Config object by hand from fixture data and tested against that. The fixture and the real config had drifted, and the drift was measurable. Eight of twelve accounts, nine of thirteen lanes and seven of eleven approved routes existed only in the real file, so no test had ever gated them.</p>
+
+      <p>The word list went the same way. The fixture copy of the banned gambling terms carried <code>bet</code> and <code>betting</code>. The shipped file carried neither. It had <code>free bet</code>, <code>place a bet</code> and a column of operator names, and the two plain words a caption is most likely to contain were missing. A rule dated 7 August in my own canon, binding on every lane and on the ads, had been unenforced in production the whole time, with the suite green.</p>
+
+      <h2>A policy that named tests nobody had written</h2>
+
+      <p>Each rule in the safety file carries a column naming the tests that enforce it. There was a test to check that column. It asserted that every entry began with the string <code>test_</code>. I counted the names on Tuesday's commit this afternoon: 45 unique, and 17 of them resolved to no test function anywhere in the tree. The file read as a list of guarantees, and the check built to tell a guarantee from an intention could not tell them apart.</p>
+
+      <p>Then the history. The gate takes a history object so it can enforce the rotation and repeat rules, the ones that stop a lane repeating itself. When no history is passed it falls back to a null one, which has no record of anything, and in production nothing passed one. Every rotation check the suite had ever passed was a check against an object with nothing to remember.</p>
+
+      <h2>The readings that joined to nothing</h2>
+
+      <p>The ledger held 764 metrics rows and 184 units, and the join between them returned zero rows. Every reading had been written without an anchor to the unit it measured. The health view returned nothing and every trailing median was None, and nothing complained. The live measurement path had the same shape one layer up. The importer that reads my performance log dropped every recent post row, because the desks append at the tail under the current header and the parser read each row against whichever header enclosed it. Fifteen Threads permalinks went with those rows. The first real fetch after that was repaired retrieved thirteen pages at HTTP 200 and matched none of the four view-count patterns the code was looking for.</p>
+
+      <p>So on Tuesday morning the pipeline could not load its policy, could not enforce its word list, could not see its own history, could not join a reading to the unit it measured and could not read a view count off a live page, and 797 tests passed.</p>
+
+      <h2>What the tests were proving</h2>
+
+      <p>Every one of those tests was true. The gate ran, the rules loaded and the metrics function returned a value, and not one of them presented the thing the code exists to refuse and asserted the refusal. "Loads the policy" and "enforces the policy" are different tests, and I had written the first and read it as the second, many times over, in a suite large enough that its size stood in for its coverage.</p>
+
+      <p>A fixer agent closed all seven the same morning, in a second commit at twenty past ten. The gate suite now loads the real config directory, and a test over the shipped word list asserts that the terms the design names are present. A metrics row that names no unit is refused twice, once in code and once by a trigger on the table itself. The tests the policy names are now checked against what exists. Nine were written, eight were moved to a deferred column that carries a window and a reason for each, and the deferred list is pinned as a set that may only shrink. The null history stays in the code as a seam for tests, and production reads a real one off the ledger. Sixty-eight tests were added. On the rebuilt ledger 689 of 689 readings join.</p>
+
+      <h2>The question I now ask of a green suite</h2>
+
+      <p>I did not find any of this. Two reviewers found it by reading the code rather than the test report, and the question they were answering was what input the guard had actually seen. When an agent tells me a safety component has green tests, that is the question I ask back. If the answer is a fixture, a default, a null object or an empty table, the tests prove the code executes, and I want the one that hands the gate the thing it should refuse and watches it refuse.</p>
+
+      <p>The suite is past three thousand this week. At ten to nine on Tuesday it stood at 797, and eight of the twelve accounts it protects had never been gated once.</p>]]></content:encoded>
   </item>
   <item>
-    <title>The check passed, then the post published itself</title>
+    <title>Buffer post logged as notification mode published itself</title>
     <link>https://josephbankole.ca/blog/a-read-back-that-proved-nothing.html</link>
     <guid>https://josephbankole.ca/blog/a-read-back-that-proved-nothing.html</guid>
-    <pubDate>Fri, 04 Sep 2026 19:45:00 GMT</pubDate>
+    <pubDate>Fri, 04 Sep 2026 13:00:00 GMT</pubDate>
     <description>A scheduled post published itself this morning. Three run logs recorded it as waiting for me, and the field they recorded had changed after the write.</description>
+    <content:encoded><![CDATA[<p>At four minutes past eight this morning a carousel published itself to an Instagram account that is supposed to ask me first. Nobody pressed anything. The post had been built and queued on 31 August, and the run that queued it recorded, in the log I keep for exactly this purpose, that it was set to wait for me.</p>
+
+      <h2>What three runs wrote down</h2>
+
+      <p>Every desk here writes one line per run into a dated log. The carousel clause of the 31 August entry reads <code>ig-ai-carousel QUEUED 6a95abac7116b186166d46cc for 4 Sep 08:00 ET notification</code>. Notification is the mode where the scheduler assembles the post, holds it, and sends a reminder to my phone; I open the app and publish it myself. The other mode is automatic, which needs nobody.</p>
+
+      <p>Two later runs say the same thing in different words. The entry from 2 September reminds me to post the first comment by hand because the "notification path drops it", which is a sentence only worth writing about a post on the notification path. The 3 September entry reads <code>ig-ai-carousel QUEUED 6a99a006515b451ac7bc0f29 for Sat 5 Sep 08:00 ET notification mode</code>.</p>
+
+      <p>Three runs across four days, each recording a post that would wait for a human.</p>
+
+      <h2>What the server says</h2>
+
+      <p>This afternoon I read all three posts back off the API instead of out of my own notes. Every one of them returns <code>schedulingType: automatic</code>.</p>
+
+      <p>The first came due at eight this morning and was sent at four minutes and forty-four seconds past, by the scheduler. It now carries a permalink to a live Instagram post, and its <code>notificationStatus</code> is null. The other two are still standing, due at eight on Saturday and Sunday, both automatic.</p>
+
+      <h2>The control that makes this a measurement</h2>
+
+      <p>One wrong field is a story about one post. What makes it a measurement is that a second post, on the same account, through the same API, due in the same minute, came out right.</p>
+
+      <p>At eight this morning a carousel also went out on my personal Instagram. Different channel, same Buffer organisation, same Instagram service, same slot. It reads <code>schedulingType: notification</code>. Its <code>notificationStatus</code> is <code>markedAsPublished</code> and Buffer holds no permalink for it, where the automatic one holds one.</p>
+
+      <p>The desk that built that post prints its own variables before the write and asserts there that the mode is the literal string <code>notification</code> and that <code>automatic</code> appears nowhere. Then it reads the created post back off the server as a separate call and asserts the mode again. Its log for this morning records no incident.</p>
+
+      <p>So I already own the check. I have been running it on one lane and not on the other, and the lane without it drifted. That is the comfortable reading of this morning, and it is wrong.</p>
+
+      <h2>The read-back would have missed two of the three</h2>
+
+      <p>Every record on this API carries a <code>createdAt</code> and an <code>updatedAt</code>. The deck queued today, which reads notification and is correct, was created at 12:29:05.190 and last updated at 12:29:05.204. Fourteen milliseconds. Nothing has touched it since it was written.</p>
+
+      <p>The three that drifted all carry an <code>updatedAt</code> well after their <code>createdAt</code>. The one that published itself was created on 31 August and last updated on 2 September. The Sunday deck was created on 2 September and the Saturday deck on 3 September, and both were last updated on the afternoon of 3 September, twelve seconds apart from one another. The run that wrote the later of the two had written it more than four hours earlier.</p>
+
+      <p>I cannot tell from the API what changed them and I am not going to guess. The shape is what I can read. The only post whose <code>updatedAt</code> matches its <code>createdAt</code> is the only post still carrying the value it was given.</p>
+
+      <p>A read-back at write time asserts that the write landed. It says nothing about the days between the write and the moment the thing fires. On this evidence it would have passed all three of these posts on the day each was created, and two of them would have drifted afterwards regardless.</p>
+
+      <h2>The window where a fix is still cheap</h2>
+
+      <p>A scheduled post comes back with a list of the actions it will accept, and that list runs to changing the time, moving it to a draft, editing the text, duplicating it and deleting it outright. There is no action for the mode, and the desk that hit this recorded it as one that cannot be edited at all. The two still in the queue can be corrected only by destroying them and building them again, which costs a rebuild of four rendered cards, a caption and a first comment.</p>
+
+      <p>The one that fired this morning comes back with a shorter list. It will let me view it, copy its link, duplicate it, add a tag and add a note. The actions that would change it or remove it are gone. The repair went from a rebuild to nothing at all at eight this morning, while I was not looking.</p>
+
+      <p>Reading a value back at the moment I set it is cheap, and I will keep doing it. What it does not cover is the days between the write and the firing. The read that would have caught all three has to run on the morning itself, against every post due in the next few hours, and it has to ask the server rather than my own log.</p>
+
+      <p>Two of them are still in the queue, due at eight on Saturday and Sunday morning.</p>]]></content:encoded>
   </item>
   <item>
-    <title>The check I asked for would have passed the work I rejected</title>
+    <title>Flesch-Kincaid passed the slide deck I rejected as too wordy</title>
     <link>https://josephbankole.ca/blog/reading-level-was-the-wrong-check.html</link>
     <guid>https://josephbankole.ca/blog/reading-level-was-the-wrong-check.html</guid>
-    <pubDate>Wed, 02 Sep 2026 19:00:00 GMT</pubDate>
+    <pubDate>Wed, 02 Sep 2026 13:00:00 GMT</pubDate>
     <description>I rejected a slide deck for being too wordy and asked for a reading-level ceiling. The rejected deck and the rebuild I shipped score the same grade.</description>
+    <content:encoded><![CDATA[<p>On Tuesday morning I rejected a LinkedIn document my own pipeline had built and told it to try again. Too wordy, I said, and asked for a twelfth-grade reading level. The deck had already cleared four gates on its way to me.</p>
+
+      <p>This afternoon I ran the gate I built that day against the archived version of the deck I threw out. Flesch-Kincaid grade 3.4, against a ceiling of 12. Then I ran it against the rebuild I approved and shipped. Also 3.4.</p>
+
+      <p>The number I asked for would have passed both of them, with more than eight grade levels to spare, without registering that anything had changed.</p>
+
+      <h2>What was actually wrong with it</h2>
+
+      <p>The gate returns a fifteen-item fix list on the rejected deck. Not one of the fifteen is about reading level.</p>
+
+      <p>Seven body slides ran over the twelve-word cap, one at twenty-five words and one at thirty. Slide two was the two-word fragment "What did", which is not a second hook but the middle of slide one's sentence. Slides three and five were fragments too. The payoff number sat on slide seven of nine while the last card carried no number at all, which inverts the only mechanic the format has. The last card read "Close it at the source.", a bare imperative where the house rule asks the sub line to invite. The post body under the deck ran 252 words and came down to 205.</p>
+
+      <p>Set that list beside what I actually said. Seven of the fifteen findings are word counts, so I had the fault in view; what I got wrong was the instrument. Flesch-Kincaid counts syllables per word and words per sentence. My cards were short sentences of short words. There were simply too many of them on each card, in an order that gave the ending away on slide seven.</p>
+
+      <p>Reading level was the measurable-sounding phrase I had to hand for "this is hard to take in". It is not the same quantity, and if I had shipped it as the gate I would have built a check that passes the exact artefact that caused me to ask for a check.</p>
+
+      <h2>A note is not a gate</h2>
+
+      <p>Eight days earlier I had written this down already. A note I wrote on 24 August records that the humanizer, the AI-writer detector and the metadata strip measure none of jargon density, reading level or slide structure. The fix agreed that day was to add a plain-English pass by eye.</p>
+
+      <p>That fix lasted eight days and then the same class of unit came through the chain with thirty words on a card.</p>
+
+      <p>An eye pass is a gate staffed by whoever happens to be reading, in whatever state they are in, at whatever hour the run fires. It produces no output. When it lets something through you cannot tell afterwards whether the rule was wrong, the reader was tired, or nobody performed the pass at all, because all three leave the same trace, which is none. The second miss had the same cause as the first, and I had already written the cause down.</p>
+
+      <h2>The gate was wrong within the hour</h2>
+
+      <p>Pointing the new script at a second deck the same afternoon broke it three times.</p>
+
+      <p>It treated any digit on a middle card as the withheld payoff, but that deck legitimately needs "three mandates" and a date in August on its middle cards, so the rule now takes an explicit payoff key and enforces that one number rather than every numeral. Its fragment test was a hand-written list of verbs, which fired on the words "named" and "ties" used as ordinary past tense, and became a shape test instead. And "so" was in its list of connectives that mark a card as continuing the previous one, which meant it flagged the header of the deck I had just approved and shipped, "So I stopped writing workarounds".</p>
+
+      <p>That third one is the useful failure. A check whose first act is to condemn something I had already judged good told me the rule was too crude on day one, for the price of an afternoon, off a deck I could verify by hand.</p>
+
+      <h2>The number moved and I cannot say exactly why</h2>
+
+      <p>The record written on Tuesday says the rejected deck returned a thirteen-item fix list, and breaks it down as four objections plus nine breaches of the word budget. Running it now, it returns fifteen, of which seven are word budget and eight are structure. Three patches went into the gate between the two runs. Both halves of that list moved, in opposite directions, and I have not reconciled them item by item.</p>
+
+      <p>I kept the four decks, two rejected and two shipped, and called them a regression suite. What I actually kept was four inputs. I recorded no expected output for any of them, so the suite can tell me a rejected deck still fails and a shipped deck still passes, and nothing about whether either one fails the way it failed on Tuesday. The list changed shape between one afternoon and the next, and the only reason I know is that somebody had written the number thirteen into a sentence.</p>]]></content:encoded>
   </item>
   <item>
-    <title>A disabled task and a dead one look the same</title>
+    <title>Heartbeat alert cannot tell a disabled task from a dead one</title>
     <link>https://josephbankole.ca/blog/disabled-and-broken-look-the-same.html</link>
     <guid>https://josephbankole.ca/blog/disabled-and-broken-look-the-same.html</guid>
-    <pubDate>Mon, 31 Aug 2026 19:00:00 GMT</pubDate>
+    <pubDate>Mon, 31 Aug 2026 13:00:00 GMT</pubDate>
     <description>My heartbeat alerted twice about a desk gone quiet. The alert names two causes, a task that broke and one switched off, and cannot tell them apart.</description>
+    <content:encoded><![CDATA[<p>At 23:00 on 29 August my nightly heartbeat printed one line about a scoring desk that had gone quiet. The line ended with the words "silent write failure or the task stopped running". It printed the same line at 23:00 on the 30th. Unless I act today it prints again tonight.</p>
+
+      <p>That sentence is doing something I did not notice when I wrote it. It offers two causes and it has no way to tell you which one it is looking at, because from where the monitor stands the two are identical. It watches a directory of log files, and a task that broke writes nothing into that directory for exactly the same reason a task somebody switched off writes nothing.</p>
+
+      <p>The task is my metrics desk. It runs at half past one, captures the day's per-post numbers and closes with a roll-call of every content lane. Its scheduler record says <code>enabled: false</code>, and its last run was 27 August at 13:35. Four scheduled fires have passed since. The other desks kept working through all of it, filing nineteen, twenty and eighteen rows into the shared ledger on the three full days since, and nothing has scored a single one of them or run a roll-call. That part I can measure exactly. What I cannot establish from anything on this machine is whether four days ago I meant to do that.</p>
+
+      <h2>The two places built to hold the note</h2>
+
+      <p>Two places in this operation exist for recording exactly that, and both were left in their live state.</p>
+
+      <p>The first is the config file the heartbeat reads. It lists ten writers it expects to hear from, with a tolerance in days beside each one, and in place of a number it will accept the word <code>paused</code>. The comment above it, which I wrote, says to set it when a task is deliberately disabled, so the row stays visible without raising an alert. One writer uses it, a carousel job switched off on 10 July. The metrics desk still carries a <code>2</code>.</p>
+
+      <p>The second is the scheduler itself. Every task has a description, and the convention that has grown up in mine is a bracket at the front of it when a task stops. <em>RETIRED 2026-08-19, founder order 2026-08-18.</em> <em>SUPERSEDED 2026-07-25</em>, and then, further down the same line, disabled to prevent duplicate article commits to the live site. <em>Do not re-enable without redesigning the split.</em> Eight recurring tasks in that scheduler are switched off today and five of them open with a bracket saying so. The metrics desk is one of the three that do not. Its description gives the slot, the job and where the spec lives, and carries no sign anywhere in it that the task is off.</p>
+
+      <p>The note is missing from both of the places built to hold it. What survives is a boolean, which records that something happened and nothing about why.</p>
+
+      <p>I would like to file this as somebody else's oversight and I cannot. My own site desk, the one writing this, has a line in its spec saying the heartbeat row is its only dark-run detector, and it says so by design, because I deliberately kept it out of the roll-call manifest to stop a timing collision producing a false alarm every clean day. I traded one false alarm for a single point of detection and then discovered, four days late, that the point of detection cannot distinguish deliberate from dead. That reasoning is mine and it is in a file with my name on it.</p>
+
+      <h2>What a second identical alert costs</h2>
+
+      <p>Four dark days is the smaller half of this. An alert that cannot separate a decision from a failure has, by its second appearance, told me nothing I did not already know, and I will read the third one less carefully than I read the first, which is how a real outage gets three days into itself before somebody looks.</p>
+
+      <h2>Turning something off is two writes</h2>
+
+      <p>The repair is smaller than the problem it prevents. Turning something off is two writes and not one: the switch, and a line saying who turned it and what would make them turn it back. My tooling already has both fields. The paused state was there before the metrics desk went quiet, and the bracket convention was strong enough that five of eight disabled tasks follow it without anyone enforcing it. Neither of them fires automatically, and neither one is checked, so both depend on the person doing the disabling being in a mood to document. Four days ago I was not.</p>
+
+      <p>The next version of the heartbeat should read the scheduler's own enabled flag before it says a word about silence, and print one of two unambiguous sentences, either that the task is off and here is the note, or that the task is on and has not written since. The scheduler already reports that flag to anything that asks it.</p>
+
+      <p>Which leaves the question I cannot resolve from here, and it decides what happens tonight. If the desk was switched off on purpose then four dark days are a cost somebody already accepted and the fix is a config line marking it <code>paused</code>. If it was switched off by accident then four days of unscored posts are gone and the fix is to turn it back on now. The scheduler records that the switch was thrown. The only copy of why sits in somebody's memory of a Thursday afternoon.</p>]]></content:encoded>
   </item>
   <item>
     <title>git add -A in a repo two AI agents share</title>
     <link>https://josephbankole.ca/blog/git-add-a-shared-repo.html</link>
     <guid>https://josephbankole.ca/blog/git-add-a-shared-repo.html</guid>
-    <pubDate>Fri, 28 Aug 2026 19:30:00 GMT</pubDate>
+    <pubDate>Fri, 28 Aug 2026 13:00:00 GMT</pubDate>
     <description>Four times in three weeks, git add -A swept one agent's leftover files into another agent's commit on this site. Fonts included. Stage named paths.</description>
+    <content:encoded><![CDATA[<p>At 12:13 this afternoon an automated news desk published my logo workshop. Two font files, four renders of a letter J on a navy tile, two SVG copies of the mark, a seven-line HTML page and a text file holding a single URL, ten files in all. Nothing on the site links to any of them. Every one is live, because this repository's root is the web root and anything committed here is published.</p>
+
+      <p>The site runs on scheduled agents. A news desk writes the day's brief around noon. A site desk runs at three and owns the blog, the answer pages and the daily SEO pass; it is the one writing this. I drop in between them whenever I have an idea. All three of us write into one working tree, and I assumed the risk in that arrangement was a merge conflict. So far the merge conflict count is zero and the sweep count is four.</p>
+
+      <p>The sweeper is <code>git add -A</code>. It stages everything in the tree: your work, the other writer's work, whatever loose files the morning left behind. On a repository with one author that is a convenience. On a shared tree it turns every commit into a sweep of the floor, with a message describing only what you meant to pick up.</p>
+
+      <h2>What the four sweeps took</h2>
+      <p>The first, on 9 and 10 August, was a 117-byte state file that some tooling had dropped in the repository root, a session identifier and two skill names. It rode into two news commits. The live path returns a 404, so nothing reached a reader, and it sat in the tracked set for thirteen days before an audit read the file list.</p>
+
+      <p>The second took prose. On the morning of 24 August I rewrote the About section of my homepage. The edit had passed its checks and was sitting in the tree, not yet committed. At 12:23 the news desk committed its daily brief, 64 files, and my biography went out inside a commit titled News: agentic-commerce brief. Every word on the page is mine, and the history credits them to the news agent.</p>
+
+      <p>The third, the same day, was mechanical. The site desk's afternoon job includes rebuilding the shared chrome on every news page, normally its own commit with its own page count. The noon commit swallowed the whole rebuild. The pages came out right, but the record of which lane had changed what was now wrong.</p>
+
+      <p>And this morning at half past nine I tried out a new logo in a scratch folder under assets: two downloaded fonts, a render of the tile, comparison images, the URL the font came from. A decision for later, I thought. At 12:13 the news desk committed the 28 August brief and took all ten files with it, into a 15-file commit whose subject line reads News: agentic-commerce brief. The workshop was two and a half hours old when it went public.</p>
+
+      <h2>Why the ledger matters more with agents</h2>
+      <p>Each sweep on its own is a shrug. A state file, a correct paragraph under the wrong name, some build churn, a folder of orphan assets. The shapes keep changing, though, because a working tree accumulates every kind of leftover a day produces, and <code>-A</code> does not distinguish a deliverable from a byproduct. When the repository root is the public web, staging is the publish decision, and <code>-A</code> hands that decision to whoever last put a file down.</p>
+
+      <p>The commit log also carries more weight here than it does on a human team. When every writer is an agent on a schedule, the history is the only witness. I cannot ask the news desk what it meant at 12:13; the diff and the subject line are the entire interview. My afternoon desk audits this site daily and its first instrument is the log: what shipped, which lane shipped it, whether a lane went dark. Four times now that record has been wrong about who did what.</p>
+
+      <h2>The rules that stop it</h2>
+      <p>The rules this operation runs now are small. Agents stage named paths, never <code>-A</code>; <code>git add news/2026-08-28-agentic-commerce.html news-feed.xml sitemap.xml</code> is one line longer and commits exactly what its message claims. Work is committed the moment it clears its gates, because an edit left unstaged across another agent's scheduled window ships in that agent's next commit, under that agent's name. And nothing rebuilds the whole repository without reading <code>git status</code> first, because a tree carrying someone else's uncommitted work is not yours to rebuild.</p>
+
+      <p>Half of the evidence in this post is mine. It was my About rewrite sitting loose at 12:23, and my logo experiment sitting under assets at noon today. The agent that swept them was doing exactly what <code>-A</code> says to do. Twice, what it found on the floor was mine.</p>
+
+      <p class="dim">The fonts are still up as I file this, two copies of Fraunces serving from a folder called logo-src that no page has ever asked for.</p>]]></content:encoded>
   </item>
   <item>
-    <title>The BS Guide</title>
+    <title>The BS Guide: hand the boring parts of your job to Claude</title>
     <link>https://josephbankole.ca/blog/the-bs-guide.html</link>
     <guid>https://josephbankole.ca/blog/the-bs-guide.html</guid>
     <pubDate>Thu, 27 Aug 2026 13:00:00 GMT</pubDate>
-    <description>A practical guide to setting Claude up to handle the boring parts of your job: a project, a handover document, the first five tasks to delegate, connected tools, and the rules that keep you out of trouble.</description>
+    <description>Set Claude up for the boring parts of your job: the project, the handover document, the first tasks to delegate, and the guardrails.</description>
+    <content:encoded><![CDATA[<p>You commented BS on the reel, or somebody sent you this. The promise was the same either way: set up an AI assistant so the boring parts of your job stop being your job.</p>
+      <p>I run my own version of this. A set of automated agents drafts my content and checks my facts while I am at my day job. You do not need any of that on day one. You need one assistant that actually knows your job, and that takes about an hour to set up.</p>
+      <p class="bsg-tally">Three quick wins are marked through this page. <strong id="bsg-tally-n">0 of 3</strong> banked so far.</p>
+
+      <h2>Step one: set Claude up properly</h2>
+      <p>Go to <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and make an account. The free tier is enough. The paid plan lifts the limits once you are relying on it.</p>
+      <p>Then do the one thing most people skip. Stop using one-off chats and open a Project instead. A Project is a workspace that remembers context you load into it once, so every chat inside it starts already knowing your job. One-off chats are why most people think AI gives generic answers. It was generic because it knew nothing about you.</p>
+      <div class="bsg-win" id="bsg-win-account">
+        <span class="bsg-win-label">Made your account? That is the first win.</span>
+        <button type="button" class="bsg-btn" data-win="account" aria-pressed="false">Done, count it</button>
+      </div>
+
+      <h2>Step two: write the handover document</h2>
+      <p>Inside your Project, open the project instructions and describe your job the way you would brief a new hire on their first day. This single document is most of the setup. Copy this and fill in the brackets:</p>
+      <div class="bsg-win" id="bsg-win-copy">
+        <span class="bsg-win-label">One tap beats select-and-drag on a phone.</span>
+        <button type="button" class="bsg-btn" data-win="copy" aria-pressed="false">Copy the template</button>
+      </div>
+      <pre id="bsg-template"><code>You are my work assistant.
+
+About me: [your role, the kind of company, who you report to]
+
+My regular outputs: [for example: client emails, a weekly status
+report, meeting summaries, project updates]
+
+How I write: [for example: short sentences, plain words, no
+exclamation marks, sign off with just my first name]
+
+Here are two real examples of my writing:
+[paste two emails or reports you sent]
+
+Rules:
+- Draft, never send. I review everything.
+- If you are not sure about a fact, say so instead of guessing.
+- Ask me before assuming anything about dates, names or numbers.</code></pre>
+      <p>The two real examples matter more than the description. Claude picks up your tone from what you actually wrote, not from how you describe it.</p>
+
+      <h2>Step three: hand over the first five boring tasks</h2>
+      <p>Start with tasks where a decent draft saves you real minutes and a mistake costs you nothing, because you review before anything leaves your hands.</p>
+      <ul id="bsg-tasks">
+        <li><strong>Email replies.</strong> Paste the thread. "Draft my reply. Two short paragraphs, my tone, and commit to nothing beyond what I already said in the thread."</li>
+        <li><strong>Meeting notes.</strong> Paste your rough notes or the transcript. "Pull out every action item with an owner and a date. Then write a five-line summary for people who were not there."</li>
+        <li><strong>Status reports.</strong> "Here is what I did this week, as bullets. Turn it into my weekly status format." After step two, it knows the format.</li>
+        <li><strong>Spreadsheet cleanup.</strong> Upload the file. "Find duplicates, inconsistent naming and empty required fields. List the fixes before changing anything."</li>
+        <li><strong>First drafts of anything.</strong> "Give me a rough first draft of [the doc]. I will rewrite it. Your job is to kill the blank page."</li>
+      </ul>
+      <p>A week of this and the pattern shows up. You have stopped producing drafts and started reviewing them. Reviewing is faster.</p>
+      <p class="bsg-tasks-count">Tap each task above as you hand it over. <strong id="bsg-tasks-n">0 of 5</strong> handed over.</p>
+
+      <h2>Step four: connect your actual tools</h2>
+      <p>In Claude's settings you can connect the places your work already lives, like Gmail, Google Calendar and Google Drive. Once connected, you stop pasting things in. "Find the latest thread from [client] and draft my reply" works directly, and "what does my week look like" reads your real calendar.</p>
+      <p>The rule from step two does not move. It drafts, you send. Claude can send email once Gmail is connected, and it asks for your approval first by default; my advice is to keep pressing send yourself anyway.</p>
+
+      <h2>Step five: the level most people never reach</h2>
+      <p>Everything above happens while you sit there. The next level runs without you. That is <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a> on your computer, with tasks on a schedule. Mine run every morning before I am up. One drafts the day's content, another verifies facts against primary sources, and each one ends by writing a report I read in two minutes over coffee.</p>
+      <p>This level is a weekend project, not an hour, and you do not need it to get value from steps one to four. It is where this ends up once the drafting habit pays for itself and you start wondering what else can run without you.</p>
+
+      <h2>The rules that keep you out of trouble</h2>
+      <ul>
+        <li><strong>Nothing secret goes in.</strong> No passwords, no card numbers, no client data your contract says stays internal. Check what your employer allows before connecting work accounts.</li>
+        <li><strong>Review before anything ships.</strong> It drafts, you decide. Every time.</li>
+        <li><strong>Numbers get checked.</strong> If Claude gives you a figure, ask where it came from, and verify it before it goes in front of your boss.</li>
+        <li><strong>You own the output.</strong> "The AI wrote it" has never once worked as an excuse.</li>
+      </ul>
+
+      <p>Pick one task from step three and hand it over this week. That is the whole method: one boring job at a time.</p>
+      <p>If this worked, the next read is how the whole fleet fits together: <a href="https://josephbankole.ca/blog/multi-agent-architecture.html"><strong>The architecture of a multi-agent content operation</strong></a>.</p>
+      <div class="bsg-win bsg-win-final" id="bsg-win-follow">
+        <span class="bsg-win-label">The last win: new automations land on my Instagram first.</span>
+        <a class="bsg-btn" href="https://www.instagram.com/folabankole/" target="_blank" rel="noopener" data-win="follow" aria-pressed="false">Follow @folabankole</a>
+      </div>
+      <p class="dim">If this helped, <a href="https://ig.me/m/folabankole" target="_blank" rel="noopener">send me a DM</a> and tell me which task you handed over first.</p>
+
+      <style>
+      .bsg-tally, .bsg-tasks-count { color: var(--ink-dim); }
+      .bsg-win { display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+        border: 1px solid var(--ink-rule); border-radius: 8px; padding: 14px 18px; margin: 0 0 22px; }
+      .bsg-win-label { color: var(--ink-soft); }
+      .bsg-btn { display: inline-block; font: inherit; cursor: pointer; text-decoration: none;
+        color: var(--ink); background: transparent; border: 1px solid var(--accent);
+        border-radius: 6px; padding: 8px 16px; }
+      .bsg-btn:hover { background: var(--accent); color: var(--ground-deep, #171A2F); }
+      .bsg-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .bsg-win.is-done { border-color: var(--accent); }
+      .bsg-win.is-done .bsg-btn { background: var(--accent); color: var(--ground-deep, #171A2F); cursor: default; }
+      #bsg-tasks li { cursor: pointer; }
+      #bsg-tasks li::marker { content: "\2610  "; color: var(--accent); }
+      #bsg-tasks li.is-done::marker { content: "\2611  "; }
+      #bsg-tasks li.is-done { color: var(--ink-quiet); }
+      @media (prefers-reduced-motion: no-preference) {
+        .bsg-win.is-done { transition: border-color 0.3s; }
+      }
+      </style>
+      
+      <h2>Questions people ask</h2>
+      <h3>Is Claude free to use?</h3>
+      <p>There is a free tier and it includes Projects, so everything in steps one to three works without paying. Paid plans lift the usage limits.</p>
+      <h3>Do I need to know how to code?</h3>
+      <p>No. Steps one to four happen entirely in the claude.ai interface. Code only enters at step five, and that level is optional.</p>
+      <h3>Can Claude send emails for me?</h3>
+      <p>Once Gmail is connected it can, and by default it asks for your approval before anything goes out. My rule stays the same either way: it drafts, you send.</p>
+      <h3>What should I never put into it?</h3>
+      <p>Passwords, card numbers, and client data your contract says stays internal. Check what your employer allows before connecting a work account.</p>
+      
+      ]]></content:encoded>
   </item>
   <item>
-    <title>A search summary is not a source</title>
+    <title>Web search summary dropped 3 names and cited a dead URL</title>
     <link>https://josephbankole.ca/blog/a-search-summary-is-not-a-source.html</link>
     <guid>https://josephbankole.ca/blog/a-search-summary-is-not-a-source.html</guid>
-    <pubDate>Wed, 26 Aug 2026 19:30:00 GMT</pubDate>
+    <pubDate>Wed, 26 Aug 2026 13:00:00 GMT</pubDate>
     <description>A web search summary dropped three names from a seventeen-member list, invented a table, and returned a URL that was a 404. What I fetch before I cite.</description>
+    <content:encoded><![CDATA[<p>On 20 August I nearly published a list of fourteen companies. The press release I believed I was citing names seventeen.</p>
+
+      <p>I was drafting an answer page on x402, the payment protocol, and I asked a web search who the premier members of the x402 Foundation were. The summary came back fluent: fourteen names, attributed to <a class="inline-link" href="https://www.linuxfoundation.org/press/linux-foundation-announces-operational-launch-of-x402-foundation-to-standardize-internet-native-payments-for-ai-agents-and-applications" target="_blank" rel="noopener">the Linux Foundation's launch announcement</a>. It read like a fact with the source already attached. Then I fetched the announcement itself and counted. Seventeen. The summary had dropped Monad Foundation, Solana Foundation and Stellar Development Foundation from the back half of an alphabetical list, and nothing in its answer showed a seam.</p>
+
+      <p>A wrong list with a citation attached is worse than no list. If the search had failed I would have gone straight to the press release. Because it answered, and answered politely, fetching the source felt like ceremony. It was the only step that mattered.</p>
+
+      <h2>An invented table at a dead URL</h2>
+      <p>Five days later, drafting a page on who is liable when an AI agent buys the wrong thing, I asked what the AP2 protocol says about liability. The summary told me the AP2 specification carries a liability-allocation table, quoted a sentence about every payment network defining its own liability contracts, and handed me the specification's URL. That URL was a 404. <a class="inline-link" href="https://ap2-protocol.org/ap2/specification/" target="_blank" rel="noopener">The live specification</a> sits one path segment away, and the word liability appears on it zero times. There is no table on that page and no such sentence anywhere on it.</p>
+
+      <p>The summary was not inventing from nothing, which is what makes this one hard to catch. <a class="inline-link" href="https://ap2-protocol.org/faq/" target="_blank" rel="noopener">AP2's FAQ</a> really does address the subject, in different words: the protocol's stated objective is to provide evidence that helps payment networks establish accountability and liability principles. The claim existed, and the summary moved it to a different document, hardened prose into a table, and minted a quotation. Each step made it easier to cite.</p>
+
+      <h2>When the vendor's own pages disagree</h2>
+      <p>The third case is quieter. The same x402 page needed the date AWS launched AgentCore Payments in preview, and a summary said May. AWS's <a class="inline-link" href="https://aws.amazon.com/about-aws/whats-new/2026/04/amazon-bedrock-agentcore-payments-preview/" target="_blank" rel="noopener">what's-new item for that launch</a> is filed under April 2026. AWS's <a class="inline-link" href="https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-agentcore-payments-is-now-generally-available-enabling-agents-to-transact-safely-and-autonomously-at-scale/" target="_blank" rel="noopener">general-availability post</a> says the preview arrived in May. The vendor's two pages disagree with each other, and the summary had picked a side without mentioning that sides existed. I cut the date from my page rather than guess. As of today the two AWS pages still carry different months.</p>
+
+      <h2>The habits of compression</h2>
+      <p>None of this looks like a malfunction, and I do not think it is one. A summary is compression, and compression has habits: it shortens a list from the tail, it merges neighbouring documents into one, and it rounds a disagreement into an answer. What comes out is grammatical and sourced-looking, which is a worse failure shape than a blank result, because a blank result sends you to the document.</p>
+
+      <p>The lists worry me most, as a practitioner. A wrong name gets caught by the first reader who knows the field, while a dropped name leaves nothing on the page to notice. If the x402 page had shipped naming fourteen premier members, the error would have sat there reading as a complete answer.</p>
+
+      <h2>What I fetch before I cite</h2>
+      <p>The rule I run now costs about ten minutes a page. Every claim a search hands me gets its underlying document fetched rather than trusted from the snippet. I poll every URL before I link it, because a returned URL is a guess like everything else in the answer. Lists get counted on the primary page, and dates get read in two places. Across my last six site runs that rule is four for four: the shortened member list, the invented table, the dead URL and the April-to-May split were all caught at the fetch, and none of them would have been caught by reading the summary more carefully.</p>
+
+      <p>There is a loop in this that I feel while writing the answer pages themselves. The pages I publish exist partly to be read by the same class of machinery that handed me the fourteen-name list: they answer the question in the first 120 words because that is what a summarising engine lifts. I write for the compressor on one side of the desk and defend against it on the other. Both jobs reduce to the same discipline, keeping every number on the page traceable to a document that resolves.</p>
+
+      <p class="dim">The URL the search returned for the AP2 specification still returns a 404 this afternoon. I polled it again before writing this sentence.</p>]]></content:encoded>
   </item>
   <item>
     <title>The IntersectionObserver threshold my content outgrew</title>
@@ -104,55 +616,222 @@
     <guid>https://josephbankole.ca/blog/intersection-observer-threshold.html</guid>
     <pubDate>Mon, 24 Aug 2026 13:00:00 GMT</pubDate>
     <description>A homepage block rendered as 6,164 pixels of empty background. The IntersectionObserver threshold never changed; the list under it grew one row a day.</description>
+    <content:encoded><![CDATA[<p>The news list on my own homepage rendered as 6,164 pixels of empty background. The markup was fine. The rows were in the HTML, the links worked if you typed the URL, and the block sat at opacity zero at every scroll position on the page.</p>
+
+      <p>Every block on the site marked <code>.reveal</code> starts hidden. A class goes onto the <code>html</code> element synchronously in the head so the stylesheet can hide them before first paint, and an <code>IntersectionObserver</code> adds the class that brings each one back. The observer was configured with a threshold of 0.12 and a rootMargin of <code>"0px 0px -8% 0px"</code>.</p>
+
+      <p>A threshold is a fraction of the element, not of the screen. For a block taller than the viewport, the most of itself it can ever put on screen at once is the viewport height divided by the block height. The bottom margin trims eight per cent off the root, so the usable figure is 0.92 times the window. On my 772-pixel window that is 710 pixels. 710 over 6,164 is 11.5 per cent. The observer was waiting for 12.</p>
+
+      <p>That condition has no solution on that screen. Scrolling changes which part of the block is showing, never how much of it fits.</p>
+
+      <h2>The margin thinned one row a day</h2>
+      <p>The teaser grew by one row every time the noon job published a brief, and nothing trimmed it. Fifteen rows on 31 July. Twenty-five on 11 August. Thirty-six on 23 August. Each row is about 171 pixels.</p>
+      <p>At fifteen rows the block could put 27.6 per cent of itself on screen and revealed instantly. At thirty rows it was down to 13.8. At thirty-four, 12.2. The thirty-fifth row was committed at 12:18 on 22 August with that morning's brief, and took it to 11.9.</p>
+      <p>No commit touched the observer, the stylesheet or the threshold in that window. A daily publishing job walked a configuration value past its own limit one row at a time, and every individual commit was correct.</p>
+
+      <h2>It still worked on a bigger screen</h2>
+      <p>At a 900-pixel window the same block clears 13.4 per cent and reveals normally. The failure depended on window height, and the small window was the one that showed it. Anyone opening the page on a large display would have found it fine and said so.</p>
+
+      <h2>The instrument returned the same answer either way</h2>
+      <p>I could not test it. Both browser surfaces available to me exposed background tabs only, and <code>document.visibilityState</code> read hidden in both. Chrome does not call <code>requestAnimationFrame</code> when a page is in the background, which <a class="inline-link" href="https://developer.chrome.com/blog/background_tabs" target="_blank" rel="noopener">its own developer blog</a> states plainly and <a class="inline-link" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">MDN</a> records as behaviour across most browsers. I attached a raw <code>IntersectionObserver</code> inside the page's own main world and it fired zero times in either surface.</p>
+      <p>Zero is also what a genuinely broken page returns. The harness produced the failing reading whether the site was healthy or not, so nothing it told me about reveal behaviour counted as evidence. Screenshots still render in a hidden tab, and that is what makes it convincing. A blank screenshot looks like a photograph of the bug. I passed one on as firmer proof than it was and had to walk it back an hour later.</p>
+      <p>What settled it was 710 over 6,164 on one side and my own screen on the other. Neither of those needed the harness, and I reached for the harness first.</p>
+
+      <h2>The fix, and the number still sitting in the file</h2>
+      <p>Two changes. Blocks taller than the root now reveal on entry, with the observer given a threshold array of <code>[0, 0.12]</code> so an entry callback exists to act on. And the teaser is cut from thirty-six rows to six. The homepage went from 15,840 pixels to 11,138.</p>
+      <p>The first change is the durable one. The second is a row count that is right today, sitting in a file a daily job writes to.</p>
+      <p>The 0.12 went into the site's script on 19 June, in a commit about hero animation and scroll-spy. That day the news block held one row. The number was still there, untouched, on 23 August, when the block held thirty-six.</p>
+
+      <p class="dim">Tomorrow around 12:20 the noon job writes the next brief into that list. The figure that decides whether the block can ever appear is 0.92 times the window height over the block height, and nothing in the build computes it. That check is the next thing I owe this site.</p>]]></content:encoded>
   </item>
   <item>
-    <title>Per-item checks cannot see the batch</title>
+    <title>Per-item validation missed 6 of 9 posts ending the same way</title>
     <link>https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html</link>
     <guid>https://josephbankole.ca/blog/per-item-checks-miss-the-batch.html</guid>
-    <pubDate>Fri, 21 Aug 2026 19:00:00 GMT</pubDate>
-    <description>Nine pieces of copy passed nine rotation checks on the same morning, and six of the nine ended the same way. Why item-scoped validation misses a collapsing distribution.</description>
+    <pubDate>Fri, 21 Aug 2026 13:00:00 GMT</pubDate>
+    <description>Nine pieces of copy passed nine rotation checks the same morning, and six ended the same way. Why item-scoped validation misses a collapsing distribution.</description>
+    <content:encoded><![CDATA[<p>This morning the operation shipped nine pieces of copy carrying a logged ending type, one on each of nine channels. Every one of them passed the check that exists to stop the writing sounding the same. Six of the nine closed on the same kind of sentence.</p>
+      <p>The rule they passed is not vague. Six sanctioned ending types, logged by name against every unit: cold fact, callback, reversal, forward line, question fork, hard stop. Never the same type twice running on one channel. Each desk reads the last closer recorded for its own channel before it writes, and every desk did that today.</p>
+
+      <p>The nine sat on nine separate properties: four Instagram accounts, three Threads accounts, a YouTube community post, and the news desk on this site. Six closed on a cold fact. The remaining three closed on a question fork. Callback, reversal, forward line and hard stop were used zero times between them.</p>
+
+      <h2>Why nine green checks meant nothing</h2>
+      <p>The rule is scoped to the channel. On a morning when every channel ships exactly one unit, "the same type twice running on one channel" describes an event that cannot occur. Nine desks each compared one unit against a different channel's history. Nine comparisons came back clean, and no one held the nine of them side by side.</p>
+      <p>A green result from that comparison carries no information about the day. It reports clean precisely on the mornings when each channel ships once, which are the mornings the batch has the most room to converge.</p>
+
+      <h2>How the token spellings hid it</h2>
+      <p>The closer type is recorded as a free-text token. Grepping the whole ledger returns nine distinct spellings for six types. Cold fact is written as <code>cold</code>, as <code>cold-fact</code>, and as <code>cold-fact-cta</code>. Question fork appears as <code>question</code> and as <code>question-fork</code>.</p>
+      <p>A rotation enforced by comparing one string against the previous string reads <code>cold</code> and <code>cold-fact</code> as two different endings. Two of this morning's units carry the bare <code>cold</code> token, and either would have passed the same-type check against a <code>cold-fact</code> predecessor on its own channel. Nothing validates the token against the six sanctioned names at the point it is written.</p>
+
+      <h2>What 119 units say</h2>
+      <p>Normalising those spellings and counting every closer the ledger holds gives 119 units: cold fact 37, forward line 27, callback 24, question fork 19, hard stop 11, reversal 1.</p>
+      <p>Reversal is the type with an explicit ceiling, one in five per channel. At that ceiling more than twenty of the 119 could have been reversals without breaking anything. It has been used once. A cap written to prevent a tic has been read as a prohibition, which leaves five working endings where the specification calls for six, and pushes weight onto the default.</p>
+
+      <h2>Where else this shows up</h2>
+      <p>A check whose unit is the item measures the item accurately. The distribution those items form is not a property any single item has, so nothing the check reads can contain it.</p>
+      <p>The same failure turns up wherever volume is generated and reviewed one piece at a time. Retry logic can be defensible on every individual attempt and still concentrate a thundering herd on one endpoint. A model router can pick correctly for each request on its own terms and route four fifths of the day's traffic to one model.</p>
+      <p>The tell is a review that has never failed. If a check has been green since it was written, the useful question is whether it is scoped to something capable of failing, and the cheapest way to answer that is to feed it a batch you already know is bad.</p>
+
+      <h2>What it still needs</h2>
+      <p>Nothing is fixed. Two desks noticed the collapse independently after the nine units were already live, which is how I know about it at all, and both filed it as a flag rather than a defect with an owner.</p>
+      <p>What it needs is small and specific. The token has to be normalised to a closed set at the moment it is written, so that <code>cold</code> and <code>cold-fact</code> cannot be two things. Then one comparison has to run whose unit is the day rather than the channel, reading every closer logged since midnight and failing when any single type carries more than about a third of them.</p>
+      <p>Run against this morning's nine it would have failed, six of one type against a threshold of three. Writing it would take less of an afternoon than this essay did.</p>
+
+      <p class="dim">The nine units are still live, and the check that would have caught them has not been written.</p>]]></content:encoded>
   </item>
   <item>
     <title>Automated audits fail toward false positives</title>
     <link>https://josephbankole.ca/blog/audit-false-positives.html</link>
     <guid>https://josephbankole.ca/blog/audit-false-positives.html</guid>
     <pubDate>Wed, 19 Aug 2026 13:00:00 GMT</pubDate>
-    <description>Five checks in my own site audit failed in five runs. Every one was confidently wrong, and every one invented work. The tells that catch them, and the fixes.</description>
+    <description>Five checks in my own site audit failed in five runs. Each was confidently wrong and invented work. These are the tells that catch them.</description>
+    <content:encoded><![CDATA[<p>The crawler came back with 0 of 64 sitemap URLs alive and 0 of 72 internal links alive, every feed and every asset dead alongside them. I read the output twice and started writing the incident note. The site was serving all 64 of those pages the entire time.</p>
+      <p>The real error was sitting inside an exception I had not unwrapped. <code>SSLCertVerificationError: unable to get local issuer certificate</code>. Python in that sandbox has no CA bundle, so every https fetch fails verification, and a verification failure raises the same <code>URLError</code> that a dead host does. Curl carries the system trust store. It answered 200 on all 64 immediately.</p>
+      <p>That was the first of five broken checks in five runs of the same daily audit, all of them mine, all of them confidently wrong.</p>
+
+      <h2>The other four</h2>
+      <p><strong>A character class where a backreference belonged.</strong> The meta-description reader matched <code>content=["\'](.*?)["\']</code>. A character class matches either quote, so the capture stops at the first apostrophe inside the value. A description opening "Mastercard's Agent Pay for Machines lets software pay software" was read as <code>Mastercard</code>, ten characters, and reported as far under the length band. Sixteen healthy pages were flagged in a single pass. Requiring the closing delimiter to match the opening one, <code>content=(["\'])(.*?)\1</code>, then unescaping entities so the count is of rendered characters, took that run's finding count from 75 to 10. None of the surviving ten was a defect either.</p>
+      <p><strong>A length rule measuring the branding.</strong> Nearly every title on this site carries the same 17 characters of site name. The check measured the whole string against a 50-to-60 target and flagged eight pages. Two were real, and both were hub pages whose editorial half is a single word. The other six were the suffix.</p>
+      <p><strong>A check reading the wrong element.</strong> The answer-first extractor pulled the first 60 words out of <code>div.prose</code> and reported that both answer pages opened on a subheading instead of an answer. On that template the answer sits in <code>p.standfirst</code>, above <code>.prose</code>. Both pages were already correct, and the recommendation would have sent me to rewrite two pages that needed nothing.</p>
+      <p><strong>A flag that does not exist on this platform.</strong> <code>sed 's|&lt;/\?loc&gt;||g'</code> silently does nothing under BSD sed, which has no <code>\?</code> in basic regular expressions. The sitemap crawl returned 000 on all 65 URLs and looked exactly like a total outage.</p>
+
+      <h3>They all failed toward more work</h3>
+      <p>Not one of these ever said a broken page was fine. They said fine pages were broken, sixteen at a time, and two of them were one approval away from producing a commit that edited correct pages into worse ones. A check with a bug does not fail evenly in both directions. It fails toward more work, because the code path that raises a finding is the one carrying the assumption, and the code path that stays quiet is usually just an early return.</p>
+      <p>A person reading that report over coffee glances at an implausible line and moves on. An agent reading the same output opens the file and fixes it, because fixing things is the job I gave it.</p>
+
+      <h3>What actually catches them</h3>
+      <ol>
+        <li><strong>Treat uniform failure as a bug in the checker.</strong> A real outage is rarely total and never that tidy. 0 of 64, 0 of 72, every feed, every asset, including the page open in the browser tab beside the terminal. That is one broken assumption applied 136 times. The tell has now caught three of these before they reached a report.</li>
+        <li><strong>Make the check print the text it read, beside the verdict.</strong> The answer-first bug survived because it published a conclusion without the evidence. Show me the 60 words the check measured and I can settle it in a second.</li>
+        <li><strong>Confirm with a second tool before believing a negative.</strong> One <code>curl -o /dev/null -w '%{http_code}'</code> would have ended the certificate incident before the incident note existed.</li>
+        <li><strong>Write retired rules down where the checker can see them.</strong> I retired the 50-to-60 title rule on measurement four days ago. The script running the daily pass still carries it, so this afternoon it produced fourteen findings, of which two were real and both were already open. The other twelve were the branding suffix again, or pages that are supposed to look exactly as they do.</li>
+      </ol>
+
+      <h3>The cost of the good version</h3>
+      <p>Every fix above is cheap. Print the evidence, use curl, distrust a total failure, keep the retired rules where the code can reach them. Together they are perhaps forty lines. The expensive part was the five runs it took to notice that on those checks the audit was not measuring the site at all, because a report full of findings feels like a working audit, and I wanted it to be working.</p>
+
+      <p class="dim">The 64 URLs from that first run are still there. They answered 200 on the day the crawler called them dead, and they answered 200 again this afternoon. The only thing that has ever changed is the code doing the asking.</p>]]></content:encoded>
   </item>
   <item>
-    <title>The carousel that rendered blank</title>
+    <title>The carousel that rendered blank · AI automation</title>
     <link>https://josephbankole.ca/blog/blank-carousel-render.html</link>
     <guid>https://josephbankole.ca/blog/blank-carousel-render.html</guid>
-    <pubDate>Thu, 18 Jun 2026 12:00:00 GMT</pubDate>
-    <description>A renderer started shipping carousels where the first card was blank. Blank-on-the-first-one is a tell. It almost always means a race.</description>
+    <pubDate>Thu, 18 Jun 2026 13:00:00 GMT</pubDate>
+    <description>A renderer started shipping carousels where the first card was blank. Blank-on-the-first-one is a tell. It almost always means a race condition.</description>
+    <content:encoded><![CDATA[<p>A renderer I run started shipping carousels where the first card's image was just... blank. Every other card was fine. Only the first.</p>
+      <p>Blank-on-the-first-one is a tell. It almost always means a race: something is being captured before it is ready.</p>
+
+      <h2>What was happening</h2>
+      <p>The pipeline builds each slide in a headless browser, then screenshots it. The images on the cards load from a remote CDN. The screenshot was firing the instant the page reported "done," but "page loaded" and "every image finished downloading" are not the same event. The first card lost the race most often because it had the furthest to travel.</p>
+
+      <h3>The fix</h3>
+      <p>The fix was one idea: do not screenshot until every image has actually finished. Wait for each one to reach a real loaded state, or to error, before capturing the frame. No model involved. No clever prompt. Just the oldest rule in automation, which is that you do not take the picture before the subject has arrived.</p>
+
+      <h3>The same bug, everywhere</h3>
+      <p>Capture-before-load is the same bug as record-before-act and read-before-think. Different system, same lesson: finish step one before you start step two. Once you have seen it in one place you start catching it everywhere, including in AI workflows that report success a beat before the work is genuinely done.</p>
+
+      <p class="dim">My pipeline's definition of "ready" was the page saying it had loaded. The images had their own opinion.</p>]]></content:encoded>
   </item>
   <item>
     <title>The production AI bug that was the context window</title>
     <link>https://josephbankole.ca/blog/debugging-ai-context-window.html</link>
     <guid>https://josephbankole.ca/blog/debugging-ai-context-window.html</guid>
-    <pubDate>Wed, 17 Jun 2026 12:00:00 GMT</pubDate>
-    <description>Two AI agents started failing the same way. The root cause was context-window exhaustion as a production failure mode, and the fixes were classic operations, not AI magic.</description>
-  </item>
-  <item>
-    <title>The architecture of a multi-agent content operation</title>
-    <link>https://josephbankole.ca/blog/multi-agent-architecture.html</link>
-    <guid>https://josephbankole.ca/blog/multi-agent-architecture.html</guid>
-    <pubDate>Tue, 16 Jun 2026 12:00:00 GMT</pubDate>
-    <description>A content operation that is almost entirely automated: scheduled agents that generate, queue, measure, and adjust. The models write fine. The hard part is everything around the model.</description>
+    <pubDate>Wed, 17 Jun 2026 13:00:00 GMT</pubDate>
+    <description>Two AI agents failed the same way. The cause was context-window exhaustion as a production failure mode, and the fixes were ordinary operations work.</description>
+    <content:encoded><![CDATA[<p>I run a small fleet of automated AI agents. Content pipelines, analytics jobs, scheduled workflows. Recently two of them started failing the same way, and the root cause was something I do not see discussed enough: context-window exhaustion as a production failure mode.</p>
+      <p>If you only ever build with AI in a chat window, this failure is invisible to you. It only shows up once a model is doing real, repeated work on a schedule, with files and tool outputs piling into its working memory. That is exactly where I found it.</p>
+
+      <h2>What was happening</h2>
+      <p>The first job force-loaded around 141KB of reference files before it did any actual work. A style guide, a performance log that kept growing, a few content banks. Then the tool outputs landed on top of that, and the agent's working memory overflowed mid-run. It compacted, re-read the same files, overflowed again. Three loops, then it gave up.</p>
+      <p>The second job loaded a 25KB CSV, rewrote the whole file back at the end, and crashed in the gap between posting and recording that it had posted. That is the dangerous one. It left the system a single rerun away from publishing the same thing twice.</p>
+      <p>Neither of these is an AI problem in the way people mean when they say "the model got confused." The model was fine. The system around the model was wasteful, and the waste had nowhere to go but the context budget.</p>
+
+      <h3>The fixes were classic ops, not AI magic</h3>
+      <ol>
+        <li><strong>Read slim.</strong> The 63KB style guide became a 3KB cheatsheet. The full document still exists, but it is reference-only now. The agent reads the short version to do its job.</li>
+        <li><strong>Logs that grow must rotate.</strong> Anything over roughly 400 lines archives itself, and the jobs read the tail instead of the whole history.</li>
+        <li><strong>Data files get edited by scripts, not by the model.</strong> One cell changes through code. The file never enters the agent's memory at all.</li>
+        <li><strong>Idempotency first.</strong> Post, then immediately record that you posted, with nothing in between, plus a duplicate guard that checks before it acts.</li>
+      </ol>
+
+      <h3>Why this felt familiar</h3>
+      <p>Five years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
+      <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over, which is exactly what mine did until the fixes above went in.</p>
+
+      <p class="dim">The style guide is 3KB now, the logs rotate, and the CSV never enters the model's memory. Failure write-ups like this are the artifact almost nobody keeps, and the one I always want to read.</p>]]></content:encoded>
   </item>
   <item>
     <title>What actually happens when a payment batch fails</title>
     <link>https://josephbankole.ca/blog/payment-batch-fails.html</link>
     <guid>https://josephbankole.ca/blog/payment-batch-fails.html</guid>
-    <pubDate>Tue, 16 Jun 2026 09:00:00 GMT</pubDate>
-    <description>A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed.</description>
+    <pubDate>Tue, 16 Jun 2026 13:00:00 GMT</pubDate>
+    <description>A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed. Here is how it really goes.</description>
+    <content:encoded><![CDATA[<p>I have written before about why your payment "takes three days." It comes down to the batch model: payments do not move one at a time, they move in files, on windows. A few people asked the natural next question. What happens when the batch itself fails?</p>
+      <p>Here is the part nobody sees.</p>
+      <p>A failed batch is not one problem. It is thousands of payments sharing one problem. So the first job is not fixing anything. It is scoping. What was in the file, which clients, which currencies, which cutoffs are still reachable today. Until you know the blast radius, every action is a guess.</p>
+
+      <h2>The triage order matters more than speed</h2>
+      <ol>
+        <li><strong>Stop the bleeding.</strong> Make sure the file cannot partially process twice. A duplicate run is worse than a late one. You can apologise for late. You cannot un-send money.</li>
+        <li><strong>Find the poison pill.</strong> Often one malformed record fails an entire file. Isolate it, release the rest. Most of the batch is usually fine and waiting on one bad row.</li>
+        <li><strong>Race the cutoffs.</strong> Every payment system has windows. Miss the next one and "late today" quietly becomes "tomorrow," and tomorrow is a different conversation with the client.</li>
+        <li><strong>Tell people early.</strong> Clients forgive delay. They do not forgive silence. The worst version of an incident is the one where the customer finds out before you tell them.</li>
+        <li><strong>Write it down.</strong> The root-cause analysis is not paperwork. It is the only thing standing between you and the same 2am twice.</li>
+      </ol>
+
+      <h3>The pattern holds</h3>
+      <p>Years of this and the pattern holds. The technology fails rarely, and the systems are mostly reliable. What separates a bad hour from a bad week is the human and procedural layer, the order you do things in under pressure.</p>
+
+      <p class="dim">I carried this triage order straight into running AI agents. Stop the bleeding, find the poison pill, do not let it run twice. <a class="inline-link" href="https://josephbankole.ca/blog/debugging-ai-context-window.html">It is the same discipline, a different system.</a></p>]]></content:encoded>
+  </item>
+  <item>
+    <title>The architecture of a multi-agent content operation</title>
+    <link>https://josephbankole.ca/blog/multi-agent-architecture.html</link>
+    <guid>https://josephbankole.ca/blog/multi-agent-architecture.html</guid>
+    <pubDate>Tue, 16 Jun 2026 13:00:00 GMT</pubDate>
+    <description>A content operation run almost entirely by scheduled agents that generate, queue, measure and adjust. The models write fine. The hard part is around them.</description>
+    <content:encoded><![CDATA[<p>I run a content operation that is almost entirely automated. Scheduled jobs generate posts, queue them across platforms, pull analytics back in, and adjust. No team. Just a set of AI agents wired together with scheduled tasks and tool integrations, orchestrated through Claude Code.</p>
+      <p>People assume the hard part is the writing. It is not. The models write fine. The hard part is everything around the model.</p>
+
+      <h2>Orchestration</h2>
+      <p>Two dozen scheduled jobs that have to not step on each other. One generates tomorrow's slate in the evening. Another verifies and ships it in the morning. Others pull stats. None of them can duplicate work or assume another job has already run. This is scheduling, and it is the same problem as sequencing payment files across windows.</p>
+
+      <h3>A constraint budget</h3>
+      <p>Every job runs inside a finite context window and a finite credit budget. Treat those as free and the whole thing falls over. It did, which is <a class="inline-link" href="https://josephbankole.ca/blog/debugging-ai-context-window.html">a separate story I wrote up here</a>. The fix was pure operations discipline: read slim, rotate logs, keep big files out of the model's memory.</p>
+
+      <h3>Idempotency</h3>
+      <p>A scheduled job will get re-run. That is not a maybe. If "did I already do this?" is not built in, you publish twice. So every action that touches the outside world records itself the instant it happens, with a guard that checks before it acts.</p>
+
+      <h3>Evals as a log, not a vibe</h3>
+      <p>I keep a performance log per post, so the system breeds toward what actually works instead of what feels good. The numbers are blunt, and they have already overturned a few of my own assumptions about what would land. A log you actually read is worth more than a dashboard you do not.</p>
+
+      <h3>What nearly killed it</h3>
+      <p>The thing that nearly killed it was not the AI. It was treating reference files and logs as free to load. They are not. They eat the context budget until a run cannot think. Fixing that was operations, not prompting.</p>
+
+      <p class="dim">The models will keep improving without any help from me. The scheduler, the duplicate guard and the log that tells the truth are mine to keep working. What is on that list for your stack?</p>]]></content:encoded>
   </item>
   <item>
     <title>What an ISO 20022 migration actually breaks first</title>
     <link>https://josephbankole.ca/blog/iso-20022-migration.html</link>
     <guid>https://josephbankole.ca/blog/iso-20022-migration.html</guid>
-    <pubDate>Thu, 11 Jun 2026 12:00:00 GMT</pubDate>
+    <pubDate>Thu, 11 Jun 2026 13:00:00 GMT</pubDate>
     <description>ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first.</description>
+    <content:encoded><![CDATA[<p>Everyone talks about ISO 20022 like it is a date on a calendar. A deadline to clear, a box to tick, a project that ends.</p>
+      <p>From inside payment operations, it is not a date. It is a long list of small things that break quietly, and almost none of them break on go-live day. Here is what goes first, in my experience watching these migrations up close.</p>
+
+      <h2>1. Field mappings</h2>
+      <p>MT messages truncate. MX messages carry rich, structured data. Map one onto the other and somewhere a remittance detail gets cut, quietly, with no error. Nobody notices until a beneficiary's reconciliation fails days later and the trail leads back to a field that was always too small to hold what you tried to put in it.</p>
+
+      <h2>2. Downstream systems</h2>
+      <p>The payment engine speaks MX now. Good. The sanctions filter, the archiving system, the reporting job someone wrote ten years ago and then left the company? Still expecting MT. The migration was never one cutover. It is dozens of them, scattered across systems that were never designed to be changed together, and each one is somebody's quiet assumption that the format would never move.</p>
+
+      <h2>3. Exception handling</h2>
+      <p>The happy path gets tested for months. Demos, sign-offs, dry runs. The repair queue, which is where operations actually lives, gets tested in production. That is not a criticism of anyone. It is just how it always goes. The exceptions are infinite and the test window is not, so the real edge cases meet the real system on the first busy morning.</p>
+
+      <h2>4. The first month</h2>
+      <p>A migration is judged by its first month of exceptions. The go-live is the easy part. The month after is where you find out whether you actually understood your own pipeline.</p>
+
+      <p class="dim">I now run AI systems in production and hold them to the same clock. The demo always works. What tells me whether a thing was built properly is the first month of real exceptions.</p>]]></content:encoded>
   </item>
 </channel>
 </rss>

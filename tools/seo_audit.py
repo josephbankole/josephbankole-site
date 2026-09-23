@@ -12,7 +12,11 @@ SAFE (applied automatically):
 
 JUDGEMENT (reported only, never auto-applied):
   - title length outside ~50-60 chars, or not unique across the site
-  - meta description length outside ~140-160 chars, or not unique
+  - a word repeated back to back in a title ("Thai Thai Salad recipe")
+  - meta description length outside ~140-155 chars, or not unique
+  - news editions (read only): title over 60 chars before the site suffix,
+    meta description over 155. tools/build-pages.py --check enforces the same
+    caps as a gate on today's edition; this reports the back catalogue.
   - missing alt text on <img>
   - JSON-LD present but fails to parse, or missing datePublished/dateModified
   - internal links pointing at a path with no matching file in the repo
@@ -25,6 +29,7 @@ Usage:
   python3 tools/seo_audit.py            # scan + apply safe fixes, print JSON report
   python3 tools/seo_audit.py --dry-run  # scan only, no writes
 """
+import html as htmllib
 import json
 import os
 import re
@@ -46,6 +51,31 @@ ALT_RE = re.compile(r'alt=["\'](.*?)["\']', re.I)
 JSONLD_RE = re.compile(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', re.S | re.I)
 HEAD_CLOSE_RE = re.compile(r"</head>", re.I)
 LINK_RE = re.compile(r'href=["\'](/[^"\'#?]*)', re.I)
+TITLE_SUFFIX_RE = re.compile(r"\s*(?:·|&middot;|&#183;|&#xB7;)\s*Joseph Bankole\s*$")
+REPEAT_RE = re.compile(r"\b(\w+)\s+\1\b", re.I)
+NEWS_TITLE_MAX = 60
+DESC_MAX = 155
+
+
+def visible(value: str) -> str:
+    return htmllib.unescape(re.sub(r"<[^>]+>", "", value)).strip()
+
+
+def news_lengths(findings: list) -> None:
+    """Report news editions over the caps. Reads news/, never writes to it."""
+    for page in sorted((REPO_ROOT / "news").glob("*.html")):
+        if page.name == "index.html":
+            continue
+        rel = str(page.relative_to(REPO_ROOT))
+        src = page.read_text(encoding="utf-8")
+        m = TITLE_RE.search(src)
+        title = visible(TITLE_SUFFIX_RE.sub("", m.group(1))) if m else ""
+        if len(title) > NEWS_TITLE_MAX:
+            findings.append(f"{rel}: news title {len(title)} chars before the suffix (max {NEWS_TITLE_MAX})")
+        m = DESC_RE.search(src)
+        desc = visible(m.group(1)) if m else ""
+        if len(desc) > DESC_MAX:
+            findings.append(f"{rel}: news meta description {len(desc)} chars (max {DESC_MAX})")
 
 
 def site_pages():
@@ -119,6 +149,11 @@ def main():
                     f"{rel}: title length {len(title)} chars (target 50-60): \"{title}\""
                 )
             titles.setdefault(title, []).append(rel)
+            repeat = REPEAT_RE.search(visible(title))
+            if repeat:
+                report["judgement_findings"].append(
+                    f"{rel}: title repeats \"{repeat.group(1)}\" back to back: \"{title}\""
+                )
 
         # --- meta description ---
         m = DESC_RE.search(html)
@@ -126,9 +161,9 @@ def main():
         if not desc:
             report["judgement_findings"].append(f"{rel}: missing meta description")
         else:
-            if not (140 <= len(desc) <= 160):
+            if not (140 <= len(desc) <= DESC_MAX):
                 report["judgement_findings"].append(
-                    f"{rel}: meta description length {len(desc)} chars (target 140-160)"
+                    f"{rel}: meta description length {len(desc)} chars (target 140-{DESC_MAX})"
                 )
             descs.setdefault(desc, []).append(rel)
 
@@ -187,6 +222,8 @@ def main():
             candidate_file = REPO_ROOT / href.lstrip("/")
             if not (candidate_dir / "index.html").exists() and not candidate_file.exists():
                 report["judgement_findings"].append(f"{rel}: internal link to missing path {href}")
+
+    news_lengths(report["judgement_findings"])
 
     # duplicate titles/descriptions across pages
     for t, files in titles.items():

@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>How do merchants detect AI agents? Web Bot Auth and Visa TAP · Joseph Bankole</title>
-<meta name="description" content="A merchant detects an AI agent three ways: a signed request it can verify, an integration it already agreed to, or a guess. Only 23 per cent manage any of them." />
+<meta name="description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent manage any of them." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
-<meta property="og:title" content="How do merchants detect AI agents?" />
-<meta property="og:description" content="Three mechanisms: a cryptographically signed request, a pre-agreed integration, or inference from behaviour. Only one of them works on an agent you have never met." />
+<meta property="og:title" content="How do merchants detect AI agents? Web Bot Auth and Visa TAP" />
+<meta property="og:description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent manage any of them." />
 <meta property="og:url" content="https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
@@ -20,8 +20,8 @@
 <meta property="article:modified_time" content="2026-09-22T15:45:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="How do merchants detect AI agents?" />
-<meta name="twitter:description" content="Three mechanisms: a cryptographically signed request, a pre-agreed integration, or inference from behaviour. Only one of them works on an agent you have never met." />
+<meta name="twitter:title" content="How do merchants detect AI agents? Web Bot Auth and Visa TAP" />
+<meta name="twitter:description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent manage any of them." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -48,7 +48,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests and the merchant verifies the signature against a key the agent publishes, which is what Web Bot Auth and Visa's Trusted Agent Protocol implement. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Most merchants run none of the three: 23 per cent can identify both AI-driven traffic and AI-driven purchases.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -57,7 +62,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "An agent that wants to be recognised sends three headers. Signature-Input carries the metadata: a keyid naming the public key, created and expires timestamps, a nonce against replay, a tag describing the request, and the algorithm, in practice Ed25519. Signature carries the signature itself. Signature-Agent points at the directory holding the key, which the origin fetches from /.well-known/http-message-signatures-directory before verifying. Web Bot Auth is now an adopted IETF working-group draft, draft-ietf-webbotauth-httpsig-protocol-00 of 1 September 2026, and builds on RFC 9421, HTTP Message Signatures.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -66,7 +76,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "A directory and a purpose. Visa published the Trusted Agent Protocol on 14 October 2025, built on HTTP Message Signatures and aligned with Web Bot Auth. Under plain Web Bot Auth an agent points at its own key directory, so trust reduces to trusting that directory. Under the Trusted Agent Protocol the agent registers with a payment network, and Visa and Mastercard each host the directory for their own registered agents. The tag in the signature also tells the merchant whether the agent has come to browse or to pay.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -75,7 +90,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Twenty-three per cent can identify both AI-driven traffic and AI-driven purchases. Another 21 per cent see the traffic and cannot connect it to a completed purchase. The figures come from the Global Digital Shopping Index: Merchant Edition, PYMNTS Intelligence's survey of 1,185 retail merchants in the United States, Brazil and the United Arab Emirates, fielded in March 2026 and commissioned by Visa Acceptance Solutions.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         }
       ]
@@ -83,9 +103,24 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://josephbankole.ca/" },
-        { "@type": "ListItem", "position": 2, "name": "Answers", "item": "https://josephbankole.ca/answers/" },
-        { "@type": "ListItem", "position": 3, "name": "How do merchants detect AI agents?", "item": "https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How do merchants detect AI agents?",
+          "item": "https://josephbankole.ca/answers/how-merchants-detect-ai-agents/"
+        }
       ]
     }
   ]

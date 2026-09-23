@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>What is the difference between ACP and AP2? · Joseph Bankole</title>
-<meta name="description" content="ACP standardises the agent checkout. AP2 standardises the authorisation underneath it. They are two layers of one purchase, not two candidates for the same job." />
+<meta name="description" content="ACP standardises the agent checkout. AP2 standardises the authorisation underneath it. They are two layers of one purchase." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/answers/acp-vs-ap2/" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="What is the difference between ACP and AP2?" />
-<meta property="og:description" content="One standardises the checkout, the other the authorisation underneath it. Why the two-horse-race framing is wrong, and which layer you cannot skip." />
+<meta property="og:description" content="ACP standardises the agent checkout. AP2 standardises the authorisation underneath it. They are two layers of one purchase." />
 <meta property="og:url" content="https://josephbankole.ca/answers/acp-vs-ap2/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
@@ -21,7 +21,7 @@
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="What is the difference between ACP and AP2?" />
-<meta name="twitter:description" content="One standardises the checkout, the other the authorisation underneath it. Why the two-horse-race framing is wrong, and which layer you cannot skip." />
+<meta name="twitter:description" content="ACP standardises the agent checkout. AP2 standardises the authorisation underneath it. They are two layers of one purchase." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -48,7 +48,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "ACP and AP2 are not competitors. The Agentic Commerce Protocol, from OpenAI and Stripe, standardises the checkout: how an agent talks to a merchant and passes a payment credential it never holds itself. The Agent Payments Protocol, from Google and now governed through the FIDO Alliance, standardises the authorisation underneath that: signed mandates proving a person allowed the agent to spend, and inside what limits. ACP is the till, and AP2 is the signature that makes what the till rings up defensible afterwards. A single agent purchase can use both.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         },
         {
@@ -57,7 +62,12 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "A merchant follows the agent surfaces that send it traffic, which today means ACP for ChatGPT and Google's Universal Commerce Protocol for Google's surfaces. A team building the agent itself cannot skip the authorisation layer, because that is the layer that decides who is liable when a purchase is disputed.",
-            "author": { "@id": "https://josephbankole.ca/#person" }
+            "author": {
+              "@type": "Person",
+              "name": "Joseph Bankole",
+              "@id": "https://josephbankole.ca/#person",
+              "url": "https://josephbankole.ca/"
+            }
           }
         }
       ]
@@ -65,9 +75,24 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://josephbankole.ca/" },
-        { "@type": "ListItem", "position": 2, "name": "Answers", "item": "https://josephbankole.ca/answers/" },
-        { "@type": "ListItem", "position": 3, "name": "What is the difference between ACP and AP2?", "item": "https://josephbankole.ca/answers/acp-vs-ap2/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Answers",
+          "item": "https://josephbankole.ca/answers/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What is the difference between ACP and AP2?",
+          "item": "https://josephbankole.ca/answers/acp-vs-ap2/"
+        }
       ]
     }
   ]
@@ -115,7 +140,7 @@
 
       <h2>Which one should you build against?</h2>
       <p>If you are a merchant, the honest answer is that you follow the agent surfaces that actually send you traffic, which today means ACP for ChatGPT and UCP for Google. That decision is a distribution question rather than a standards one, and it will keep changing.</p>
-      <p>If you are building the agent, you do not get to skip the authorisation layer. Ten years inside payment operations taught me that every dispute eventually collapses into one argument: what was authorised, by whom, and can you show it. A checkout standard has nothing to say about that question, and a signed mandate exists to answer it. Build the layer that survives the argument, and treat the checkout integration as the part you will rewrite twice.</p>
+      <p>If you are building the agent, you do not get to skip the authorisation layer. Five years in payment operations taught me that every dispute eventually collapses into one argument: what was authorised, by whom, and can you show it. A checkout standard has nothing to say about that question, and a signed mandate exists to answer it. Build the layer that survives the argument, and treat the checkout integration as the part you will rewrite twice.</p>
     </div>
   </div>
 </article>
