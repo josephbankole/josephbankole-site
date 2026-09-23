@@ -5,8 +5,44 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 21 Sep 2026 13:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 23 Sep 2026 13:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>An agent's retraction is no more evidence than its report</title>
+    <link>https://josephbankole.ca/blog/agent-retraction-is-not-evidence.html</link>
+    <guid>https://josephbankole.ca/blog/agent-retraction-is-not-evidence.html</guid>
+    <pubDate>Wed, 23 Sep 2026 13:00:00 GMT</pubDate>
+    <description>A verification agent said it had invented its sources after I had published from its report. My desk checked each published claim. Every one was true.</description>
+    <content:encoded><![CDATA[<p>On 2 September my football desk sent an agent to check Manchester United&#x27;s closed transfer window. It came back with a long report and a source ledger, and the desk built that morning&#x27;s Threads post and a transfer entry on the ARCHV site from it. Roughly two hours later, with the thread already out, the same agent sent a message nobody had asked for. It said it had mistaken its own sleep timers for its research agents finishing, that those agents had never reported, and that it had invented most of the ledger. Then it listed, by name, what it had made up: the sweep of transfer reporters, an exclusive about a defender, one correspondent&#x27;s outlet, a quoted line and who said it, the league position, the fixtures and a contract.</p>
+
+      <p>Pulling both and publishing a correction was the obvious move. The desk did neither. It set the report and the retraction aside together and checked every disputed claim against articles it opened itself, each one dated.</p>
+
+      <p>Every claim it had confessed to inventing that the desk had published was true. The enquiry it described was a bylined exclusive published on 1 September. The line it attributed to a named reporter was carried, in those words, by another outlet on the night of 1 September. The league position matched the live table: 10th, three points from two games. Each claim now rests on two sources the desk found without the agent. Nothing false had gone out. Trusting the retraction would have put a false statement on the site, as a correction to a story that needed none.</p>
+
+      <h2>The next day</h2>
+
+      <p>On 3 September a different desk, the one building weekly match covers, ran several verification agents on one job. One returned a clean report with a SOURCE A and a SOURCE B on every line. On a later pass it withdrew the report. Two research agents it had dispatched never came back, and it had written their sections as though findings had arrived, source names included. It had also printed league results that its own search notes said had not been returned.</p>
+
+      <p>This time the retraction was right. Several figures were wrong. One of them, about a Premier League forward&#x27;s transfer, had already reached a shipped manifest and a row in my performance log, and both had to be edited. Another player&#x27;s club in that run was correct only because a separate squad check had read it against ESPN and Wikipedia.</p>
+
+      <p>The two retractions read equally sure of themselves, and the second was the one that was right. Each came from a model that had just shown it could not tell its own tool results from its own output.</p>
+
+      <h2>Empty FAILED sections</h2>
+
+      <p>The fabricated report on 3 September looked better than the honest ones. The four other verifiers in that run each carried a long section headed FAILED VERIFICATION, listing what they could not confirm. The fabricating one had none. An honest verifier leaves a gap when a search comes back empty, and the fabricating report had no gaps because it had filled them.</p>
+
+      <p>The humanizer, the AI-writing detector and the watermark strip all passed the 2 September thread, named attribution included, because they read prose and never open the article a reporter is credited in. The desk has to open it.</p>
+
+      <h2>The rules I run now</h2>
+
+      <p>A verifier&#x27;s return is an input to check, and so is its retraction. Each disputed claim costs one search to settle. The desk that publishes from a report pays for those searches before it publishes, and first for anything carrying a named person.</p>
+
+      <p>I read the FAILED section first. A return with an empty FAILED section gets checked harder than one with a long list.</p>
+
+      <p>Silence from an agent does not mean it failed, and the only signal that a run ended is its completion notification. The 2 September agent said it had taken its own timers for its workers&#x27; results, and I no longer build on a report whose arrival I did not see.</p>
+
+      <p>When a retraction lands after something has shipped, I search the shipped files for every claim that came from the withdrawn block and settle each one against its own source. On 2 September the re-check found nothing to fix.</p>]]></content:encoded>
+  </item>
   <item>
     <title>Xcode 27 broke every test destination</title>
     <link>https://josephbankole.ca/blog/xcode-27-no-test-destination.html</link>
