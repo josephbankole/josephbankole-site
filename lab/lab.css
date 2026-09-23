@@ -390,7 +390,7 @@ a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focu
   transition: opacity .3s var(--ease);
 }
 .sketch-read.swap { opacity: 0; }
-.weeks { margin: 24px 0 26px; display: flex; flex-direction: column; gap: 16px; }
+.weeks { margin: 24px 0 0; display: flex; flex-direction: column; gap: 16px; }
 .week {
   border-top: 1px solid var(--cream-faint); padding-top: 16px;
 }
@@ -399,8 +399,6 @@ a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focu
   color: var(--gold); display: block; margin-bottom: 8px;
 }
 .week p { font-size: .98rem; color: var(--cream-dim); line-height: 1.55; }
-.sketch-cta { width: 100%; text-align: center; }
-.sketch-cta.ready { box-shadow: 0 0 0 4px var(--gold-faint); }
 
 /* ============================================================
    ACT 4 · PROOF + CLOSE
@@ -440,18 +438,6 @@ a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focu
 .foot a { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--cream-dim); transition: color .2s var(--ease); }
 .foot a:hover { color: var(--gold); }
 
-/* floating book pill */
-.book-pill {
-  position: fixed; right: clamp(16px, 3vw, 30px); bottom: clamp(16px, 3vw, 30px); z-index: 90;
-  font-family: var(--grotesque); font-weight: 600; font-size: 14px;
-  background: var(--gold); color: var(--navy-2); padding: 12px 18px; border-radius: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
-  opacity: 0; transform: translateY(14px); pointer-events: none;
-  transition: opacity .4s var(--ease), transform .4s var(--ease);
-}
-.book-pill.show { opacity: 1; transform: none; pointer-events: auto; }
-.book-pill:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(201,161,74,.28); }
-
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -482,7 +468,6 @@ a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focu
 @media (max-width: 420px) {
   .co-feed { min-height: 168px; }
   .hero-feed { font-size: 11.5px; }
-  .book-pill { font-size: 13px; padding: 11px 16px; }
 }
 
 /* ============================================================
@@ -497,6 +482,5 @@ a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focu
   .st-card { opacity: 1; transform: none; transition: none; }
   .station .st-node, .station .st-name { transition: none; }
   .rail-fill, .scrub-fill { transition: none; }
-  .book-pill { transition: none; }
   .proof-card, .pc-in { transition: border-color .2s, box-shadow .2s; }
 }

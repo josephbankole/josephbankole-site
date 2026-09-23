@@ -49,8 +49,8 @@
 <nav class="nav" aria-label="Primary">
   <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
   <div class="nav-links">
-    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/recipes/">Recipes</a><a href="/#projects">Projects</a>
-    <a class="btn js-waitlist" data-location="privacy-nav" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"><span class="btn-label-full">Join the waitlist</span><span class="btn-label-short">Waitlist</span></a>
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn" data-location="privacy-nav" href="https://archvai.substack.com/?utm_source=josephbankole.ca&amp;utm_medium=nav" target="_blank" rel="noopener">Subscribe</a>
   </div>
 </nav>
 
@@ -61,7 +61,7 @@
     <span class="index">Privacy</span>
     <h1>What this site knows about you.</h1>
     <p class="standfirst">Short version: it counts that a page was viewed and whether anyone clicked a link. It does not know who you are. There is nothing to log into or download, and the only sign-up is the newsletter box on the homepage, which Substack runs.</p>
-    <p class="article-meta"><span>Last updated: 22 September 2026</span><span>josephbankole.ca</span></p>
+    <p class="article-meta"><span>Last updated: 23 September 2026</span><span>josephbankole.ca</span></p>
   </header>
 
   <div class="article-body wrap">
@@ -76,10 +76,13 @@
       <p>Every page on this site, the "page not found" page included, loads <a href="https://posthog.com/" target="_blank" rel="noopener">PostHog</a>, a product-analytics tool, through one shared script. I use it to answer two questions: how many people read a page, and which links they click on the way out. Specifically it records:</p>
       <ul>
         <li>A page view when any page loads.</li>
-        <li>A click event if you click a "join the waitlist" link, a newsletter link, a link out to one of my projects, or a link to my LinkedIn or Instagram. The event stores which link and which page it was on, not who clicked it.</li>
-        <li>A click event if you click my email address anywhere other than a waitlist link. It stores where on the site the click came from.</li>
-        <li>A click event if you follow any other link off this site, such as a source cited in a news edition. It stores the other site's domain name and the page you left from, never the full address you went to.</li>
-        <li>An event when the "page not found" page loads. It stores the address that was not found and the page that sent you there (the referrer), so I can find and fix broken links.</li>
+        <li><code>subscribe_click</code> if you click a link to my newsletter, The ARCHV AI on Substack. It stores where on the site the link sits, the page it was on, and the <code>utm_medium</code> tag written into the link. It does not store who clicked, and it cannot see whether you went on to subscribe.</li>
+        <li><code>newsletter_click</code> if you click a link to The ARCHV Dispatch, the other newsletter on Substack. It stores the link and the page it was on.</li>
+        <li><code>project_link_click</code> if you click a link out to one of my projects, and <code>founder_link_click</code> if you click a link to my LinkedIn or Instagram. Each stores which link, not who clicked it.</li>
+        <li><code>contact_click</code> if you click my email address. It stores where on the site the click came from.</li>
+        <li><code>outbound_click</code> if you follow any other link off this site, such as a source cited in a news edition. It stores the other site's domain name and the page you left from, never the full address you went to.</li>
+        <li><code>page_404</code> when the "page not found" page loads. It stores the address that was not found and the page that sent you there (the referrer), so I can find and fix broken links.</li>
+        <li><code>configurator_select</code> if you pick an answer in the "How I scope a build" demo on the homepage. It stores the question and the answer you picked, nothing typed. The unlisted <code>/lab/</code> prototype sends the same event, plus <code>hero_skip</code> if you skip its intro.</li>
       </ul>
       <p>PostHog also receives the technical basics that any web request carries: your IP address, browser, and rough location derived from that IP. I have deliberately turned <em>off</em> autocapture, which means PostHog is not recording every click, scroll, keystroke, or form field on the page. It only sees the events listed above. I honour Do Not Track, so if your browser sends that signal, PostHog is disabled entirely for your visit.</p>
 
@@ -94,7 +97,7 @@
         <li><strong>PostHog</strong> receives the analytics events described above.</li>
         <li><strong>Google Fonts</strong> serves the typefaces. Loading them means Google sees your IP address.</li>
         <li><strong>Substack</strong> serves the newsletter embed on the homepage.</li>
-        <li><strong>Your email client</strong> only if you click a waitlist link or my email address, which opens a pre-addressed message to partnerships@josephbankole.ca. Nothing is sent until you send it, and what you write is between you and me.</li>
+        <li><strong>Your email client</strong> only if you click my email address, which opens a pre-addressed message to partnerships@josephbankole.ca. Nothing is sent until you send it, and what you write is between you and me.</li>
       </ul>
 
       <h2>Email</h2>
@@ -132,17 +135,16 @@
   <div class="foot">
     <div class="fcol">
       <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
-      <span class="copy">Fintech operations &middot; Applied AI &middot; Montreal</span>
+      <span class="copy">AI engineer &middot; Montreal</span>
     </div>
     <div class="fcol fcol-end">
       <a href="/news/">News desk</a>
       <a href="/blog/">Field notes</a>
       <a href="/answers/">Answers</a>
+      <a data-location="privacy-footer" href="https://archvai.substack.com/?utm_source=josephbankole.ca&amp;utm_medium=footer" target="_blank" rel="noopener">Newsletter</a>
       <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="/privacy.html">Privacy</a>
-      <a class="js-waitlist" data-location="privacy-footer" href="mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry&amp;body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A">Join the waitlist</a>
-      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">partnerships@josephbankole.ca</a>
-      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">Contact</a>
     </div>
   </div>
   <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>

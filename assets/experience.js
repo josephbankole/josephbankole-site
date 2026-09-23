@@ -1,7 +1,8 @@
 /* josephbankole.ca — homepage experience behaviour. No libraries.
    Animate transform and colour only. Reduced-motion safe.
-   PostHog events: configurator_select, configurator_cta
-   (waitlist_click is bound centrally by /assets/analytics.js).
+   PostHog events: configurator_select. Link clicks are bound centrally
+   by /assets/analytics.js. The waitlist, its floating pill and the
+   configurator's waitlist button were removed on 2026-09-23.
 
    The cold open was cut on 2026-08-09 (founder ruling). It held scroll for
    13.9 seconds behind an overlay that covered the navigation, on every
@@ -27,21 +28,8 @@
      fully static and fully visible. */
   document.body.classList.add("xp-js");
 
-  var pill = $("bookPill");
   var heroBand = $("top");
   if (heroBand) heroBand.classList.add("lit");
-
-  /* ---------------------------------------------------------
-     Floating book pill — appears once the hero scrolls away
-     --------------------------------------------------------- */
-  if (pill && "IntersectionObserver" in window && heroBand) {
-    var pillIO = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (!en.isIntersecting) pill.classList.add("show"); });
-    }, { threshold: 0 });
-    pillIO.observe(heroBand);
-  } else if (pill) {
-    pill.classList.add("show");
-  }
 
   /* ---------------------------------------------------------
      ACT 2 · ENGAGEMENT RUN (scroll-driven + scrubber)
@@ -190,10 +178,8 @@
   /* ---------------------------------------------------------
      ACT 3 · CONFIGURATOR
      --------------------------------------------------------- */
-  /* Bookings are closed — the configurator CTA routes to the waitlist. */
-  var CTA_BASE = "mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry";
-  var CTA_PROMPT =
-    "A line on what you're building, the operational problem, and how to reach you:\n\n";
+  /* A demo of how a two-week build is scoped. It has no button: the
+     answers only rewrite the sketch on the page. */
   var KEYS = ["ops", "hours", "mode"];
   var OF = {
     spreadsheets: "It runs on spreadsheets",
@@ -216,19 +202,9 @@
     alongside: "built alongside your team so they own it after",
     handover: "built, documented, and handed over so it runs without me"
   };
-  /* Plain labels, for the email body rather than the on-page sketch. */
-  var OL = { spreadsheets: "spreadsheets", saas: "SaaS tools", custom: "custom systems" };
-  var HL = {
-    reporting: "reporting",
-    replies: "customer replies",
-    dataentry: "data entry between systems",
-    monitoring: "monitoring"
-  };
-  var ML = { alongside: "alongside my team", handover: "built then handed over" };
 
   var state = { ops: null, hours: null, mode: null };
   var readEl = $("sketchRead");
-  var cta = $("sketchCta");
 
   function compose() {
     if (!state.ops && !state.hours && !state.mode)
@@ -240,20 +216,6 @@
     return parts.join(" ");
   }
 
-  /* The three answers used to be sent to PostHog, written into the address
-     bar, and then dropped: ctaUrl() returned CTA_BASE unchanged, so someone
-     who answered every question got a blanker email than someone who
-     answered none. They now travel into the message body. */
-  function ctaUrl() {
-    var lines = [];
-    if (state.ops) lines.push("What runs our ops today: " + OL[state.ops]);
-    if (state.hours) lines.push("What eats the most hours: " + HL[state.hours]);
-    if (state.mode) lines.push("How I would want it delivered: " + ML[state.mode]);
-    if (!lines.length) return CTA_BASE + "&body=" + encodeURIComponent(CTA_PROMPT);
-    var body = lines.join("\n") + "\n\n" + CTA_PROMPT;
-    return CTA_BASE + "&body=" + encodeURIComponent(body);
-  }
-
   function render() {
     if (readEl) {
       readEl.classList.add("swap");
@@ -261,10 +223,6 @@
         readEl.textContent = compose();
         readEl.classList.remove("swap");
       }, reduce ? 0 : 170);
-    }
-    if (cta) {
-      cta.href = ctaUrl();
-      cta.classList.toggle("ready", !!(state.ops && state.hours && state.mode));
     }
   }
 
@@ -307,7 +265,7 @@
     });
   }
 
-  if (readEl && cta) {
+  if (readEl) {
     KEYS.forEach(function (k) {
       if (document.querySelector('.q[data-q="' + k + '"]')) initGroup(k);
     });
@@ -323,12 +281,5 @@
       });
     }
     render();
-
-    cta.addEventListener("click", function () {
-      cap("configurator_cta", {
-        ops: state.ops, hours: state.hours, mode: state.mode,
-        complete: !!(state.ops && state.hours && state.mode)
-      });
-    });
   }
 })();

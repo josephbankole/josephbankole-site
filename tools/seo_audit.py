@@ -20,7 +20,12 @@ JUDGEMENT (reported only, never auto-applied):
   - missing alt text on <img>
   - JSON-LD present but fails to parse, or missing datePublished/dateModified
   - internal links pointing at a path with no matching file in the repo
-  - pages present on disk but absent from sitemap.xml (or vice versa)
+  - pages present on disk but absent from sitemap.xml (or vice versa).
+    Pages carrying robots noindex (recipes/, the 404) are expected to be
+    absent, and are reported if the sitemap lists them.
+  - a page outside recipes/ linking into /recipes/. Since 2026-09-23 recipes
+    are Joseph's own reference shelf: live, noindex, linked from nowhere else.
+    tools/build-pages.py --check enforces this and the sitemap rule as gates.
 
 Never touches: page prose, headings, JSON-LD content, feed.xml, news-feed.xml,
 llms.txt, or anything under news/ (that lane belongs to a different desk).
@@ -53,6 +58,8 @@ HEAD_CLOSE_RE = re.compile(r"</head>", re.I)
 LINK_RE = re.compile(r'href=["\'](/[^"\'#?]*)', re.I)
 TITLE_SUFFIX_RE = re.compile(r"\s*(?:·|&middot;|&#183;|&#xB7;)\s*Joseph Bankole\s*$")
 REPEAT_RE = re.compile(r"\b(\w+)\s+\1\b", re.I)
+ROBOTS_RE = re.compile(r'<meta\s+name=["\']robots["\']\s+content=["\']([^"\']*)["\']', re.I)
+RECIPE_LINK_RE = re.compile(r'href=["\'](?:https?://(?:www\.)?josephbankole\.ca)?/recipes(?:[/"\'#?])', re.I)
 NEWS_TITLE_MAX = 60
 DESC_MAX = 155
 
@@ -123,6 +130,7 @@ def main():
     }
     titles, descs = {}, {}
     all_files = set()
+    noindex_paths = set()
 
     pages = list(site_pages())
     report["pages_checked"] = len(pages)
@@ -138,11 +146,24 @@ def main():
 
         canonical_url = SITE_BASE + url_path_for(page)
 
+        robots = ROBOTS_RE.search(html)
+        noindex = bool(robots and "noindex" in robots.group(1).lower())
+        if noindex:
+            noindex_paths.add(url_path_for(page))
+
+        # --- recipes are reachable only from inside recipes/ ---
+        if not rel.startswith("recipes" + os.sep) and rel != "recipes":
+            hits = RECIPE_LINK_RE.findall(html)
+            if hits:
+                report["judgement_findings"].append(f"{rel}: {len(hits)} link(s) into /recipes/")
+
         # --- title ---
         m = TITLE_RE.search(html)
         title = m.group(1).strip() if m else None
         if not title:
             report["judgement_findings"].append(f"{rel}: missing <title>")
+        elif noindex:
+            pass  # out of search: snippet length and uniqueness do not apply
         else:
             if not (50 <= len(title) <= 60):
                 report["judgement_findings"].append(
@@ -158,7 +179,9 @@ def main():
         # --- meta description ---
         m = DESC_RE.search(html)
         desc = m.group(1).strip() if m else None
-        if not desc:
+        if noindex:
+            pass
+        elif not desc:
             report["judgement_findings"].append(f"{rel}: missing meta description")
         else:
             if not (140 <= len(desc) <= DESC_MAX):
@@ -236,7 +259,12 @@ def main():
     # sitemap coverage
     sitemap_urls = load_sitemap_urls()
     sitemap_paths = {u.replace(SITE_BASE, "") or "/" for u in sitemap_urls}
-    missing_from_sitemap = sorted(p for p in (all_files - sitemap_paths) if not p.startswith("/news/"))
+    missing_from_sitemap = sorted(
+        p for p in (all_files - sitemap_paths - noindex_paths) if not p.startswith("/news/")
+    )
+    noindex_listed = sorted(sitemap_paths & noindex_paths)
+    if noindex_listed:
+        report["judgement_findings"].append(f"sitemap.xml lists noindex pages: {noindex_listed}")
     missing_from_repo = sorted(
         p for p in (sitemap_paths - all_files)
         if not p.startswith("/news/") and not (REPO_ROOT / p.lstrip("/") / "index.html").exists()

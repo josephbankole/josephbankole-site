@@ -10,9 +10,11 @@ retired booking, three different footers, and 26 news pages pointing og:image at
 a file that was never rendered.
 
 This script owns the shell. It reads each page, lifts out the parts a human
-wrote (the prose, the sources list, the headline, the standfirst, the CTA copy,
-the curated related rows, the head metadata) and rebuilds everything around them
-from one template. Author copy is never rewritten, only re-housed.
+wrote (the prose, the sources list, the headline, the standfirst, the curated
+related rows, the head metadata) and rebuilds everything around them from one
+template. Author copy is never rewritten, only re-housed. The one exception is
+a hand-written .ctaband: those were all waitlist bands, and since 2026-09-23 a
+rebuild drops them rather than lifting them.
 
 It is idempotent. Running it twice produces byte-identical output, because it
 parses its own output the same way it parses the original hand-written page.
@@ -32,6 +34,16 @@ nothing enforced):
     editions, blog posts and answers pages only print a warning.
   - The homepage news teaser holds at most 6 rows. The build drops the oldest
     rows past six, so --check fails whenever the teaser has grown.
+
+Gates added 2026-09-23, when the founder closed the client waitlist and made
+recipes his own reference shelf:
+
+  - No page this script writes, outside recipes/ and lab/, may carry a
+    waitlist call to action (WAITLIST_MARKERS below). Author prose that uses
+    the word, such as a news story about a product waitlist, is not a marker.
+  - No page outside recipes/ may link to a /recipes/ URL, and llms.txt may not
+    list one. Recipes stay live for Joseph and carry noindex,follow.
+  - sitemap.xml may not list a /recipes/ URL. The build drops any it finds.
 
 Warnings go to stderr and never change the exit code of a normal run.
 """
@@ -84,15 +96,57 @@ GATE_FAILURES: list[str] = []
 def warn(kind: str, message: str) -> None:
     WARNINGS.setdefault(kind, []).append(message)
 
-WAITLIST = (
-    "mailto:partnerships@josephbankole.ca"
-    "?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry"
-    "&body=A%20line%20on%20what%20you%27re%20building%2C%20the%20operational"
-    "%20problem%2C%20and%20how%20to%20reach%20you%3A%0A%0A"
-)
+# The waitlist closed on 2026-09-23 (founder: "remove the waitlist"). He is
+# employed as an AI engineer and not taking client work, so nothing this script
+# writes asks for it. The one contact route left is the neutral footer address.
 ENQUIRY = "mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)"
-SUBSTACK = "https://archvai.substack.com"
 LINKEDIN = "https://www.linkedin.com/in/joseph-bankole/"
+
+# The site's primary ask since 2026-09-23: The ARCHV AI on Substack. Every link
+# carries utm_source and a utm_medium naming where on the site it sits, so
+# Substack's referral report and the subscribe_click event in analytics.js
+# (which reads utm_medium off the href) agree.
+SUBSTACK = "https://archvai.substack.com"
+ROBOTS_NOINDEX = "noindex,follow"
+
+
+def substack_url(medium: str) -> str:
+    """The Substack link for one placement, already escaped for an attribute."""
+    return "%s/?utm_source=josephbankole.ca&amp;utm_medium=%s" % (SUBSTACK, medium)
+
+
+# The newsletter band, written once. Checked against the archive on
+# 2026-09-23 (archvai.substack.com/api/v1/archive): most issues take one
+# company building AI data centres (Nautilus on a river in Stockton, Heata in
+# home hot-water tanks, Verrus, Crusoe) and test its claims against what it has
+# built. Cadence is Monday, Wednesday and Friday per canon D-2026-09-22c. It
+# does not cover agentic commerce, so the band does not say it does.
+SUBSCRIBE_HEADING = "The ARCHV AI newsletter"
+SUBSCRIBE_COPY = (
+    "It goes out on Monday, Wednesday and Friday. Most issues take one company "
+    "building the hardware AI runs on, say a data centre floating on a river, "
+    "and check its claims against what it has built."
+)
+SUBSCRIBE_BUTTON = "Subscribe on Substack"
+
+# What a waitlist call to action looks like in HTML. Lower-cased substrings.
+# The bare word is not on the list: news prose uses it about other companies'
+# product waitlists, and the homepage describes a product taking a pilot
+# waitlist. These are the site's own client-waitlist furniture only.
+WAITLIST_MARKERS = (
+    "js-waitlist",
+    "subject=waitlist",
+    "join the waitlist",
+    "to the waitlist",
+    ">waitlist<",
+    "waitlist link",
+    "waitlist_click",
+    "book-pill",
+    "not taking new clients",
+)
+RECIPE_LINK_RE = re.compile(
+    r"""href=["'](?:https?://(?:www\.)?josephbankole\.ca)?/recipes(?:[/"'#?])""", re.I
+)
 
 FONTS = (
     "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,"
@@ -186,27 +240,6 @@ def esc_attr(value: str) -> str:
     return value.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
 
 
-def normalise_waitlist(doc: str) -> str:
-    """Every waitlist mailto on the site carries the same prompt in its body.
-
-    57 of 58 conversion links used to open a blank compose window. Rewriting
-    them here rather than per template keeps CTA copy a human wrote intact
-    while still fixing the href underneath it.
-    """
-    # The whole quoted value is replaced, up to its closing quote. The old
-    # pattern stopped at a raw apostrophe, so an href whose body still read
-    # "you're" kept its tail after the rewrite and the homepage #work CTA
-    # shipped with a duplicated body fragment (a44192e to 2026-09-22).
-    target = WAITLIST.replace("&", "&amp;")
-    for quote in ('"', "'"):
-        doc = re.sub(
-            r"%smailto:partnerships@josephbankole\.ca\?subject=Waitlist[^%s<>]*%s" % (quote, quote, quote),
-            lambda m, q=quote: q + target + q,
-            doc,
-        )
-    return doc
-
-
 # ------------------------------------------------------------------- shell
 
 def head_block(page) -> str:
@@ -279,9 +312,10 @@ NAV_ITEMS = [
     ("Blog", "/blog/"),
     ("News", "/news/"),
     ("Answers", "/answers/"),
-    ("Recipes", "/recipes/"),
     ("Projects", "{root}#projects"),
 ]
+# Recipes came out of the nav on 2026-09-23. They are Joseph's own reference
+# shelf: live at their URLs, noindex, and linked from nowhere outside recipes/.
 
 # Sub-hubs inside recipes/. These are hubs, not articles, so the article glob
 # below must skip them or they get rebuilt with an article shell.
@@ -305,11 +339,10 @@ def nav_block(location: str, root: str = "/") -> str:
         '  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>\n'
         '  <div class="nav-links">\n'
         "    %s\n"
-        '    <a class="btn js-waitlist" data-location="%s-nav" href="%s">'
-        '<span class="btn-label-full">Join the waitlist</span>'
-        '<span class="btn-label-short">Waitlist</span></a>\n'
+        '    <a class="btn" data-location="%s-nav" href="%s" target="_blank" rel="noopener">'
+        "Subscribe</a>\n"
         "  </div>\n"
-        "</nav>" % (items, location, WAITLIST)
+        "</nav>" % (items, location, substack_url("nav"))
     )
 
 
@@ -319,21 +352,20 @@ def footer_block(location: str) -> str:
         '  <div class="foot">\n'
         '    <div class="fcol">\n'
         '      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>\n'
-        '      <span class="copy">Fintech operations &middot; Applied AI &middot; Montreal</span>\n'
+        '      <span class="copy">AI engineer &middot; Montreal</span>\n'
         "    </div>\n"
         '    <div class="fcol fcol-end">\n'
         '      <a href="/news/">News desk</a>\n'
         '      <a href="/blog/">Field notes</a>\n'
         '      <a href="/answers/">Answers</a>\n'
+        '      <a data-location="%s-footer" href="%s" target="_blank" rel="noopener">Newsletter</a>\n'
         '      <a href="%s" target="_blank" rel="noopener">LinkedIn</a>\n'
         '      <a href="/privacy.html">Privacy</a>\n'
-        '      <a class="js-waitlist" data-location="%s-footer" href="%s">Join the waitlist</a>\n'
-        '      <a href="%s">partnerships@josephbankole.ca</a>\n'
-        '      <span class="copy">Not taking new clients right now &middot; I reply within one business day.</span>\n'
+        '      <a href="%s">Contact</a>\n'
         "    </div>\n"
         "  </div>\n"
         '  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>\n'
-        "</footer>" % (LINKEDIN, location, WAITLIST, ENQUIRY)
+        "</footer>" % (location, substack_url("footer"), LINKEDIN, ENQUIRY)
     )
 
 
@@ -349,25 +381,20 @@ HUBLINKS = (
 )
 
 
-def subscribe_block() -> str:
+def subscribe_block(medium: str, location: str) -> str:
+    """The one ask at the foot of an article or hub: The ARCHV AI on Substack.
+
+    It replaced the waitlist band on 2026-09-23 and is now the primary button,
+    not the ghost one it was while the waitlist sat below it. Any hand-written
+    .ctaband a page still carries is dropped on rebuild, never lifted.
+    """
     return (
         '<section class="subband" aria-labelledby="sub-h">\n'
-        '  <h2 id="sub-h">The weekly email</h2>\n'
-        "  <p>The ARCHV AI newsletter is the week in AI in plain English, plus the "
-        "agentic-commerce stories that touch how money moves. It goes out on "
-        "Substack.</p>\n"
-        '  <a class="btn btn--ghost" href="%s" target="_blank" rel="noopener">Read it on Substack</a>\n'
-        "</section>" % SUBSTACK
-    )
-
-
-def cta_block(heading: str, paragraph: str, location: str) -> str:
-    return (
-        '<section class="ctaband" aria-labelledby="cta-h">\n'
-        '  <h2 id="cta-h">%s</h2>\n'
+        '  <h2 id="sub-h">%s</h2>\n'
         "  <p>%s</p>\n"
-        '  <a class="btn js-waitlist" data-location="%s" href="%s">Join the waitlist</a>\n'
-        "</section>" % (heading, paragraph, location, WAITLIST)
+        '  <a class="btn" data-location="%s" href="%s" target="_blank" rel="noopener">%s</a>\n'
+        "</section>"
+        % (SUBSCRIBE_HEADING, SUBSCRIBE_COPY, location, substack_url(medium), SUBSCRIBE_BUTTON)
     )
 
 
@@ -394,7 +421,7 @@ def tidy(doc: str) -> str:
 
 
 def document(page, body: str) -> str:
-    doc = tidy(
+    return tidy(
         "<!doctype html>\n"
         '<html lang="en">\n'
         "<head>\n"
@@ -418,7 +445,6 @@ def document(page, body: str) -> str:
             "".join('<script src="%s" defer></script>\n' % s for s in page.get("extra_js", [])),
         )
     )
-    return normalise_waitlist(doc)
 
 
 # -------------------------------------------------------------- page parsing
@@ -568,18 +594,6 @@ def topic_span(spans: list[str]) -> str:
             continue
         return value
     return ""
-
-
-def existing_cta(src: str, fallback_h: str, fallback_p: str) -> tuple[str, str]:
-    block = inner(src, "div", "ctaband") or inner(src, "section", "ctaband")
-    if not block:
-        return fallback_h, fallback_p
-    heading = re.search(r"<h[23][^>]*>(.*?)</h[23]>", block, re.S)
-    para = re.search(r"<p[^>]*>(.*?)</p>", block, re.S)
-    return (
-        heading.group(1).strip() if heading else fallback_h,
-        para.group(1).strip() if para else fallback_p,
-    )
 
 
 def existing_modified(src: str) -> str | None:
@@ -735,6 +749,11 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         # A payments card on a recipe is off-topic. Pages with their own photo
         # keep it; the rest get the food-neutral card.
         page["og_image"] = RECIPES_OG
+    if kind == "recipes":
+        # Live for Joseph, out of search. follow, so a crawler that lands on
+        # one still reads the links. robots.txt must not block recipes/, or
+        # the noindex is never read.
+        page["robots"] = ROBOTS_NOINDEX
 
     if kind in ("news", "blog", "answers"):
         check_lengths(page, kind, day, ctx["today"])
@@ -864,21 +883,14 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         parts.append("  </section>")
 
     if kind == "recipes":
-        # A recipe page links up to the hubs it sits in, then the recipes index.
-        # The newsletter band and waitlist CTA below still close it: what a
-        # recipe ends on is a founder decision (review 2026-09-22, Decision 6),
-        # so the build does not drop them on its own.
+        # Founder, 2026-09-23: "recipes are for me to have access to". Decision
+        # 6 of the 2026-09-22 review is settled: a recipe ends on the hubs it
+        # sits in and the recipes index, with no newsletter band, no call to
+        # action and no links out to the rest of the site.
         parts.append(indent(recipe_links(ctx.get("recipe_hubs", []), ctx.get("recipe_total", 0)), 2))
-    parts.append(indent(subscribe_block(), 2))
-    cta_h, cta_p = existing_cta(
-        src,
-        "Building in agentic commerce or payments?",
-        "This is the intersection I work in. I'm not taking new clients at the moment, "
-        'so write to <a class="inline-link js-waitlist" href="%s" data-location="%s-cta-copy">'
-        "partnerships@josephbankole.ca</a> and I'll add you to the waitlist." % (WAITLIST, kind),
-    )
-    parts.append(indent(cta_block(cta_h, cta_p, "%s-cta" % kind), 2))
-    parts.append(indent(HUBLINKS, 2))
+    else:
+        parts.append(indent(subscribe_block("article", "%s-article" % kind), 2))
+        parts.append(indent(HUBLINKS, 2))
     parts.append("</div>")
     parts.append("</main>")
 
@@ -1021,7 +1033,8 @@ def article_jsonld(kind, page, head, published, modified, words, crumb_label, cr
     return json.dumps(graph, indent=2, ensure_ascii=False)
 
 
-def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
+def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str],
+               recipe_total: int = 0) -> str:
     src = path.read_text(encoding="utf-8")
     page = parse_common(path, src)
     head = parse_article_head(src)
@@ -1029,6 +1042,8 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
     page["og_type"] = "website"
     if kind == "recipes" and page["og_image"] == DEFAULT_OG:
         page["og_image"] = RECIPES_OG
+    if kind == "recipes":
+        page["robots"] = ROBOTS_NOINDEX
 
     listing = None
     found = find_block(src, "div", "postlist")
@@ -1057,7 +1072,6 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
                          stamp, listing)
         listing = group_by_month(listing)
 
-    cta_h, cta_p = existing_cta(src, "The weekly read", "")
     count = len(re.findall(r'class="post-row"', listing or ""))
 
     parts = [
@@ -1097,12 +1111,18 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str]) -> str:
         parts.append('    <p class="hub-note">%s</p>' % note)
     parts.append("  </div>")
     parts.append("")
-    parts.append('<div class="article-tail wrap">')
-    parts.append(indent(subscribe_block(), 2))
-    if cta_p:
-        parts.append(indent(cta_block(cta_h, cta_p, "%s-hub-cta" % kind), 2))
-    parts.append(indent(HUBLINKS, 2))
-    parts.append("</div>")
+    if kind == "recipes":
+        # A recipe sub-hub links back to the recipes index and nothing else.
+        # The index itself needs no tail: its breadcrumb already goes home.
+        if path.parent.name != "recipes":
+            parts.append('<div class="article-tail wrap">')
+            parts.append(indent(recipe_links([], recipe_total), 2))
+            parts.append("</div>")
+    else:
+        parts.append('<div class="article-tail wrap">')
+        parts.append(indent(subscribe_block("hub", "%s-hub" % kind), 2))
+        parts.append(indent(HUBLINKS, 2))
+        parts.append("</div>")
     parts.append("</main>")
 
     page["jsonld"] = hub_jsonld(page, head, crumb, kind, src)
@@ -1369,7 +1389,7 @@ def shell_pass(path: pathlib.Path, location: str, nav_root: str = "/") -> str:
             '<script>document.documentElement.className+=" js";</script>',
             1,
         )
-    return normalise_waitlist(src)
+    return src
 
 
 # ---------------------------------------------------------------------- main
@@ -1411,10 +1431,80 @@ def recipe_hub_map() -> tuple[dict[str, list[dict]], int]:
     return membership, total
 
 
+SITEMAP_RECIPE_RE = re.compile(
+    r"\n[ \t]*<url>\s*<loc>https?://(?:www\.)?josephbankole\.ca/recipes(?:/[^<]*)?</loc>.*?</url>",
+    re.S,
+)
+
+
+def prune_sitemap(src: str) -> str:
+    """sitemap.xml without its /recipes/ entries.
+
+    There is no sitemap generator: the daily desk appends to sitemap.xml by
+    hand. So the build is where recipes are kept out of it, and a desk that
+    adds one back has it removed on the next run and fails --check until then.
+    """
+    return SITEMAP_RECIPE_RE.sub("", src)
+
+
+def in_recipes(rel: str) -> bool:
+    return rel == "recipes" or rel.startswith("recipes/")
+
+
+def gate_site(outputs: dict[str, str]) -> None:
+    """The 2026-09-23 gates: no waitlist CTA, no way into recipes/.
+
+    `outputs` holds every page this run wrote (or would write), keyed by path
+    relative to the repo, so --check judges the rebuilt page, not the stale
+    one on disk. Pages the script does not write (lab/) are read from disk for
+    the recipes-link gate only; lab/ is outside the waitlist gate.
+    """
+    for rel, text in sorted(outputs.items()):
+        if in_recipes(rel) or rel.startswith("lab/") or not rel.endswith(".html"):
+            continue
+        lowered = text.lower()
+        found = [marker for marker in WAITLIST_MARKERS if marker in lowered]
+        if found:
+            GATE_FAILURES.append("%s: waitlist call to action (%s)" % (rel, ", ".join(found)))
+        # Every link to the newsletter says where it sat. The homepage embed
+        # (an iframe src ending /embed) is not a link and is not counted.
+        bare = [
+            href for href in re.findall(r'href="(https?://archvai\.substack\.com[^"]*)"', text)
+            if "utm_source=josephbankole.ca" not in href or "utm_medium=" not in href
+        ]
+        if bare:
+            GATE_FAILURES.append("%s: %d Substack link(s) without utm_source/utm_medium" % (rel, len(bare)))
+
+    pages = dict(outputs)
+    for path in REPO.rglob("*.html"):
+        rel = path.relative_to(REPO).as_posix()
+        if rel.startswith((".git/", "tools/")) or rel in pages:
+            continue
+        pages[rel] = path.read_text(encoding="utf-8")
+    for rel, text in sorted(pages.items()):
+        if in_recipes(rel) or not rel.endswith(".html"):
+            continue
+        hits = len(RECIPE_LINK_RE.findall(text))
+        if hits:
+            GATE_FAILURES.append("%s: %d link(s) into /recipes/" % (rel, hits))
+
+    llms = REPO / "llms.txt"
+    if llms.exists() and re.search(r"josephbankole\.ca/recipes|\]\(/recipes", llms.read_text(encoding="utf-8")):
+        GATE_FAILURES.append("llms.txt: lists a /recipes/ URL")
+
+    sitemap = outputs.get("sitemap.xml")
+    if sitemap is None and (REPO / "sitemap.xml").exists():
+        sitemap = (REPO / "sitemap.xml").read_text(encoding="utf-8")
+    if sitemap and re.search(r"<loc>https?://(?:www\.)?josephbankole\.ca/recipes", sitemap):
+        GATE_FAILURES.append("sitemap.xml: lists a /recipes/ URL")
+
+
 def build(check: bool, today: dt.date) -> int:
     changed = []
+    outputs: dict[str, str] = {}
 
     def emit(path: pathlib.Path, text: str):
+        outputs[path.relative_to(REPO).as_posix()] = text
         current = path.read_text(encoding="utf-8") if path.exists() else None
         if current == text:
             return
@@ -1570,11 +1660,12 @@ def build(check: bool, today: dt.date) -> int:
     emit(REPO / "blog" / "index.html", render_hub(REPO / "blog" / "index.html", "blog", ("Field notes", "/blog/")))
     emit(REPO / "answers" / "index.html", render_hub(REPO / "answers" / "index.html", "answers", ("Answers", "/answers/")))
     if (REPO / "recipes" / "index.html").exists():
-        emit(REPO / "recipes" / "index.html", render_hub(REPO / "recipes" / "index.html", "recipes", ("Recipes", "/recipes/")))
+        emit(REPO / "recipes" / "index.html",
+             render_hub(REPO / "recipes" / "index.html", "recipes", ("Recipes", "/recipes/"), recipe_total))
     for slug in RECIPE_HUBS:
         hub = REPO / "recipes" / slug / "index.html"
         if hub.exists():
-            emit(hub, render_hub(hub, "recipes", ("Recipes", "/recipes/")))
+            emit(hub, render_hub(hub, "recipes", ("Recipes", "/recipes/"), recipe_total))
 
     # ---- prose page and bespoke pages
     emit(REPO / "privacy.html", render_doc(REPO / "privacy.html", "privacy"))
@@ -1582,6 +1673,22 @@ def build(check: bool, today: dt.date) -> int:
     if (REPO / "404.html").exists():
         latest = block_text("".join(post_row(row_for(e), e["iso"]) for e in newest_first[:3]))
         emit(REPO / "404.html", render_404(REPO / "404.html", latest))
+
+    # ---- sitemap: recipes are noindex, so they are not listed
+    sitemap_path = REPO / "sitemap.xml"
+    if sitemap_path.exists():
+        current_sitemap = sitemap_path.read_text(encoding="utf-8")
+        pruned = prune_sitemap(current_sitemap)
+        if pruned != current_sitemap:
+            # Reported against the file as it stood, so --check names it even
+            # though the rewritten sitemap below would pass.
+            GATE_FAILURES.append(
+                "sitemap.xml: listed %d /recipes/ URL(s); the build removes them"
+                % len(SITEMAP_RECIPE_RE.findall(current_sitemap))
+            )
+        emit(sitemap_path, pruned)
+
+    gate_site(outputs)
 
     print(("would rewrite " if check else "rewrote ") + "%d page(s)" % len(changed))
     for name in changed:

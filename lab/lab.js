@@ -1,7 +1,8 @@
 /* josephbankole.ca /lab — cinematic prototype behaviour.
    No libraries. Animate transform + opacity only. Reduced-motion safe.
-   PostHog events: hero_skip, configurator_select, configurator_cta
-   (waitlist_click is bound centrally by /assets/analytics.js). */
+   PostHog events: hero_skip, configurator_select. Link clicks are bound
+   centrally by /assets/analytics.js. The waitlist, its floating pill and
+   the configurator's waitlist button were removed on 2026-09-23. */
 (function () {
   "use strict";
 
@@ -19,7 +20,6 @@
 
   document.body.classList.remove("preload");
 
-  var pill = $("bookPill");
   var heroBand = $("top");
 
   /* ---------------------------------------------------------
@@ -118,18 +118,6 @@
     document.body.style.overflow = "hidden";
     setTimeout(function () { if (!finished) finishColdOpen(); }, 20000); // safety net
     runColdOpen();
-  }
-
-  /* ---------------------------------------------------------
-     Floating book pill — appears once the hero scrolls away
-     --------------------------------------------------------- */
-  if (pill && "IntersectionObserver" in window && heroBand) {
-    var pillIO = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (!en.isIntersecting) pill.classList.add("show"); });
-    }, { threshold: 0 });
-    pillIO.observe(heroBand);
-  } else if (pill) {
-    pill.classList.add("show");
   }
 
   /* ---------------------------------------------------------
@@ -250,8 +238,7 @@
   /* ---------------------------------------------------------
      ACT 3 · CONFIGURATOR
      --------------------------------------------------------- */
-  /* Bookings are closed — configurator CTA routes to the waitlist. */
-  var CTA_BASE = "mailto:partnerships@josephbankole.ca?subject=Waitlist%20%E2%80%94%20new%20client%20enquiry";
+  /* A demo of how a two-week build is scoped. It has no button. */
   var KEYS = ["ops", "hours", "mode"];
   var OF = {
     spreadsheets: "It runs on spreadsheets",
@@ -277,7 +264,6 @@
 
   var state = { ops: null, hours: null, mode: null };
   var readEl = $("sketchRead");
-  var cta = $("sketchCta");
 
   function compose() {
     if (!state.ops && !state.hours && !state.mode)
@@ -289,10 +275,6 @@
     return parts.join(" ");
   }
 
-  function ctaUrl() {
-    return CTA_BASE;
-  }
-
   function render() {
     if (readEl) {
       readEl.classList.add("swap");
@@ -300,10 +282,6 @@
         readEl.textContent = compose();
         readEl.classList.remove("swap");
       }, reduce ? 0 : 170);
-    }
-    if (cta) {
-      cta.href = ctaUrl();
-      cta.classList.toggle("ready", !!(state.ops && state.hours && state.mode));
     }
   }
 
@@ -346,7 +324,7 @@
     });
   }
 
-  if (readEl && cta) {
+  if (readEl) {
     KEYS.forEach(function (k) {
       if (document.querySelector('.q[data-q="' + k + '"]')) initGroup(k);
     });
@@ -362,13 +340,6 @@
       });
     }
     render();
-
-    cta.addEventListener("click", function () {
-      cap("configurator_cta", {
-        ops: state.ops, hours: state.hours, mode: state.mode,
-        complete: !!(state.ops && state.hours && state.mode)
-      });
-    });
   }
 
   /* ---------------------------------------------------------
