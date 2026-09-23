@@ -17,7 +17,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-07-14T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-08-11T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-23T16:30:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="What is agentic commerce?" />
@@ -47,7 +47,7 @@
     {
       "@type": "FAQPage",
       "datePublished": "2026-07-14T09:00:00-04:00",
-      "dateModified": "2026-08-11T09:00:00-04:00",
+      "dateModified": "2026-09-23T16:30:00-04:00",
       "mainEntity": [
         {
           "@type": "Question",
@@ -109,21 +109,26 @@
     <span class="index">Answers</span>
     <h1>What is agentic commerce?</h1>
     <p class="standfirst">Agentic commerce is the use of AI agents to find an item, agree the price, and settle the payment on a person's behalf, without a human approving each individual step. The agent acts inside limits a person set in advance, such as a spending cap or an approved category of purchase.</p>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-11">Updated 11 August 2026</time><span>1 min read</span></p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-23">Updated 23 September 2026</time><span>2 min read</span></p>
   </header>
 
   <div class="article-body wrap">
     <div class="prose">
       <h2>How this differs from ordinary checkout automation</h2>
-      <p>Ordinary e-commerce automation still waits for a person to click buy. Agentic commerce moves that decision inside the agent itself, so the checkout step disappears rather than getting faster. Visa and Mastercard have both started settling agent-initiated purchases on live card rails this year, which is a different claim than a chatbot that fills out a form for you.</p>
 
-      <h2>The missing layer is identity</h2>
-      <p>The part still being built is identity: something equivalent to Know Your Customer, but for software. Nuvei calls it Know Your Agent, a registry that credentials an agent, checks its mandate, and keeps a log you can point to after the fact. I wrote about that shift in <a class="inline-link" href="/news/2026-07-14-agentic-commerce.html">Know Your Agent is the new Know Your Customer</a>.</p>
+      <p>Ordinary e-commerce automation still waits for a person to click buy. Agentic commerce moves that decision inside the agent, so no checkout step is left for a person to take. The card networks have started building for it. Mastercard announced Agent Pay at the end of April 2025. It rests on Mastercard Agentic Tokens, built on the tokenisation the network already uses, and on registering and authenticating trusted agents (<a class="inline-link" href="https://www.pymnts.com/mastercard/2025/mastercard-debuts-agent-pay-to-promote-agentic-commerce-future/" target="_blank" rel="noopener">PYMNTS</a>, <a class="inline-link" href="https://thepaypers.com/payments/news/mastercard-launches-agent-pay-to-advance-agentic-payments-technology" target="_blank" rel="noopener">The Paypers</a>). The programme has its own page here: <a class="inline-link" href="/answers/what-is-mastercard-agent-pay/">What is Mastercard Agent Pay?</a>.</p>
 
-      <h2>Underneath that sits a standards fight</h2>
-      <p>ACP, AP2, MCP and now Google's Universal Commerce Protocol are all competing to be the way an agent proves it is allowed to spend, and nobody has won yet. I have tracked that fight edition by edition, starting with <a class="inline-link" href="/news/2026-06-21-agentic-commerce.html">Five protocols, one checkout</a>.</p>
+      <h2>Identity: Know Your Agent</h2>
 
-      <p>I run a daily news desk on exactly this, sourced from primary announcements rather than press summaries, because the story moves week to week and a summary lags behind it. For the regulatory side colliding with the same deadline, <a class="inline-link" href="/news/2026-07-09-agentic-commerce.html">Nine days out, the stablecoin rulebook finally gets numbers</a> is a good place to see how the payment side and the identity side are landing at once.</p>
+      <p>A merchant also needs to know whose agent it is dealing with. That check is called Know Your Agent, which is Know Your Customer applied to software acting for somebody. On 9 September 2026 Ant International, Mastercard and Visa said they had begun work on a shared Know Your Agent framework, so that agent onboarding and identification work across their networks (<a class="inline-link" href="https://www.stocktitan.net/news/V/ant-international-mastercard-and-visa-initiate-collaboration-on-know-prf0vv3wtq0c.html" target="_blank" rel="noopener">Business Wire, via StockTitan</a>, <a class="inline-link" href="https://www.pymnts.com/cybersecurity/2026/visa-mastercard-team-with-ant-know-your-agent-framework" target="_blank" rel="noopener">PYMNTS</a>). The detail is in <a class="inline-link" href="/answers/what-is-know-your-agent/">What is Know Your Agent?</a>, and I first wrote about the shift in <a class="inline-link" href="/news/2026-07-14-agentic-commerce.html">Know Your Agent is the new Know Your Customer</a>.</p>
+
+      <h2>The protocols underneath</h2>
+
+      <p>Three open protocols split the work. The Agentic Commerce Protocol, which Stripe co-developed with OpenAI, standardises the checkout conversation between an agent and a merchant (<a class="inline-link" href="https://stripe.com/newsroom/news/stripe-openai-instant-checkout" target="_blank" rel="noopener">Stripe</a>, <a class="inline-link" href="https://www.paymentsdive.com/news/stripe-pushes-agentic-ai-sales-via-chatgpt-openai-artificial-intelligence/761439/" target="_blank" rel="noopener">Payments Dive</a>). Google&#x27;s Agent Payments Protocol carries signed mandates that show a person authorised the spend (<a class="inline-link" href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" target="_blank" rel="noopener">Google Cloud</a>, <a class="inline-link" href="https://ap2-protocol.org/" target="_blank" rel="noopener">the AP2 specification</a>), and Google handed it to the FIDO Alliance in April 2026 (<a class="inline-link" href="https://blog.google/products-and-platforms/platforms/google-pay/agent-payments-protocol-fido-alliance/" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://fidoalliance.org/google-donates-agent-payments-protocol-to-fido-alliance/" target="_blank" rel="noopener">The Paypers, via the FIDO Alliance</a>). The Universal Commerce Protocol, which Google announced on 11 January 2026 and developed with Shopify, Etsy, Wayfair, Target and Walmart, covers the buying journey from discovery to post-purchase support (<a class="inline-link" href="https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/" target="_blank" rel="noopener">Google</a>, <a class="inline-link" href="https://techcrunch.com/2026/01/11/google-announces-a-new-protocol-to-facilitate-commerce-using-ai-agents/" target="_blank" rel="noopener">TechCrunch</a>). <a class="inline-link" href="/answers/acp-vs-ap2/">ACP vs AP2</a> sets the first two side by side, and <a class="inline-link" href="/answers/what-is-universal-commerce-protocol/">What is the Universal Commerce Protocol?</a> covers the third. I started tracking them in <a class="inline-link" href="/news/2026-06-21-agentic-commerce.html">Five protocols, one checkout</a>.</p>
+
+      <h2>Where to follow it</h2>
+
+      <p>Retailers set their own terms as well, and Amazon&#x27;s are covered in <a class="inline-link" href="/answers/can-ai-agents-shop-on-amazon/">Can AI agents shop on Amazon?</a>. The news desk on this site follows the story with every source named. The regulation is landing too: <a class="inline-link" href="/news/2026-07-09-agentic-commerce.html">Nine days out, the stablecoin rulebook finally gets numbers</a>.</p>
     </div>
   </div>
 </article>
