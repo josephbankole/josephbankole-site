@@ -49,7 +49,7 @@
 
       <p>Pulling both and publishing a correction was the obvious move. The desk did neither. It set the report and the retraction aside together and checked every disputed claim against articles it opened itself, each one dated.</p>
 
-      <p>Every claim it had confessed to inventing that the desk had published was true. The desk had opened the source articles itself, each one dated, and every published claim held up against them. Nothing false had gone out. Trusting the retraction would have put a false statement on the site, as a correction to a story that needed none.</p>
+      <p>Of the claims it confessed to inventing, every one the desk had published was true. The desk had opened the source articles itself, each one dated, and every published claim held up against them. Nothing false had gone out. Trusting the retraction would have put a false statement on the site, as a correction to a story that needed none.</p>
 
       <h2>The next day</h2>
 
@@ -843,7 +843,7 @@ Rules:
         <li><strong>Write it down.</strong> Write the root-cause analysis properly. It is the only thing standing between you and the same 2am twice.</li>
       </ol>
 
-      <h3>The pattern holds</h3>
+      <h2>The pattern holds</h2>
       <p>Years of this and the pattern holds. The technology fails rarely, and the systems are mostly reliable. What separates a bad hour from a bad week is the human and procedural layer, the order you do things in under pressure.</p>
 
       <p class="dim">I carried this triage order straight into running AI agents. Stop the bleeding, find the poison pill, do not let it run twice. <a class="inline-link" href="https://josephbankole.ca/blog/debugging-ai-context-window.html">It is the same discipline, a different system.</a></p>]]></content:encoded>
