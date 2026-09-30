@@ -48,7 +48,10 @@ recipes his own reference shelf:
     waitlist call to action (WAITLIST_MARKERS below). Author prose that uses
     the word, such as a news story about a product waitlist, is not a marker.
   - No page outside recipes/ may link to a /recipes/ URL, and llms.txt may not
-    list one. Recipes stay live for Joseph and carry noindex,follow.
+    list one. Recipes stay live for Joseph and carry noindex,follow. Relative
+    hrefs are resolved before they are judged (2026-09-30).
+  - robots.txt may not Disallow any path that covers /recipes/, for any user
+    agent, or the noindex is never read (2026-09-30).
   - sitemap.xml may not list a /recipes/ URL. The build drops any it finds.
 
 Warnings go to stderr and never change the exit code of a normal run.
@@ -150,9 +153,6 @@ WAITLIST_MARKERS = (
     "waitlist_click",
     "book-pill",
     "not taking new clients",
-)
-RECIPE_LINK_RE = re.compile(
-    r"""href=["'](?:https?://(?:www\.)?josephbankole\.ca)?/recipes(?:[/"'#?])""", re.I
 )
 
 FONTS = (
@@ -1519,9 +1519,22 @@ def gate_site(outputs: dict[str, str]) -> None:
     for rel, text in sorted(pages.items()):
         if in_recipes(rel) or not rel.endswith(".html"):
             continue
-        hits = len(RECIPE_LINK_RE.findall(text))
+        # sitelib.recipe_links resolves each href against the page's own URL,
+        # so a relative "recipes/", "../recipes/x/", a protocol-relative or an
+        # unquoted href counts too. The old pattern only saw "/recipes" and
+        # the absolute URL.
+        hits = len(sitelib.recipe_links(rel, text))
         if hits:
             GATE_FAILURES.append("%s: %d link(s) into /recipes/" % (rel, hits))
+
+    # Recipes are noindex,follow. A crawler reads the noindex only if it may
+    # fetch the page, so robots.txt must never block recipes/ for any agent.
+    robots = REPO / "robots.txt"
+    if robots.exists():
+        for pattern in sitelib.robots_blocks_recipes(robots.read_text(encoding="utf-8")):
+            GATE_FAILURES.append(
+                "robots.txt: Disallow '%s' blocks /recipes/ (the noindex must stay readable)" % pattern
+            )
 
     llms = REPO / "llms.txt"
     if llms.exists() and re.search(r"josephbankole\.ca/recipes|\]\(/recipes", llms.read_text(encoding="utf-8")):
