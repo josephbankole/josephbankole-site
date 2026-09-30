@@ -1619,14 +1619,17 @@ def build(check: bool, today: dt.date) -> int:
         if not check:
             path.write_text(text, encoding="utf-8")
 
-    news_index_rows = read_index_rows(REPO / "news" / "index.html")
     editions = news_editions()
     by_href = {e["href"]: e for e in editions}
 
     def row_for(edition):
-        row = news_index_rows.get(edition["href"])
-        if row:
-            return dict(row, date=short_date(edition["date"]))
+        # Pager, "Latest from the desk" and 404 rows are built from the
+        # edition's own <title> (60 or fewer) and meta description (155 or
+        # fewer), the gated short forms. They used to look the edition up in
+        # the news hub first, but read_index_rows expects <span class="date">
+        # and the hub has carried <time class="date"> since 2026-08-09, so
+        # that lookup never found a row. The hub keeps the desk's long
+        # headline and dek; these rows are meant to be short.
         src = edition["path"].read_text(encoding="utf-8")
         return {
             "href": edition["href"],
