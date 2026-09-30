@@ -36,7 +36,18 @@
     autocapture: false,
     capture_pageview: true,
     persistence: 'localStorage',
-    respect_dnt: true
+    respect_dnt: true,
+    /* The PostHog project is shared with thearchv.ca, so anything a
+       dashboard toggle there could switch on is pinned off here in code.
+       Surveys and web vitals are also off: nothing on this site uses them. */
+    disable_surveys: true,
+    capture_performance: false,
+    disable_session_recording: true,
+    capture_heatmaps: false,
+    capture_dead_clicks: false,
+    capture_exceptions: false,
+    disable_conversations: true,
+    disable_product_tours: true
   });
 
   /* ---- conversion click-tracking ----
