@@ -53,6 +53,12 @@ recipes his own reference shelf:
   - robots.txt may not Disallow any path that covers /recipes/, for any user
     agent, or the noindex is never read (2026-09-30).
 
+Publish times (2026-09-30): a page's own datePublished time is kept when it
+is a full timestamp on the page's own day; the 08:00 (news) and 09:00 stamps
+are only a fallback. Recipes keep the 09:00 stamp. A blog or answers page
+whose dateModified is earlier than its datePublished fails --check; on news
+it is a warning.
+
 Warn-only check added 2026-09-30, to become a gate:
 
   - "ten years" (not "ten years ago") must be followed within 90 characters
@@ -687,6 +693,23 @@ def existing_published(src: str) -> str | None:
     return match.group(1) if match else None
 
 
+def keep_time(raw: str | None, day: dt.date, default_hour: int) -> str:
+    """The page's own publish time, kept as written when it can be trusted.
+
+    Until 2026-09-30 the builder stamped every news edition 08:00 and every
+    other article 09:00, overwriting the hour a desk had written (R18, R22).
+    A full timestamp with an offset whose Montreal date is the page's own day
+    is now kept byte for byte. A bare date, a time with no offset, or a stamp
+    from another day (a template copied forward) falls back to the old hour.
+    """
+    moment = sitelib.parse_iso(raw or "")
+    if moment is not None:
+        local = moment.astimezone(sitelib.MONTREAL) if sitelib.MONTREAL else moment
+        if local.date() == day:
+            return raw.strip()
+    return sitelib.local_iso(day, default_hour)
+
+
 # ------------------------------------------------------------------ indexes
 
 ROW_RE = re.compile(
@@ -790,14 +813,17 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         day = edition["date"]
         date_attr = edition["iso"]
         date_display = human_date(edition["date"])
-        published_iso = sitelib.local_iso(day, 8)
+        published_iso = keep_time(existing_published(src), day, 8)
     else:
         raw = existing_published(src)
         if raw and re.match(r"^\d{4}-\d{2}-\d{2}", raw):
             date_attr = raw[:10]
             day = dt.date.fromisoformat(date_attr)
             date_display = human_date(day)
-            published_iso = sitelib.local_iso(day, 9)
+            # Recipes keep the stamped 09:00: that lane's metadata is frozen.
+            published_iso = (
+                sitelib.local_iso(day, 9) if kind == "recipes" else keep_time(raw, day, 9)
+            )
 
     # This script does not invent dates. It used to fall back to a hardcoded
     # BUILD_DATE, which pinned both answers pages to "Updated 9 August 2026"
@@ -817,6 +843,19 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         modified = date_attr
     if re.match(r"^\d{4}-\d{2}-\d{2}$", modified):
         modified = sitelib.local_iso(dt.date.fromisoformat(modified), 9)
+
+    # A page cannot be modified before it was published. A gate on the site
+    # desk's own lanes; a warning on news, whose dates the news desk writes
+    # (a red --check would stop its lane over one metadata field).
+    moment_modified = sitelib.parse_iso(modified or "")
+    moment_published = sitelib.parse_iso(published_iso or "")
+    if moment_modified and moment_published and moment_modified < moment_published:
+        line = "%s: dateModified %s is before datePublished %s" % (
+            rel_name(path), modified, published_iso)
+        if kind in ("blog", "answers"):
+            GATE_FAILURES.append(line)
+        else:
+            warn("%s pages modified before they were published" % kind, line)
 
     page["published_iso"] = published_iso
     page["modified_iso"] = modified
