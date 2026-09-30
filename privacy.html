@@ -60,8 +60,8 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <span aria-current="page">Privacy</span></nav>
     <span class="index">Privacy</span>
     <h1>What this site knows about you.</h1>
-    <p class="standfirst">Short version: it counts that a page was viewed and whether anyone clicked a link. It does not know who you are. There is nothing to log into or download, and the only sign-up is the newsletter box on the homepage, which Substack runs.</p>
-    <p class="article-meta"><span>Last updated: 23 September 2026</span><span>josephbankole.ca</span></p>
+    <p class="standfirst">Short version: it counts that a page was viewed, how far down you scrolled and how long you stayed, and whether anyone clicked a link. It does not know who you are. There is nothing to log into or download, and the only sign-up is the newsletter box on the homepage, which Substack runs.</p>
+    <p class="article-meta"><span>Last updated: 30 September 2026</span><span>josephbankole.ca</span></p>
   </header>
 
   <div class="article-body wrap">
@@ -76,6 +76,7 @@
       <p>Every page on this site, the "page not found" page included, loads <a href="https://posthog.com/" target="_blank" rel="noopener">PostHog</a>, a product-analytics tool, through one shared script. I use it to answer two questions: how many people read a page, and which links they click on the way out. Specifically it records:</p>
       <ul>
         <li>A page view when any page loads.</li>
+        <li><code>$pageleave</code> when you leave a page or close the tab. It carries how far down the page you scrolled and how long the page was open.</li>
         <li><code>subscribe_click</code> if you click a link to my newsletter, The ARCHV AI on Substack. It stores where on the site the link sits, the page it was on, and the <code>utm_medium</code> tag written into the link. It does not store who clicked, and it cannot see whether you went on to subscribe.</li>
         <li><code>newsletter_click</code> if you click a link to The ARCHV Dispatch, the other newsletter on Substack. It stores the link and the page it was on.</li>
         <li><code>project_link_click</code> if you click a link out to one of my projects, and <code>founder_link_click</code> if you click a link to my LinkedIn or Instagram. Each stores which link, not who clicked it.</li>
@@ -84,7 +85,8 @@
         <li><code>page_404</code> when the "page not found" page loads. It stores the address that was not found and the page that sent you there (the referrer), so I can find and fix broken links.</li>
         <li><code>configurator_select</code> if you pick an answer in the "How I scope a build" demo on the homepage. It stores the question and the answer you picked, nothing typed. The unlisted <code>/lab/</code> prototype sends the same event, plus <code>hero_skip</code> if you skip its intro.</li>
       </ul>
-      <p>PostHog also receives the technical basics that any web request carries: your IP address, browser, and rough location derived from that IP. I have deliberately turned <em>off</em> autocapture, which means PostHog is not recording every click, scroll, keystroke, or form field on the page. It only sees the events listed above. I honour Do Not Track, so if your browser sends that signal, PostHog is disabled entirely for your visit.</p>
+      <p>Each event also carries the technical basics that any web request brings: your IP address, browser, and rough location derived from that IP. It adds the page address, including any tracking tags in it, the page that sent you, your screen and window size, time zone, and browser language. I have turned <em>off</em> autocapture, so PostHog is not recording every click, keystroke, or form field, and scroll depth is recorded only when you leave a page. Session recording, heatmaps, surveys, and page-speed (web vitals) measurement are switched off in the site's code. PostHog only sees the events listed above.</p>
+      <p>The same PostHog project also receives the analytics for thearchv.ca, another site I run, and I tell the two apart by page address. I honour Do Not Track. If your browser sends that signal, PostHog's script still loads and still keeps its random identifier in your browser (see Cookies below), but it sends no events to PostHog for your visit.</p>
 
       <h2>Cookies</h2>
       <p>This site sets no cookies of its own. PostHog is configured to use browser localStorage rather than cookies, so it stores a random, anonymous identifier in your browser to avoid double-counting the same visitor. That identifier is not linked to a name, an email, or anything else about you. Clearing your browser storage erases it.</p>
@@ -110,7 +112,7 @@
       <p>This site is aimed at working professionals. It is not directed at children, and I do not knowingly collect anything from them.</p>
 
       <h2>Your choices</h2>
-      <p>Turn on Do Not Track in your browser and analytics stop for you entirely. Block scripts, use a content blocker, or clear your browser storage and the anonymous identifier disappears. If you want the analytics record of your visit deleted and can tell me roughly when you visited, email me and I will do it, though be aware that with no name attached to any of it, there may be very little to find.</p>
+      <p>Turn on Do Not Track in your browser and PostHog stops receiving events from you, though its script still loads and keeps the identifier described above. Block scripts, use a content blocker, or clear your browser storage and the anonymous identifier disappears. If you want the analytics record of your visit deleted and can tell me roughly when you visited, email me and I will do it, though be aware that with no name attached to any of it, there may be very little to find.</p>
 
       <h2>Changes</h2>
       <p>If I add anything that changes what is collected, I will update this page and change the date at the top. This is a static site kept in version control, so the edit history is a matter of record.</p>
