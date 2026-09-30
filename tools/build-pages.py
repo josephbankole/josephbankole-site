@@ -761,6 +761,13 @@ def post_row(entry: dict, iso: str | None = None) -> str:
 
 # ------------------------------------------------------------- news editions
 
+# D-2026-09-22c moved the news lane from daily to Tuesday and Friday. Editions
+# from 23 September on still copy "Daily brief" from the 19 June structure, so
+# the builder relabels their kicker "Brief", which states no cadence. Earlier
+# editions keep "Daily brief": they were daily when they ran.
+NEWS_CADENCE_CHANGE = dt.date(2026, 9, 23)
+NEWS_DAILY_KICKER_RE = re.compile(r"^Daily brief\b")
+
 NEWS_FILE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-(.+)\.html$")
 
 
@@ -825,6 +832,8 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         date_attr = edition["iso"]
         date_display = human_date(edition["date"])
         published_iso = keep_time(existing_published(src), day, 8)
+        if day >= NEWS_CADENCE_CHANGE:
+            head["kicker"] = NEWS_DAILY_KICKER_RE.sub("Brief", head["kicker"])
     else:
         raw = existing_published(src)
         if raw and re.match(r"^\d{4}-\d{2}-\d{2}", raw):
