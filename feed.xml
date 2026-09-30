@@ -5,8 +5,40 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 23 Sep 2026 13:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 30 Sep 2026 19:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Read the feed terms before you build a news aggregator</title>
+    <link>https://josephbankole.ca/blog/rss-feed-terms-news-aggregator.html</link>
+    <guid>https://josephbankole.ca/blog/rss-feed-terms-news-aggregator.html</guid>
+    <pubDate>Wed, 30 Sep 2026 19:00:00 GMT</pubDate>
+    <description>My agents checked the RSS terms of more than 50 sports publishers before the Wire launched. Only ESPN's plainly allowed display on another site.</description>
+    <content:encoded><![CDATA[<p>On 27 September a new section called the Wire went live on thearchv.ca, the sports site my scheduled desks run. Each morning it carries one headline per sport, a one-line ARCHV note and a link out to the publisher, and on launch day all seven headlines came from ESPN. ESPN got the whole Wire because it was the one publisher, out of more than fifty the research agents checked across six sports, whose published terms plainly allowed its feed on someone else&#x27;s site and app.</p>
+
+      <p>My brief on 26 September asked for "1 top article from each source we can access for free", per day. The research agents took "free" to mean free to use, and went to the terms pages. Most publishers on their list serve an RSS feed to anyone who requests one. Fetching a feed and being allowed to republish what comes back are separate questions, and the second one is answered on a page a feed reader never shows you.</p>
+
+      <h2>What the terms pages say</h2>
+
+      <p><a href="https://www.theguardian.com/help/terms-of-service">The Guardian&#x27;s terms and conditions</a> name RSS feeds as one of the ways its network is reached, then say use of its content "is for your own personal and non-commercial use only". <a href="https://www.independent.co.uk/service/rss-feeds-775086.html">The Independent&#x27;s feed directory</a> says its feeds "are for your personal, non-commercial use only and any republication or other use of our content will require a licence". <a href="https://www.bbc.co.uk/usingthebbc/terms-of-use/">The BBC&#x27;s terms of use</a> send business users to a permissions page and warn that "there may be a fee to pay". The agents&#x27; notes record the same pattern at Sky Sports, The Athletic, Sportsnet, CBS Sports, FOX Sports, formula1.com and dozens more, each with the quoted line and the address it came from.</p>
+
+      <p>Courts have tested the idea that a headline and a sentence are too small to matter. In March 2013 Judge Denise Cote of the Southern District of New York rejected Meltwater&#x27;s fair use defence in a copyright case brought by the Associated Press. Meltwater crawled the web and sent paying subscribers headlines and excerpts of AP stories, the lede of each story among them. <a href="https://www.copyright.gov/fair-use/summaries/ap-meltwater-sdny2013.pdf">The US Copyright Office&#x27;s summary of the ruling</a> records the court finding that Meltwater added no commentary or insight, refused the licences AP already sold, and competed with AP for the same customers. <a href="https://pressgazette.co.uk/media_law/associated-press-strikes-legal-blow-against-content-aggregators-after-winning-meltwater-case/">Press Gazette&#x27;s report</a> quotes the judge on Meltwater taking "the fruit of AP&#x27;s labor for its own profit".</p>
+
+      <h2>Turning ESPN's conditions into code</h2>
+
+      <p><a href="https://www.espn.com/espn/news/story?page=rssinfo">ESPN&#x27;s RSS terms</a> say "If you choose to display an ESPN RSS feed on a website or app" and then set the conditions: display only what the feed provides, link to the full article on espn.com with the URLs the feed gives you, say the content has been provided by ESPN, put no advertising into it, and modify nothing, "including but not limited to story headlines, story summaries, or URLs". <a href="https://tagembed.com/blog/embed-sports-news-rss-feeds/">Tagembed, a company that sells feed widgets</a>, gives its customers the same reading: ESPN requires attribution and forbids modifying headlines or placing ads inside feed content.</p>
+
+      <p>Each clause became a rule in the Wire&#x27;s code. The headline ships verbatim and is never truncated, so a long one wraps in the layout instead of ending in an ellipsis. The link is the feed&#x27;s URL byte for byte, which meant leaving off the tracking parameters my newsletter links carry. Every item carries the text label ESPN, and the footer says the headlines are provided by ESPN. No shop, app or newsletter call to action sits inside the Wire block or beside it. A check on every build fails if a publisher image appears in the block or a link points anywhere but a registered source. The feed summary is read inside the desk&#x27;s working folder to check the note against it and is never shown.</p>
+
+      <p>The awkward clause met my own watermark strip. Everything my desks publish goes through a last pass that deletes invisible Unicode, zero-width spaces and similar characters. Run over an ESPN headline, that pass is a modification. The design settled it by treating the headline as untouchable. If a headline or URL carries any character the strip would remove, the desk vetoes that item and takes the next clean one from the same feed. A final check compares every published headline and URL against the feed byte for byte. A headline is never repaired.</p>
+
+      <p>Each source&#x27;s entry in the Wire&#x27;s config file carries its basis: the terms URL, the date it was checked, the permission line quoted, and the conditions it sets. When somebody asks why a source is in, the answer is in the same file as the feed address.</p>
+
+      <h2>What stayed unresolved</h2>
+
+      <p>The Terms of Use link in the footer of ESPN&#x27;s RSS page goes to <a href="https://disneytermsofuse.com/english/">Disney&#x27;s master terms</a>, and those bar using Disney products "for any commercial or business-related use". The design review said nothing reconciles that clause with the RSS page, and proposed an email to ESPN before the app shipped the Wire. On 27 September I decided against the email: "ok then no email, push it to live following what ESPN said". The decision record accepts that risk and writes the exit down beside it. If ESPN objects, the Wire drops ESPN the same day, and until another licence arrives it has no headlines at all. The Conversation, whose <a href="https://theconversation.com/uk/republishing-guidelines">republishing guidelines</a> mention licence fees for commercial use, stays switched off until it answers in writing.</p>
+
+      <p>Seven feeds from one publisher is a single point of failure, and I shipped it knowing that. Would you have shipped on the RSS page alone, or held the Wire for a written yes that might never come?</p>]]></content:encoded>
+  </item>
   <item>
     <title>An agent's retraction is no more evidence than its report</title>
     <link>https://josephbankole.ca/blog/agent-retraction-is-not-evidence.html</link>
