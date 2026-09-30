@@ -40,7 +40,7 @@
       <p>Seven feeds from one publisher is a single point of failure, and I shipped it knowing that. Would you have shipped on the RSS page alone, or held the Wire for a written yes that might never come?</p>]]></content:encoded>
   </item>
   <item>
-    <title>An agent's retraction is no more evidence than its report</title>
+    <title>AI verifier agent confessed to fakes that turned out true</title>
     <link>https://josephbankole.ca/blog/agent-retraction-is-not-evidence.html</link>
     <guid>https://josephbankole.ca/blog/agent-retraction-is-not-evidence.html</guid>
     <pubDate>Wed, 23 Sep 2026 13:00:00 GMT</pubDate>
@@ -49,7 +49,7 @@
 
       <p>Pulling both and publishing a correction was the obvious move. The desk did neither. It set the report and the retraction aside together and checked every disputed claim against articles it opened itself, each one dated.</p>
 
-      <p>Every claim it had confessed to inventing that the desk had published was true. The enquiry it described was a bylined exclusive published on 1 September. The line it attributed to a named reporter was carried, in those words, by another outlet on the night of 1 September. The league position matched the live table: 10th, three points from two games. Each claim now rests on two sources the desk found without the agent. Nothing false had gone out. Trusting the retraction would have put a false statement on the site, as a correction to a story that needed none.</p>
+      <p>Every claim it had confessed to inventing that the desk had published was true. The desk had opened the source articles itself, each one dated, and every published claim held up against them. Nothing false had gone out. Trusting the retraction would have put a false statement on the site, as a correction to a story that needed none.</p>
 
       <h2>The next day</h2>
 
@@ -663,16 +663,13 @@ Rules:
 
       <p>The summary was not inventing from nothing, which is what makes this one hard to catch. <a class="inline-link" href="https://ap2-protocol.org/faq/" target="_blank" rel="noopener">AP2's FAQ</a> really does address the subject, in different words: the protocol's stated objective is to provide evidence that helps payment networks establish accountability and liability principles. The claim existed, and the summary moved it to a different document, hardened prose into a table, and minted a quotation. Each step made it easier to cite.</p>
 
-      <h2>When the vendor's own pages disagree</h2>
-      <p>The third case is quieter. The same x402 page needed the date AWS launched AgentCore Payments in preview, and a summary said May. AWS's <a class="inline-link" href="https://aws.amazon.com/about-aws/whats-new/2026/04/amazon-bedrock-agentcore-payments-preview/" target="_blank" rel="noopener">what's-new item for that launch</a> is filed under April 2026. AWS's <a class="inline-link" href="https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-agentcore-payments-is-now-generally-available-enabling-agents-to-transact-safely-and-autonomously-at-scale/" target="_blank" rel="noopener">general-availability post</a> says the preview arrived in May. The vendor's two pages disagree with each other, and the summary had picked a side without mentioning that sides existed. I cut the date from my page rather than guess. As of today the two AWS pages still carry different months.</p>
-
       <h2>The habits of compression</h2>
-      <p>None of this looks like a malfunction, and I do not think it is one. A summary is compression, and compression has habits: it shortens a list from the tail, it merges neighbouring documents into one, and it rounds a disagreement into an answer. What comes out is grammatical and sourced-looking, which is a worse failure shape than a blank result, because a blank result sends you to the document.</p>
+      <p>None of this looks like a malfunction, and I do not think it is one. A summary is compression, and compression has habits: it shortens a list from the tail, and it moves a claim from one document to another and hardens it on the way. What comes out is grammatical and sourced-looking, which is a worse failure shape than a blank result, because a blank result sends you to the document.</p>
 
       <p>The lists worry me most, as a practitioner. A wrong name gets caught by the first reader who knows the field, while a dropped name leaves nothing on the page to notice. If the x402 page had shipped naming fourteen premier members, the error would have sat there reading as a complete answer.</p>
 
       <h2>What I fetch before I cite</h2>
-      <p>The rule I run now costs about ten minutes a page. Every claim a search hands me gets its underlying document fetched rather than trusted from the snippet. I poll every URL before I link it, because a returned URL is a guess like everything else in the answer. Lists get counted on the primary page, and dates get read in two places. Across my last six site runs that rule is four for four: the shortened member list, the invented table, the dead URL and the April-to-May split were all caught at the fetch, and none of them would have been caught by reading the summary more carefully.</p>
+      <p>The rule I run now costs about ten minutes a page. Every claim a search hands me gets its underlying document fetched rather than trusted from the snippet. I poll every URL before I link it, because a returned URL is a guess like everything else in the answer. Lists get counted on the primary page, and dates get read in two places. Across my last six site runs that rule is three for three: the shortened member list, the invented table and the dead URL were all caught at the fetch, and none of them would have been caught by reading the summary more carefully.</p>
 
       <p>There is a loop in this that I feel while writing the answer pages themselves. The pages I publish exist partly to be read by the same class of machinery that handed me the fourteen-name list: they answer the question in the first 120 words because that is what a summarising engine lifts. I write for the compressor on one side of the desk and defend against it on the other. Both jobs reduce to the same discipline, keeping every number on the page traceable to a document that resolves.</p>
 
@@ -748,7 +745,7 @@ Rules:
       <p class="dim">The nine units are still live, and the check that would have caught them has not been written.</p>]]></content:encoded>
   </item>
   <item>
-    <title>Automated audits fail towards false positives</title>
+    <title>Site audit said 64 live pages were dead: five checker bugs</title>
     <link>https://josephbankole.ca/blog/audit-false-positives.html</link>
     <guid>https://josephbankole.ca/blog/audit-false-positives.html</guid>
     <pubDate>Wed, 19 Aug 2026 13:00:00 GMT</pubDate>
@@ -763,11 +760,11 @@ Rules:
       <p><strong>A check reading the wrong element.</strong> The answer-first extractor pulled the first 60 words out of <code>div.prose</code> and reported that both answer pages opened on a subheading instead of an answer. On that template the answer sits in <code>p.standfirst</code>, above <code>.prose</code>. Both pages were already correct, and the recommendation would have sent me to rewrite two pages that needed nothing.</p>
       <p><strong>A flag that does not exist on this platform.</strong> <code>sed 's|&lt;/\?loc&gt;||g'</code> silently does nothing under BSD sed, which has no <code>\?</code> in basic regular expressions. The sitemap crawl returned 000 on all 65 URLs and looked exactly like a total outage.</p>
 
-      <h3>They all failed towards more work</h3>
+      <h2>They all failed towards more work</h2>
       <p>Not one of these ever said a broken page was fine. They said fine pages were broken, sixteen at a time, and two of them were one approval away from producing a commit that edited correct pages into worse ones. A check with a bug does not fail evenly in both directions. It fails towards more work, because the code path that raises a finding is the one carrying the assumption, and the code path that stays quiet is usually just an early return.</p>
       <p>A person reading that report over coffee glances at an implausible line and moves on. An agent reading the same output opens the file and fixes it, because fixing things is the job I gave it.</p>
 
-      <h3>What actually catches them</h3>
+      <h2>What actually catches them</h2>
       <ol>
         <li><strong>Treat uniform failure as a bug in the checker.</strong> A real outage is rarely total and never that tidy. 0 of 64, 0 of 72, every feed, every asset, including the page open in the browser tab beside the terminal. That is one broken assumption applied 136 times. The tell has now caught three of these before they reached a report.</li>
         <li><strong>Make the check print the text it read, beside the verdict.</strong> The answer-first bug survived because it published a conclusion without the evidence. Show me the 60 words the check measured and I can settle it in a second.</li>
@@ -775,13 +772,13 @@ Rules:
         <li><strong>Write retired rules down where the checker can see them.</strong> I retired the 50-to-60 title rule on measurement four days ago. The script running the daily pass still carries it, so this afternoon it produced fourteen findings, of which two were real and both were already open. The other twelve were the branding suffix again, or pages that are supposed to look exactly as they do.</li>
       </ol>
 
-      <h3>The cost of the good version</h3>
+      <h2>The cost of the good version</h2>
       <p>Every fix above is cheap. Print the evidence, use curl, distrust a total failure, keep the retired rules where the code can reach them. Together they are perhaps forty lines. The expensive part was the five runs it took to notice that on those checks the audit was not measuring the site at all, because a report full of findings feels like a working audit, and I wanted it to be working.</p>
 
       <p class="dim">The 64 URLs from that first run are still there. They answered 200 on the day the crawler called them dead, and they answered 200 again this afternoon. The only thing that has ever changed is the code doing the asking.</p>]]></content:encoded>
   </item>
   <item>
-    <title>The carousel that rendered blank · AI automation</title>
+    <title>Headless browser screenshot blank: wait for images to load</title>
     <link>https://josephbankole.ca/blog/blank-carousel-render.html</link>
     <guid>https://josephbankole.ca/blog/blank-carousel-render.html</guid>
     <pubDate>Thu, 18 Jun 2026 13:00:00 GMT</pubDate>
@@ -789,13 +786,13 @@ Rules:
     <content:encoded><![CDATA[<p>A renderer I run started shipping carousels where the first card's image was just... blank. Every other card was fine. Only the first.</p>
       <p>Blank-on-the-first-one is a tell. It almost always means a race: something is being captured before it is ready.</p>
 
-      <h2>What was happening</h2>
+      <h2>Why did the first card render blank?</h2>
       <p>The pipeline builds each slide in a headless browser, then screenshots it. The images on the cards load from a remote CDN. The screenshot was firing the instant the page reported "done," but "page loaded" and "every image finished downloading" are not the same event. The first card lost the race most often because it had the furthest to travel.</p>
 
-      <h3>The fix</h3>
+      <h2>The fix</h2>
       <p>The fix was one idea: do not screenshot until every image has actually finished. Wait for each one to reach a real loaded state, or to error, before capturing the frame. No model involved. No clever prompt. Just the oldest rule in automation, which is that you do not take the picture before the subject has arrived.</p>
 
-      <h3>The same bug, everywhere</h3>
+      <h2>The same bug, everywhere</h2>
       <p>Capture-before-load is the same bug as record-before-act and read-before-think. Different system, same lesson: finish step one before you start step two. Once you have seen it in one place you start catching it everywhere, including in AI workflows that report success a beat before the work is genuinely done.</p>
 
       <p class="dim">My pipeline's definition of "ready" was the page saying it had loaded. The images had their own opinion.</p>]]></content:encoded>
@@ -809,12 +806,12 @@ Rules:
     <content:encoded><![CDATA[<p>I run a small fleet of automated AI agents. Content pipelines, analytics jobs, scheduled workflows. Recently two of them started failing the same way, and the root cause was something I do not see discussed enough: context-window exhaustion as a production failure mode.</p>
       <p>If you only ever build with AI in a chat window, this failure is invisible to you. It only shows up once a model is doing real, repeated work on a schedule, with files and tool outputs piling into its working memory. That is exactly where I found it.</p>
 
-      <h2>What was happening</h2>
+      <h2>Why did two scheduled agents fail the same way?</h2>
       <p>The first job force-loaded around 141KB of reference files before it did any actual work. A style guide, a performance log that kept growing, a few content banks. Then the tool outputs landed on top of that, and the agent's working memory overflowed mid-run. It compacted, re-read the same files, overflowed again. Three loops, then it gave up.</p>
       <p>The second job loaded a 25KB CSV, rewrote the whole file back at the end, and crashed in the gap between posting and recording that it had posted. That is the dangerous one. It left the system a single rerun away from publishing the same thing twice.</p>
       <p>Neither of these is an AI problem in the way people mean when they say "the model got confused." The model was fine. The system around the model was wasteful, and the waste had nowhere to go but the context budget.</p>
 
-      <h3>The fixes were classic ops, not AI magic</h3>
+      <h2>The fixes were classic ops, not AI magic</h2>
       <ol>
         <li><strong>Read slim.</strong> The 63KB style guide became a 3KB cheatsheet. The full document still exists, but it is reference-only now. The agent reads the short version to do its job.</li>
         <li><strong>Logs that grow must rotate.</strong> Anything over roughly 400 lines archives itself, and the jobs read the tail instead of the whole history.</li>
@@ -822,7 +819,7 @@ Rules:
         <li><strong>Idempotency first.</strong> Post, then immediately record that you posted, with nothing in between, plus a duplicate guard that checks before it acts.</li>
       </ol>
 
-      <h3>Why this felt familiar</h3>
+      <h2>Why this felt familiar</h2>
       <p>Five years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
       <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over, which is exactly what mine did until the fixes above went in.</p>
 
@@ -833,18 +830,17 @@ Rules:
     <link>https://josephbankole.ca/blog/payment-batch-fails.html</link>
     <guid>https://josephbankole.ca/blog/payment-batch-fails.html</guid>
     <pubDate>Tue, 16 Jun 2026 13:00:00 GMT</pubDate>
-    <description>A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed. Here is how it really goes.</description>
-    <content:encoded><![CDATA[<p>I have written before about why your payment "takes three days." It comes down to the batch model: payments do not move one at a time, they move in files, on windows. A few people asked the natural next question. What happens when the batch itself fails?</p>
-      <p>Here is the part nobody sees.</p>
-      <p>A failed batch is not one problem. It is thousands of payments sharing one problem. So the first job is not fixing anything. It is scoping. What was in the file, which clients, which currencies, which cutoffs are still reachable today. Until you know the blast radius, every action is a guess.</p>
+    <description>A failed payment batch is thousands of payments sharing one problem, so scoping comes before fixing. The triage order, step by step.</description>
+    <content:encoded><![CDATA[<p>Payments do not move one at a time. They move in files, on windows, and that batch model is why a payment can take three days. It also changes what a failure looks like: when the batch itself fails, thousands of payments stop at once.</p>
+      <p>A failed batch is thousands of payments sharing one problem, so the first job is scoping rather than fixing. What was in the file, which clients, which currencies, which cutoffs are still reachable today. Until you know the blast radius, every action is a guess.</p>
 
       <h2>The triage order matters more than speed</h2>
       <ol>
-        <li><strong>Stop the bleeding.</strong> Make sure the file cannot partially process twice. A duplicate run is worse than a late one. You can apologise for late. You cannot un-send money.</li>
+        <li><strong>Stop the bleeding.</strong> Make sure the file cannot partially process twice. A duplicate run is worse than a late one, because money sent twice is hard to get back.</li>
         <li><strong>Find the poison pill.</strong> Often one malformed record fails an entire file. Isolate it, release the rest. Most of the batch is usually fine and waiting on one bad row.</li>
         <li><strong>Race the cutoffs.</strong> Every payment system has windows. Miss the next one and "late today" quietly becomes "tomorrow," and tomorrow is a different conversation with the client.</li>
-        <li><strong>Tell people early.</strong> Clients forgive delay. They do not forgive silence. The worst version of an incident is the one where the customer finds out before you tell them.</li>
-        <li><strong>Write it down.</strong> The root-cause analysis is not paperwork. It is the only thing standing between you and the same 2am twice.</li>
+        <li><strong>Tell people early.</strong> Clients will accept a delay they were told about early. The worst version of an incident is the one where the customer finds out before you tell them.</li>
+        <li><strong>Write it down.</strong> Write the root-cause analysis properly. It is the only thing standing between you and the same 2am twice.</li>
       </ol>
 
       <h3>The pattern holds</h3>
@@ -864,16 +860,16 @@ Rules:
       <h2>Orchestration</h2>
       <p>Two dozen scheduled jobs that have to not step on each other. One generates tomorrow's slate in the evening. Another verifies and ships it in the morning. Others pull stats. None of them can duplicate work or assume another job has already run. This is scheduling, and it is the same problem as sequencing payment files across windows.</p>
 
-      <h3>A constraint budget</h3>
+      <h2>A constraint budget</h2>
       <p>Every job runs inside a finite context window and a finite credit budget. Treat those as free and the whole thing falls over. It did, which is <a class="inline-link" href="https://josephbankole.ca/blog/debugging-ai-context-window.html">a separate story I wrote up here</a>. The fix was pure operations discipline: read slim, rotate logs, keep big files out of the model's memory.</p>
 
-      <h3>Idempotency</h3>
+      <h2>Idempotency</h2>
       <p>A scheduled job will get re-run. That is not a maybe. If "did I already do this?" is not built in, you publish twice. So every action that touches the outside world records itself the instant it happens, with a guard that checks before it acts.</p>
 
-      <h3>Evals as a log, not a vibe</h3>
+      <h2>Evals as a log, not a vibe</h2>
       <p>I keep a performance log per post, so the system breeds towards what actually works instead of what feels good. The numbers are blunt, and they have already overturned a few of my own assumptions about what would land. A log you actually read is worth more than a dashboard you do not.</p>
 
-      <h3>What nearly killed it</h3>
+      <h2>What nearly killed it</h2>
       <p>The thing that nearly killed it was not the AI. It was treating reference files and logs as free to load. They are not. They eat the context budget until a run cannot think. Fixing that was operations, not prompting.</p>
 
       <p class="dim">The models will keep improving without any help from me. The scheduler, the duplicate guard and the log that tells the truth are mine to keep working. What is on that list for your stack?</p>]]></content:encoded>
@@ -883,9 +879,9 @@ Rules:
     <link>https://josephbankole.ca/blog/iso-20022-migration.html</link>
     <guid>https://josephbankole.ca/blog/iso-20022-migration.html</guid>
     <pubDate>Thu, 11 Jun 2026 13:00:00 GMT</pubDate>
-    <description>ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first.</description>
+    <description>ISO 20022 is more than a date on a calendar. From inside payment operations it looks like a long list of small things that break quietly.</description>
     <content:encoded><![CDATA[<p>Everyone talks about ISO 20022 like it is a date on a calendar. A deadline to clear, a box to tick, a project that ends.</p>
-      <p>From inside payment operations, it is not a date. It is a long list of small things that break quietly, and almost none of them break on go-live day. Here is what goes first, in my experience watching these migrations up close.</p>
+      <p>From inside payment operations, it looks like a long list of small things that break quietly, and almost none of them break on go-live day. In my experience watching these migrations up close, the list starts with field mappings.</p>
 
       <h2>1. Field mappings</h2>
       <p>MT messages truncate. MX messages carry rich, structured data. Map one onto the other and somewhere a remittance detail gets cut, quietly, with no error. Nobody notices until a beneficiary's reconciliation fails days later and the trail leads back to a field that was always too small to hold what you tried to put in it.</p>
@@ -894,7 +890,7 @@ Rules:
       <p>The payment engine speaks MX now. Good. The sanctions filter, the archiving system, the reporting job someone wrote ten years ago and then left the company? Still expecting MT. The migration was never one cutover. It is dozens of them, scattered across systems that were never designed to be changed together, and each one is somebody's quiet assumption that the format would never move.</p>
 
       <h2>3. Exception handling</h2>
-      <p>The happy path gets tested for months. Demos, sign-offs, dry runs. The repair queue, which is where operations actually lives, gets tested in production. That is not a criticism of anyone. It is just how it always goes. The exceptions are infinite and the test window is not, so the real edge cases meet the real system on the first busy morning.</p>
+      <p>The happy path gets tested for months. Demos, sign-offs, dry runs. The repair queue, which is where operations actually lives, gets tested in production. That is how these projects tend to go: the exceptions are infinite and the test window is not, so the real edge cases meet the real system on the first busy morning.</p>
 
       <h2>4. The first month</h2>
       <p>A migration is judged by its first month of exceptions. The go-live is the easy part. The month after is where you find out whether you actually understood your own pipeline.</p>

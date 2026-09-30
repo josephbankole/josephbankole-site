@@ -4,24 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>What an ISO 20022 migration actually breaks first</title>
-<meta name="description" content="ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first." />
+<meta name="description" content="ISO 20022 is more than a date on a calendar. From inside payment operations it looks like a long list of small things that break quietly." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/blog/iso-20022-migration.html" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="What an ISO 20022 migration actually breaks first" />
-<meta property="og:description" content="ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first." />
+<meta property="og:description" content="ISO 20022 is more than a date on a calendar. From inside payment operations it looks like a long list of small things that break quietly." />
 <meta property="og:url" content="https://josephbankole.ca/blog/iso-20022-migration.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/iso-20022-migration.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-06-11T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-08-09T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:30:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="What an ISO 20022 migration actually breaks first" />
-<meta name="twitter:description" content="ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first." />
+<meta name="twitter:description" content="ISO 20022 is more than a date on a calendar. From inside payment operations it looks like a long list of small things that break quietly." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/iso-20022-migration.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -40,7 +40,7 @@
     {
       "@type": "BlogPosting",
       "headline": "What an ISO 20022 migration actually breaks first",
-      "description": "ISO 20022 is not a date on a calendar. From inside payment operations it is a long list of small things that break quietly. Here is what goes first.",
+      "description": "ISO 20022 is more than a date on a calendar. From inside payment operations it looks like a long list of small things that break quietly.",
       "image": [
         "https://josephbankole.ca/assets/og/iso-20022-migration.png"
       ],
@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 327,
+      "wordCount": 318,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -69,7 +69,7 @@
         "@id": "https://josephbankole.ca/blog/iso-20022-migration.html"
       },
       "datePublished": "2026-06-11T09:00:00-04:00",
-      "dateModified": "2026-08-09T09:00:00-04:00",
+      "dateModified": "2026-09-30T15:30:00-04:00",
       "articleSection": "Payments and applied AI"
     },
     {
@@ -121,7 +121,7 @@
   <div class="article-body wrap">
     <div class="prose">
       <p>Everyone talks about ISO 20022 like it is a date on a calendar. A deadline to clear, a box to tick, a project that ends.</p>
-      <p>From inside payment operations, it is not a date. It is a long list of small things that break quietly, and almost none of them break on go-live day. Here is what goes first, in my experience watching these migrations up close.</p>
+      <p>From inside payment operations, it looks like a long list of small things that break quietly, and almost none of them break on go-live day. In my experience watching these migrations up close, the list starts with field mappings.</p>
 
       <h2>1. Field mappings</h2>
       <p>MT messages truncate. MX messages carry rich, structured data. Map one onto the other and somewhere a remittance detail gets cut, quietly, with no error. Nobody notices until a beneficiary's reconciliation fails days later and the trail leads back to a field that was always too small to hold what you tried to put in it.</p>
@@ -130,7 +130,7 @@
       <p>The payment engine speaks MX now. Good. The sanctions filter, the archiving system, the reporting job someone wrote ten years ago and then left the company? Still expecting MT. The migration was never one cutover. It is dozens of them, scattered across systems that were never designed to be changed together, and each one is somebody's quiet assumption that the format would never move.</p>
 
       <h2>3. Exception handling</h2>
-      <p>The happy path gets tested for months. Demos, sign-offs, dry runs. The repair queue, which is where operations actually lives, gets tested in production. That is not a criticism of anyone. It is just how it always goes. The exceptions are infinite and the test window is not, so the real edge cases meet the real system on the first busy morning.</p>
+      <p>The happy path gets tested for months. Demos, sign-offs, dry runs. The repair queue, which is where operations actually lives, gets tested in production. That is how these projects tend to go: the exceptions are infinite and the test window is not, so the real edge cases meet the real system on the first busy morning.</p>
 
       <h2>4. The first month</h2>
       <p>A migration is judged by its first month of exceptions. The go-live is the easy part. The month after is where you find out whether you actually understood your own pipeline.</p>

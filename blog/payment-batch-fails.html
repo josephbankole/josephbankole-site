@@ -4,24 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>What actually happens when a payment batch fails</title>
-<meta name="description" content="A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed. Here is how it really goes." />
+<meta name="description" content="A failed payment batch is thousands of payments sharing one problem, so scoping comes before fixing. The triage order, step by step." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/blog/payment-batch-fails.html" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="What actually happens when a payment batch fails" />
-<meta property="og:description" content="A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed. Here is how it really goes." />
+<meta property="og:description" content="A failed payment batch is thousands of payments sharing one problem, so scoping comes before fixing. The triage order, step by step." />
 <meta property="og:url" content="https://josephbankole.ca/blog/payment-batch-fails.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/payment-batch-fails.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-06-16T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-08-09T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:30:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="What actually happens when a payment batch fails" />
-<meta name="twitter:description" content="A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed. Here is how it really goes." />
+<meta name="twitter:description" content="A failed payment batch is thousands of payments sharing one problem, so scoping comes before fixing. The triage order, step by step." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/payment-batch-fails.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -40,7 +40,7 @@
     {
       "@type": "BlogPosting",
       "headline": "What actually happens when a payment batch fails",
-      "description": "A failed batch is not one problem. It is thousands of payments sharing one problem. The triage order matters more than speed. Here is how it really goes.",
+      "description": "A failed payment batch is thousands of payments sharing one problem, so scoping comes before fixing. The triage order, step by step.",
       "image": [
         "https://josephbankole.ca/assets/og/payment-batch-fails.png"
       ],
@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 323,
+      "wordCount": 309,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -69,7 +69,7 @@
         "@id": "https://josephbankole.ca/blog/payment-batch-fails.html"
       },
       "datePublished": "2026-06-16T09:00:00-04:00",
-      "dateModified": "2026-08-09T09:00:00-04:00",
+      "dateModified": "2026-09-30T15:30:00-04:00",
       "articleSection": "Payments and applied AI"
     },
     {
@@ -120,17 +120,16 @@
 
   <div class="article-body wrap">
     <div class="prose">
-      <p>I have written before about why your payment "takes three days." It comes down to the batch model: payments do not move one at a time, they move in files, on windows. A few people asked the natural next question. What happens when the batch itself fails?</p>
-      <p>Here is the part nobody sees.</p>
-      <p>A failed batch is not one problem. It is thousands of payments sharing one problem. So the first job is not fixing anything. It is scoping. What was in the file, which clients, which currencies, which cutoffs are still reachable today. Until you know the blast radius, every action is a guess.</p>
+      <p>Payments do not move one at a time. They move in files, on windows, and that batch model is why a payment can take three days. It also changes what a failure looks like: when the batch itself fails, thousands of payments stop at once.</p>
+      <p>A failed batch is thousands of payments sharing one problem, so the first job is scoping rather than fixing. What was in the file, which clients, which currencies, which cutoffs are still reachable today. Until you know the blast radius, every action is a guess.</p>
 
       <h2>The triage order matters more than speed</h2>
       <ol>
-        <li><strong>Stop the bleeding.</strong> Make sure the file cannot partially process twice. A duplicate run is worse than a late one. You can apologise for late. You cannot un-send money.</li>
+        <li><strong>Stop the bleeding.</strong> Make sure the file cannot partially process twice. A duplicate run is worse than a late one, because money sent twice is hard to get back.</li>
         <li><strong>Find the poison pill.</strong> Often one malformed record fails an entire file. Isolate it, release the rest. Most of the batch is usually fine and waiting on one bad row.</li>
         <li><strong>Race the cutoffs.</strong> Every payment system has windows. Miss the next one and "late today" quietly becomes "tomorrow," and tomorrow is a different conversation with the client.</li>
-        <li><strong>Tell people early.</strong> Clients forgive delay. They do not forgive silence. The worst version of an incident is the one where the customer finds out before you tell them.</li>
-        <li><strong>Write it down.</strong> The root-cause analysis is not paperwork. It is the only thing standing between you and the same 2am twice.</li>
+        <li><strong>Tell people early.</strong> Clients will accept a delay they were told about early. The worst version of an incident is the one where the customer finds out before you tell them.</li>
+        <li><strong>Write it down.</strong> Write the root-cause analysis properly. It is the only thing standing between you and the same 2am twice.</li>
       </ol>
 
       <h3>The pattern holds</h3>

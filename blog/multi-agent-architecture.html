@@ -17,7 +17,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-06-16T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-09-30T15:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:30:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="The architecture of a multi-agent content operation" />
@@ -69,7 +69,7 @@
         "@id": "https://josephbankole.ca/blog/multi-agent-architecture.html"
       },
       "datePublished": "2026-06-16T09:00:00-04:00",
-      "dateModified": "2026-09-30T15:00:00-04:00",
+      "dateModified": "2026-09-30T15:30:00-04:00",
       "articleSection": "Payments and applied AI"
     },
     {
@@ -126,16 +126,16 @@
       <h2>Orchestration</h2>
       <p>Two dozen scheduled jobs that have to not step on each other. One generates tomorrow's slate in the evening. Another verifies and ships it in the morning. Others pull stats. None of them can duplicate work or assume another job has already run. This is scheduling, and it is the same problem as sequencing payment files across windows.</p>
 
-      <h3>A constraint budget</h3>
+      <h2>A constraint budget</h2>
       <p>Every job runs inside a finite context window and a finite credit budget. Treat those as free and the whole thing falls over. It did, which is <a class="inline-link" href="/blog/debugging-ai-context-window.html">a separate story I wrote up here</a>. The fix was pure operations discipline: read slim, rotate logs, keep big files out of the model's memory.</p>
 
-      <h3>Idempotency</h3>
+      <h2>Idempotency</h2>
       <p>A scheduled job will get re-run. That is not a maybe. If "did I already do this?" is not built in, you publish twice. So every action that touches the outside world records itself the instant it happens, with a guard that checks before it acts.</p>
 
-      <h3>Evals as a log, not a vibe</h3>
+      <h2>Evals as a log, not a vibe</h2>
       <p>I keep a performance log per post, so the system breeds towards what actually works instead of what feels good. The numbers are blunt, and they have already overturned a few of my own assumptions about what would land. A log you actually read is worth more than a dashboard you do not.</p>
 
-      <h3>What nearly killed it</h3>
+      <h2>What nearly killed it</h2>
       <p>The thing that nearly killed it was not the AI. It was treating reference files and logs as free to load. They are not. They eat the context budget until a run cannot think. Fixing that was operations, not prompting.</p>
 
       <p class="dim">The models will keep improving without any help from me. The scheduler, the duplicate guard and the log that tells the truth are mine to keep working. What is on that list for your stack?</p>

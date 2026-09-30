@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>The carousel that rendered blank · AI automation</title>
+<title>Headless browser screenshot blank: wait for images to load</title>
 <meta name="description" content="A renderer started shipping carousels where the first card was blank. Blank-on-the-first-one is a tell. It almost always means a race condition." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/blog/blank-carousel-render.html" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
-<meta property="og:title" content="The carousel that rendered blank · AI automation" />
+<meta property="og:title" content="Headless browser screenshot blank: wait for images to load" />
 <meta property="og:description" content="A renderer started shipping carousels where the first card was blank. Blank-on-the-first-one is a tell. It almost always means a race condition." />
 <meta property="og:url" content="https://josephbankole.ca/blog/blank-carousel-render.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/blank-carousel-render.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-06-18T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-08-17T09:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:30:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="The carousel that rendered blank · AI automation" />
+<meta name="twitter:title" content="Headless browser screenshot blank: wait for images to load" />
 <meta name="twitter:description" content="A renderer started shipping carousels where the first card was blank. Blank-on-the-first-one is a tell. It almost always means a race condition." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/blank-carousel-render.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 234,
+      "wordCount": 238,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -69,7 +69,7 @@
         "@id": "https://josephbankole.ca/blog/blank-carousel-render.html"
       },
       "datePublished": "2026-06-18T09:00:00-04:00",
-      "dateModified": "2026-08-17T09:00:00-04:00",
+      "dateModified": "2026-09-30T15:30:00-04:00",
       "articleSection": "Payments and applied AI"
     },
     {
@@ -123,13 +123,13 @@
       <p>A renderer I run started shipping carousels where the first card's image was just... blank. Every other card was fine. Only the first.</p>
       <p>Blank-on-the-first-one is a tell. It almost always means a race: something is being captured before it is ready.</p>
 
-      <h2>What was happening</h2>
+      <h2>Why did the first card render blank?</h2>
       <p>The pipeline builds each slide in a headless browser, then screenshots it. The images on the cards load from a remote CDN. The screenshot was firing the instant the page reported "done," but "page loaded" and "every image finished downloading" are not the same event. The first card lost the race most often because it had the furthest to travel.</p>
 
-      <h3>The fix</h3>
+      <h2>The fix</h2>
       <p>The fix was one idea: do not screenshot until every image has actually finished. Wait for each one to reach a real loaded state, or to error, before capturing the frame. No model involved. No clever prompt. Just the oldest rule in automation, which is that you do not take the picture before the subject has arrived.</p>
 
-      <h3>The same bug, everywhere</h3>
+      <h2>The same bug, everywhere</h2>
       <p>Capture-before-load is the same bug as record-before-act and read-before-think. Different system, same lesson: finish step one before you start step two. Once you have seen it in one place you start catching it everywhere, including in AI workflows that report success a beat before the work is genuinely done.</p>
 
       <p class="dim">My pipeline's definition of "ready" was the page saying it had loaded. The images had their own opinion.</p>

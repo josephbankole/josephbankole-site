@@ -17,7 +17,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-06-17T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-09-30T15:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:30:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="The production AI bug that was the context window" />
@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 495,
+      "wordCount": 501,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -69,7 +69,7 @@
         "@id": "https://josephbankole.ca/blog/debugging-ai-context-window.html"
       },
       "datePublished": "2026-06-17T09:00:00-04:00",
-      "dateModified": "2026-09-30T15:00:00-04:00",
+      "dateModified": "2026-09-30T15:30:00-04:00",
       "articleSection": "Payments and applied AI"
     },
     {
@@ -123,12 +123,12 @@
       <p>I run a small fleet of automated AI agents. Content pipelines, analytics jobs, scheduled workflows. Recently two of them started failing the same way, and the root cause was something I do not see discussed enough: context-window exhaustion as a production failure mode.</p>
       <p>If you only ever build with AI in a chat window, this failure is invisible to you. It only shows up once a model is doing real, repeated work on a schedule, with files and tool outputs piling into its working memory. That is exactly where I found it.</p>
 
-      <h2>What was happening</h2>
+      <h2>Why did two scheduled agents fail the same way?</h2>
       <p>The first job force-loaded around 141KB of reference files before it did any actual work. A style guide, a performance log that kept growing, a few content banks. Then the tool outputs landed on top of that, and the agent's working memory overflowed mid-run. It compacted, re-read the same files, overflowed again. Three loops, then it gave up.</p>
       <p>The second job loaded a 25KB CSV, rewrote the whole file back at the end, and crashed in the gap between posting and recording that it had posted. That is the dangerous one. It left the system a single rerun away from publishing the same thing twice.</p>
       <p>Neither of these is an AI problem in the way people mean when they say "the model got confused." The model was fine. The system around the model was wasteful, and the waste had nowhere to go but the context budget.</p>
 
-      <h3>The fixes were classic ops, not AI magic</h3>
+      <h2>The fixes were classic ops, not AI magic</h2>
       <ol>
         <li><strong>Read slim.</strong> The 63KB style guide became a 3KB cheatsheet. The full document still exists, but it is reference-only now. The agent reads the short version to do its job.</li>
         <li><strong>Logs that grow must rotate.</strong> Anything over roughly 400 lines archives itself, and the jobs read the tail instead of the whole history.</li>
@@ -136,7 +136,7 @@
         <li><strong>Idempotency first.</strong> Post, then immediately record that you posted, with nothing in between, plus a duplicate guard that checks before it acts.</li>
       </ol>
 
-      <h3>Why this felt familiar</h3>
+      <h2>Why this felt familiar</h2>
       <p>Five years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
       <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over, which is exactly what mine did until the fixes above went in.</p>
 
