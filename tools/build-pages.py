@@ -77,6 +77,19 @@ Tenure gate, added warn-only 2026-09-30 and enforced the same day:
     stay warnings until archv-ai-desk aligns them.
   - sitemap.xml may not list a /recipes/ URL. The build drops any it finds.
 
+Answer links, added 2026-09-30 (review SEO-4, RB-5, ANS-9, ANS-14, RB-27):
+
+  - News editions, blog posts and answers pages get a generated "Related
+    answers" block ("More answers" on answers pages) in the article tail,
+    matched from the page's own prose against ANSWER_TERMS. Rows come from
+    the answers hub. The block carries data-generated="answers" and the class
+    answer-links, never "related", so the curated-row lifter cannot mistake it
+    for a human's picks. Recipes never get it.
+  - The homepage's section#answers keeps its hand-written heading; its rows
+    are rebuilt from the answers hub on every run (HOME_ANSWER_PICKS).
+  - A "What is X?" answers page with no DefinedTerm node gets one, so the
+    hub's DefinedTermSet covers every definitional page.
+
 Warnings go to stderr and never change the exit code of a normal run.
 """
 
@@ -759,6 +772,125 @@ def post_row(entry: dict, iso: str | None = None) -> str:
     )
 
 
+# ------------------------------------------------------------ answer links
+
+# Added 2026-09-30 (review 2026-09-26: SEO-4, RB-5, ANS-9). The answers pages
+# were islands: no news edition, blog post or homepage row linked a single
+# one. The news words belong to another desk, so the links are not written
+# into anyone's prose. The build reads each page's own prose (div.prose only,
+# never the tail, or the block would feed its own matching and the build would
+# stop being idempotent), matches it against this map and emits a short
+# "Related answers" block in the article tail. The rows are copied from the
+# answers hub, so no row copy lives here.
+#
+# Order is rank. A term matches on its own pattern, or, where a second
+# pattern is given, only when both fall in the same sentence ("stablecoin"
+# alone is in most editions; "stablecoin" beside "yield" is the interest
+# question). The last entry is a fallback, used only when the others leave
+# room. Two answers are left out on purpose: what-is-agentic-commerce would
+# match every page, and what-is-a-forward-deployed-engineer is a role page
+# the 2026-09-23 order keeps out of this kind of promotion.
+ANSWER_TERMS = [
+    ("what-is-x402", r"\bx402\b", None, 0),
+    ("what-is-mastercard-agent-pay", r"\bAgent Pay\b", None, 0),
+    ("what-is-know-your-agent", r"\bKYA\b|\bKnow Your Agent\b", None, 0),
+    ("what-is-universal-commerce-protocol", r"\bUCP\b|\bUniversal Commerce Protocol\b", None, 0),
+    ("acp-vs-ap2", r"\bAP2\b|\bACP\b|\bAgent Payments Protocol\b|\bAgentic Commerce Protocol\b", None, 0),
+    ("ai-agent-purchase-liability", r"\bliab(?:le|ility)\b|\bwrong thing\b|\bcarries the loss\b", None, re.I),
+    ("ai-agent-spending-limits", r"\bspend(?:ing)? (?:limit|cap)s?\b", None, re.I),
+    ("how-merchants-detect-ai-agents", r"\bWeb Bot Auth\b|\bTrusted Agent Protocol\b|\bbot detection\b", None, re.I),
+    ("do-stablecoins-pay-interest", r"\bstablecoins?\b", r"\b(?:yield|interest)\b", re.I),
+    # Amazon the shop, not Amazon Web Services: "Amazon Bedrock" and
+    # CloudFront stories are about selling to agents, not agents buying there.
+    ("can-ai-agents-shop-on-amazon", r"\bAmazon\b(?! (?:Bedrock|Web Services|Pay)\b)",
+     r"\b(?:Muse|Buy for Me|robots\.txt|[Bb]lock(?:s|ed|ing)?|[Ss]hop(?:s|ping)?|Amazon\.com|Rufus|Conditions of Use)\b", 0),
+]
+
+# Answer pages also carry fixed sibling links, first in their block, for pairs
+# the prose does not name but a reader of one needs the other (review ANS-9:
+# Mastercard Agent Pay and KYA never pointed at each other). Editorial, and
+# no new claim: each row is the hub's own title and dek.
+ANSWER_SIBLINGS = {
+    "what-is-agentic-commerce": ("ai-agent-spending-limits", "what-is-x402", "ai-agent-purchase-liability"),
+    "what-is-x402": ("why-do-ai-agents-use-stablecoins", "acp-vs-ap2"),
+    "why-do-ai-agents-use-stablecoins": ("do-stablecoins-pay-interest", "what-is-x402"),
+    "do-stablecoins-pay-interest": ("why-do-ai-agents-use-stablecoins",),
+    "what-is-mastercard-agent-pay": ("what-is-know-your-agent",),
+    "what-is-know-your-agent": ("what-is-mastercard-agent-pay", "how-merchants-detect-ai-agents"),
+    "how-merchants-detect-ai-agents": ("what-is-know-your-agent", "can-ai-agents-shop-on-amazon"),
+    "can-ai-agents-shop-on-amazon": ("how-merchants-detect-ai-agents",),
+    "acp-vs-ap2": ("what-is-universal-commerce-protocol", "ai-agent-purchase-liability"),
+    "what-is-universal-commerce-protocol": ("acp-vs-ap2",),
+    "ai-agent-purchase-liability": ("ai-agent-spending-limits", "acp-vs-ap2"),
+    "ai-agent-spending-limits": ("ai-agent-purchase-liability", "acp-vs-ap2"),
+}
+ANSWER_FALLBACK = ("why-do-ai-agents-use-stablecoins", r"\bstablecoins?\b", r"\bagents?\b", re.I)
+ANSWER_LINKS_MAX = 3
+ANSWER_HREF_RE = re.compile(r'href="(/answers/[a-z0-9-]+/)"')
+SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
+
+
+def answer_match_at(text: str, sentences: list[tuple[int, str]], term) -> int | None:
+    """Where in the text a term first matches, or None."""
+    _slug, first, second, flags = term
+    if second is None:
+        found = re.search(first, text, flags)
+        return found.start() if found else None
+    for offset, sentence in sentences:
+        found = re.search(first, sentence, flags)
+        if found and re.search(second, sentence, flags):
+            return offset + found.start()
+    return None
+
+
+def answer_links(prose: str, index_rows: dict, exclude: set[str], heading: str,
+                 first: tuple[str, ...] = ()) -> str:
+    """The generated answers block for one page, or "" when nothing matches.
+
+    `exclude` holds hrefs the page already links (and its own), so a row never
+    repeats a link the reader has just passed.
+    """
+    text = html.unescape(strip_tags(prose))
+    text = re.sub(r"\s+", " ", text)
+    sentences, offset = [], 0
+    for sentence in SENTENCE_SPLIT_RE.split(text):
+        start = text.find(sentence, offset)
+        sentences.append((start, sentence))
+        offset = start + len(sentence)
+    exclude = set(exclude) | set(ANSWER_HREF_RE.findall(prose))
+
+    def usable(slug):
+        href = "/answers/%s/" % slug
+        return href not in exclude and href in index_rows
+
+    hits = []
+    for term in ANSWER_TERMS:
+        if not usable(term[0]):
+            continue
+        at = answer_match_at(text, sentences, term)
+        if at is not None:
+            hits.append((at, term[0]))
+    picks = [slug for slug in first if usable(slug)]
+    for _at, slug in sorted(hits):
+        if slug not in picks:
+            picks.append(slug)
+    picks = picks[:ANSWER_LINKS_MAX]
+    if len(picks) < ANSWER_LINKS_MAX and usable(ANSWER_FALLBACK[0]) and ANSWER_FALLBACK[0] not in picks:
+        if answer_match_at(text, sentences, ANSWER_FALLBACK) is not None:
+            picks.append(ANSWER_FALLBACK[0])
+    if not picks:
+        return ""
+    rows = block_text("".join(post_row(index_rows["/answers/%s/" % slug]) for slug in picks))
+    return "\n".join([
+        '  <section class="answer-links" aria-labelledby="answers-h" data-generated="answers">',
+        '    <h2 id="answers-h">%s</h2>' % heading,
+        '    <div class="postlist">',
+        rows,
+        "    </div>",
+        "  </section>",
+    ])
+
+
 # ------------------------------------------------------------- news editions
 
 # D-2026-09-22c moved the news lane from daily to Tuesday and Friday. Editions
@@ -1028,6 +1160,18 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         parts.append("    </div>")
         parts.append("  </section>")
 
+    # ---- related answers, generated from the page's own prose (never recipes)
+    if kind in ("news", "blog", "answers") and ctx.get("answer_index"):
+        own = {"/answers/%s/" % path.parent.name} if kind == "answers" else set()
+        already = set(ANSWER_HREF_RE.findall(related_rows or ""))
+        block = answer_links(
+            prose, ctx["answer_index"], own | already,
+            "More answers" if kind == "answers" else "Related answers",
+            ANSWER_SIBLINGS.get(path.parent.name, ()) if kind == "answers" else (),
+        )
+        if block:
+            parts.append(block)
+
     if kind == "recipes":
         # Founder, 2026-09-23: "recipes are for me to have access to". Decision
         # 6 of the 2026-09-22 review is settled: a recipe ends on the hubs it
@@ -1076,13 +1220,21 @@ def normalise_jsonld(raw: str, kind: str, page: dict, head: dict,
                      crumb_label: str, crumb_href: str) -> str:
     """Tidy a lifted answers or recipes @graph without rebuilding it.
 
-    Three repairs, nothing else changes:
+    Four repairs, nothing else changes:
       - every bare author {"@id": ".../#person"} is written out in full;
       - recipeCategory comes off nodes typed Article (it is a Recipe property,
         and the pages without a photo are typed Article);
       - a graph with no BreadcrumbList gets one. The answers desk wrote
         what-is-mastercard-agent-pay with a FAQPage only, and this script
-        lifted answers JSON-LD verbatim, so nothing ever added it.
+        lifted answers JSON-LD verbatim, so nothing ever added it;
+      - a "What is X?" answers page with no DefinedTerm node gets one
+        (2026-09-30, review ANS-14 / RB-27). Only two of the six had one, so
+        the hub's DefinedTermSet listed two terms. The node is built from the
+        page's own h1 and standfirst: the name is the h1 less "What is" and
+        the question mark, a bracketed acronym becomes alternateName, and the
+        description is the standfirst's opening definition, one or two
+        sentences, stopping before the first sentence that carries a date so
+        dated news never lands in the schema. Hand-written nodes are kept.
     """
     try:
         data = json.loads(raw)
@@ -1119,7 +1271,47 @@ def normalise_jsonld(raw: str, kind: str, page: dict, head: dict,
                 ],
             }
         )
+    if (
+        isinstance(graph, list)
+        and kind == "answers"
+        and page["path"].parent.name.startswith("what-is-")
+        and not any(isinstance(node, dict) and node.get("@type") == "DefinedTerm" for node in graph)
+    ):
+        term = defined_term_node(head, page)
+        if term:
+            graph.insert(0, term)
     return json.dumps(data, indent=2, ensure_ascii=False).replace("</", "<\\/")
+
+
+DATED_SENTENCE_RE = re.compile(
+    r"\b(?:19|20)\d{2}\b|\b(?:%s)\b" % "|".join(MONTHS)
+)
+
+
+def defined_term_node(head: dict, page: dict) -> dict | None:
+    """A DefinedTerm for a "What is X?" answers page, from its h1 and standfirst."""
+    h1 = html.unescape(strip_tags(head.get("h1") or "")).strip()
+    found = re.match(r"^What is (?:(?:a|an|the) )?(.+?)\??$", h1, re.I)
+    standfirst = html.unescape(strip_tags(head.get("standfirst") or "")).strip()
+    if not found or not standfirst:
+        return None
+    name = found.group(1).strip()
+    node = {"@type": "DefinedTerm", "name": name}
+    acronym = re.match(r"^(.+?)\s*\(([A-Za-z0-9]+)\)$", name)
+    if acronym:
+        node["name"] = acronym.group(1).strip()
+        node["alternateName"] = acronym.group(2)
+    kept = []
+    for sentence in SENTENCE_SPLIT_RE.split(standfirst)[:2]:
+        if DATED_SENTENCE_RE.search(sentence):
+            break
+        kept.append(sentence)
+    if not kept:
+        return None
+    node["description"] = " ".join(kept)
+    node["inDefinedTermSet"] = "%s/answers/" % SITE
+    node["url"] = page["canonical"]
+    return node
 
 
 def indent(block: str, spaces: int) -> str:
@@ -1562,14 +1754,56 @@ def cap_teaser(src: str) -> str:
     return src[: section[1]] + region + src[section[2]:]
 
 
-def shell_pass(path: pathlib.Path, location: str, nav_root: str = "/") -> str:
+# The homepage answers teaser (2026-09-30, review SEO-4 / ANS-9). Its heading
+# is hand-written in index.html; its rows are rebuilt from the answers hub on
+# every run, so a retitled answer never goes stale on the homepage. These are
+# the picks, in order: the cornerstone definition, then the three answers the
+# news brief raises most. A pick missing from the hub is skipped and the gap
+# filled from the hub's own order, so the row count holds.
+HOME_ANSWER_PICKS = (
+    "/answers/what-is-agentic-commerce/",
+    "/answers/ai-agent-purchase-liability/",
+    "/answers/what-is-x402/",
+    "/answers/can-ai-agents-shop-on-amazon/",
+)
+HOME_ANSWER_SKIP = {"/answers/what-is-a-forward-deployed-engineer/"}
+
+
+def home_answers(src: str, index_rows: dict) -> str:
+    """Rebuild the rows of the homepage's answers teaser, if it has one."""
+    section = find_block(src, "section")
+    while section and 'id="answers"' not in src[section[0]:section[1]]:
+        section = find_block(src, "section", start=section[3])
+    if not section or not index_rows:
+        return src
+    region = src[section[1]:section[2]]
+    listing = find_block(region, "div", "postlist")
+    if not listing:
+        return src
+    picks = [href for href in HOME_ANSWER_PICKS if href in index_rows]
+    for href in index_rows:
+        if len(picks) >= len(HOME_ANSWER_PICKS):
+            break
+        if href not in picks and href not in HOME_ANSWER_SKIP:
+            picks.append(href)
+    rows = "".join(post_row(index_rows[href]) for href in picks)
+    # post_row indents for the article tail; the homepage sits two spaces out.
+    rows = "\n".join(line[2:] if line.startswith("  ") else line for line in rows.split("\n"))
+    region = region[: listing[1]] + "\n" + rows + "    " + region[listing[2]:]
+    return src[: section[1]] + region + src[section[2]:]
+
+
+def shell_pass(path: pathlib.Path, location: str, nav_root: str = "/",
+               answer_index: dict | None = None) -> str:
     """Swap the nav and footer on a bespoke page without touching its body.
 
-    The one exception is the homepage news teaser, which is capped.
+    Two exceptions, both on the homepage: the news teaser is capped, and the
+    answers teaser's rows are rebuilt from the answers hub.
     """
     src = path.read_text(encoding="utf-8")
     if path.name == "index.html" and path.parent == REPO:
         src = cap_teaser(src)
+        src = home_answers(src, answer_index or {})
 
     found = find_block(src, "nav", "nav")
     if found:
@@ -1818,6 +2052,7 @@ def build(check: bool, today: dt.date) -> int:
 
     editions = news_editions()
     by_href = {e["href"]: e for e in editions}
+    answer_index = read_index_rows(REPO / "answers" / "index.html")
 
     def row_for(edition):
         # Pager, "Latest from the desk" and 404 rows are built from the
@@ -1864,6 +2099,7 @@ def build(check: bool, today: dt.date) -> int:
                     "pager": pager,
                     "related_rows": rows,
                     "related_heading": "Latest from the desk",
+                    "answer_index": answer_index,
                     "today": today,
                 },
             ),
@@ -1915,6 +2151,7 @@ def build(check: bool, today: dt.date) -> int:
                     "related_heading": "Related",
                     "fallback_rows": fallback,
                     "fallback_heading": "Latest field notes",
+                    "answer_index": answer_index,
                     "today": today,
                 },
             ),
@@ -1931,6 +2168,7 @@ def build(check: bool, today: dt.date) -> int:
                     "crumb": ("Answers", "/answers/"),
                     "related_rows": None,
                     "related_heading": "Related",
+                    "answer_index": answer_index,
                     "today": today,
                 },
             ),
@@ -1976,7 +2214,7 @@ def build(check: bool, today: dt.date) -> int:
 
     # ---- prose page and bespoke pages
     emit(REPO / "privacy.html", render_doc(REPO / "privacy.html", "privacy"))
-    emit(REPO / "index.html", shell_pass(REPO / "index.html", "home", "" ))
+    emit(REPO / "index.html", shell_pass(REPO / "index.html", "home", "", answer_index))
     if (REPO / "404.html").exists():
         latest = block_text("".join(post_row(row_for(e), e["iso"]) for e in newest_first[:3]))
         emit(REPO / "404.html", render_404(REPO / "404.html", latest))
