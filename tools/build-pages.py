@@ -297,8 +297,11 @@ def head_block(page) -> str:
         '<link rel="preconnect" href="https://fonts.googleapis.com" />',
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />',
         '<link href="%s" rel="stylesheet" />' % FONTS,
-        '<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; news desk" href="/news-feed.xml" />',
-        '<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#8212; field notes" href="/feed.xml" />',
+        # Feed-discovery titles use the site's own title separator, the middle
+        # dot. They carried an em dash until 2026-09-30, entity-encoded, which
+        # is why a literal-character grep never found it.
+        '<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; news desk" href="/news-feed.xml" />',
+        '<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; field notes" href="/feed.xml" />',
         '<link rel="stylesheet" href="/assets/style.css" />',
     ]
     for extra in page.get("extra_css", []):
