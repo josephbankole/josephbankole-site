@@ -6,19 +6,26 @@ Built for the Perplexity-hosted "JB Site Desk" scheduled task (v1, Lane C only).
 Mirrors the SAFE / JUDGEMENT split from fifa.archv/routines-v2/josephbankole-site-desk.md
 STEP 3, scoped to what a deterministic script can do responsibly:
 
-SAFE (applied automatically):
+SAFE (applied automatically, and only to indexable pages; never to a page
+carrying robots noindex, such as recipes/, lab/ or the 404):
   - insert a missing <link rel="canonical"> using the page's known site-relative path
   - insert a missing <meta property="og:url"> using the same canonical URL
+  The noindex skip ends the loop where this script added og:url to 404.html
+  and build-pages.py (which owns the 404 since 2026-09-22) stripped it again.
 
-JUDGEMENT (reported only, never auto-applied):
-  - title length outside ~50-60 chars, or not unique across the site
+JUDGEMENT (reported only, never auto-applied). Lengths are counted as a reader
+sees them, entities decoded, against the site's two ceilings (there is no
+floor; a short title is not a defect):
+  - the whole <title>, " · Joseph Bankole" included, over 60 characters, or
+    not unique across the site
   - a word repeated back to back in a title ("Thai Thai Salad recipe")
-  - meta description length outside ~140-155 chars, or not unique
-  - news editions (read only): title over 60 chars before the site suffix,
-    meta description over 155. tools/build-pages.py --check enforces the same
-    caps as a gate on today's edition; this reports the back catalogue.
+  - meta description over 155 characters, not ending on a full sentence, or
+    not unique
+  - news editions (read only): the same caps. tools/build-pages.py --check
+    enforces them as a gate on today's edition; this reports the back catalogue.
   - missing alt text on <img>
-  - JSON-LD present but fails to parse, or missing datePublished/dateModified
+  - JSON-LD that fails to parse, or an Article, BlogPosting or NewsArticle node
+    (inside @graph too) missing datePublished or dateModified
   - internal links pointing at a path with no matching file in the repo
   - pages present on disk but absent from sitemap.xml (or vice versa).
     Pages carrying robots noindex (recipes/, the 404) are expected to be
@@ -33,7 +40,12 @@ llms.txt, or anything under news/ (that lane belongs to a different desk).
 Usage:
   python3 tools/seo_audit.py            # scan + apply safe fixes, print JSON report
   python3 tools/seo_audit.py --dry-run  # scan only, no writes
+  python3 tools/seo_audit.py --help     # this text; runs nothing
+
+Any argument it does not know stops it before it reads a page. A stray --help
+used to fall through to the live fix pass.
 """
+import argparse
 import html as htmllib
 import json
 import os
@@ -45,27 +57,49 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SITE_BASE = "https://josephbankole.ca"
 SKIP_DIRS = {".git", "tools", "node_modules", "news"}  # news/ prose is not ours
-DRY_RUN = "--dry-run" in sys.argv
+DRY_RUN = False  # set from the command line in __main__
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sitelib  # noqa: E402  (shared limits and the recipes-link reader)
+
+# Attribute values are read up to the SAME quote that opened them. The old
+# pattern let either quote close the value, so a description with an
+# apostrophe in it was read as the few words before the apostrophe.
 TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S | re.I)
-DESC_RE = re.compile(r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']', re.S | re.I)
-CANON_RE = re.compile(r'<link\s+rel=["\']canonical["\']\s+href=["\'](.*?)["\']', re.S | re.I)
-OGURL_RE = re.compile(r'<meta\s+property=["\']og:url["\']\s+content=["\'](.*?)["\']', re.S | re.I)
+DESC_RE = re.compile(r'<meta\s+name=(["\'])description\1\s+content=(["\'])(.*?)\2', re.S | re.I)
+CANON_RE = re.compile(r'<link\s+rel=(["\'])canonical\1\s+href=(["\'])(.*?)\2', re.S | re.I)
+OGURL_RE = re.compile(r'<meta\s+property=(["\'])og:url\1\s+content=(["\'])(.*?)\2', re.S | re.I)
 IMG_RE = re.compile(r"<img\b([^>]*)>", re.I)
 ALT_RE = re.compile(r'alt=["\'](.*?)["\']', re.I)
 JSONLD_RE = re.compile(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', re.S | re.I)
 HEAD_CLOSE_RE = re.compile(r"</head>", re.I)
 LINK_RE = re.compile(r'href=["\'](/[^"\'#?]*)', re.I)
-TITLE_SUFFIX_RE = re.compile(r"\s*(?:·|&middot;|&#183;|&#xB7;)\s*Joseph Bankole\s*$")
 REPEAT_RE = re.compile(r"\b(\w+)\s+\1\b", re.I)
-ROBOTS_RE = re.compile(r'<meta\s+name=["\']robots["\']\s+content=["\']([^"\']*)["\']', re.I)
-RECIPE_LINK_RE = re.compile(r'href=["\'](?:https?://(?:www\.)?josephbankole\.ca)?/recipes(?:[/"\'#?])', re.I)
-NEWS_TITLE_MAX = 60
-DESC_MAX = 155
+ROBOTS_RE = re.compile(r'<meta\s+name=(["\'])robots\1\s+content=(["\'])(.*?)\2', re.I)
+TITLE_MAX = sitelib.TITLE_MAX
+DESC_MAX = sitelib.DESC_MAX
+DATED_TYPES = {"Article", "BlogPosting", "NewsArticle"}
 
 
 def visible(value: str) -> str:
     return htmllib.unescape(re.sub(r"<[^>]+>", "", value)).strip()
+
+
+def ld_nodes(data):
+    """Every JSON-LD node, walking lists and @graph, so no BlogPosting hides."""
+    if isinstance(data, list):
+        for item in data:
+            yield from ld_nodes(item)
+    elif isinstance(data, dict):
+        if "@graph" in data:
+            yield from ld_nodes(data["@graph"])
+        else:
+            yield data
+
+
+def node_types(node: dict) -> set:
+    kind = node.get("@type")
+    return set(kind) if isinstance(kind, list) else {kind}
 
 
 def news_lengths(findings: list) -> None:
@@ -76,13 +110,15 @@ def news_lengths(findings: list) -> None:
         rel = str(page.relative_to(REPO_ROOT))
         src = page.read_text(encoding="utf-8")
         m = TITLE_RE.search(src)
-        title = visible(TITLE_SUFFIX_RE.sub("", m.group(1))) if m else ""
-        if len(title) > NEWS_TITLE_MAX:
-            findings.append(f"{rel}: news title {len(title)} chars before the suffix (max {NEWS_TITLE_MAX})")
+        title = visible(m.group(1)) if m else ""
+        if len(title) > TITLE_MAX:
+            findings.append(f"{rel}: news title {len(title)} chars incl. suffix (max {TITLE_MAX})")
         m = DESC_RE.search(src)
-        desc = visible(m.group(1)) if m else ""
+        desc = visible(m.group(3)) if m else ""
         if len(desc) > DESC_MAX:
             findings.append(f"{rel}: news meta description {len(desc)} chars (max {DESC_MAX})")
+        elif desc and not sitelib.ends_full_sentence(desc):
+            findings.append(f"{rel}: news meta description does not end on a full sentence")
 
 
 def site_pages():
@@ -92,7 +128,7 @@ def site_pages():
         if rel_dir.parts and rel_dir.parts[0] in SKIP_DIRS:
             continue
         for fn in filenames:
-            if fn == "index.html" or (fn.endswith(".html") and "index" not in filenames):
+            if fn.endswith(".html"):
                 yield Path(dirpath) / fn
 
 
@@ -147,27 +183,31 @@ def main():
         canonical_url = SITE_BASE + url_path_for(page)
 
         robots = ROBOTS_RE.search(html)
-        noindex = bool(robots and "noindex" in robots.group(1).lower())
+        noindex = bool(robots and "noindex" in robots.group(3).lower())
         if noindex:
             noindex_paths.add(url_path_for(page))
+        # SAFE fixes are for indexable pages only. The 404 is named as well in
+        # case its robots tag is ever dropped: build-pages.py owns that page.
+        skip_safe = noindex or rel == "404.html"
 
         # --- recipes are reachable only from inside recipes/ ---
-        if not rel.startswith("recipes" + os.sep) and rel != "recipes":
-            hits = RECIPE_LINK_RE.findall(html)
+        rel_posix = Path(rel).as_posix()
+        if not rel_posix.startswith("recipes/") and rel_posix != "recipes":
+            hits = sitelib.recipe_links(rel_posix, html)
             if hits:
                 report["judgement_findings"].append(f"{rel}: {len(hits)} link(s) into /recipes/")
 
         # --- title ---
         m = TITLE_RE.search(html)
-        title = m.group(1).strip() if m else None
+        title = visible(m.group(1)) if m else None
         if not title:
             report["judgement_findings"].append(f"{rel}: missing <title>")
         elif noindex:
             pass  # out of search: snippet length and uniqueness do not apply
         else:
-            if not (50 <= len(title) <= 60):
+            if len(title) > TITLE_MAX:
                 report["judgement_findings"].append(
-                    f"{rel}: title length {len(title)} chars (target 50-60): \"{title}\""
+                    f"{rel}: title {len(title)} chars incl. suffix (max {TITLE_MAX}): \"{title}\""
                 )
             titles.setdefault(title, []).append(rel)
             repeat = REPEAT_RE.search(visible(title))
@@ -178,21 +218,25 @@ def main():
 
         # --- meta description ---
         m = DESC_RE.search(html)
-        desc = m.group(1).strip() if m else None
+        desc = visible(m.group(3)) if m else None
         if noindex:
             pass
         elif not desc:
             report["judgement_findings"].append(f"{rel}: missing meta description")
         else:
-            if not (140 <= len(desc) <= DESC_MAX):
+            if len(desc) > DESC_MAX:
                 report["judgement_findings"].append(
-                    f"{rel}: meta description length {len(desc)} chars (target 140-{DESC_MAX})"
+                    f"{rel}: meta description {len(desc)} chars (max {DESC_MAX})"
+                )
+            elif not sitelib.ends_full_sentence(desc):
+                report["judgement_findings"].append(
+                    f"{rel}: meta description does not end on a full sentence"
                 )
             descs.setdefault(desc, []).append(rel)
 
         # --- canonical (SAFE fix if missing) ---
         m = CANON_RE.search(html)
-        if not m:
+        if not m and not skip_safe:
             if DRY_RUN:
                 report["judgement_findings"].append(f"{rel}: missing canonical (would insert {canonical_url})")
             else:
@@ -205,7 +249,7 @@ def main():
 
         # --- og:url (SAFE fix if missing) ---
         m = OGURL_RE.search(html)
-        if not m:
+        if not m and not skip_safe:
             if DRY_RUN:
                 report["judgement_findings"].append(f"{rel}: missing og:url (would insert {canonical_url})")
             else:
@@ -228,9 +272,10 @@ def main():
             except json.JSONDecodeError as e:
                 report["judgement_findings"].append(f"{rel}: JSON-LD parse error ({e})")
                 continue
-            items = data if isinstance(data, list) else [data]
-            for item in items:
-                if isinstance(item, dict) and item.get("@type") in ("Article", "BlogPosting", "FAQPage"):
+            # FAQPage carries no dates by design, so only the article types
+            # are asked for them.
+            for item in ld_nodes(data):
+                if node_types(item) & DATED_TYPES:
                     if not item.get("datePublished"):
                         report["judgement_findings"].append(f"{rel}: JSON-LD missing datePublished")
                     if not item.get("dateModified"):
@@ -280,4 +325,9 @@ def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument("--dry-run", action="store_true", help="scan only, write nothing")
+    DRY_RUN = parser.parse_args().dry_run
     main()
