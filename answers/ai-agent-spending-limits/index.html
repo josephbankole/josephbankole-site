@@ -16,8 +16,8 @@
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="article:published_time" content="2026-09-08T17:30:00-04:00" />
-<meta property="article:modified_time" content="2026-09-12T15:13:00-04:00" />
+<meta property="article:published_time" content="2026-09-08T17:12:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:35:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="How do you set spending limits for an AI agent?" />
@@ -39,15 +39,15 @@
   "@graph": [
     {
       "@type": "FAQPage",
-      "datePublished": "2026-09-08T17:30:00-04:00",
-      "dateModified": "2026-09-12T15:13:00-04:00",
+      "datePublished": "2026-09-08T17:12:00-04:00",
+      "dateModified": "2026-09-30T15:35:00-04:00",
       "mainEntity": [
         {
           "@type": "Question",
           "name": "How do you set spending limits for an AI agent?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Five layers can hold one, and they are not equal. A number in the prompt is a suggestion, because nothing other than the model checks it. A check inside the agent's own code is real enforcement that holds until the first route to the payment API that skips it. A signed mandate, which is what AP2 calls an Intent Mandate, is verified by the merchant and the payment network rather than by the agent. A network token puts the cap in the credential itself, so the card network declines anything outside it. Underneath all of that the payment rail sets its own ceiling: UPI Circle caps a delegated spender at 5,000 rupees per transaction and 15,000 rupees a month.",
+            "text": "Five layers can hold one, and they are not equal. A number in the prompt is a suggestion, because nothing other than the model checks it. A check inside the agent's own code is real enforcement that holds until the first route to the payment API that skips it. A signed mandate, the record a user signs under AP2 to authorise an agent, is verified by the merchant and the payment network rather than by the agent. A network token puts the cap in the credential itself, so the card network declines anything outside it. Underneath all of that the payment rail sets its own ceiling: UPI Circle caps a delegated spender at 5,000 rupees per transaction and 15,000 rupees a month.",
             "author": {
               "@type": "Person",
               "name": "Joseph Bankole",
@@ -72,10 +72,10 @@
         },
         {
           "@type": "Question",
-          "name": "What does an AP2 Intent Mandate constrain?",
+          "name": "What does a signed mandate constrain?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Google published the Agent Payments Protocol on 16 September 2025 with more than sixty payments and technology partners. For a delegated task the user signs an Intent Mandate up front, which Google says specifies price limits, timing and other conditions, its worked example being a trip booking with a total budget of 700 dollars. A Cart Mandate later pins the specific items at the specific price. What this adds over in-agent code is a check performed by the merchant and the network rather than by the agent. Its scope is one delegated task, not a budget across every agent you run.",
+            "text": "Google published the Agent Payments Protocol on 16 September 2025 with more than sixty payments and technology partners. Its launch post called the up-front mandate an Intent Mandate, specifying price limits, timing and other conditions, with a Cart Mandate pinning the items at the price. Version 0.2, released in April 2026, defines a Checkout Mandate and a Payment Mandate instead: in the human-not-present case the user approves open mandates carrying the constraints in advance, and the agent signs closed ones for the exact basket. What this adds over in-agent code is a check performed by the merchant and the network rather than by the agent. Its scope is one delegated task, not a budget across every agent you run.",
             "author": {
               "@type": "Person",
               "name": "Joseph Bankole",
@@ -157,8 +157,8 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
     <span class="index">Answers</span>
     <h1>How do you set spending limits for an AI agent?</h1>
-    <p class="standfirst">A spending limit is only real where something other than the agent enforces it. Five layers can hold one, and they are not equal. A number in the prompt is a suggestion. A check inside the agent's own code holds until the first code path that skips it. A signed mandate, which is what AP2 calls an Intent Mandate, binds the agent to a price ceiling and an expiry that the merchant and the network can verify for themselves. A network token puts the cap in the credential, so the card network declines anything outside it. Underneath all of that, the payment rail has its own ceiling: UPI Circle caps a delegate at 5,000 rupees a payment whatever you agreed above it.</p>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-12">Updated 12 September 2026</time><span>5 min read</span></p>
+    <p class="standfirst">A spending limit is only real where something other than the agent enforces it. Five layers can hold one, and they are not equal. A number in the prompt is a suggestion. A check inside the agent's own code holds until the first code path that skips it. A signed mandate, the record a user signs under AP2 to authorise an agent, binds the agent to limits such as a price ceiling that the merchant and the network can verify for themselves. A network token puts the cap in the credential, so the card network declines anything outside it. Underneath all of that, the payment rail has its own ceiling: UPI Circle caps a delegate at 5,000 rupees a payment whatever you agreed above it.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-30">Updated 30 September 2026</time><span>6 min read</span></p>
   </header>
 
   <div class="article-body wrap">
@@ -180,9 +180,9 @@
 
       <h2>What does a signed mandate constrain?</h2>
       <p>Google published the Agent Payments Protocol on 16 September 2025 with more than sixty payments and technology partners behind it (<a class="inline-link" href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" target="_blank" rel="noopener">Google Cloud</a>, <a class="inline-link" href="https://www.cmswire.com/digital-experience/google-pushes-standards-for-agentic-ai-commerce-with-ap2/" target="_blank" rel="noopener">CMSWire</a>). Its answer to the authority problem is the mandate, a cryptographically signed record of what the user agreed to, which travels with the transaction.</p>
-      <p>For a delegated task the user signs an Intent Mandate up front. Google's own description says it specifies "price limits, timing, and other conditions", and its worked example is a trip booking with a total budget of 700 dollars. When the agent later assembles a basket, a Cart Mandate pins those items at that price, so the merchant sees a signed approval of an exact amount rather than an agent's account of its own authority.</p>
+      <p>At launch Google called the up-front version an Intent Mandate. Its description said it specifies "price limits, timing, and other conditions", the worked example was a trip booking with a total budget of 700 dollars, and a Cart Mandate then pinned the chosen items at that price (<a class="inline-link" href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" target="_blank" rel="noopener">Google Cloud</a>). Version 0.2, which Google released in April 2026 (<a class="inline-link" href="https://blog.google/products-and-platforms/platforms/google-pay/agent-payments-protocol-fido-alliance/" target="_blank" rel="noopener">Google</a>), uses different names. The specification now defines a Checkout Mandate and a Payment Mandate. In the human-not-present case the user approves open mandates carrying the constraints in advance, and the agent signs closed ones for the exact basket, which a verifier checks against those constraints (<a class="inline-link" href="https://ap2-protocol.org/ap2/specification/" target="_blank" rel="noopener">the AP2 specification</a>, <a class="inline-link" href="https://pith.science/paper/2608.23858" target="_blank" rel="noopener">Pith</a>). Either way the merchant sees a signed approval of an exact amount rather than an agent's account of its own authority.</p>
       <p>What a mandate adds over in-agent code is a check performed by somebody else. The merchant and the payment network can each verify the signature and test the cart against the constraints without taking the agent's word for anything. The limit becomes evidence.</p>
-      <p>Its scope is narrow. A mandate covers one delegated task, which is not the same thing as a monthly budget across every agent you run (<a class="inline-link" href="/answers/what-is-agentic-commerce/">how AP2 differs from ACP</a>).</p>
+      <p>Its scope is narrow. A mandate covers one delegated task, which is not the same thing as a monthly budget across every agent you run (<a class="inline-link" href="/answers/acp-vs-ap2/">how AP2 differs from ACP</a>).</p>
 
       <h2>What can the payment credential enforce?</h2>
       <p>At this layer the limit stops depending on protocol adoption. It depends on the card network, which declines transactions for a living.</p>
