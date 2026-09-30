@@ -748,7 +748,7 @@ Rules:
       <p class="dim">The nine units are still live, and the check that would have caught them has not been written.</p>]]></content:encoded>
   </item>
   <item>
-    <title>Automated audits fail toward false positives</title>
+    <title>Automated audits fail towards false positives</title>
     <link>https://josephbankole.ca/blog/audit-false-positives.html</link>
     <guid>https://josephbankole.ca/blog/audit-false-positives.html</guid>
     <pubDate>Wed, 19 Aug 2026 13:00:00 GMT</pubDate>
@@ -763,8 +763,8 @@ Rules:
       <p><strong>A check reading the wrong element.</strong> The answer-first extractor pulled the first 60 words out of <code>div.prose</code> and reported that both answer pages opened on a subheading instead of an answer. On that template the answer sits in <code>p.standfirst</code>, above <code>.prose</code>. Both pages were already correct, and the recommendation would have sent me to rewrite two pages that needed nothing.</p>
       <p><strong>A flag that does not exist on this platform.</strong> <code>sed 's|&lt;/\?loc&gt;||g'</code> silently does nothing under BSD sed, which has no <code>\?</code> in basic regular expressions. The sitemap crawl returned 000 on all 65 URLs and looked exactly like a total outage.</p>
 
-      <h3>They all failed toward more work</h3>
-      <p>Not one of these ever said a broken page was fine. They said fine pages were broken, sixteen at a time, and two of them were one approval away from producing a commit that edited correct pages into worse ones. A check with a bug does not fail evenly in both directions. It fails toward more work, because the code path that raises a finding is the one carrying the assumption, and the code path that stays quiet is usually just an early return.</p>
+      <h3>They all failed towards more work</h3>
+      <p>Not one of these ever said a broken page was fine. They said fine pages were broken, sixteen at a time, and two of them were one approval away from producing a commit that edited correct pages into worse ones. A check with a bug does not fail evenly in both directions. It fails towards more work, because the code path that raises a finding is the one carrying the assumption, and the code path that stays quiet is usually just an early return.</p>
       <p>A person reading that report over coffee glances at an implausible line and moves on. An agent reading the same output opens the file and fixes it, because fixing things is the job I gave it.</p>
 
       <h3>What actually catches them</h3>
@@ -826,7 +826,7 @@ Rules:
       <p>Five years in payment operations taught me these exact patterns under different names. Batch windows. Replay protection. Reconciliation. A failed batch is one problem shared by thousands of payments; an overflowing agent is one constraint shared by every step it tries to take. The discipline transfers cleanly.</p>
       <p>Running AI agents in production turns out to be operations work with a new constraint budget. The context window is just another finite resource you have to respect, the way you respect a settlement cutoff or a memory limit. Treat it as free and the whole thing falls over, which is exactly what mine did until the fixes above went in.</p>
 
-      <p class="dim">The style guide is 3KB now, the logs rotate, and the CSV never enters the model's memory. Failure write-ups like this are the artifact almost nobody keeps, and the one I always want to read.</p>]]></content:encoded>
+      <p class="dim">The style guide is 3KB now, the logs rotate, and the CSV never enters the model's memory. Failure write-ups like this are the artefact almost nobody keeps, and the one I always want to read.</p>]]></content:encoded>
   </item>
   <item>
     <title>What actually happens when a payment batch fails</title>
@@ -871,7 +871,7 @@ Rules:
       <p>A scheduled job will get re-run. That is not a maybe. If "did I already do this?" is not built in, you publish twice. So every action that touches the outside world records itself the instant it happens, with a guard that checks before it acts.</p>
 
       <h3>Evals as a log, not a vibe</h3>
-      <p>I keep a performance log per post, so the system breeds toward what actually works instead of what feels good. The numbers are blunt, and they have already overturned a few of my own assumptions about what would land. A log you actually read is worth more than a dashboard you do not.</p>
+      <p>I keep a performance log per post, so the system breeds towards what actually works instead of what feels good. The numbers are blunt, and they have already overturned a few of my own assumptions about what would land. A log you actually read is worth more than a dashboard you do not.</p>
 
       <h3>What nearly killed it</h3>
       <p>The thing that nearly killed it was not the AI. It was treating reference files and logs as free to load. They are not. They eat the context budget until a run cannot think. Fixing that was operations, not prompting.</p>

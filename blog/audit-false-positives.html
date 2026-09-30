@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Automated audits fail toward false positives</title>
+<title>Automated audits fail towards false positives</title>
 <meta name="description" content="Five checks in my own site audit failed in five runs. Each was confidently wrong and invented work. These are the tells that catch them." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/blog/audit-false-positives.html" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
-<meta property="og:title" content="Automated audits fail toward false positives" />
+<meta property="og:title" content="Automated audits fail towards false positives" />
 <meta property="og:description" content="Five checks in my own site audit failed in five runs. Each was confidently wrong and invented work. These are the tells that catch them." />
 <meta property="og:url" content="https://josephbankole.ca/blog/audit-false-positives.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-08-19T09:00:00-04:00" />
-<meta property="article:modified_time" content="2026-08-19T15:00:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:00:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Automated audits fail toward false positives" />
+<meta name="twitter:title" content="Automated audits fail towards false positives" />
 <meta name="twitter:description" content="Five checks in my own site audit failed in five runs. Each was confidently wrong and invented work. These are the tells that catch them." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
@@ -69,7 +69,7 @@
         "@id": "https://josephbankole.ca/blog/audit-false-positives.html"
       },
       "datePublished": "2026-08-19T09:00:00-04:00",
-      "dateModified": "2026-08-19T15:00:00-04:00",
+      "dateModified": "2026-09-30T15:00:00-04:00",
       "articleSection": "Payments and applied AI"
     },
     {
@@ -130,8 +130,8 @@
       <p><strong>A check reading the wrong element.</strong> The answer-first extractor pulled the first 60 words out of <code>div.prose</code> and reported that both answer pages opened on a subheading instead of an answer. On that template the answer sits in <code>p.standfirst</code>, above <code>.prose</code>. Both pages were already correct, and the recommendation would have sent me to rewrite two pages that needed nothing.</p>
       <p><strong>A flag that does not exist on this platform.</strong> <code>sed 's|&lt;/\?loc&gt;||g'</code> silently does nothing under BSD sed, which has no <code>\?</code> in basic regular expressions. The sitemap crawl returned 000 on all 65 URLs and looked exactly like a total outage.</p>
 
-      <h3>They all failed toward more work</h3>
-      <p>Not one of these ever said a broken page was fine. They said fine pages were broken, sixteen at a time, and two of them were one approval away from producing a commit that edited correct pages into worse ones. A check with a bug does not fail evenly in both directions. It fails toward more work, because the code path that raises a finding is the one carrying the assumption, and the code path that stays quiet is usually just an early return.</p>
+      <h3>They all failed towards more work</h3>
+      <p>Not one of these ever said a broken page was fine. They said fine pages were broken, sixteen at a time, and two of them were one approval away from producing a commit that edited correct pages into worse ones. A check with a bug does not fail evenly in both directions. It fails towards more work, because the code path that raises a finding is the one carrying the assumption, and the code path that stays quiet is usually just an early return.</p>
       <p>A person reading that report over coffee glances at an implausible line and moves on. An agent reading the same output opens the file and fixes it, because fixing things is the job I gave it.</p>
 
       <h3>What actually catches them</h3>
