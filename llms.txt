@@ -7,15 +7,22 @@
 - [Home](https://josephbankole.ca/): who he is, what he builds, and his newsletter.
 - [Field notes](https://josephbankole.ca/blog/): essays on building with AI agents in production.
 - [The BS Guide](https://josephbankole.ca/blog/the-bs-guide.html): a five-step guide to setting Claude up to handle the boring parts of a day job, with a copy-paste handover template.
-- [AI news desk](https://josephbankole.ca/news/): a daily sourced brief on agentic commerce and payments.
+- [AI news desk](https://josephbankole.ca/news/): a sourced brief on agentic commerce and payments.
 - [Answers](https://josephbankole.ca/answers/): short, direct definitions, starting with [what a forward-deployed engineer is](https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/) [what agentic commerce is](https://josephbankole.ca/answers/what-is-agentic-commerce/) [how ACP and AP2 differ](https://josephbankole.ca/answers/acp-vs-ap2/) [what x402 is](https://josephbankole.ca/answers/what-is-x402/) [who is liable when an AI agent buys the wrong thing](https://josephbankole.ca/answers/ai-agent-purchase-liability/) [why AI agents use stablecoins](https://josephbankole.ca/answers/why-do-ai-agents-use-stablecoins/) [whether stablecoins pay interest](https://josephbankole.ca/answers/do-stablecoins-pay-interest/) [how merchants detect AI agents](https://josephbankole.ca/answers/how-merchants-detect-ai-agents/) [how to set spending limits for an AI agent](https://josephbankole.ca/answers/ai-agent-spending-limits/) [what Know Your Agent (KYA) is](https://josephbankole.ca/answers/what-is-know-your-agent/) [what the Universal Commerce Protocol (UCP) is](https://josephbankole.ca/answers/what-is-universal-commerce-protocol/) [what Mastercard Agent Pay is](https://josephbankole.ca/answers/what-is-mastercard-agent-pay/) and [whether AI agents can shop on Amazon](https://josephbankole.ca/answers/can-ai-agents-shop-on-amazon/).
 - [RSS](https://josephbankole.ca/feed.xml): the blog feed.
-- [News RSS](https://josephbankole.ca/news-feed.xml): the daily news-desk feed.
+- [News RSS](https://josephbankole.ca/news-feed.xml): the news-desk feed.
 - [The ARCHV AI newsletter](https://archvai.substack.com/?utm_source=josephbankole.ca&utm_medium=llms-txt): his newsletter on Substack, out Monday, Wednesday and Friday. Plain-English reads on the companies building AI data centres, where their power and cooling come from, and what has actually been built, with some issues on model and agent news.
+
+## Key essays
+
+- [Read the feed terms before you build a news aggregator](https://josephbankole.ca/blog/rss-feed-terms-news-aggregator.html): the RSS terms of more than 50 sports publishers, read before a news aggregator launched; only ESPN's plainly allowed display on another site.
+- [Web search summary dropped 3 names and cited a dead URL](https://josephbankole.ca/blog/a-search-summary-is-not-a-source.html): a search summary that dropped three names from a seventeen-member list, invented a table and returned a 404, and what to fetch before citing.
+- [An agent's retraction is no more evidence than its report](https://josephbankole.ca/blog/agent-retraction-is-not-evidence.html): a verification agent said it had invented its sources, and a check of each published claim found every one true.
+- [The production AI bug that was the context window](https://josephbankole.ca/blog/debugging-ai-context-window.html): two agents that failed the same way from context-window exhaustion, and the ordinary operations fixes.
 
 ## Projects
 
-- [The ARCHV](https://thearchv.ca): an illustrated football publication with a daily verified desk and an [iOS app on the App Store](https://apps.apple.com/ca/app/the-archv/id6786508653).
+- [The ARCHV](https://thearchv.ca): an illustrated sports-history publication covering football, NFL, F1, tennis, golf and basketball, with an [iOS app on the App Store](https://apps.apple.com/ca/app/the-archv/id6786508653).
 
 ## Citation
 
