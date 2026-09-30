@@ -59,6 +59,14 @@ are only a fallback. Recipes keep the 09:00 stamp. A blog or answers page
 whose dateModified is earlier than its datePublished fails --check; on news
 it is a warning.
 
+Gates added 2026-09-30:
+
+  - Every indexable page this script writes is listed in sitemap.xml, and a
+    page's lastmod matches the day of its JSON-LD dateModified.
+  - feed.xml and news-feed.xml match what build-blog-feed.py and
+    build-news-feed.py would write. Run the feed builder after any edit to a
+    blog page or news edition, then --check.
+
 Warn-only check added 2026-09-30, to become a gate:
 
   - "ten years" (not "ten years ago") must be followed within 90 characters
@@ -74,6 +82,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import html
+import importlib.util
 import json
 import pathlib
 import re
@@ -1709,6 +1718,64 @@ def gate_site(outputs: dict[str, str]) -> None:
         sitemap = (REPO / "sitemap.xml").read_text(encoding="utf-8")
     if sitemap and re.search(r"<loc>https?://(?:www\.)?josephbankole\.ca/recipes", sitemap):
         GATE_FAILURES.append("sitemap.xml: lists a /recipes/ URL")
+    if sitemap:
+        gate_sitemap_parity(outputs, sitemap)
+
+
+SITEMAP_ROW_RE = re.compile(
+    r"<loc>\s*([^<\s]+)\s*</loc>\s*(?:<lastmod>\s*([^<\s]+)\s*</lastmod>)?"
+)
+
+
+def gate_sitemap_parity(outputs: dict[str, str], sitemap: str) -> None:
+    """Every indexable page is in sitemap.xml, with lastmod on its dateModified day.
+
+    Nothing generates the sitemap: both desks edit it by hand, and on
+    2026-09-23 a page's dateModified moved while its lastmod stayed put until
+    someone spotted it by eye. Pages carrying noindex (recipes/, the 404) and
+    lab/ are skipped. Pages with no dateModified (hubs, the homepage, privacy)
+    are checked for coverage only.
+    """
+    listed = {loc: lastmod for loc, lastmod in SITEMAP_ROW_RE.findall(sitemap)}
+    for rel, text in sorted(outputs.items()):
+        if not rel.endswith(".html") or in_recipes(rel) or rel.startswith("lab/") or rel == "404.html":
+            continue
+        robots = meta_content(text, "name", "robots") or ""
+        if "noindex" in robots.lower():
+            continue
+        canonical = link_href(text, "canonical")
+        if not canonical or canonical not in listed:
+            GATE_FAILURES.append("sitemap.xml: missing %s (%s)" % (canonical or "<no canonical>", rel))
+            continue
+        modified = existing_modified(text)
+        lastmod = listed[canonical]
+        if modified and (lastmod or "")[:10] != modified[:10]:
+            GATE_FAILURES.append(
+                "sitemap.xml: lastmod %s for %s, page dateModified %s"
+                % (lastmod or "(none)", canonical, modified[:10])
+            )
+
+
+FEED_BUILDERS = (
+    ("build-blog-feed.py", "feed.xml", "site desk"),
+    ("build-news-feed.py", "news-feed.xml", "archv-ai-desk"),
+)
+
+
+def gate_feeds() -> None:
+    """Both feeds match what their builders would write from the pages on disk.
+
+    Each feed carries its pages' full prose, so a page edit without a feed
+    rebuild left the feed stale while --check stayed green. Run after the
+    pages are written, so a normal build judges the pages it just wrote.
+    """
+    for script, feed, owner in FEED_BUILDERS:
+        path = REPO / "tools" / script
+        spec = importlib.util.spec_from_file_location(script.replace("-", "_")[:-3], path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        if module.is_stale():
+            GATE_FAILURES.append("%s is stale: run python3 tools/%s (%s)" % (feed, script, owner))
 
 
 def build(check: bool, today: dt.date) -> int:
@@ -1904,6 +1971,7 @@ def build(check: bool, today: dt.date) -> int:
         emit(sitemap_path, pruned)
 
     gate_site(outputs)
+    gate_feeds()
 
     print(("would rewrite " if check else "rewrote ") + "%d page(s)" % len(changed))
     for name in changed:

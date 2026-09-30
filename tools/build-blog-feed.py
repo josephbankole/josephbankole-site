@@ -22,9 +22,13 @@ from the clock, so running it twice produces byte-identical output.
 
 Run it after adding an essay, from the repo root:
 
-    python3 tools/build-blog-feed.py
+    python3 tools/build-blog-feed.py          # rewrite feed.xml
+    python3 tools/build-blog-feed.py --check  # exit 1 if feed.xml is stale
 
-It rewrites feed.xml in place and prints the item count.
+It rewrites feed.xml in place and prints the item count. Since 2026-09-30
+content:encoded carries the full prose, so any edit to a blog page, not only a
+new essay, can leave the feed stale; build-pages.py --check now fails when it
+is.
 """
 
 from __future__ import annotations
@@ -126,7 +130,8 @@ def channel_description() -> str:
     return unescape(match.group(1))
 
 
-def build() -> int:
+def render() -> tuple[str, int]:
+    """The feed as it should be on disk, and its item count. Writes nothing."""
     posts = []
     for path in sorted(BLOG_DIR.glob("*.html")):
         if path.name == "index.html":
@@ -164,10 +169,34 @@ def build() -> int:
         lines.append("  </item>")
     lines += ["</channel>", "</rss>", ""]
 
-    FEED_PATH.write_text("\n".join(lines), encoding="utf-8")
-    return len(posts)
+    return "\n".join(lines), len(posts)
+
+
+def build() -> int:
+    text, count = render()
+    FEED_PATH.write_text(text, encoding="utf-8")
+    return count
+
+
+def is_stale() -> bool:
+    """True when feed.xml on disk differs from what render() would write."""
+    current = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
+    return render()[0] != current
 
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument(
+        "--check", action="store_true",
+        help="exit 1 if feed.xml is stale, without writing it",
+    )
+    if parser.parse_args().check:
+        if is_stale():
+            print("feed.xml is stale: run python3 tools/build-blog-feed.py", file=sys.stderr)
+            sys.exit(1)
+        print("feed.xml is current")
+        sys.exit(0)
     count = build()
     print(f"feed.xml rebuilt: {count} posts")

@@ -11,9 +11,11 @@ drift from what is published.
 Run it after adding an edition, and after tools/build-pages.py, from the repo
 root:
 
-    python3 tools/build-news-feed.py
+    python3 tools/build-news-feed.py          # rewrite news-feed.xml
+    python3 tools/build-news-feed.py --check  # exit 1 if news-feed.xml is stale
 
-It rewrites news-feed.xml in place and prints the item count.
+It rewrites news-feed.xml in place and prints the item count. build-pages.py
+--check fails when news-feed.xml is stale (since 2026-09-30).
 
 Two fixes from the 2026-09-22 review:
   - pubDate is the page's own article:published_time converted to GMT. It used
@@ -114,7 +116,8 @@ def rfc822(moment: dt.datetime) -> str:
     return sitelib.rfc822(moment)
 
 
-def build() -> int:
+def render() -> tuple[str, int]:
+    """The feed as it should be on disk, and its item count. Writes nothing."""
     editions = []
     for path in sorted(NEWS_DIR.glob("*.html")):
         edition = read_edition(path)
@@ -151,10 +154,34 @@ def build() -> int:
         lines.append("  </item>")
     lines += ["</channel>", "</rss>", ""]
 
-    FEED_PATH.write_text("\n".join(lines), encoding="utf-8")
-    return len(editions)
+    return "\n".join(lines), len(editions)
+
+
+def build() -> int:
+    text, count = render()
+    FEED_PATH.write_text(text, encoding="utf-8")
+    return count
+
+
+def is_stale() -> bool:
+    """True when news-feed.xml on disk differs from what render() would write."""
+    current = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
+    return render()[0] != current
 
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument(
+        "--check", action="store_true",
+        help="exit 1 if news-feed.xml is stale, without writing it",
+    )
+    if parser.parse_args().check:
+        if is_stale():
+            print("news-feed.xml is stale: run python3 tools/build-news-feed.py", file=sys.stderr)
+            sys.exit(1)
+        print("news-feed.xml is current")
+        sys.exit(0)
     count = build()
     print(f"news-feed.xml rebuilt: {count} editions")
