@@ -16,8 +16,8 @@
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="article:published_time" content="2026-08-27T15:30:00-04:00" />
-<meta property="article:modified_time" content="2026-08-27T15:30:00-04:00" />
+<meta property="article:published_time" content="2026-08-27T15:17:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:35:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Why do AI agents use stablecoins?" />
@@ -39,15 +39,15 @@
   "@graph": [
     {
       "@type": "FAQPage",
-      "datePublished": "2026-08-27T15:30:00-04:00",
-      "dateModified": "2026-08-27T15:30:00-04:00",
+      "datePublished": "2026-08-27T15:17:00-04:00",
+      "dateModified": "2026-09-30T15:35:00-04:00",
       "mainEntity": [
         {
           "@type": "Question",
           "name": "Why do AI agents use stablecoins?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Because a stablecoin is a payment instrument an agent can hold and spend itself, over the channel it already works in. A card checkout assumes a person is present; a stablecoin transfer is an API call. The x402 project says its payments settle in about one second at near-zero fees, which is the arithmetic pay-per-request pricing needs when single payments are measured in cents. That is why x402 carries stablecoins among its payment types and why Amazon's AgentCore Payments ships with stablecoin wallets from Coinbase and Stripe. Agents do not have to use them: ChatGPT's Instant Checkout runs on card rails. Stablecoins win the machine-to-machine end.",
+            "text": "Because a stablecoin is a payment instrument an agent can hold and spend itself, over the channel it already works in. A card checkout assumes a person is present; a stablecoin transfer is an API call. The x402 project says its payments settle in about one second at near-zero fees, which is the arithmetic pay-per-request pricing needs when single payments are measured in cents. That is why x402 carries stablecoins among its payment types and why Amazon's AgentCore Payments ships with stablecoin wallets from Coinbase and Stripe. Agents do not have to use them: the Agentic Commerce Protocol behind ChatGPT shopping runs on card rails. Stablecoins win the machine-to-machine end.",
             "author": {
               "@type": "Person",
               "name": "Joseph Bankole",
@@ -61,7 +61,7 @@
           "name": "Do agent payments have to use stablecoins?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. The Agentic Commerce Protocol, the standard behind ChatGPT's Instant Checkout, runs on existing card rails, with businesses maintaining their customer relationships as the merchant of record. And x402 itself is written as an open standard aiming to support crypto and fiat networks alike, stablecoins, tokens and fiat among its forms of value. In practice the two rails split by job: consumer retail purchases stay on cards, which carry established dispute rights, while machine-to-machine, pay-per-request payments go to stablecoins, where the per-transaction economics work at cent scale.",
+            "text": "No. The Agentic Commerce Protocol, launched with ChatGPT's Instant Checkout in September 2025, runs on existing card rails, with businesses maintaining their customer relationships as the merchant of record. In March 2026 OpenAI stepped back from Instant Checkout and began letting merchants use their own checkout. And x402 itself is written as an open standard aiming to support crypto and fiat networks alike, stablecoins, tokens and fiat among its forms of value. In practice the two rails split by job: consumer retail purchases stay on cards, which carry established dispute rights, while machine-to-machine, pay-per-request payments go to stablecoins, where the per-transaction economics work at cent scale.",
             "author": {
               "@type": "Person",
               "name": "Joseph Bankole",
@@ -129,8 +129,8 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
     <span class="index">Answers</span>
     <h1>Why do AI agents use stablecoins?</h1>
-    <p class="standfirst">Because a stablecoin is a payment instrument an agent can hold and spend itself, over the channel it already works in. A card checkout assumes a person is present to fill the form and pass the challenge. A stablecoin transfer is an API call, and the x402 project says its payments settle in about one second at near-zero fees, which is the arithmetic pay-per-request pricing needs when single payments are measured in cents. That is why x402 carries stablecoins among its payment types, and why Amazon&#x27;s AgentCore Payments ships with stablecoin wallets from Coinbase and Stripe. Agents do not have to use them: ChatGPT&#x27;s Instant Checkout runs on card rails. Stablecoins win the machine-to-machine end.</p>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-08-27">Updated 27 August 2026</time><span>3 min read</span></p>
+    <p class="standfirst">Because a stablecoin is a payment instrument an agent can hold and spend itself, over the channel it already works in. A card checkout assumes a person is present to fill the form and pass the challenge. A stablecoin transfer is an API call, and the x402 project says its payments settle in about one second at near-zero fees, which is the arithmetic pay-per-request pricing needs when single payments are measured in cents. That is why x402 carries stablecoins among its payment types, and why Amazon&#x27;s AgentCore Payments ships with stablecoin wallets from Coinbase and Stripe. Agents do not have to use them: the Agentic Commerce Protocol behind ChatGPT shopping runs on card rails. Stablecoins win the machine-to-machine end.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-30">Updated 30 September 2026</time><span>3 min read</span></p>
   </header>
 
   <div class="article-body wrap">
@@ -144,7 +144,7 @@
       <p>Amazon&#x27;s Bedrock AgentCore Payments went generally available on 18 August 2026. It connects agents to Coinbase and Stripe Privy wallets, which The Paypers describes as &ldquo;both built for stablecoin microtransactions&rdquo; (<a class="inline-link" href="https://thepaypers.com/payments/news/amazon-bedrock-agentcore-payments-is-now-generally-available" target="_blank" rel="noopener">The Paypers</a>). A person loads the agent&#x27;s wallet through a card or through USDC, and must grant the agent delegation to spend from it (<a class="inline-link" href="https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-agentcore-payments-is-now-generally-available-enabling-agents-to-transact-safely-and-autonomously-at-scale/" target="_blank" rel="noopener">AWS</a>), so the card gets the money in and the stablecoin does the spending.</p>
 
       <h2>Do agent payments have to use stablecoins?</h2>
-      <p>No, and the biggest consumer deployment does not. The Agentic Commerce Protocol, the standard behind ChatGPT&#x27;s Instant Checkout (<a class="inline-link" href="https://stripe.com/newsroom/news/stripe-openai-instant-checkout" target="_blank" rel="noopener">Stripe</a>), runs the purchase over existing card rails, with businesses maintaining their customer relationships as the merchant of record (<a class="inline-link" href="https://www.agenticcommerce.dev/" target="_blank" rel="noopener">agenticcommerce.dev</a>). x402&#x27;s own repository is explicit that the standard aims to support crypto and fiat networks alike.</p>
+      <p>No. The Agentic Commerce Protocol, which Stripe and OpenAI launched with ChatGPT&#x27;s Instant Checkout in September 2025 (<a class="inline-link" href="https://stripe.com/newsroom/news/stripe-openai-instant-checkout" target="_blank" rel="noopener">Stripe</a>, <a class="inline-link" href="https://www.paymentsdive.com/news/stripe-pushes-agentic-ai-sales-via-chatgpt-openai-artificial-intelligence/761439/" target="_blank" rel="noopener">Payments Dive</a>), runs the purchase over existing card rails, with businesses maintaining their customer relationships as the merchant of record (<a class="inline-link" href="https://www.agenticcommerce.dev/" target="_blank" rel="noopener">agenticcommerce.dev</a>). In March 2026 OpenAI stepped back from Instant Checkout and began letting merchants use their own checkout, while ChatGPT concentrates on product discovery (<a class="inline-link" href="https://www.cnbc.com/2026/03/24/openai-revamps-shopping-experience-in-chatgpt-after-instant-checkout.html" target="_blank" rel="noopener">CNBC</a>, <a class="inline-link" href="https://techcrunch.com/2026/03/24/openais-plans-to-make-chatgpt-more-like-amazon-arent-going-so-well/" target="_blank" rel="noopener">TechCrunch</a>). x402&#x27;s own repository is explicit that the standard aims to support crypto and fiat networks alike.</p>
       <p>In production the two rails split by job. A consumer buying shoes through an agent stays on cards, which carry decades of dispute machinery, and <a class="inline-link" href="/answers/ai-agent-purchase-liability/">who bears the loss when the agent buys the wrong thing</a> is a live question even there. An agent paying another machine per request goes to stablecoins, because that is where the per-transaction cost works at cent scale. Which rail a purchase settles on follows the size and frequency of the payment.</p>
 
       <h2>Are stablecoins that AI agents spend regulated?</h2>
