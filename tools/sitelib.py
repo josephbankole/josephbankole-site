@@ -14,9 +14,96 @@ the same article HTML the page carries into content:encoded.
 from __future__ import annotations
 
 import datetime as dt
+import html
 import re
+import urllib.parse
 
 SITE = "https://josephbankole.ca"
+SITE_HOSTS = {"josephbankole.ca", "www.josephbankole.ca"}
+
+# ------------------------------------------------------------ shared limits
+#
+# One definition for build-pages.py and seo_audit.py, so the gate and the
+# audit cannot drift apart again (they did: the gate measured the title before
+# the " · Joseph Bankole" suffix while the audit measured all of it). The rule,
+# from the desk specs since 2026-09-22: the WHOLE <title> is 60 characters or
+# fewer, as a reader sees it (entities decoded), and the site-name suffix goes
+# on only when it still fits. The meta description is 155 or fewer and ends on
+# a full sentence.
+TITLE_MAX = 60
+DESC_MAX = 155
+TITLE_SUFFIX_RE = re.compile(r"\s*(?:·|&middot;|&#183;|&#xB7;)\s*Joseph Bankole\s*$")
+FULL_SENTENCE_RE = re.compile(r"[.?!][\"'’”)]?$")
+
+
+def text_len(value: str) -> int:
+    """Length as a reader or a search result sees it: tags gone, entities decoded."""
+    return len(html.unescape(re.sub(r"<[^>]+>", "", value)).strip())
+
+
+def title_body(title: str) -> str:
+    """The <title> without the site-name suffix, still HTML-escaped."""
+    return TITLE_SUFFIX_RE.sub("", title).strip()
+
+
+def ends_full_sentence(desc: str) -> bool:
+    return bool(FULL_SENTENCE_RE.search(html.unescape(desc).strip()))
+
+
+# ------------------------------------------------------ links into recipes/
+
+HREF_RE = re.compile(r"""\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>"']+))""", re.I)
+
+
+def recipe_links(rel: str, text: str) -> list[str]:
+    """Every href in `text` that resolves to a /recipes/ URL on this site.
+
+    `rel` is the page's path relative to the site root, so a relative href
+    ("recipes/", "../recipes/x/", "./recipes/") is resolved the way a browser
+    would resolve it. Protocol-relative, dot-segment and unquoted hrefs are
+    caught too. The old gate only matched hrefs starting "/recipes" or the
+    absolute URL, so all of those slipped past it. A path is flagged only when
+    it is exactly /recipes or sits under /recipes/, so a future
+    /recipes-archive/ is not.
+    """
+    base = "%s/%s" % (SITE, rel.lstrip("/"))
+    hits = []
+    for match in HREF_RE.finditer(text):
+        href = html.unescape(next(g for g in match.groups() if g is not None)).strip()
+        if not href:
+            continue
+        parts = urllib.parse.urlsplit(urllib.parse.urljoin(base, href))
+        if parts.scheme not in ("http", "https", ""):
+            continue
+        if parts.netloc.lower() not in SITE_HOSTS:
+            continue
+        path = parts.path
+        if path == "/recipes" or path.startswith("/recipes/"):
+            hits.append(href)
+    return hits
+
+
+def robots_blocks_recipes(robots_txt: str) -> list[str]:
+    """Disallow patterns in robots.txt that would stop a crawler reading /recipes/.
+
+    Recipes carry noindex,follow, and a crawler only reads the noindex if it
+    may fetch the page, so a block in robots.txt would leave them indexable
+    from inbound links. Any user-agent group counts: the order is "never
+    blocked". A bare "Disallow:" means allow all and is skipped.
+    """
+    blocked = []
+    for line in robots_txt.splitlines():
+        line = line.split("#", 1)[0].strip()
+        match = re.match(r"(?i)^disallow\s*:\s*(\S*)", line)
+        if not match or not match.group(1):
+            continue
+        pattern = match.group(1)
+        anchored = pattern.endswith("$")
+        body = pattern[:-1] if anchored else pattern
+        regex = "".join(".*" if ch == "*" else re.escape(ch) for ch in body)
+        if re.match(regex + ("$" if anchored else ""), "/recipes/"):
+            blocked.append(pattern)
+    return blocked
 
 try:
     from zoneinfo import ZoneInfo, ZoneInfoNotFoundError

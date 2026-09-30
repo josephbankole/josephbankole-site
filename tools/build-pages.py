@@ -29,9 +29,15 @@ Gates (added 2026-09-22, after the daily desk undid three August fixes that
 nothing enforced):
 
   - A news edition dated today or later (Montreal time) must carry a <title> of
-    60 characters or fewer before the " · Joseph Bankole" suffix and a meta
-    description of 155 or fewer. --check exits non-zero if it does not. Older
-    editions, blog posts and answers pages only print a warning.
+    60 characters or fewer and a meta description of 155 or fewer that ends on
+    a full sentence. --check exits non-zero if it does not. Older editions only
+    print a warning, because their copy belongs to the news desk.
+  - Since 2026-09-30 the same caps are a gate on every blog post and answers
+    page, whatever its date. The title cap measures the WHOLE <title> as a
+    reader sees it, suffix included (the desk specs' rule since 2026-09-22; the
+    gate had been measuring the part before the suffix). On news, blog and
+    answers pages the build drops " · Joseph Bankole" when the whole title
+    would run past 60 and the rest fits, so the suffix alone never trips it.
   - The homepage news teaser holds at most 6 rows. The build drops the oldest
     rows past six, so --check fails whenever the teaser has grown.
 
@@ -82,11 +88,12 @@ PERSON = {
 DEFAULT_OG = "%s/assets/og/default.png" % SITE
 RECIPES_OG = "%s/assets/og/recipes.png" % SITE
 
-TITLE_MAX = 60   # characters before the " · Joseph Bankole" suffix
-DESC_MAX = 155   # characters in the meta description
+TITLE_MAX = sitelib.TITLE_MAX  # characters in the whole <title>, suffix included
+DESC_MAX = sitelib.DESC_MAX    # characters in the meta description
 TEASER_MAX = 6   # rows in the homepage news teaser
+SUFFIX = " &middot; Joseph Bankole"
 
-TITLE_SUFFIX_RE = re.compile(r"\s*(?:·|&middot;|&#183;|&#xB7;)\s*Joseph Bankole\s*$")
+TITLE_SUFFIX_RE = sitelib.TITLE_SUFFIX_RE
 
 # Collected during a run and printed to stderr at the end, grouped by kind.
 WARNINGS: dict[str, list[str]] = {}
@@ -476,7 +483,20 @@ SHARE_TITLE_MIN = 20
 
 def title_body(title: str) -> str:
     """The <title> without the site-name suffix, still HTML-escaped."""
-    return TITLE_SUFFIX_RE.sub("", title).strip()
+    return sitelib.title_body(title)
+
+
+def fit_title(title: str) -> str:
+    """The <title> with the site-name suffix dropped when it does not fit.
+
+    The rule is the whole title at 60 or under, with " · Joseph Bankole" on
+    only when it still fits. When the full title runs past 60 but the words
+    before the suffix fit, the suffix comes off. A title whose words alone run
+    past 60 is left as written, so the length check still names it.
+    """
+    if text_len(title) > TITLE_MAX and text_len(title_body(title)) <= TITLE_MAX:
+        return title_body(title)
+    return title
 
 
 def share_title(title: str) -> str:
@@ -494,7 +514,7 @@ def share_title(title: str) -> str:
 
 def text_len(value: str) -> int:
     """Length as a reader or a search result sees it: entities decoded."""
-    return len(html.unescape(strip_tags(value)).strip())
+    return sitelib.text_len(value)
 
 
 def parse_common(path: pathlib.Path, src: str) -> dict:
@@ -504,7 +524,8 @@ def parse_common(path: pathlib.Path, src: str) -> dict:
         # Only when a page has no <title> at all is one derived from its h1.
         h1 = re.search(r"<h1[^>]*>(.*?)</h1>", src, re.S)
         if h1:
-            title = "%s &middot; Joseph Bankole" % strip_tags(h1.group(1)).strip()
+            words = strip_tags(h1.group(1)).strip()
+            title = words + SUFFIX if text_len(words + SUFFIX) <= TITLE_MAX else words
             warn("pages with no <title>, derived from the h1", rel_name(path))
     og_image = meta_content(src, "property", "og:image") or ""
     # 26 news pages pointed at a per-edition card that was never rendered.
@@ -533,24 +554,29 @@ def parse_common(path: pathlib.Path, src: str) -> dict:
 
 
 def check_lengths(page: dict, kind: str, day: dt.date | None, today: dt.date) -> None:
-    """The title and description caps. A gate for today's news, a warning elsewhere."""
+    """The title and description caps and the full-sentence rule.
+
+    A gate for every blog and answers page and for today's news; a warning on
+    older news, whose copy belongs to the news desk. The title is measured
+    whole, suffix included, after fit_title has had its chance to drop it.
+    """
     name = rel_name(page["path"])
     problems = []
-    title_chars = text_len(title_body(page["title"]))
+    title_chars = text_len(page["title"])
     if title_chars > TITLE_MAX:
-        problems.append("title %d chars (max %d)" % (title_chars, TITLE_MAX))
+        problems.append("title %d chars incl. suffix (max %d)" % (title_chars, TITLE_MAX))
     desc = page.get("description") or ""
     desc_chars = text_len(desc)
     if not desc:
         problems.append("no meta description")
     elif desc_chars > DESC_MAX:
         problems.append("meta description %d chars (max %d)" % (desc_chars, DESC_MAX))
+    elif not sitelib.ends_full_sentence(desc):
+        problems.append("meta description does not end on a full sentence")
     if not problems:
-        if desc and not re.search(r"[.?!][\"'’”)]?$", html.unescape(desc).strip()):
-            warn("meta descriptions that do not end on a full sentence", name)
         return
     line = "%s: %s" % (name, "; ".join(problems))
-    if kind == "news" and day is not None and day >= today:
+    if kind in ("blog", "answers") or (kind == "news" and day is not None and day >= today):
         GATE_FAILURES.append(line)
     else:
         warn("%s pages over the title or description cap" % kind, line)
@@ -756,6 +782,12 @@ def render_article(path: pathlib.Path, kind: str, ctx: dict) -> str:
         page["robots"] = ROBOTS_NOINDEX
 
     if kind in ("news", "blog", "answers"):
+        # Not recipes/: that lane is frozen, words and metadata, and noindex.
+        # News is included because the fit only ever removes branding, never
+        # a word the news desk wrote, and without it a news title whose words
+        # fit would fail today's gate on the suffix alone.
+        page["title"] = fit_title(page["title"])
+        page["og_title"] = share_title(page["title"])
         check_lengths(page, kind, day, ctx["today"])
 
     # ---- schema
