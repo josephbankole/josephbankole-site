@@ -52,6 +52,12 @@ recipes his own reference shelf:
     hrefs are resolved before they are judged (2026-09-30).
   - robots.txt may not Disallow any path that covers /recipes/, for any user
     agent, or the noindex is never read (2026-09-30).
+
+Warn-only check added 2026-09-30, to become a gate:
+
+  - "ten years" (not "ten years ago") must be followed within 90 characters
+    by "the last five", and "a decade in payments" is never right. It prints
+    warnings until TENURE_GATE_ENFORCE is set to True; see the note there.
   - sitemap.xml may not list a /recipes/ URL. The build drops any it finds.
 
 Warnings go to stderr and never change the exit code of a normal run.
@@ -154,6 +160,52 @@ WAITLIST_MARKERS = (
     "book-pill",
     "not taking new clients",
 )
+
+# ------------------------------------------------------------ tenure gate
+#
+# The founder's fact sheet: HSBC from November 2016 was market-risk production
+# support, and payments only began in June 2021. So "ten years" on this site
+# must come with "the last five" (in payments) close behind it, the wording the
+# About section and the aligned briefs use. An allowlist, not a blocklist: a
+# blocklist of phrasings ("ten years in payments") missed the homepage's "For
+# ten years a human paged on-call". "ten years ago" is a date, not a tenure.
+#
+# WARN-ONLY FOR NOW. index.html's sr-only hero line and lab/index.html still
+# fail it, and a later package (P2 of the 26 Sep review) fixes that copy. Once
+# it has, set TENURE_GATE_ENFORCE = True and --check fails on any new breach.
+# The five July news briefs below stay warnings even then: their copy belongs
+# to archv-ai-desk, and a red --check would stop that desk's lane. Remove a
+# brief from the set once that desk has aligned its line.
+TENURE_GATE_ENFORCE = False
+TENURE_WARN_ONLY = frozenset({
+    "news/2026-07-05-agentic-commerce.html",
+    "news/2026-07-14-agentic-commerce.html",
+    "news/2026-07-18-agentic-commerce.html",
+    "news/2026-07-26-agentic-commerce.html",
+    "news/2026-07-27-agentic-commerce.html",
+})
+TENURE_RE = re.compile(r"\b(?:ten|10)\s+years\b(?!\s+ago\b)", re.I)
+TENURE_DECADE_RE = re.compile(r"\bdecade\s+(?:in|of)\s+(?:payments?|bank\w*)\b", re.I)
+TENURE_QUALIFIER = "the last five"
+TENURE_WINDOW = 90  # characters after "ten years" in which the qualifier must appear
+
+
+def tenure_breaches(text: str) -> list[str]:
+    """Tenure claims in a page's text that lack "the last five" nearby.
+
+    Tags are dropped and entities decoded first, so markup between the words
+    cannot hide a claim. JSON-LD and meta text are read too.
+    """
+    plain = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", text)))
+    found = []
+    for match in TENURE_RE.finditer(plain):
+        after = plain[match.end():match.end() + TENURE_WINDOW]
+        if TENURE_QUALIFIER not in after.lower():
+            found.append(plain[max(0, match.start() - 20):match.end() + 40].strip())
+    for match in TENURE_DECADE_RE.finditer(plain):
+        found.append(plain[max(0, match.start() - 20):match.end() + 20].strip())
+    return found
+
 
 FONTS = (
     "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,"
@@ -1585,6 +1637,20 @@ def gate_site(outputs: dict[str, str]) -> None:
         hits = len(sitelib.recipe_links(rel, text))
         if hits:
             GATE_FAILURES.append("%s: %d link(s) into /recipes/" % (rel, hits))
+
+    # Tenure: every page outside recipes/, lab/ included, plus llms.txt.
+    tenure_sources = [(rel, text) for rel, text in sorted(pages.items())
+                      if rel.endswith(".html") and not in_recipes(rel)]
+    if (REPO / "llms.txt").exists():
+        tenure_sources.append(("llms.txt", (REPO / "llms.txt").read_text(encoding="utf-8")))
+    for rel, text in tenure_sources:
+        for snippet in tenure_breaches(text):
+            line = '%s: tenure without "%s" ("%s")' % (rel, TENURE_QUALIFIER, snippet)
+            if TENURE_GATE_ENFORCE and rel not in TENURE_WARN_ONLY:
+                GATE_FAILURES.append(line)
+            else:
+                warn("tenure claims without \"%s\" (warn-only; see TENURE_GATE_ENFORCE)"
+                     % TENURE_QUALIFIER, line)
 
     # Recipes are noindex,follow. A crawler reads the noindex only if it may
     # fetch the page, so robots.txt must never block recipes/ for any agent.
