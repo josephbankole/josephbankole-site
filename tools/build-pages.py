@@ -1160,30 +1160,89 @@ def render_hub(path: pathlib.Path, kind: str, crumb: tuple[str, str],
         parts.append("</div>")
     parts.append("</main>")
 
-    page["jsonld"] = hub_jsonld(page, head, crumb, kind, src)
+    page["jsonld"] = hub_jsonld(page, head, crumb, kind, listing)
     return document(page, "\n".join(parts))
 
 
-def hub_jsonld(page, head, crumb, kind, src) -> str:
-    if kind == "answers":
-        existing = re.search(
-            r'<script type="application/ld\+json">\s*(.*?)\s*</script>', src, re.S
+HUB_TTL_RE = re.compile(r'<span class="ttl">(.*?)(?:<span>|</span>)', re.S)
+
+
+def hub_items(listing: str | None) -> list[tuple[str, str]]:
+    """(href, title) for every row on a hub, in the order the hub shows them.
+
+    Row by row, so a row with no dek (the recipe hubs have none) cannot pair
+    one row's href with the next row's title.
+    """
+    items = []
+    for row in HUB_ROW_RE.finditer(listing or ""):
+        href = re.search(r'href="([^"]+)"', row.group(0))
+        ttl = HUB_TTL_RE.search(row.group(0))
+        if href and ttl:
+            items.append((href.group(1), html.unescape(strip_tags(ttl.group(1))).strip()))
+    return items
+
+
+def defined_terms() -> list[dict]:
+    """The answers pages whose own JSON-LD defines a term, for the hub's set.
+
+    Only these, not every answers row: most rows are questions ("Can AI agents
+    shop on Amazon?"), and a question is not a defined term.
+    """
+    terms = []
+    for path in sorted((REPO / "answers").glob("*/index.html")):
+        found = re.search(
+            r'<script type="application/ld\+json">\s*(.*?)\s*</script>',
+            path.read_text(encoding="utf-8"), re.S,
         )
-        if existing:
-            return existing.group(1)
+        try:
+            data = json.loads(found.group(1)) if found else {}
+        except json.JSONDecodeError:
+            continue
+        nodes = data.get("@graph", [data]) if isinstance(data, dict) else data
+        for node in nodes if isinstance(nodes, list) else []:
+            if isinstance(node, dict) and node.get("@type") == "DefinedTerm" and node.get("url"):
+                terms.append({"@type": "DefinedTerm", "name": node.get("name", ""), "url": node["url"]})
+    return terms
+
+
+def hub_jsonld(page, head, crumb, kind, listing=None) -> str:
+    """CollectionPage and BreadcrumbList for a hub, generated on every run.
+
+    The answers hub used to keep its hand-written block, a DefinedTermSet
+    listing 2 of 13 answers that nothing ever updated. It is now generated
+    like the others: typed CollectionPage and DefinedTermSet under the same
+    @id, so the two answers pages that point inDefinedTermSet at /answers/
+    still resolve. The news, blog and answers hubs carry an ItemList of their
+    rows. Recipe hubs do not: that lane is frozen and out of search.
+    """
+    collection = {
+        "@type": ["CollectionPage", "DefinedTermSet"] if kind == "answers" else "CollectionPage",
+        "@id": page["canonical"],
+        "name": html.unescape(strip_tags(head["h1"])).rstrip("."),
+        "description": html.unescape(page.get("description") or ""),
+        "url": page["canonical"],
+        "inLanguage": "en",
+        "isPartOf": {"@id": "%s/#website" % SITE},
+        "author": dict(PERSON),
+    }
+    if kind == "answers":
+        terms = defined_terms()
+        if terms:
+            collection["hasDefinedTerm"] = terms
+    items = hub_items(listing) if kind in ("news", "blog", "answers") else []
+    if items:
+        collection["mainEntity"] = {
+            "@type": "ItemList",
+            "numberOfItems": len(items),
+            "itemListElement": [
+                {"@type": "ListItem", "position": i + 1, "url": SITE + href, "name": name}
+                for i, (href, name) in enumerate(items)
+            ],
+        }
     graph = {
         "@context": "https://schema.org",
         "@graph": [
-            {
-                "@type": "CollectionPage",
-                "@id": page["canonical"],
-                "name": html.unescape(strip_tags(head["h1"])).rstrip("."),
-                "description": html.unescape(page.get("description") or ""),
-                "url": page["canonical"],
-                "inLanguage": "en",
-                "isPartOf": {"@id": "%s/#website" % SITE},
-                "author": dict(PERSON),
-            },
+            collection,
             {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
