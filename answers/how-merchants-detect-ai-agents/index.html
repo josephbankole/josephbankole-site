@@ -4,24 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>How do merchants detect AI agents? Web Bot Auth and Visa TAP</title>
-<meta name="description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent manage any of them." />
+<meta name="description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent can tie agent traffic to a sale." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="How do merchants detect AI agents? Web Bot Auth and Visa TAP" />
-<meta property="og:description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent manage any of them." />
+<meta property="og:description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent can tie agent traffic to a sale." />
 <meta property="og:url" content="https://josephbankole.ca/answers/how-merchants-detect-ai-agents/" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="article:published_time" content="2026-09-03T15:45:00-04:00" />
-<meta property="article:modified_time" content="2026-09-22T15:45:00-04:00" />
+<meta property="article:published_time" content="2026-09-03T15:19:00-04:00" />
+<meta property="article:modified_time" content="2026-09-30T15:35:00-04:00" />
 <meta property="article:author" content="Joseph Bankole" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="How do merchants detect AI agents? Web Bot Auth and Visa TAP" />
-<meta name="twitter:description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent manage any of them." />
+<meta name="twitter:description" content="A merchant spots an AI agent by a signed request it can verify, an integration it agreed to, or a guess. Only 23 per cent can tie agent traffic to a sale." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -39,15 +39,15 @@
   "@graph": [
     {
       "@type": "FAQPage",
-      "datePublished": "2026-09-03T15:45:00-04:00",
-      "dateModified": "2026-09-22T15:45:00-04:00",
+      "datePublished": "2026-09-03T15:19:00-04:00",
+      "dateModified": "2026-09-30T15:35:00-04:00",
       "mainEntity": [
         {
           "@type": "Question",
           "name": "How do merchants detect AI agents?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests and the merchant verifies the signature against a key the agent publishes, which is what Web Bot Auth and Visa's Trusted Agent Protocol implement. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Most merchants run none of the three: 23 per cent can identify both AI-driven traffic and AI-driven purchases.",
+            "text": "Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests and the merchant verifies the signature against a key the agent publishes, which is what Web Bot Auth and Visa's Trusted Agent Protocol implement. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Only 23 per cent of merchants can identify both AI-driven traffic and AI-driven purchases.",
             "author": {
               "@type": "Person",
               "name": "Joseph Bankole",
@@ -75,7 +75,7 @@
           "name": "What does Visa's Trusted Agent Protocol add?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "A directory and a purpose. Visa published the Trusted Agent Protocol on 14 October 2025, built on HTTP Message Signatures and aligned with Web Bot Auth. Under plain Web Bot Auth an agent points at its own key directory, so trust reduces to trusting that directory. Under the Trusted Agent Protocol the agent registers with a payment network, and Visa and Mastercard each host the directory for their own registered agents. The tag in the signature also tells the merchant whether the agent has come to browse or to pay.",
+            "text": "A directory and a purpose. Visa published the Trusted Agent Protocol on 14 October 2025, built on HTTP Message Signatures and aligned with Web Bot Auth. Under plain Web Bot Auth an agent points at its own key directory, so trust reduces to trusting that directory. Under Visa's Trusted Agent Protocol and Mastercard's Agent Pay the agent registers with its payment network, and each network hosts a directory for the agents registered with it. The tag in the signature also tells the merchant whether the agent has come to browse or to pay.",
             "author": {
               "@type": "Person",
               "name": "Joseph Bankole",
@@ -143,20 +143,20 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/answers/">Answers</a></nav>
     <span class="index">Answers</span>
     <h1>How do merchants detect AI agents?</h1>
-    <p class="standfirst">Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests, and the merchant verifies the signature against a key the agent publishes. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Signing is the open-web answer, and it is what Web Bot Auth and Visa's Trusted Agent Protocol implement. Most merchants run none of the three: 23 per cent can identify both AI-driven traffic and AI-driven purchases today.</p>
-    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-22">Updated 22 September 2026</time><span>5 min read</span></p>
+    <p class="standfirst">Three ways, and only one of them survives meeting an agent for the first time. The agent signs its own requests, and the merchant verifies the signature against a key the agent publishes. The agent arrives down an integration the merchant already agreed to, where an API key and a user-agent string do the identifying. Or the merchant infers it from behaviour, which is guessing. Signing is the open-web answer, and it is what Web Bot Auth and Visa's Trusted Agent Protocol implement. Only 23 per cent of merchants can identify both AI-driven traffic and AI-driven purchases today.</p>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-09-30">Updated 30 September 2026</time><span>5 min read</span></p>
   </header>
 
   <div class="article-body wrap">
     <div class="prose">
       <h2>What does a signed agent request look like?</h2>
-      <p>An agent that wants to be recognised sends three headers. <code>Signature-Input</code> carries the metadata: a <code>keyid</code> naming the public key, a <code>created</code> and an <code>expires</code> timestamp, a <code>nonce</code> so the request cannot be replayed, a <code>tag</code> describing what kind of request this is, and the algorithm, which in practice is Ed25519. <code>Signature</code> carries the signature itself. <code>Signature-Agent</code> points at the directory where the key lives, and the origin fetches that directory from <code>/.well-known/http-message-signatures-directory</code>, takes the public key and checks the signature against the request it has just received (<a class="inline-link" href="https://developers.cloudflare.com/bots/concepts/bot/verified-bots/web-bot-auth/" target="_blank" rel="noopener">Cloudflare</a>, <a class="inline-link" href="https://datatracker.ietf.org/doc/draft-meunier-webbotauth-httpsig-protocol/" target="_blank" rel="noopener">IETF</a>).</p>
-      <p>None of that is one vendor's invention. Web Bot Auth now has a chartered IETF working group, <code>webbotauth</code>, and an adopted working-group draft, <code>draft-ietf-webbotauth-httpsig-protocol-00</code>, dated 1 September 2026, which defines the <code>Signature-Agent</code> header and the JWKS-shaped key directory. It replaces the earlier individual architecture and protocol drafts; a registry draft for the signature agent card remains individual. Underneath all of it is RFC 9421, HTTP Message Signatures, which is a published standard rather than a proposal.</p>
+      <p>An agent that wants to be recognised sends three headers. <code>Signature-Input</code> carries the metadata: a <code>keyid</code> naming the public key, a <code>created</code> and an <code>expires</code> timestamp, a <code>nonce</code> so the request cannot be replayed, a <code>tag</code> describing what kind of request this is, and the algorithm, which in practice is Ed25519. <code>Signature</code> carries the signature itself. <code>Signature-Agent</code> points at the directory where the key lives, and the origin fetches that directory from <code>/.well-known/http-message-signatures-directory</code>, takes the public key and checks the signature against the request it has just received (<a class="inline-link" href="https://developers.cloudflare.com/bots/reference/bot-verification/web-bot-auth/" target="_blank" rel="noopener">Cloudflare</a>, <a class="inline-link" href="https://datatracker.ietf.org/doc/draft-ietf-webbotauth-httpsig-protocol/" target="_blank" rel="noopener">IETF</a>).</p>
+      <p>None of that is one vendor's invention. Web Bot Auth now has a chartered IETF working group, <code>webbotauth</code>, and an adopted working-group draft, <a class="inline-link" href="https://datatracker.ietf.org/doc/draft-ietf-webbotauth-httpsig-protocol/" target="_blank" rel="noopener"><code>draft-ietf-webbotauth-httpsig-protocol-00</code></a>, dated 1 September 2026, which defines the <code>Signature-Agent</code> header and the JWKS-shaped key directory. It replaces the earlier individual architecture and protocol drafts; a registry draft for the signature agent card remains individual. Underneath all of it is RFC 9421, HTTP Message Signatures, which is a published standard rather than a proposal.</p>
       <p>What a merchant learns from a valid signature is narrow, and worth stating precisely. It says the request came from the holder of a key that a named directory vouches for. It does not say the agent is honest, and it does not say the person behind it approved this particular purchase. It rules out the impersonator, and nothing further.</p>
 
       <h2>What does Visa's Trusted Agent Protocol add?</h2>
       <p>Visa published the Trusted Agent Protocol on 14 October 2025, built on the HTTP Message Signature standard and aligned with Web Bot Auth, naming twelve early partners across acquiring and platforms: Adyen, Ant International, Checkout.com, Coinbase, CyberSource, Elavon, Fiserv, Microsoft, Nuvei, Shopify, Stripe and Worldpay (<a class="inline-link" href="https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.21716.html" target="_blank" rel="noopener">Visa</a>, <a class="inline-link" href="https://blog.cloudflare.com/secure-agentic-commerce/" target="_blank" rel="noopener">Cloudflare</a>).</p>
-      <p>Two additions do the work. The first is the directory. Under plain Web Bot Auth the agent points at its own key directory, so trust reduces to whether you trust that directory. Under the Trusted Agent Protocol the agent registers with a payment network, and Visa and Mastercard each host the directory for the agents registered with them, which moves the thing being trusted from the agent to the network. That is the card model applied to a header.</p>
+      <p>Two additions do the work. The first is the directory. Under plain Web Bot Auth the agent points at its own key directory, so trust reduces to whether you trust that directory. Under Visa's Trusted Agent Protocol, and Mastercard's Agent Pay alongside it, the agent registers with its payment network (<a class="inline-link" href="https://blog.cloudflare.com/secure-agentic-commerce/" target="_blank" rel="noopener">Cloudflare</a>, <a class="inline-link" href="https://www.mastercard.com/global/en/news-and-trends/stories/2025/agentic-commerce-framework.html" target="_blank" rel="noopener">Mastercard</a>), and Cloudflare reports that each network hosts a directory for the agents registered with it, which moves the thing being trusted from the agent to the network. That is the card model applied to a header.</p>
       <p>The second is the <code>tag</code>. The same field Web Bot Auth uses to say this is automated traffic now also says whether the agent has come to browse or to pay, so a merchant can treat a crawl and a checkout differently at the edge instead of at the payment page. Visa also describes linking a registered agent to a consumer identity, which is the step that turns detection into authorisation.</p>
 
       <h2>Why is a closed integration not the general answer?</h2>
@@ -169,7 +169,7 @@
       <p>Volume is what makes that gap expensive. Adobe Analytics put AI-referred traffic to United States retail sites up 138 per cent year on year in May 2026, measured across more than a trillion visits, and found it converting at a rate 54 per cent better than traffic from non-AI sources (<a class="inline-link" href="https://www.digitalcommerce360.com/2026/06/17/adobe-ai-referred-traffic-to-retail-sites-doubles-in-a-year/" target="_blank" rel="noopener">Digital Commerce 360</a>, <a class="inline-link" href="https://www.marketingtechnews.net/news/ai-referrals-ecommerce-traffic-conversions/" target="_blank" rel="noopener">MarketingTech News</a>). Traffic a merchant cannot label is traffic it cannot attribute, which means the best-converting channel on the site is the one nobody can defend a budget for.</p>
 
       <h2>How many merchants can identify agent traffic today?</h2>
-      <p>Twenty-three per cent can identify both AI-driven traffic and AI-driven purchases. A further 21 per cent can see the traffic and cannot connect it to a completed purchase, which is the more dangerous half of the two, because it produces a number that looks like measurement. The figures come from the Global Digital Shopping Index: Merchant Edition, PYMNTS Intelligence's survey of 1,185 retail merchants in the United States, Brazil and the United Arab Emirates, fielded in March 2026 and commissioned by Visa Acceptance Solutions (<a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/how-23-percent-of-merchants-captuared-retails-next-agentic-commerce-advantage/" target="_blank" rel="noopener">PYMNTS</a>, <a class="inline-link" href="https://www.visaacceptance.com/en-us/insights/global-digital-shopping-index-form.html" target="_blank" rel="noopener">Visa Acceptance Solutions</a>).</p>
+      <p>Twenty-three per cent can identify both AI-driven traffic and AI-driven purchases. A further 21 per cent can see the traffic and cannot connect it to a completed purchase, which is the more dangerous half of the two, because it produces a number that looks like measurement. The figures come from the Global Digital Shopping Index: Merchant Edition, PYMNTS Intelligence's survey of 1,185 retail merchants in the United States, Brazil and the United Arab Emirates, fielded in March 2026 and commissioned by Visa Acceptance Solutions (<a class="inline-link" href="https://www.pymnts.com/news/artificial-intelligence/2026/how-23-percent-of-merchants-captuared-retails-next-agentic-commerce-advantage/" target="_blank" rel="noopener">PYMNTS</a>, <a class="inline-link" href="https://www.pymnts.com/wp-content/uploads/2026/06/PYMNTS-Intelligence-Global-Digital-Shopping-Index-Merchant-Edition-June-2026.pdf" target="_blank" rel="noopener">the report</a>).</p>
       <p>So the specifications are a long way ahead of the deployments. The signing standard is drafted, the network directories exist, the acquirers are named in a press release, and roughly three quarters of surveyed merchants still cannot say whether a sale came from a person or a program.</p>
 
       <h2>What should a merchant do first?</h2>
