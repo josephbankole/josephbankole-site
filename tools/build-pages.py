@@ -61,6 +61,8 @@ it is a warning.
 
 Gates added 2026-09-30:
 
+  - Every JSON-LD block on every page this script writes parses as JSON.
+
   - Every indexable page this script writes is listed in sitemap.xml, and a
     page's lastmod matches the day of its JSON-LD dateModified.
   - feed.xml and news-feed.xml match what build-blog-feed.py and
@@ -1668,6 +1670,20 @@ def gate_site(outputs: dict[str, str]) -> None:
         ]
         if bare:
             GATE_FAILURES.append("%s: %d Substack link(s) without utm_source/utm_medium" % (rel, len(bare)))
+
+    # Every JSON-LD block this script writes must parse. normalise_jsonld only
+    # warned and shipped a broken block as written, and the homepage and the
+    # hubs were never parsed at all.
+    for rel, text in sorted(outputs.items()):
+        if not rel.endswith(".html"):
+            continue
+        for block in re.findall(
+            r'<script type="application/ld\+json">\s*(.*?)\s*</script>', text, re.S
+        ):
+            try:
+                json.loads(block)
+            except json.JSONDecodeError as err:
+                GATE_FAILURES.append("%s: JSON-LD does not parse (%s)" % (rel, err))
 
     pages = dict(outputs)
     for path in REPO.rglob("*.html"):
