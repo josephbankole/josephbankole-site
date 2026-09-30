@@ -69,11 +69,12 @@ Gates added 2026-09-30:
     build-news-feed.py would write. Run the feed builder after any edit to a
     blog page or news edition, then --check.
 
-Warn-only check added 2026-09-30, to become a gate:
+Tenure gate, added warn-only 2026-09-30 and enforced the same day:
 
   - "ten years" (not "ten years ago") must be followed within 90 characters
-    by "the last five", and "a decade in payments" is never right. It prints
-    warnings until TENURE_GATE_ENFORCE is set to True; see the note there.
+    by "the last five", and "a decade in payments" is never right. A breach
+    fails --check, except on the five July briefs in TENURE_WARN_ONLY, which
+    stay warnings until archv-ai-desk aligns them.
   - sitemap.xml may not list a /recipes/ URL. The build drops any it finds.
 
 Warnings go to stderr and never change the exit code of a normal run.
@@ -187,13 +188,12 @@ WAITLIST_MARKERS = (
 # blocklist of phrasings ("ten years in payments") missed the homepage's "For
 # ten years a human paged on-call". "ten years ago" is a date, not a tenure.
 #
-# WARN-ONLY FOR NOW. index.html's sr-only hero line and lab/index.html still
-# fail it, and a later package (P2 of the 26 Sep review) fixes that copy. Once
-# it has, set TENURE_GATE_ENFORCE = True and --check fails on any new breach.
-# The five July news briefs below stay warnings even then: their copy belongs
-# to archv-ai-desk, and a red --check would stop that desk's lane. Remove a
-# brief from the set once that desk has aligned its line.
-TENURE_GATE_ENFORCE = False
+# ENFORCED since 30 Sep 2026, once P2 of the 26 Sep review had fixed the
+# homepage sr-only hero line and lab/index.html: --check fails on any breach.
+# The five July news briefs below stay warnings: their copy belongs to
+# archv-ai-desk, and a red --check would stop that desk's lane. Remove a brief
+# from the set once that desk has aligned its line.
+TENURE_GATE_ENFORCE = True
 TENURE_WARN_ONLY = frozenset({
     "news/2026-07-05-agentic-commerce.html",
     "news/2026-07-14-agentic-commerce.html",
@@ -1722,7 +1722,7 @@ def gate_site(outputs: dict[str, str]) -> None:
             if TENURE_GATE_ENFORCE and rel not in TENURE_WARN_ONLY:
                 GATE_FAILURES.append(line)
             else:
-                warn("tenure claims without \"%s\" (warn-only; see TENURE_GATE_ENFORCE)"
+                warn("tenure claims without \"%s\" (TENURE_WARN_ONLY briefs, warn-only)"
                      % TENURE_QUALIFIER, line)
 
     # Recipes are noindex,follow. A crawler reads the noindex only if it may
