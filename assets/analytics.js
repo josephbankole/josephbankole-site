@@ -68,8 +68,15 @@
      is read from the link itself, so the event and Substack's referral
      report agree. These links fire subscribe_click only, never
      newsletter_click or outbound_click. */
+  /* From 2026-10-06 (D-2026-10-06a) the primary ask is @thearchv.ai on
+     Threads; old archvai.substack.com links still count. */
   var SUBSCRIBE_HOST = 'archvai.substack.com';
-  function isSubscribe(a) { return host(a) === SUBSCRIBE_HOST; }
+  var THREADS_HOSTS = ['www.threads.com', 'threads.com', 'www.threads.net', 'threads.net'];
+  function isSubscribe(a) {
+    var h = host(a);
+    if (h === SUBSCRIBE_HOST) return true;
+    return THREADS_HOSTS.indexOf(h) !== -1 && (a.pathname || '').toLowerCase().indexOf('/@thearchv.ai') === 0;
+  }
   function utmMedium(a) {
     try { return new URL(a.href).searchParams.get('utm_medium') || '(none)'; }
     catch (e) { return '(none)'; }

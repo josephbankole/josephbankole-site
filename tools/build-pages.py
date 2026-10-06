@@ -164,8 +164,8 @@ def substack_url(medium: str) -> str:
 
 # The band at the foot of articles and hubs (D-2026-10-06a, founder: the
 # Substacks are paused, so the band invites readers to @thearchv.ai on Threads,
-# which posts one sourced AI story most days). Nav and footer Substack links are
-# unchanged and still carry utm tags.
+# which posts one sourced AI story most days). The nav button and footer link
+# point there too from the same day; no page links to the Substack any more.
 THREADS = "https://www.threads.com/@thearchv.ai"
 SUBSCRIBE_HEADING = "@thearchv.ai on Threads"
 SUBSCRIBE_COPY = "One AI story most days, with its sources named."
@@ -427,9 +427,9 @@ def nav_block(location: str, root: str = "/") -> str:
         '  <div class="nav-links">\n'
         "    %s\n"
         '    <a class="btn" data-location="%s-nav" href="%s" target="_blank" rel="noopener">'
-        "Subscribe</a>\n"
+        "Threads</a>\n"
         "  </div>\n"
-        "</nav>" % (items, location, substack_url("nav"))
+        "</nav>" % (items, location, THREADS)
     )
 
 
@@ -445,14 +445,14 @@ def footer_block(location: str) -> str:
         '      <a href="/news/">News desk</a>\n'
         '      <a href="/blog/">Field notes</a>\n'
         '      <a href="/answers/">Answers</a>\n'
-        '      <a data-location="%s-footer" href="%s" target="_blank" rel="noopener">Newsletter</a>\n'
+        '      <a data-location="%s-footer" href="%s" target="_blank" rel="noopener">Threads</a>\n'
         '      <a href="%s" target="_blank" rel="noopener">LinkedIn</a>\n'
         '      <a href="/privacy.html">Privacy</a>\n'
         '      <a href="%s">Contact</a>\n'
         "    </div>\n"
         "  </div>\n"
         '  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>\n'
-        "</footer>" % (location, substack_url("footer"), LINKEDIN, ENQUIRY)
+        "</footer>" % (location, THREADS, LINKEDIN, ENQUIRY)
     )
 
 

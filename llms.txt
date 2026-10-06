@@ -4,14 +4,14 @@
 
 ## Key pages
 
-- [Home](https://josephbankole.ca/): who he is, what he builds, and his newsletter.
+- [Home](https://josephbankole.ca/): who he is and what he builds.
 - [Field notes](https://josephbankole.ca/blog/): essays on building with AI agents in production.
 - [The BS Guide](https://josephbankole.ca/blog/the-bs-guide.html): a five-step guide to setting Claude up to handle the boring parts of a day job, with a copy-paste handover template.
 - [AI news desk](https://josephbankole.ca/news/): a sourced brief on agentic commerce and payments.
 - [Answers](https://josephbankole.ca/answers/): short, direct definitions, starting with [what a forward-deployed engineer is](https://josephbankole.ca/answers/what-is-a-forward-deployed-engineer/) [what agentic commerce is](https://josephbankole.ca/answers/what-is-agentic-commerce/) [how ACP and AP2 differ](https://josephbankole.ca/answers/acp-vs-ap2/) [what x402 is](https://josephbankole.ca/answers/what-is-x402/) [who is liable when an AI agent buys the wrong thing](https://josephbankole.ca/answers/ai-agent-purchase-liability/) [why AI agents use stablecoins](https://josephbankole.ca/answers/why-do-ai-agents-use-stablecoins/) [whether stablecoins pay interest](https://josephbankole.ca/answers/do-stablecoins-pay-interest/) [how merchants detect AI agents](https://josephbankole.ca/answers/how-merchants-detect-ai-agents/) [how to set spending limits for an AI agent](https://josephbankole.ca/answers/ai-agent-spending-limits/) [what Know Your Agent (KYA) is](https://josephbankole.ca/answers/what-is-know-your-agent/) [what the Universal Commerce Protocol (UCP) is](https://josephbankole.ca/answers/what-is-universal-commerce-protocol/) [what Mastercard Agent Pay is](https://josephbankole.ca/answers/what-is-mastercard-agent-pay/) and [whether AI agents can shop on Amazon](https://josephbankole.ca/answers/can-ai-agents-shop-on-amazon/).
 - [RSS](https://josephbankole.ca/feed.xml): the blog feed.
 - [News RSS](https://josephbankole.ca/news-feed.xml): the news-desk feed.
-- [The ARCHV AI newsletter](https://archvai.substack.com/?utm_source=josephbankole.ca&utm_medium=llms-txt): his newsletter on Substack, out Monday, Wednesday and Friday. Plain-English reads on the companies building AI data centres, where their power and cooling come from, and what has actually been built, with some issues on model and agent news.
+- [@thearchv.ai on Threads](https://www.threads.com/@thearchv.ai): his AI news account, one recent AI story most days in plain English, with its sources named.
 
 ## Key essays
 
