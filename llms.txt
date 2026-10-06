@@ -1,6 +1,6 @@
 # Joseph Bankole
 
-> Joseph Bankole is an AI engineer in Montreal, Canada. He spent ten years keeping bank systems running, the last five in payments (SWIFT, ISO 20022, ACH), and now builds and ships production AI agents and automations, and writes about the work at josephbankole.ca.
+> Joseph Bankole is an AI platform engineer in Montreal, Canada. He spent ten years keeping bank systems running, the last five in payments (SWIFT, ISO 20022, ACH), and now builds and ships production AI agents and automations, and writes about the work at josephbankole.ca.
 
 ## Key pages
 

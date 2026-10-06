@@ -144,7 +144,7 @@ def warn(kind: str, message: str) -> None:
     WARNINGS.setdefault(kind, []).append(message)
 
 # The waitlist closed on 2026-09-23 (founder: "remove the waitlist"). He is
-# employed as an AI engineer and not taking client work, so nothing this script
+# employed as an AI platform engineer (LinkedIn title, 2026-10-06) and not taking client work, so nothing this script
 # writes asks for it. The one contact route left is the neutral footer address.
 ENQUIRY = "mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)"
 LINKEDIN = "https://www.linkedin.com/in/joseph-bankole/"
@@ -439,7 +439,7 @@ def footer_block(location: str) -> str:
         '  <div class="foot">\n'
         '    <div class="fcol">\n'
         '      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>\n'
-        '      <span class="copy">AI engineer &middot; Montreal</span>\n'
+        '      <span class="copy">AI platform engineer &middot; Montreal</span>\n'
         "    </div>\n"
         '    <div class="fcol fcol-end">\n'
         '      <a href="/news/">News desk</a>\n'
