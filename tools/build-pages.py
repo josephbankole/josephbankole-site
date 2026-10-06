@@ -162,19 +162,14 @@ def substack_url(medium: str) -> str:
     return "%s/?utm_source=josephbankole.ca&amp;utm_medium=%s" % (SUBSTACK, medium)
 
 
-# The newsletter band, written once. Checked against the archive on
-# 2026-09-23 (archvai.substack.com/api/v1/archive): most issues take one
-# company building AI data centres (Nautilus on a river in Stockton, Heata in
-# home hot-water tanks, Verrus, Crusoe) and test its claims against what it has
-# built. Cadence is Monday, Wednesday and Friday per canon D-2026-09-22c. It
-# does not cover agentic commerce, so the band does not say it does.
-SUBSCRIBE_HEADING = "The ARCHV AI newsletter"
-SUBSCRIBE_COPY = (
-    "It goes out on Monday, Wednesday and Friday. Most issues take one company "
-    "building the hardware AI runs on, say a data centre floating on a river, "
-    "and check its claims against what it has built."
-)
-SUBSCRIBE_BUTTON = "Subscribe on Substack"
+# The band at the foot of articles and hubs (D-2026-10-06a, founder: the
+# Substacks are paused, so the band invites readers to @thearchv.ai on Threads,
+# which posts one sourced AI story most days). Nav and footer Substack links are
+# unchanged and still carry utm tags.
+THREADS = "https://www.threads.com/@thearchv.ai"
+SUBSCRIBE_HEADING = "@thearchv.ai on Threads"
+SUBSCRIBE_COPY = "One AI story most days, with its sources named."
+SUBSCRIBE_BUTTON = "Follow on Threads"
 
 # What a waitlist call to action looks like in HTML. Lower-cased substrings.
 # The bare word is not on the list: news prose uses it about other companies'
@@ -474,11 +469,10 @@ HUBLINKS = (
 
 
 def subscribe_block(medium: str, location: str) -> str:
-    """The one ask at the foot of an article or hub: The ARCHV AI on Substack.
+    """The one ask at the foot of an article or hub: follow @thearchv.ai on Threads.
 
-    It replaced the waitlist band on 2026-09-23 and is now the primary button,
-    not the ghost one it was while the waitlist sat below it. Any hand-written
-    .ctaband a page still carries is dropped on rebuild, never lifted.
+    It replaced the ARCHV AI Substack band on 2026-10-06 (D-2026-10-06a). Any
+    hand-written .ctaband a page still carries is dropped on rebuild, never lifted.
     """
     return (
         '<section class="subband" aria-labelledby="sub-h">\n'
@@ -486,7 +480,7 @@ def subscribe_block(medium: str, location: str) -> str:
         "  <p>%s</p>\n"
         '  <a class="btn" data-location="%s" href="%s" target="_blank" rel="noopener">%s</a>\n'
         "</section>"
-        % (SUBSCRIBE_HEADING, SUBSCRIBE_COPY, location, substack_url(medium), SUBSCRIBE_BUTTON)
+        % (SUBSCRIBE_HEADING, SUBSCRIBE_COPY, location, THREADS, SUBSCRIBE_BUTTON)
     )
 
 
