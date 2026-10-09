@@ -59,7 +59,7 @@
           "url": "https://josephbankole.ca/apple-touch-icon.png"
         }
       },
-      "wordCount": 960,
+      "wordCount": 961,
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://josephbankole.ca/#website"
@@ -132,7 +132,7 @@
 
       <h2>The guard&#x27;s own test still passed</h2>
 
-      <p>The engine has a refusal test for this guard, which hands it the word &ldquo;zero&rdquo;, a zero-width space, then &ldquo;width&rdquo;, and expects the caption to be refused. The test survived the strip because it spells the character as <code></code>, an escape the strip has no reason to touch. Run against a scratch copy of the engine with the stripped statement put back, it passes. A guard that refuses everything refuses the zero-width sample along with the rest.</p>
+      <p>The engine has a refusal test for this guard, which hands it the word &ldquo;zero&rdquo;, a zero-width space, then &ldquo;width&rdquo;, and expects the caption to be refused. The test survived the strip because it spells the character as <code>&#92;u200b</code>, an escape the strip has no reason to touch. Run against a scratch copy of the engine with the stripped statement put back, it passes. A guard that refuses everything refuses the zero-width sample along with the rest.</p>
 
       <p>The other tests are what break. In the same module 39 of 141 fail on the scratch copy, against one with the current statement, and 29 of the 38 new failures carry the refusal message itself, an ordinary caption turned away for invisible characters. This version fails loudly, and the next run of the suite would have caught it. A class written as a plain list would have shrunk instead, losing members one by one, and the refusal test would go red only if its own sample happened to be among the losses. The suite had already shown <a href="/blog/a-green-suite-that-guarded-nothing.html">how far a green run can drift from the thing it checks</a>.</p>
 
