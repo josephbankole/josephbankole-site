@@ -5,8 +5,44 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Wed, 30 Sep 2026 19:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 09 Oct 2026 13:17:09 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>A Unicode strip widened a regex from 54 to 8,203 characters</title>
+    <link>https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html</link>
+    <guid>https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html</guid>
+    <pubDate>Fri, 09 Oct 2026 13:17:09 GMT</pubDate>
+    <description>A pass that deletes invisible Unicode ran over a regex built from those characters and left a guard that would refuse plain text. Write them as escapes.</description>
+    <content:encoded><![CDATA[<p>One of the operation&#x27;s desks publishes short video clips, and no caption leaves it until a guard in the publishing code has read it for invisible characters: the no-break space, the soft hyphen, the zero-width joiner, the byte-order mark, 54 code points in all. The guard is one statement of Python, a regular expression character class, and until 6 October that class was typed as the characters themselves. On screen most of it was blank space between square brackets, broken by three hyphens.</p>
+
+      <p>The operation also has a rule that everything it ships goes through a strip pass last, a script that deletes invisible and format Unicode. The rule names code on purpose, on the reasoning that a zero-width space inside a JSON file or a shell command is a bug wherever it lands. The same pass sits behind the headline veto in <a href="https://josephbankole.ca/blog/rss-feed-terms-news-aggregator.html">the post on ESPN&#x27;s feed terms</a>. During the 6 October rebuild of the desks&#x27; routines it ran over the clip engine&#x27;s source and rewrote the guard. The fix, committed that evening, spelled the class out in <code>\u</code> escapes and kept the pattern identical.</p>
+
+      <h2>A range is two endpoints and a hyphen</h2>
+
+      <p>Replayed this week against the pre-fix statement from the engine&#x27;s git history, the strip deletes 11 characters outright, the soft hyphen, the right-to-left mark and the byte-order mark among them. It swaps five more, the no-break space and four wide spaces, for an ordinary space. The statement drops from 79 characters to 68.</p>
+
+      <p>Inside a character class, a deleted character can take a range&#x27;s endpoint with it. The class held three ranges, and U+2000 to U+200F was the first of them. The strip turned the U+2000 endpoint into a plain space and deleted U+200F, and the hyphen stayed where it was, now joining the space to the next character that survived, U+2028. So the class ran from the space character to U+2028, which takes in every ASCII letter, digit and punctuation mark, accented Latin, and the Greek, Cyrillic, Hebrew and Arabic alphabets. Counted across the Basic Multilingual Plane, the original guard matched 54 code points. The stripped one matched 8,203, and a caption reading &ldquo;hello&rdquo; would have been refused.</p>
+
+      <h2>The guard&#x27;s own test still passed</h2>
+
+      <p>The engine has a refusal test for this guard, which hands it the word &ldquo;zero&rdquo;, a zero-width space, then &ldquo;width&rdquo;, and expects the caption to be refused. The test survived the strip because it spells the character as <code></code>, an escape the strip has no reason to touch. Run against a scratch copy of the engine with the stripped statement put back, it passes. A guard that refuses everything refuses the zero-width sample along with the rest.</p>
+
+      <p>The other tests are what break. In the same module 39 of 141 fail on the scratch copy, against one with the current statement, and 29 of the 38 new failures carry the refusal message itself, an ordinary caption turned away for invisible characters. This version fails loudly, and the next run of the suite would have caught it. A class written as a plain list would have shrunk instead, losing members one by one, and the refusal test would go red only if its own sample happened to be among the losses. The suite had already shown <a href="https://josephbankole.ca/blog/a-green-suite-that-guarded-nothing.html">how far a green run can drift from the thing it checks</a>.</p>
+
+      <h2>A compiler gave the same advice in 2021</h2>
+
+      <p>The wider industry met invisible characters in source code as a security problem. Nicholas Boucher and Ross Anderson of the University of Cambridge showed that Unicode bidirectional control characters can make code display one way to a reviewer and compile another way, in a paper titled <a href="https://arxiv.org/abs/2111.00169">&ldquo;Trojan Source: Invisible Vulnerabilities&rdquo;</a>, first posted on 30 October 2021. <a href="https://krebsonsecurity.com/2021/11/trojan-source-bug-threatens-the-security-of-all-code/">KrebsOnSecurity reported it on 1 November</a> and quoted Anderson on code that &ldquo;appears innocuous to a human reviewer&rdquo;. The flaw is tracked as CVE-2021-42574, in <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-42574">the US National Vulnerability Database</a> and in <a href="https://peps.python.org/pep-0672/">Python&#x27;s PEP 672</a>, which credits Boucher and Anderson&#x27;s report as its prompt.</p>
+
+      <p>Rust shipped version 1.56.1 the same day with two lints that refuse to compile code carrying those code points in string literals or comments. <a href="https://blog.rust-lang.org/2021/11/01/cve-2021-42574/">Its security advisory</a> told developers with a legitimate use for them to replace each one with its escape sequence, and <a href="https://doc.rust-lang.org/rustc/lints/listing/deny-by-default.html">the compiler&#x27;s lint reference</a> still shows the error suggesting <code>\u{202e}</code> in place of the raw character.</p>
+
+      <p>The desk&#x27;s case ran the other way round from Trojan Source. Nobody was hiding anything. A cleaner doing its job could not tell the characters a guard was looking for from the characters it existed to remove, because in the file they were the same bytes. Written as escapes, they stop being the same bytes. A reviewer can read them in a diff, and the strip passes over them.</p>
+
+      <h2>What to change in your own code</h2>
+
+      <p>Spell every invisible or format character in source as an escape. That covers regular expressions, string constants, test fixtures and config files, and it holds even when no cleaner runs over your repository today, since the next editor, formatter or copy-paste may do the cleaning for you. Treat a character class as grammar, since any tool that deletes or substitutes characters can move a range&#x27;s endpoints and leave its hyphen standing. Give every guard a test that clean input gets through, because a refusal test cannot tell a working guard from one that refuses everything. And when a cleaning pass runs over code, run the suite afterwards, on the cleaned bytes.</p>
+
+      <p>The guard is still one statement of Python. It now reads as a row of backslashes and hex digits, uglier than the blank space it replaced, and the strip passes over all 174 characters of it without changing a byte.</p>]]></content:encoded>
+  </item>
   <item>
     <title>Read the feed terms before you build a news aggregator</title>
     <link>https://josephbankole.ca/blog/rss-feed-terms-news-aggregator.html</link>

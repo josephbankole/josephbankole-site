@@ -15,6 +15,7 @@
 
 ## Key essays
 
+- [A Unicode strip widened a regex from 54 to 8,203 characters](https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html): a cleanup pass that deletes invisible Unicode rewrote a regex built from those characters, why the guard's own test still passed, and why invisible characters in code belong in escapes.
 - [Read the feed terms before you build a news aggregator](https://josephbankole.ca/blog/rss-feed-terms-news-aggregator.html): the RSS terms of more than 50 sports publishers, read before a news aggregator launched; only ESPN's plainly allowed display on another site.
 - [Web search summary dropped 3 names and cited a dead URL](https://josephbankole.ca/blog/a-search-summary-is-not-a-source.html): a search summary that dropped three names from a seventeen-member list, invented a table and returned a 404, and what to fetch before citing.
 - [An agent's retraction is no more evidence than its report](https://josephbankole.ca/blog/agent-retraction-is-not-evidence.html): a verification agent said it had invented its sources, and a check of each published claim found every one true.

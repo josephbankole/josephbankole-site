@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Unicode strip widened a regex from 54 to 8,203 characters</title>
+<meta name="description" content="A pass that deletes invisible Unicode ran over a regex built from those characters and left a guard that would refuse plain text. Write them as escapes." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="A Unicode strip widened a regex from 54 to 8,203 characters" />
+<meta property="og:description" content="A pass that deletes invisible Unicode ran over a regex built from those characters and left a guard that would refuse plain text. Write them as escapes." />
+<meta property="og:url" content="https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-10-09T09:17:09-04:00" />
+<meta property="article:modified_time" content="2026-10-09T09:17:09-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="A Unicode strip widened a regex from 54 to 8,203 characters" />
+<meta name="twitter:description" content="A pass that deletes invisible Unicode ran over a regex built from those characters and left a guard that would refuse plain text. Write them as escapes." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "A Unicode strip widened a regex from 54 to 8,203 characters",
+      "description": "A pass that deletes invisible Unicode ran over a regex built from those characters and left a guard that would refuse plain text. Write them as escapes.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 960,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html"
+      },
+      "datePublished": "2026-10-09T09:17:09-04:00",
+      "dateModified": "2026-10-09T09:17:09-04:00",
+      "articleSection": "Payments and applied AI"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "A Unicode strip widened a regex from 54 to 8,203 characters",
+          "item": "https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn" data-location="blog-nav" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
+    <span class="index">Build in public</span>
+    <h1>A Unicode strip widened a regex from 54 to 8,203 characters</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-10-09">9 October 2026</time><span>4 min read</span><span>Unicode &middot; Testing</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>One of the operation&#x27;s desks publishes short video clips, and no caption leaves it until a guard in the publishing code has read it for invisible characters: the no-break space, the soft hyphen, the zero-width joiner, the byte-order mark, 54 code points in all. The guard is one statement of Python, a regular expression character class, and until 6 October that class was typed as the characters themselves. On screen most of it was blank space between square brackets, broken by three hyphens.</p>
+
+      <p>The operation also has a rule that everything it ships goes through a strip pass last, a script that deletes invisible and format Unicode. The rule names code on purpose, on the reasoning that a zero-width space inside a JSON file or a shell command is a bug wherever it lands. The same pass sits behind the headline veto in <a href="/blog/rss-feed-terms-news-aggregator.html">the post on ESPN&#x27;s feed terms</a>. During the 6 October rebuild of the desks&#x27; routines it ran over the clip engine&#x27;s source and rewrote the guard. The fix, committed that evening, spelled the class out in <code>\u</code> escapes and kept the pattern identical.</p>
+
+      <h2>A range is two endpoints and a hyphen</h2>
+
+      <p>Replayed this week against the pre-fix statement from the engine&#x27;s git history, the strip deletes 11 characters outright, the soft hyphen, the right-to-left mark and the byte-order mark among them. It swaps five more, the no-break space and four wide spaces, for an ordinary space. The statement drops from 79 characters to 68.</p>
+
+      <p>Inside a character class, a deleted character can take a range&#x27;s endpoint with it. The class held three ranges, and U+2000 to U+200F was the first of them. The strip turned the U+2000 endpoint into a plain space and deleted U+200F, and the hyphen stayed where it was, now joining the space to the next character that survived, U+2028. So the class ran from the space character to U+2028, which takes in every ASCII letter, digit and punctuation mark, accented Latin, and the Greek, Cyrillic, Hebrew and Arabic alphabets. Counted across the Basic Multilingual Plane, the original guard matched 54 code points. The stripped one matched 8,203, and a caption reading &ldquo;hello&rdquo; would have been refused.</p>
+
+      <h2>The guard&#x27;s own test still passed</h2>
+
+      <p>The engine has a refusal test for this guard, which hands it the word &ldquo;zero&rdquo;, a zero-width space, then &ldquo;width&rdquo;, and expects the caption to be refused. The test survived the strip because it spells the character as <code></code>, an escape the strip has no reason to touch. Run against a scratch copy of the engine with the stripped statement put back, it passes. A guard that refuses everything refuses the zero-width sample along with the rest.</p>
+
+      <p>The other tests are what break. In the same module 39 of 141 fail on the scratch copy, against one with the current statement, and 29 of the 38 new failures carry the refusal message itself, an ordinary caption turned away for invisible characters. This version fails loudly, and the next run of the suite would have caught it. A class written as a plain list would have shrunk instead, losing members one by one, and the refusal test would go red only if its own sample happened to be among the losses. The suite had already shown <a href="/blog/a-green-suite-that-guarded-nothing.html">how far a green run can drift from the thing it checks</a>.</p>
+
+      <h2>A compiler gave the same advice in 2021</h2>
+
+      <p>The wider industry met invisible characters in source code as a security problem. Nicholas Boucher and Ross Anderson of the University of Cambridge showed that Unicode bidirectional control characters can make code display one way to a reviewer and compile another way, in a paper titled <a href="https://arxiv.org/abs/2111.00169">&ldquo;Trojan Source: Invisible Vulnerabilities&rdquo;</a>, first posted on 30 October 2021. <a href="https://krebsonsecurity.com/2021/11/trojan-source-bug-threatens-the-security-of-all-code/">KrebsOnSecurity reported it on 1 November</a> and quoted Anderson on code that &ldquo;appears innocuous to a human reviewer&rdquo;. The flaw is tracked as CVE-2021-42574, in <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-42574">the US National Vulnerability Database</a> and in <a href="https://peps.python.org/pep-0672/">Python&#x27;s PEP 672</a>, which credits Boucher and Anderson&#x27;s report as its prompt.</p>
+
+      <p>Rust shipped version 1.56.1 the same day with two lints that refuse to compile code carrying those code points in string literals or comments. <a href="https://blog.rust-lang.org/2021/11/01/cve-2021-42574/">Its security advisory</a> told developers with a legitimate use for them to replace each one with its escape sequence, and <a href="https://doc.rust-lang.org/rustc/lints/listing/deny-by-default.html">the compiler&#x27;s lint reference</a> still shows the error suggesting <code>\u{202e}</code> in place of the raw character.</p>
+
+      <p>The desk&#x27;s case ran the other way round from Trojan Source. Nobody was hiding anything. A cleaner doing its job could not tell the characters a guard was looking for from the characters it existed to remove, because in the file they were the same bytes. Written as escapes, they stop being the same bytes. A reviewer can read them in a diff, and the strip passes over them.</p>
+
+      <h2>What to change in your own code</h2>
+
+      <p>Spell every invisible or format character in source as an escape. That covers regular expressions, string constants, test fixtures and config files, and it holds even when no cleaner runs over your repository today, since the next editor, formatter or copy-paste may do the cleaning for you. Treat a character class as grammar, since any tool that deletes or substitutes characters can move a range&#x27;s endpoints and leave its hyphen standing. Give every guard a test that clean input gets through, because a refusal test cannot tell a working guard from one that refuses everything. And when a cleaning pass runs over code, run the suite afterwards, on the cleaned bytes.</p>
+
+      <p>The guard is still one statement of Python. It now reads as a row of backslashes and hex digits, uglier than the blank space it replaced, and the strip passes over all 174 characters of it without changing a byte.</p>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <nav class="pager" aria-label="Neighbouring posts">
+    <a class="pager-prev" href="/blog/rss-feed-terms-news-aggregator.html"><span class="pager-dir">&larr; Earlier post</span><span class="pager-ttl">Read the feed terms before you build a news aggregator</span><span class="pager-date">30 Sep 2026</span></a>
+  </nav>
+  <section class="related" aria-labelledby="related-h" data-generated="latest">
+    <h2 id="related-h">Latest field notes</h2>
+    <div class="postlist">
+        <a class="post-row" href="/blog/agent-retraction-is-not-evidence.html">
+          <time class="date" datetime="2026-09-23">Sep 2026</time>
+          <span class="ttl">An agent's retraction is no more evidence than its report<span>A verification agent said it had invented its sources after I had published from its report. My desk checked each published claim. Every one was true.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/xcode-27-no-test-destination.html">
+          <time class="date" datetime="2026-09-21">Sep 2026</time>
+          <span class="ttl">Xcode 27 broke every test destination<span>A stale CoreSimulator left no test destination and simctl hung on a password panel. The second trap was a destination naming a phone iOS 27 does not ship.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/ffmpeg-overlays-memory.html">
+          <time class="date" datetime="2026-09-18">Sep 2026</time>
+          <span class="ttl">38 stills in one ffmpeg graph broke a 34-minute render<span>One filter graph with 38 looped PNGs died three minutes into the render. Reading each still once and rendering in 85 chunks got it through.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">@thearchv.ai on Threads</h2>
+    <p>One AI story most days, with its sources named.</p>
+    <a class="btn" data-location="blog-article" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Follow on Threads</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">AI platform engineer &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a data-location="blog-footer" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">Contact</a>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
