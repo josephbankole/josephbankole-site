@@ -5,8 +5,76 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 09 Oct 2026 13:17:09 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 16 Oct 2026 13:16:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>A git push is not a deploy, so poll the live URL first</title>
+    <link>https://josephbankole.ca/blog/git-push-is-not-a-deploy.html</link>
+    <guid>https://josephbankole.ca/blog/git-push-is-not-a-deploy.html</guid>
+    <pubDate>Fri, 16 Oct 2026 13:16:00 GMT</pubDate>
+    <description>A commit on main left every uploaded asset 404 until a GitHub Pages build ran. Poll the public URL, cache-busted, for a 200 before anything links to it.</description>
+    <content:encoded><![CDATA[<p>A git push to main is not a GitHub Pages deploy, and this site&#x27;s own news brief showed it again this morning. The desk pushed the brief, then polled its public URL with a fresh query string each time, about 20 seconds apart. The first three polls came back 404. The fourth came back 200, carrying the new bytes.</p>
+
+      <p>A minute of 404 costs nothing on a page nobody links to yet. It costs a good deal more when a scheduled social post, an email or a feed entry is already pointing at the address, and that is how the desk that runs this site came to stop trusting its own commits.</p>
+
+      <h2>Main holds the file, Pages serves the artifact</h2>
+
+      <p>The desk&#x27;s media upload script commits carousel slides and video to the repository of the site its posts link to, into <code>public/media</code> on main. The site is a Vite build: <code>npm run build</code> copies everything in <code>public/</code> into <code>dist</code>, and a workflow called &ldquo;Deploy to GitHub Pages&rdquo; turns <code>dist</code> into the artifact that Pages actually serves. Until that workflow ran, every uploaded asset returned 404 at its public address, while the same file at raw.githubusercontent.com returned 200.</p>
+
+      <p>GitHub documents the same arrangement. Its guide to publishing with a custom Actions workflow sets out the general flow: trigger on a push to the default branch, check out the repository, build if the site needs building, upload the static files with <code>actions/upload-pages-artifact</code>, then deploy that artifact with <code>actions/deploy-pages</code> <a href="#src-1" aria-label="Source 1">[1]</a>. The deploy-pages README describes the action as deploying a Pages site &ldquo;previously uploaded as an artifact&rdquo; <a href="#src-2" aria-label="Source 2">[2]</a>. What a visitor sees is whatever the last deploy job shipped. A commit that never reaches a deploy job moves the branch and leaves the website exactly where it was.</p>
+
+      <h2>For weeks the timing covered it</h2>
+
+      <p>The gap hid because the pipeline rarely made only one commit in a morning. Some later commit, a page edit or another desk&#x27;s output, usually set off a build before the social post&#x27;s slot came round, and the media went live in time without anyone arranging it. The upload script printed that it had committed, the post went out at its hour, and the images loaded. For those weeks the desk&#x27;s deploy strategy was, in effect, its own untidiness.</p>
+
+      <h2>6 August, the day nothing ran</h2>
+
+      <p>On 6 August 2026 the media commit and an explicit empty commit, pushed to force a build, both reached origin/main, and neither started a workflow run, although the repository&#x27;s <code>deploy.yml</code> was set to run on a push to main. The carousel due on 9 August was held rather than queued against assets that answered 404.</p>
+
+      <p>Holding was the right call because of what sits at the other end of the link. An auto-publishing post cannot be repaired once it has gone out, and neither can an Instagram notification post, the kind that waits for a person to press send; the desk has already watched <a href="https://josephbankole.ca/blog/a-read-back-that-proved-nothing.html">one logged as waiting for review publish itself</a>. Instagram does not take your word for the media either. Meta&#x27;s content publishing guide says it fetches the media with cURL during the publishing attempt, so the file must be on a publicly accessible server at that moment <a href="#src-3" aria-label="Source 3">[3]</a>, and the reference for the media endpoint repeats the warning for image URLs and Reels covers <a href="#src-4" aria-label="Source 4">[4]</a>.</p>
+
+      <h2>Pushes that never start a run</h2>
+
+      <p>When a URL stays 404, the tempting diagnosis is propagation: give the CDN another few minutes. Check first whether anything was built to propagate. GitHub&#x27;s documentation names two ordinary ways for a push to main to produce no run at all. Events triggered with a repository&#x27;s <code>GITHUB_TOKEN</code> do not create a new workflow run, with exceptions for <code>workflow_dispatch</code>, <code>repository_dispatch</code> and some pull request events <a href="#src-5" aria-label="Source 5">[5]</a>; the create-pull-request action warns its own users about the same rule in its guidelines <a href="#src-6" aria-label="Source 6">[6]</a>. A commit message containing <code>[skip ci]</code>, or one of four similar strings, skips workflows that run on push or pull request <a href="#src-7" aria-label="Source 7">[7]</a>, a feature GitHub announced in February 2021 <a href="#src-8" aria-label="Source 8">[8]</a>. An upload script that commits from inside another workflow, or borrows someone&#x27;s commit message template, can trip either one quietly.</p>
+
+      <p>Whatever the cause on a given day, the workflow&#x27;s run list settles the first question in seconds: did anything start for this commit.</p>
+
+      <h2>The check the desk runs now</h2>
+
+      <p>The rule the desk adopted after 6 August is short. Poll the live URL, cache-busted, until it returns 200 with the new bytes. Confirm the feed entries that point at it. If the build has not landed in about four minutes, retrigger it with an empty commit. Never treat the upload script printing &ldquo;committed&rdquo; as evidence of anything beyond the repository.</p>
+
+      <p>The cache-busting has a measured reason. A request for a page on this site this morning came back with <code>Cache-Control: max-age=600</code> and a Varnish <code>Via</code> header, so a plain request can be answered from a copy up to ten minutes old. The same request with a fresh query string came back <code>x-cache: MISS</code>. Compare the bytes as well as the status code, because a 200 for the file you replaced is a pass for the wrong file.</p>
+
+      <pre><code>url="https://example.com/media/slide-1.png"
+want=$(shasum -a 256 public/media/slide-1.png | cut -d' ' -f1)
+
+for i in $(seq 1 24); do
+  code=$(curl -s -o /tmp/probe -w '%{http_code}' "$url?cb=$(date +%s)")
+  got=$(shasum -a 256 /tmp/probe | cut -d' ' -f1)
+  if [ "$code" = 200 ] &amp;&amp; [ "$got" = "$want" ]; then
+    echo "live after $i polls"; exit 0
+  fi
+  sleep 10
+done
+
+# Four minutes and still not live: did a run start at all?
+gh run list --workflow deploy.yml --commit "$(git rev-parse HEAD)"
+exit 1</code></pre>
+
+      <p>That site&#x27;s build copies <code>public/</code> into <code>dist</code> unchanged, which is why the local file&#x27;s hash is a fair thing to compare against. If the run list comes back empty, push the empty commit and start the poll again. If the URL is still 404 after that, the post does not go out.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">GitHub Docs, <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">Configuring a publishing source for your GitHub Pages site</a>, section &ldquo;Creating a custom GitHub Actions workflow to publish your site&rdquo;.</li>
+        <li id="src-2">GitHub, <a href="https://github.com/actions/deploy-pages">actions/deploy-pages README</a>.</li>
+        <li id="src-3">Meta for Developers, <a href="https://developers.facebook.com/docs/instagram-platform/content-publishing/">Instagram Platform: Content publishing</a>, &ldquo;Media on a public server&rdquo;.</li>
+        <li id="src-4">Meta for Developers, <a href="https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media">IG User Media endpoint reference</a>, parameters <code>image_url</code> and <code>cover_url</code>.</li>
+        <li id="src-5">GitHub Docs, <a href="https://docs.github.com/en/actions/using-workflows/triggering-a-workflow">Triggering a workflow</a>, &ldquo;Triggering a workflow from a workflow&rdquo;.</li>
+        <li id="src-6">peter-evans/create-pull-request, <a href="https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md">Concepts, guidelines and advanced usage</a>, &ldquo;Triggering further workflow runs&rdquo;.</li>
+        <li id="src-7">GitHub Docs, <a href="https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs">Skipping workflow runs</a>.</li>
+        <li id="src-8">GitHub Changelog, <a href="https://github.blog/changelog/2021-02-08-github-actions-skip-pull-request-and-push-workflows-with-skip-ci/">GitHub Actions: Skip pull request and push workflows with [skip ci]</a>, 8 February 2021.</li>
+      </ol>]]></content:encoded>
+  </item>
   <item>
     <title>A Unicode strip widened a regex from 54 to 8,203 characters</title>
     <link>https://josephbankole.ca/blog/invisible-unicode-regex-escapes.html</link>
