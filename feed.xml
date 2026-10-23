@@ -5,8 +5,71 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 16 Oct 2026 13:16:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 23 Oct 2026 14:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>A loud API error is cheap. A silently dropped field is not</title>
+    <link>https://josephbankole.ca/blog/api-silently-dropped-fields.html</link>
+    <guid>https://josephbankole.ca/blog/api-silently-dropped-fields.html</guid>
+    <pubDate>Fri, 23 Oct 2026 14:00:00 GMT</pubDate>
+    <description>Buffer's API refused the desk's posts twice, costing one resend each. The fields it accepted and silently dropped cost weeks. Read every one back.</description>
+    <content:encoded><![CDATA[<p>On 21 October Buffer refused one of the desk&#x27;s posts before writing any of it. Buffer is the scheduler the desk queues its social posts through, and the morning&#x27;s Threads thread went to its GraphQL <code>createPost</code> mutation with the image in the shape that had worked for weeks, <code>assets: {images: [{url}]}</code>. The error named the <code>AssetInput</code> type and suggested <code>image</code>. The desk rebuilt the field as a list, <code>[{"image": {"url": "..."}}]</code>, sent it again, and the thread scheduled on the first try.</p>
+
+      <p>The whole incident cost one round trip. It was the second time in five weeks that Buffer had changed what it would accept, and both times the change arrived as an error.</p>
+
+      <h2>Five weeks, two refusals</h2>
+
+      <p>On 15 September the football desk&#x27;s thread failed with an <code>InvalidInputError</code>: Threads, Buffer said, did not support the <code>thread</code> post type, and the valid types were <code>post</code> and <code>ghost_post</code>. The day before, a payload carrying <code>type: "thread"</code> had gone through, and reading that post back showed <code>type: "post"</code>. Buffer had been translating the old value for the desk without saying so, and then it stopped. A failed create writes nothing, so the resend with <code>type: "post"</code> was safe, and the desk lost a few minutes.</p>
+
+      <p>Neither refusal needed anyone to notice anything. The run stopped at the step that was wrong, with the name of the field in the error.</p>
+
+      <h2>The fields it took and threw away</h2>
+
+      <p>The expensive failures were the quiet ones. On 3 August the desk read back three Instagram posts it had created through Buffer&#x27;s simplified <code>create_post</code> tool with a first comment set. All three came back <code>firstComment: null</code>. The same tool had dropped the image on four Threads threads in a row, on 30 and 31 July and 1 and 3 August, and each one published as text. Nothing errored. For weeks the first-comment routine looked as if it was running, and almost no post had carried one.</p>
+
+      <p>The same thing happened three more ways. A <code>.webp</code> portrait attached to a Threads post was accepted, then read back as <code>assets: []</code>, and the thread went out without it. An <code>editPost</code> asking for <code>schedulingType: automatic</code> returned success twice on 4 August and left the stored value where it was. On 17 August one run created two LinkedIn posts eleven seconds apart without setting <code>saveToDraft</code>. One sent on 18 August. The other sat as a draft through its 20 August slot and never published, and nothing reported it.</p>
+
+      <h2>An old rule wrote the silent version</h2>
+
+      <p>Swallowing bad input has a long pedigree. RFC 1958, the IAB&#x27;s statement of the Internet&#x27;s architectural principles, gave the robustness principle as strict when sending and tolerant when receiving, and told implementers that when in doubt they should &ldquo;discard faulty input silently&rdquo; <a href="#src-1" aria-label="Source 1">[1]</a>. That is a fair description of what happened to the desk&#x27;s first comments.</p>
+
+      <p>RFC 9413, published in June 2023 by Martin Thomson and David Schinazi, makes the case against that habit. Its section on harmful consequences describes how tolerated faults become a de facto standard that every later implementation has to copy, and its remedy, which it calls virtuous intolerance, is to generate fatal errors for unspecified conditions so that faults get attention and new implementations get fast, strong feedback <a href="#src-1" aria-label="Source 1">[1]</a>.</p>
+
+      <p>GraphQL builds the intolerant version in. The October 2021 specification requires every field in an input object to be defined on that object&#x27;s expected type <a href="#src-2" aria-label="Source 2">[2]</a>, and a request that fails validation must fail without executing <a href="#src-3" aria-label="Source 3">[3]</a>. The 21 October error was that rule at work: <code>images</code> was no longer a field, so the mutation died before it could write half a post.</p>
+
+      <p>The silent drops and the loud refusals came from the same vendor, by different routes. The simplified tool advertised <code>firstComment</code> in its schema and did not pass it on; the GraphQL <code>createPost</code> mutation, tried on 4 August, carried it through on four posts in a row. The desk moved its writes to the mutation and has kept them there.</p>
+
+      <h2>No version to pin</h2>
+
+      <p>A REST API that changes shape usually earns a new version number, and a client can stay on the old one for a while. The GraphQL project&#x27;s own guidance on schema design takes a firm line against versioning and expects a schema to evolve in place, with new types and fields added to the one that already exists <a href="#src-4" aria-label="Source 4">[4]</a>. The schema the desk calls today is the only one there is.</p>
+
+      <p>That moves the risk onto anything saved. After 21 October the staged <code>vars.json</code> files from earlier runs carried the dead <code>images</code> shape, and the desk&#x27;s standing note now says never to copy one verbatim. A replayed payload is a letter addressed to a house that has since been rebuilt.</p>
+
+      <h2>What the desk checks now, and one check to add</h2>
+
+      <p>Writes go through the route that validates, which here is the GraphQL mutation and never the simplified tool. Every field that decides whether a post sends is set explicitly on every create: <code>mode</code>, <code>schedulingType</code>, <code>needsApproval</code> and <code>saveToDraft</code>. Then a separate query reads the post back and requires the fields the run depends on: <code>assets</code> not empty, <code>firstComment</code> present where one was sent, <code>status</code> reading <code>scheduled</code>.</p>
+
+      <p>The check worth adding is cheaper than a failed run. Before any old payload is replayed, ask the schema what the input type takes today. Introspection is part of the specification, and for an input object type the <code>__Type</code> record returns its <code>inputFields</code> <a href="#src-5" aria-label="Source 5">[5]</a>.</p>
+
+      <pre><code>query {
+  __type(name: "AssetInput") {
+    inputFields { name }
+  }
+}</code></pre>
+
+      <p>If the answer lists <code>image</code> and not <code>images</code>, the saved file is stale before it leaves the machine, and the run can rebuild it instead of finding out from the API.</p>
+
+      <p>The LinkedIn draft from 17 August is still unexplained. The same run created it eleven seconds after a post that sent, and nothing in the desk&#x27;s record says why one went out and the other did not.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">RFC Editor, <a href="https://www.rfc-editor.org/rfc/rfc9413.html">RFC 9413: Maintaining Robust Protocols</a>, M. Thomson and D. Schinazi, June 2023, sections 2, 4 and 5.1.</li>
+        <li id="src-2">GraphQL Specification, October 2021 edition, <a href="https://spec.graphql.org/October2021/#sec-Input-Object-Field-Names">section 5.6.2, Input Object Field Names</a>.</li>
+        <li id="src-3">GraphQL Specification, October 2021 edition, <a href="https://spec.graphql.org/October2021/#sec-Validating-Requests">section 6.1.1, Validating Requests</a>.</li>
+        <li id="src-4">GraphQL Foundation, <a href="https://graphql.org/learn/schema-design/#versioning">Schema Design: Versioning</a>.</li>
+        <li id="src-5">GraphQL Specification, October 2021 edition, <a href="https://spec.graphql.org/October2021/#sec-The-__Type-Type">section 4.2.2, The __Type Type</a>.</li>
+      </ol>]]></content:encoded>
+  </item>
   <item>
     <title>A git push is not a deploy, so poll the live URL first</title>
     <link>https://josephbankole.ca/blog/git-push-is-not-a-deploy.html</link>
