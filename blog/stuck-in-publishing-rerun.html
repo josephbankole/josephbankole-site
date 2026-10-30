@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A post stuck in Publishing: when is it safe to rerun?</title>
+<meta name="description" content="Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/blog/stuck-in-publishing-rerun.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="A post stuck in Publishing: when is it safe to rerun?" />
+<meta property="og:description" content="Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside." />
+<meta property="og:url" content="https://josephbankole.ca/blog/stuck-in-publishing-rerun.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-10-30T09:13:00-04:00" />
+<meta property="article:modified_time" content="2026-10-30T09:13:00-04:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="A post stuck in Publishing: when is it safe to rerun?" />
+<meta name="twitter:description" content="Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "A post stuck in Publishing: when is it safe to rerun?",
+      "description": "Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 1205,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/blog/stuck-in-publishing-rerun.html"
+      },
+      "datePublished": "2026-10-30T09:13:00-04:00",
+      "dateModified": "2026-10-30T09:13:00-04:00",
+      "articleSection": "Payments and applied AI"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "A post stuck in Publishing: when is it safe to rerun?",
+          "item": "https://josephbankole.ca/blog/stuck-in-publishing-rerun.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn" data-location="blog-nav" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
+    <span class="index">Build in public</span>
+    <h1>A post stuck in Publishing: when is it safe to rerun?</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-10-30">30 October 2026</time><span>5 min read</span><span>Scheduling &middot; Idempotency</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>The thread was due at 14:00 on 28 October. It was a Threads post about what Meta had said on its third-quarter call, the desk had built it and gated it, and the scheduler, Content360, had accepted it and listed it for that time. The next day it sat on the Scheduled list with its status reading Publishing, and it was not on the profile. Two days later it still read Publishing.</p>
+
+      <p>It was the third row to do this in nine days. A failed post is a state a desk can read and act on. A post in Publishing asks you to wait, and it doesn&#x27;t say how long.</p>
+
+      <h2>Three rows, three different decisions</h2>
+
+      <p>The first was a thread about American Express, due at 14:00 on 20 October. The next day&#x27;s run found it stuck and not live, and flagged it for a decision: retry or trash. On 22 October the trash had not happened, because the app offered only Delete and the desk could not confirm what that would do, so the row stayed. As of the 30 October log it has not moved.</p>
+
+      <p>The second was a thread about the UK Financial Conduct Authority, due at 14:00 on 22 October. It stuck the same way, and this time the desk was told to build a fresh copy. It scheduled one for 20:30 that evening, and the next day&#x27;s log has the copy live. The stuck original stayed on the list, with a line in the log: if this one ever publishes, delete one of them.</p>
+
+      <p>The third was the Meta thread. On 30 October the desk rebuilt it as a new row due at 14:00 and wrote the risk into its log, that the old row releasing would duplicate the new one.</p>
+
+      <p>Nobody chose between those options with more information than the last person had. The desk can see the row and the profile. It cannot see inside the scheduler, so the record of what happened after the click, if one exists anywhere, isn&#x27;t one the desk can read. Why the rows stick is unknown from here.</p>
+
+      <h2>The profile answers one question</h2>
+
+      <p>Reading the profile tells you the post is not there now. It doesn&#x27;t tell you the post will never be there. Those feel like the same fact at 15:00 on the day and they are different facts, and the gap between them is where a duplicate comes from.</p>
+
+      <p>Marc Brooker put the general form of this in Amazon&#x27;s Builders&#x27; Library: a timeout or failure does not necessarily mean the side effects have not happened <a href="#src-1" aria-label="Source 1">[1]</a>. Amazon&#x27;s piece on idempotent APIs describes the same corner from the caller&#x27;s side, a provisioning process that asks EC2 to launch a workload, gets no response, and can no longer say whether the workload is running <a href="#src-2" aria-label="Source 2">[2]</a>. A stuck status row is that corner with a nicer interface. The call went out, the answer never came back, and a progress label fills the space where the answer should be.</p>
+
+      <h2>Two things the row lacked</h2>
+
+      <p>The first is a deadline on the in-between state. Amazon SQS has a useful model for it. When a consumer receives a message, the message stays in the queue but goes invisible for the length of a visibility timeout, 30 seconds by default and 12 hours at most. If the consumer has not deleted it by then, the message becomes visible again and another consumer can take it <a href="#src-3" aria-label="Source 3">[3]</a>. So "in progress" in SQS is a lease, and the lease runs out whether the worker is alive or not.</p>
+
+      <p>A scheduler that treated Publishing the same way would move every row to one of two states inside a known window: published, or failed and safe to retry. The ten-day-old row would not exist. Scheduling tools don&#x27;t owe you this, but it is the first thing to look for when you pick one. Ask what it does with a job that never reports back.</p>
+
+      <p>The second is a way to say "same post again". Stripe&#x27;s API takes an idempotency key for this. If a connection error occurs, the client repeats the request with the same key, without risk of creating a second object <a href="#src-4" aria-label="Source 4">[4]</a>. The client generates the key, so the identity of the operation belongs to the caller and survives the retry. Amazon&#x27;s version is a unique client request identifier, and its article explains why it asks callers for one instead of inferring duplicates from identical parameters: sometimes a caller really does want two identical things <a href="#src-2" aria-label="Source 2">[2]</a>.</p>
+
+      <p>The desk&#x27;s rerun had no such key. It was a new row with its own id, so nothing connects it to the old one except a sentence in a log. The scheduler has no way of knowing they are the same post.</p>
+
+      <h2>What to do when you own neither side</h2>
+
+      <p>Most people running agents against third-party tools can&#x27;t add a lease or a key to someone else&#x27;s product. Four things still work from the outside, and the desk does some of them already.</p>
+
+      <p>Read the destination, as well as the tool. A check on the scheduler&#x27;s own list tells you what the scheduler believes. The Amex flag came from a run that looked at Threads as well. <a href="/blog/a-read-back-that-proved-nothing.html">A read-back has limits of its own</a>, but a read from the place the reader will see is the one that can catch this.</p>
+
+      <p>Give the state your own deadline. Pick a number, say one hour past the due time, and treat a row still in progress after it as a case for a decision. Two of the three flags came from the next day&#x27;s run, which is a deadline of about 24 hours by accident. For a post about a dated story, that is often the difference between saving it and not bothering.</p>
+
+      <p>Price the duplicate before you rerun. Two copies of a social post cost a delete. Two copies of a payment or a customer email cost a good deal more, and for those a stuck row should stop the line until someone can read the far side. The rerun decision on these three rows was cheap because the worst case was embarrassing.</p>
+
+      <p>Keep a ledger of the ghosts. Every run since 21 October has carried the stuck rows in its follow-up column, by id, along with the collision each one could cause. It is unglamorous and it is the only key the desk has, a record outside the tool that this new row and that old one are the same post. When a row does release, somebody has to find its twin and delete one, and the log is where they will look.</p>
+
+      <h2>What is still open</h2>
+
+      <p>Three rows still read Publishing in the 30 October log. The Amex row has no copy, so if it releases it is merely late. The other two have twins. The Meta copy is due at 14:00 on 30 October, and if the old row lets go after that, the same thread goes out twice.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">Marc Brooker, Amazon Builders&#x27; Library, <a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">Timeouts, retries, and backoff with jitter</a>.</li>
+        <li id="src-2">Amazon Builders&#x27; Library, <a href="https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/">Making retries safe with idempotent APIs</a>.</li>
+        <li id="src-3">Amazon Web Services, <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Amazon SQS visibility timeout</a>, SQS Developer Guide.</li>
+        <li id="src-4">Stripe API Reference, <a href="https://docs.stripe.com/api/idempotent_requests">Idempotent requests</a>.</li>
+      </ol>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <nav class="pager" aria-label="Neighbouring posts">
+    <a class="pager-prev" href="/blog/api-silently-dropped-fields.html"><span class="pager-dir">&larr; Earlier post</span><span class="pager-ttl">A loud API error is cheap. A silently dropped field is not</span><span class="pager-date">23 Oct 2026</span></a>
+  </nav>
+  <section class="related" aria-labelledby="related-h" data-generated="latest">
+    <h2 id="related-h">Latest field notes</h2>
+    <div class="postlist">
+        <a class="post-row" href="/blog/git-push-is-not-a-deploy.html">
+          <time class="date" datetime="2026-10-16">Oct 2026</time>
+          <span class="ttl">A git push is not a deploy, so poll the live URL first<span>A commit on main left every uploaded asset 404 until a GitHub Pages build ran. Poll the public URL, cache-busted, for a 200 before anything links to it.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/invisible-unicode-regex-escapes.html">
+          <time class="date" datetime="2026-10-09">Oct 2026</time>
+          <span class="ttl">A Unicode strip widened a regex from 54 to 8,203 characters<span>A pass that deletes invisible Unicode ran over a regex built from those characters and left a guard that would refuse plain text. Write them as escapes.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/rss-feed-terms-news-aggregator.html">
+          <time class="date" datetime="2026-09-30">Sep 2026</time>
+          <span class="ttl">Read the feed terms before you build a news aggregator<span>My agents checked the RSS terms of more than 50 sports publishers before the Wire launched. Only ESPN's plainly allowed display on another site.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">@thearchv.ai on Threads</h2>
+    <p>One AI story most days, with its sources named.</p>
+    <a class="btn" data-location="blog-article" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Follow on Threads</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">AI platform engineer &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a data-location="blog-footer" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">Contact</a>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
