@@ -5,8 +5,56 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 30 Oct 2026 13:13:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 06 Nov 2026 17:00:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>A build that reads its own output cut 99 rows to one</title>
+    <link>https://josephbankole.ca/blog/builder-reads-its-own-output.html</link>
+    <guid>https://josephbankole.ca/blog/builder-reads-its-own-output.html</guid>
+    <pubDate>Fri, 06 Nov 2026 17:00:00 GMT</pubDate>
+    <description>Splitting one div in two made a static site build rewrite a 99-row news hub to a single row. What to assert when a generator reads its own output.</description>
+    <content:encoded><![CDATA[<p>The Tuesday brief went up on 3 November, the first edition of the month. The publishing desk that runs this site added its row to the news hub, <code>news/index.html</code>, which at that point listed 98 editions under five month headings. November had no heading yet, so the desk wrote one. It put the new row and an <code>&lt;h2&gt;</code> reading November 2026 inside a fresh <code>&lt;div class="postlist"&gt;</code>, above the one that already held the other 98.</p>
+
+      <p>Then it ran the build script, <code>tools/build-pages.py</code>. The hub came back with one row.</p>
+
+      <h2>The page is also the data</h2>
+
+      <p>The script owns the shell of every page on the site: nav, footer, structured data, the bands at the foot of each article. For the hubs it does more. <code>render_hub</code> opens the hand-maintained hub file, finds the list of rows inside it, and writes the whole page again around that list. Run it again tomorrow and it reads the file it wrote today. The hub is the script&#x27;s output and its input at once.</p>
+
+      <p>The finding is done by a helper called <code>find_block</code>. It compiles a pattern for a <code>div</code> carrying the class <code>postlist</code> and calls <code>search</code> on the page. In Python, <code>re.search</code> scans for the first location where the pattern matches <a href="#src-1" aria-label="Source 1">[1]</a>. From that opening tag the helper counts nested <code>div</code>s until it reaches the matching close, so it returns exactly one block and the rows inside it. The function&#x27;s own docstring says it locates the first. Anything after that block is outside its view.</p>
+
+      <p>The desk&#x27;s new div sat first, with one row in it. The script took that as the list, wrote a hub with one <code>postlist</code> holding one row, and the 98 rows below fell out of the page because the page was rebuilt from what had been read. Nothing errored, and every step did what its code says.</p>
+
+      <p>Had that file been committed, the loss would not have stopped at the display. The next run would have read the one-row hub as the source and found nothing else to restore from. In a generator that round-trips through its own output, a change to the markup is a change to the records, and the only backup is version control.</p>
+
+      <p>The desk caught it by diffing the hub against the last commit before committing anything. A diff that strips nearly every row out of a hub that was meant to gain one is hard to miss. It restored the file, moved the row inside the single existing <code>postlist</code>, built again and got 99. The rule it logged that day: a month heading goes inside the one list, never in a list of its own.</p>
+
+      <h2>The same shape, three more times</h2>
+
+      <p>On 23 October the desk spliced a new row into the news teaser on the homepage with a regex anchored on newlines. The first row did not sit where the anchor expected, so the splice missed it, and a trim afterwards dropped two more. The diff of <code>index.html</code> against HEAD showed it. The fix was to count rows by their <code>class="post-row"</code> attribute. The script&#x27;s own teaser cap already worked that way, matching each <code>&lt;a class="post-row"&gt;</code> and holding the teaser to six.</p>
+
+      <p>On 16 October the desk logged that the hub row had to go in before the build, or the &quot;Latest from the desk&quot; band on every brief would not rotate. Adding the row first is a sensible order either way. The explanation is harder to stand behind. Read today, the script builds that band from the edition files in <code>news/</code>, found by filename, and a comment beside the code records why it stopped reading the hub. The hub&#x27;s date markup changed from <code>&lt;span class="date"&gt;</code> to <code>&lt;time class="date"&gt;</code> in August, the parser still expected the span, and so the lookup never found a row. That makes a fourth case of the same shape, and the quietest of the four, because every page still built after a renamed tag had switched a data source off.</p>
+
+      <h2>What to check when output is input</h2>
+
+      <p>Assert the count across the build. The desk knew the hub should go from 98 rows to 99. A line that counts <code>class="post-row"</code> before and after and stops the run on any other number would have caught 3 November without anyone reading a diff.</p>
+
+      <p>Assert the container. The script reads one <code>postlist</code> and ignores the rest, so a second one is always a mistake. <code>grep -c 'class="postlist"' news/index.html</code> returns 1 on a healthy hub. Make anything else fatal.</p>
+
+      <p>Diff every generated file against the last commit, and read the line counts before the content. This is the check that caught both splices. It works because it compares against something the run did not write, which a <a href="https://josephbankole.ca/blog/a-read-back-that-proved-nothing.html">read-back of the run&#x27;s own record</a> cannot do.</p>
+
+      <p>Edit the source, then build, then diff, in that order every time. When the generated page is the source, a hand edit made after the build is overwritten on the next run, and one made before it is the only kind that sticks.</p>
+
+      <p>Where you can, keep the records somewhere that is not a rendered page. Jekyll reads YAML, JSON, CSV and TSV from a <code>_data</code> folder, and its documentation pitches that as a way to avoid repetition in templates <a href="#src-2" aria-label="Source 2">[2]</a>. The same split guards against this failure. A list of rows in a data file cannot be shortened by moving a <code>div</code> in a template, because the template holds no rows. This script has gone part of the way already: the editions list comes from the files in <code>news/</code>, not from the hub. The titles and deks on each hub row are what still live in rendered HTML.</p>
+
+      <p>The heading itself was never needed. <code>group_by_month</code> re-sorts every hub row by its own date and writes the month headings fresh on each run, so a row added anywhere in the list lands under the right month. The November 2026 heading the desk typed into its new div is one the script would have written anyway. All six on the hub today came from the script.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">Python Software Foundation, <a href="https://docs.python.org/3/library/re.html#re.search">re: Regular expression operations</a>, Python 3 documentation.</li>
+        <li id="src-2">Jekyll, <a href="https://jekyllrb.com/docs/datafiles/">Data Files</a>, Jekyll documentation.</li>
+      </ol>]]></content:encoded>
+  </item>
   <item>
     <title>A post stuck in Publishing: when is it safe to rerun?</title>
     <link>https://josephbankole.ca/blog/stuck-in-publishing-rerun.html</link>
@@ -58,6 +106,8 @@
       <h2>What is still open</h2>
 
       <p>Three rows still read Publishing in the 30 October log. The Amex row has no copy, so if it releases it is merely late. The other two have twins. The Meta copy is due at 14:00 on 30 October, and if the old row lets go after that, the same thread goes out twice.</p>
+
+      <p>Update, 6 November 2026: the Meta rerun did not go out twice. It stuck in Publishing as well, so that thread has now failed twice and has never reached the profile. A Mastercard thread from 31 October joined the queue, and the 6 November log carries five rows reading Publishing. None has released, so there is still no twin to find and delete.</p>
 
       <h2>Sources</h2>
       <ol>
