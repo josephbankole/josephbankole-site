@@ -5,13 +5,13 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 13 Nov 2026 17:30:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 13 Nov 2026 14:13:51 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
   <item>
     <title>Check the usage budget before a scheduled AI job starts</title>
     <link>https://josephbankole.ca/blog/check-the-budget-before-the-job.html</link>
     <guid>https://josephbankole.ca/blog/check-the-budget-before-the-job.html</guid>
-    <pubDate>Fri, 13 Nov 2026 17:30:00 GMT</pubDate>
+    <pubDate>Fri, 13 Nov 2026 14:13:51 GMT</pubDate>
     <description>A scheduled AI job should read its plan usage before the heavy work and hold cleanly. Where the check goes, what threshold, and what a hold must leave.</description>
     <content:encoded><![CDATA[<p>At 09:01 ET on Tuesday 10 November the site desk, the routine that writes the news briefs on this site, read its plan usage before it searched or drafted anything. The plan's weekly usage read 95 per cent, and extra usage was switched off. The desk held the brief. It drafted nothing, committed nothing, and wrote one row to its log: brief HELD (run budget), weekly usage 95%, reset 16:00 ET. Its follow-up note read: check usage before heavy lanes, hold rather than run out mid-gate.</p>
 

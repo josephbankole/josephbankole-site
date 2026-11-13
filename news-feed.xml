@@ -5,13 +5,13 @@
   <link>https://josephbankole.ca/news/</link>
   <description>A running digest of payments, agentic commerce, and the AI stories that touch how money moves. Sourced, edited, and written plainly, by Joseph Bankole.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 13 Nov 2026 16:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 13 Nov 2026 14:09:45 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/news-feed.xml" rel="self" type="application/rss+xml" />
   <item>
     <title>Travelport and Mastercard let an AI agent buy a live flight</title>
     <link>https://josephbankole.ca/news/2026-11-13-agentic-commerce.html</link>
     <guid>https://josephbankole.ca/news/2026-11-13-agentic-commerce.html</guid>
-    <pubDate>Fri, 13 Nov 2026 16:00:00 GMT</pubDate>
+    <pubDate>Fri, 13 Nov 2026 14:09:45 GMT</pubDate>
     <description>Agentic commerce brief: on 12 November 2026 an AI agent bought a live flight via Travelport and Mastercard Agent Pay. Coinbase capped agent trading.</description>
     <content:encoded><![CDATA[<p>An AI travel agent built by Booked AI searched for, booked, paid for and ticketed a flight on a live airline without the customer leaving the conversation, Travelport announced on Thursday 12 November with Booked AI, Basis Theory and Mastercard <a class="inline-link" href="https://www.travelport.com/press-releases/travelport-booked-ai-basis-theory-and-mastercard-complete-live-end-to-end-agentic-flight-purchase" target="_blank" rel="noopener" aria-label="Source 1">[1]</a>. The agent never saw the card number. The release names the airline only as &ldquo;a major international carrier&rdquo; <a class="inline-link" href="https://www.travelport.com/press-releases/travelport-booked-ai-basis-theory-and-mastercard-complete-live-end-to-end-agentic-flight-purchase" target="_blank" rel="noopener" aria-label="Source 1">[1]</a>.</p>
       <p>The agent pulled a live New Distribution Capability offer, the fare as the airline itself prices it, through Travelport TripServices. Once the customer confirmed flight and fare in the chat, Mastercard Agent Pay made the payment with a tokenised credential while the real card sat in Basis Theory&rsquo;s PCI-compliant vault, and the ticket was issued through Travelport&rsquo;s and the airline&rsquo;s own systems <a class="inline-link" href="https://www.travelport.com/press-releases/travelport-booked-ai-basis-theory-and-mastercard-complete-live-end-to-end-agentic-flight-purchase" target="_blank" rel="noopener" aria-label="Source 1">[1]</a>. The airline remained the merchant throughout, with no intermediary checkout between it and the money <a class="inline-link" href="https://www.travelport.com/press-releases/travelport-booked-ai-basis-theory-and-mastercard-complete-live-end-to-end-agentic-flight-purchase" target="_blank" rel="noopener" aria-label="Source 1">[1]</a>.</p>
