@@ -5,8 +5,66 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 06 Nov 2026 17:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 13 Nov 2026 17:30:00 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>Check the usage budget before a scheduled AI job starts</title>
+    <link>https://josephbankole.ca/blog/check-the-budget-before-the-job.html</link>
+    <guid>https://josephbankole.ca/blog/check-the-budget-before-the-job.html</guid>
+    <pubDate>Fri, 13 Nov 2026 17:30:00 GMT</pubDate>
+    <description>A scheduled AI job should read its plan usage before the heavy work and hold cleanly. Where the check goes, what threshold, and what a hold must leave.</description>
+    <content:encoded><![CDATA[<p>At 09:01 ET on Tuesday 10 November the site desk, the routine that writes the news briefs on this site, read its plan usage before it searched or drafted anything. The plan's weekly usage read 95 per cent, and extra usage was switched off. The desk held the brief. It drafted nothing, committed nothing, and wrote one row to its log: brief HELD (run budget), weekly usage 95%, reset 16:00 ET. Its follow-up note read: check usage before heavy lanes, hold rather than run out mid-gate.</p>
+
+      <p>A weekly video routine on the same plan read 94 per cent when it started that day. It held too, with no builds. After the weekly reset it was rerun on the owner's order and queued three videos, for Wednesday 11, Saturday 14 and Sunday 15 November.</p>
+
+      <h2>What a limit does to a pipeline</h2>
+
+      <p>Anthropic's help centre describes usage credits as the way to keep working past a plan's limits: "Instead of being blocked when you reach one of your plan's limits, you can switch to consumption-based pricing" <a href="#src-2" aria-label="Source 2">[2]</a>. With that switched off, the limit is a wall, and it arrives on whichever call happens to cross it.</p>
+
+      <p>This site publishes a page in a fixed order: a humanizer edit, an AI-writing detector, a banned-phrases lint, the build, a build check, then a strip of invisible characters over the final bytes, then commit and push. The strip runs last because anything that touches a file afterwards can put the characters back. A run stopped between the build and the strip leaves a built page in the working tree whose bytes the strip never saw, and the next run, or anyone tidying up, can commit it as if it were finished. That cutoff has not happened here, and keeping it that way is why the check sits before the pipeline and never inside it.</p>
+
+      <h2>Where the check goes</h2>
+
+      <p>On 10 November the check came early, ahead of any drafting. A usage reading costs next to nothing, so the only question is where in the opening it belongs. The site desk's run opens with cheap reads: it pulls the repo, reads its spec and the house voice file, and reads the tail of its own log. Those reads cost little and tell the run what it is about to attempt, a Tuesday brief or a Friday with several lanes. The expensive work starts with the first lane: searching, drafting, and the long gate chain on every page.</p>
+
+      <p>So the check goes on that boundary, after the state reads and before the first heavy lane. By then the run knows which lanes it means to run and can price them against what is left. It has spent nothing on a draft it may not be able to finish, and nothing has been written.</p>
+
+      <h2>Choosing the number</h2>
+
+      <p>A fixed percentage borrowed from somewhere else will be wrong for your plan. The usable threshold comes from your own runs. Read usage at the start and the end of a few full runs, and the difference is what a run costs. Hold when what is left is less than that cost plus a margin.</p>
+
+      <p>The margin matters because the budget is shared. A daily routine read the plan's weekly usage at 7 per cent on the morning after the reset, and on 13 November it read 35 per cent. That is 28 points in two days across every routine on the account, and each of them reads the same total. At 95 per cent the desk had five points left, and it held rather than find out whether a brief and its full gate chain would fit in them.</p>
+
+      <h2>What a hold leaves behind</h2>
+
+      <p>A clean hold leaves three things behind.</p>
+
+      <p>No half-built files. The desk drafts outside the repository and moves a page in only when it is ready for the build, so a hold before the first lane leaves the working tree exactly as the last good commit left it. Nothing needs cleaning up before the next run.</p>
+
+      <p>One log row, with the reason in it. HELD, the cause, the reading and the reset time. A row that says HELD (run budget) with 95% beside it tells the next reader the run was deliberate. A run that dies at the limit writes no row at all, and the log then looks the same as a scheduler that never fired.</p>
+
+      <p>A resume path. The reset time in the row says when the lane can run again. The follow-up note says what to change so the next run makes the same call earlier.</p>
+
+      <h2>Rank the lanes before you need to</h2>
+
+      <p>The desk's spec ranks its lanes for a short run: the brief first, then the essay, then the SEO pass, then the cornerstone answers. A held lane logs HELD with the reason. That ranking is written down before any run is short, so a thin budget never becomes a judgement made under pressure by the run itself.</p>
+
+      <p>Ranking works best with the check repeated between lanes. A run that clears the bar for the brief may not clear it for the essay as well. Reading usage again before each heavy lane lets the run ship the brief, hold the essay and the SEO pass, and write a row for each. The lane that hurts most when it is missed goes first, and whatever falls off the end falls off with a reason attached.</p>
+
+      <h2>Resuming after the reset</h2>
+
+      <p>Anthropic's help centre says weekly limits "reset at a fixed time each week that is assigned to your account" <a href="#src-1" aria-label="Source 1">[1]</a>, and that the slot does not move with when you start using Claude. The five-hour session limit works differently: its period begins with your first message <a href="#src-1" aria-label="Source 1">[1]</a>. A weekly hold therefore has a known end, and the log row can carry it.</p>
+
+      <p>The video routine's rerun was safe because the hold had left nothing behind. There was no partial build to reconcile and no second copy to find later. Compare a <a href="https://josephbankole.ca/blog/stuck-in-publishing-rerun.html">post stuck in Publishing</a>, where nobody can tell whether the first attempt went out, and every rerun carries the risk of a duplicate. A run that stopped itself before the first lane can be started again from the top without that question.</p>
+
+      <p>The next weekly reset on this plan falls at 16:00 ET on Tuesday 17 November.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">Claude Help Center, <a href="https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work">How do usage and length limits work?</a></li>
+        <li id="src-2">Claude Help Center, <a href="https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans">Manage usage credits for paid Claude plans</a></li>
+      </ol>]]></content:encoded>
+  </item>
   <item>
     <title>A build that reads its own output cut 99 rows to one</title>
     <link>https://josephbankole.ca/blog/builder-reads-its-own-output.html</link>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Check the usage budget before a scheduled AI job starts</title>
+<meta name="description" content="A scheduled AI job should read its plan usage before the heavy work and hold cleanly. Where the check goes, what threshold, and what a hold must leave." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/blog/check-the-budget-before-the-job.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="Check the usage budget before a scheduled AI job starts" />
+<meta property="og:description" content="A scheduled AI job should read its plan usage before the heavy work and hold cleanly. Where the check goes, what threshold, and what a hold must leave." />
+<meta property="og:url" content="https://josephbankole.ca/blog/check-the-budget-before-the-job.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-11-13T12:30:00-05:00" />
+<meta property="article:modified_time" content="2026-11-13T12:30:00-05:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Check the usage budget before a scheduled AI job starts" />
+<meta name="twitter:description" content="A scheduled AI job should read its plan usage before the heavy work and hold cleanly. Where the check goes, what threshold, and what a hold must leave." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Check the usage budget before a scheduled AI job starts",
+      "description": "A scheduled AI job should read its plan usage before the heavy work and hold cleanly. Where the check goes, what threshold, and what a hold must leave.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 1079,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/blog/check-the-budget-before-the-job.html"
+      },
+      "datePublished": "2026-11-13T12:30:00-05:00",
+      "dateModified": "2026-11-13T12:30:00-05:00",
+      "articleSection": "Payments and applied AI"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Check the usage budget before a scheduled AI job starts",
+          "item": "https://josephbankole.ca/blog/check-the-budget-before-the-job.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn" data-location="blog-nav" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
+    <span class="index">Build in public</span>
+    <h1>Check the usage budget before a scheduled AI job starts</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-11-13">13 November 2026</time><span>5 min read</span><span>Scheduled jobs &middot; Usage limits</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>At 09:01 ET on Tuesday 10 November the site desk, the routine that writes the news briefs on this site, read its plan usage before it searched or drafted anything. The plan's weekly usage read 95 per cent, and extra usage was switched off. The desk held the brief. It drafted nothing, committed nothing, and wrote one row to its log: brief HELD (run budget), weekly usage 95%, reset 16:00 ET. Its follow-up note read: check usage before heavy lanes, hold rather than run out mid-gate.</p>
+
+      <p>A weekly video routine on the same plan read 94 per cent when it started that day. It held too, with no builds. After the weekly reset it was rerun on the owner's order and queued three videos, for Wednesday 11, Saturday 14 and Sunday 15 November.</p>
+
+      <h2>What a limit does to a pipeline</h2>
+
+      <p>Anthropic's help centre describes usage credits as the way to keep working past a plan's limits: "Instead of being blocked when you reach one of your plan's limits, you can switch to consumption-based pricing" <a href="#src-2" aria-label="Source 2">[2]</a>. With that switched off, the limit is a wall, and it arrives on whichever call happens to cross it.</p>
+
+      <p>This site publishes a page in a fixed order: a humanizer edit, an AI-writing detector, a banned-phrases lint, the build, a build check, then a strip of invisible characters over the final bytes, then commit and push. The strip runs last because anything that touches a file afterwards can put the characters back. A run stopped between the build and the strip leaves a built page in the working tree whose bytes the strip never saw, and the next run, or anyone tidying up, can commit it as if it were finished. That cutoff has not happened here, and keeping it that way is why the check sits before the pipeline and never inside it.</p>
+
+      <h2>Where the check goes</h2>
+
+      <p>On 10 November the check came early, ahead of any drafting. A usage reading costs next to nothing, so the only question is where in the opening it belongs. The site desk's run opens with cheap reads: it pulls the repo, reads its spec and the house voice file, and reads the tail of its own log. Those reads cost little and tell the run what it is about to attempt, a Tuesday brief or a Friday with several lanes. The expensive work starts with the first lane: searching, drafting, and the long gate chain on every page.</p>
+
+      <p>So the check goes on that boundary, after the state reads and before the first heavy lane. By then the run knows which lanes it means to run and can price them against what is left. It has spent nothing on a draft it may not be able to finish, and nothing has been written.</p>
+
+      <h2>Choosing the number</h2>
+
+      <p>A fixed percentage borrowed from somewhere else will be wrong for your plan. The usable threshold comes from your own runs. Read usage at the start and the end of a few full runs, and the difference is what a run costs. Hold when what is left is less than that cost plus a margin.</p>
+
+      <p>The margin matters because the budget is shared. A daily routine read the plan's weekly usage at 7 per cent on the morning after the reset, and on 13 November it read 35 per cent. That is 28 points in two days across every routine on the account, and each of them reads the same total. At 95 per cent the desk had five points left, and it held rather than find out whether a brief and its full gate chain would fit in them.</p>
+
+      <h2>What a hold leaves behind</h2>
+
+      <p>A clean hold leaves three things behind.</p>
+
+      <p>No half-built files. The desk drafts outside the repository and moves a page in only when it is ready for the build, so a hold before the first lane leaves the working tree exactly as the last good commit left it. Nothing needs cleaning up before the next run.</p>
+
+      <p>One log row, with the reason in it. HELD, the cause, the reading and the reset time. A row that says HELD (run budget) with 95% beside it tells the next reader the run was deliberate. A run that dies at the limit writes no row at all, and the log then looks the same as a scheduler that never fired.</p>
+
+      <p>A resume path. The reset time in the row says when the lane can run again. The follow-up note says what to change so the next run makes the same call earlier.</p>
+
+      <h2>Rank the lanes before you need to</h2>
+
+      <p>The desk's spec ranks its lanes for a short run: the brief first, then the essay, then the SEO pass, then the cornerstone answers. A held lane logs HELD with the reason. That ranking is written down before any run is short, so a thin budget never becomes a judgement made under pressure by the run itself.</p>
+
+      <p>Ranking works best with the check repeated between lanes. A run that clears the bar for the brief may not clear it for the essay as well. Reading usage again before each heavy lane lets the run ship the brief, hold the essay and the SEO pass, and write a row for each. The lane that hurts most when it is missed goes first, and whatever falls off the end falls off with a reason attached.</p>
+
+      <h2>Resuming after the reset</h2>
+
+      <p>Anthropic's help centre says weekly limits "reset at a fixed time each week that is assigned to your account" <a href="#src-1" aria-label="Source 1">[1]</a>, and that the slot does not move with when you start using Claude. The five-hour session limit works differently: its period begins with your first message <a href="#src-1" aria-label="Source 1">[1]</a>. A weekly hold therefore has a known end, and the log row can carry it.</p>
+
+      <p>The video routine's rerun was safe because the hold had left nothing behind. There was no partial build to reconcile and no second copy to find later. Compare a <a href="/blog/stuck-in-publishing-rerun.html">post stuck in Publishing</a>, where nobody can tell whether the first attempt went out, and every rerun carries the risk of a duplicate. A run that stopped itself before the first lane can be started again from the top without that question.</p>
+
+      <p>The next weekly reset on this plan falls at 16:00 ET on Tuesday 17 November.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">Claude Help Center, <a href="https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work">How do usage and length limits work?</a></li>
+        <li id="src-2">Claude Help Center, <a href="https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans">Manage usage credits for paid Claude plans</a></li>
+      </ol>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <nav class="pager" aria-label="Neighbouring posts">
+    <a class="pager-prev" href="/blog/builder-reads-its-own-output.html"><span class="pager-dir">&larr; Earlier post</span><span class="pager-ttl">A build that reads its own output cut 99 rows to one</span><span class="pager-date">6 Nov 2026</span></a>
+  </nav>
+  <section class="related" aria-labelledby="related-h" data-generated="latest">
+    <h2 id="related-h">Latest field notes</h2>
+    <div class="postlist">
+        <a class="post-row" href="/blog/stuck-in-publishing-rerun.html">
+          <time class="date" datetime="2026-10-30">Oct 2026</time>
+          <span class="ttl">A post stuck in Publishing: when is it safe to rerun?<span>Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/api-silently-dropped-fields.html">
+          <time class="date" datetime="2026-10-23">Oct 2026</time>
+          <span class="ttl">A loud API error is cheap. A silently dropped field is not<span>Buffer&#x27;s API refused the desk&#x27;s posts twice, costing one resend each. The fields it accepted and silently dropped cost weeks. Read every one back.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/git-push-is-not-a-deploy.html">
+          <time class="date" datetime="2026-10-16">Oct 2026</time>
+          <span class="ttl">A git push is not a deploy, so poll the live URL first<span>A commit on main left every uploaded asset 404 until a GitHub Pages build ran. Poll the public URL, cache-busted, for a 200 before anything links to it.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">@thearchv.ai on Threads</h2>
+    <p>One AI story most days, with its sources named.</p>
+    <a class="btn" data-location="blog-article" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Follow on Threads</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">AI platform engineer &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a data-location="blog-footer" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">Contact</a>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>
