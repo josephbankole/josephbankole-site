@@ -756,7 +756,7 @@ def parse_common(path: pathlib.Path, src: str) -> dict:
 def check_lengths(page: dict, kind: str, day: dt.date | None, today: dt.date) -> None:
     """The title and description caps and the full-sentence rule.
 
-    A gate for every blog and answers page and for today's news; a warning on
+    A gate for every blog and answers page, the homepage and today's news; a warning on
     older news, whose copy belongs to the news desk. The title is measured
     whole, suffix included, after fit_title has had its chance to drop it.
     """
@@ -776,7 +776,7 @@ def check_lengths(page: dict, kind: str, day: dt.date | None, today: dt.date) ->
     if not problems:
         return
     line = "%s: %s" % (name, "; ".join(problems))
-    if kind in ("blog", "answers") or (kind == "news" and day is not None and day >= today):
+    if kind in ("blog", "answers", "home") or (kind == "news" and day is not None and day >= today):
         GATE_FAILURES.append(line)
     else:
         warn("%s pages over the title or description cap" % kind, line)
@@ -2382,7 +2382,12 @@ def build(check: bool, today: dt.date) -> int:
 
     # ---- prose page and bespoke pages
     emit(REPO / "privacy.html", render_doc(REPO / "privacy.html", "privacy"))
-    emit(REPO / "index.html", shell_pass(REPO / "index.html", "home", "", answer_index))
+    home = shell_pass(REPO / "index.html", "home", "", answer_index)
+    # The homepage title and description are held to the same caps as blog and
+    # answers pages (audit jb-site-9, 2026-11-15: the title ran to 61 while the
+    # gate that guards every other page stayed green).
+    check_lengths(parse_common(REPO / "index.html", home), "home", None, today)
+    emit(REPO / "index.html", home)
     if (REPO / "404.html").exists():
         latest = block_text("".join(post_row(row_for(e), e["iso"]) for e in newest_first[:3]))
         emit(REPO / "404.html", render_404(REPO / "404.html", latest))
