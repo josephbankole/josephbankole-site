@@ -1,6 +1,8 @@
 .fuse_hidden*
 .DS_Store
 personal-brand
+# Agent-log rows written by append_log.sh with a relative vault path (audit 2026-11-15)
+AI-Memory/
 news/.sf/
 __pycache__/
 .env
