@@ -146,9 +146,9 @@ GATE_FAILURES: list[str] = []
 def warn(kind: str, message: str) -> None:
     WARNINGS.setdefault(kind, []).append(message)
 
-# The waitlist closed on 2026-09-23 (founder: "remove the waitlist"). He is
-# employed as an AI platform engineer (LinkedIn title, 2026-10-06) and not taking client work, so nothing this script
-# writes asks for it. The one contact route left is the neutral footer address.
+# The waitlist closed on 2026-09-23 and the site takes no client work, so
+# nothing this script writes asks for it. The one contact route left is the
+# neutral footer address.
 ENQUIRY = "mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)"
 LINKEDIN = "https://www.linkedin.com/in/joseph-bankole/"
 
@@ -192,10 +192,9 @@ WAITLIST_MARKERS = (
 
 # ------------------------------------------------------------ tenure gate
 #
-# The founder's fact sheet: HSBC from November 2016 was market-risk production
-# support, and payments only began in June 2021. So "ten years" on this site
-# must come with "the last five" (in payments) close behind it, the wording the
-# About section and the aligned briefs use. An allowlist, not a blocklist: a
+# Only the last five of the ten years were in payments, so "ten years" on this
+# site must come with "the last five" (in payments) close behind it, the
+# wording the About section and the aligned briefs use. An allowlist, not a blocklist: a
 # blocklist of phrasings ("ten years in payments") missed the homepage's "For
 # ten years a human paged on-call". "ten years ago" is a date, not a tenure.
 #
@@ -237,8 +236,8 @@ def tenure_breaches(text: str) -> list[str]:
 
 # ------------------------------------------------------- fix-count gate
 #
-# Founder ruling 2026-10-27: across HSBC and Societe Generale he shipped 73
-# permanent root-cause fixes (35 + 26 + 12). The 134 that sat on the homepage
+# The About section's count is 73 permanent root-cause fixes across the two
+# banks. The 134 that sat on the homepage
 # from June 2026 was a double count, and nothing guarded the number the way
 # the tenure gate guards "ten years". Any count of root-cause fixes on a page
 # outside recipes/ and news/, or in llms.txt, must be 73 (news briefs quote
