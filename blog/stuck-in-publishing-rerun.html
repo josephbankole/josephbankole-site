@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tHd4qJ0R/vQfI0CbRTiL3XGSi+Tun7VhOcDbx08aLKA=' https://*.posthog.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.posthog.com; worker-src 'self' blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
 <title>A post stuck in Publishing: when is it safe to rerun?</title>
 <meta name="description" content="Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside." />
 <meta name="theme-color" content="#1E223D" />

@@ -96,7 +96,9 @@ Warnings go to stderr and never change the exit code of a normal run.
 from __future__ import annotations
 
 import argparse
+import base64
 import datetime as dt
+import hashlib
 import html
 import importlib.util
 import json
@@ -266,6 +268,90 @@ FONTS = (
     "family=IBM+Plex+Mono:wght@400;500&display=swap"
 )
 
+# ------------------------------------------------- content security policy
+#
+# The 2026-10-06 security audit asked for a basic CSP on this site and it was
+# never added (audit gap8-4, gap2-6, deps-supply-chain-1, 2026-11-15). GitHub
+# Pages cannot send headers, so it is a <meta> placed straight after the
+# viewport meta, ahead of every stylesheet and script it governs. A meta CSP
+# cannot carry frame-ancestors, report-uri or sandbox; those need a header.
+#
+# script-src: this site's own files, the one inline line the shell writes
+# (pinned by hash, so editing it means the hash moves with it), and PostHog's
+# hosts, which analytics.js loads array.js from. JSON-LD blocks are data,
+# not scripts, so CSP does not touch them. style-src keeps 'unsafe-inline' for
+# the four pages with a <style> block and for style attributes; styles cannot
+# run code. Every page this script writes gets it; the five it does not write
+# (lab/, salon/) carry the same meta by hand, and --check compares all of them.
+INLINE_JS = 'document.documentElement.className+=" js";'
+INLINE_JS_HASH = "sha256-" + base64.b64encode(hashlib.sha256(INLINE_JS.encode()).digest()).decode()
+# PostHog's CSP guide asks for the *.posthog.com wildcard rather than named
+# hosts, because it moves the SDK between subdomains (us-assets.i for
+# array.js and remote config, us.i for events today), plus worker-src blob:.
+POSTHOG = "https://*.posthog.com"
+CSP = "; ".join([
+    "default-src 'self'",
+    "script-src 'self' '%s' %s" % (INLINE_JS_HASH, POSTHOG),
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data:",
+    "connect-src 'self' %s" % POSTHOG,
+    "worker-src 'self' blob: data:",
+    "frame-src 'none'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+])
+CSP_META = '<meta http-equiv="Content-Security-Policy" content="%s" />' % CSP
+CSP_META_RE = re.compile(r'<meta http-equiv="Content-Security-Policy" content="[^"]*" />\n?')
+VIEWPORT_META = '<meta name="viewport" content="width=device-width, initial-scale=1.0" />'
+
+# Scripts a page may load. Anything else, an inline script other than
+# INLINE_JS, an on* attribute, a javascript: URL or an iframe, object or
+# embed fails --check (audit gap2-6): the desks write page HTML from scraped
+# sources, and this is what stands between a planted tag and the live site.
+SCRIPT_SRC_ALLOW = frozenset({
+    "/assets/site.js",
+    "/assets/analytics.js",
+    "/assets/experience.js",
+    "/assets/bs-guide.js",
+    "/lab/lab.js",
+})
+
+
+def with_csp(src: str) -> str:
+    """Put CSP_META on its own line straight after the viewport meta."""
+    src = CSP_META_RE.sub("", src)
+    if VIEWPORT_META not in src:
+        return src
+    return src.replace(VIEWPORT_META, VIEWPORT_META + "\n" + CSP_META, 1)
+
+
+def script_breaches(text: str) -> list[str]:
+    """Active content in a page that the shell did not put there."""
+    found = []
+    for attrs, body in re.findall(r"<script\b([^>]*)>(.*?)</script\s*>", text, re.S | re.I):
+        if re.search(r'type="application/ld\+json"', attrs):
+            continue
+        src = re.search(r'\ssrc="([^"]*)"', attrs)
+        if src:
+            if src.group(1) not in SCRIPT_SRC_ALLOW:
+                found.append("script src %s" % src.group(1))
+            elif body.strip():
+                found.append("script with both src and a body")
+        elif body.strip() != INLINE_JS:
+            found.append("inline script (%s)" % re.sub(r"\s+", " ", body.strip())[:40])
+    if len(re.findall(r"<script\b", text, re.I)) != len(re.findall(r"</script\s*>", text, re.I)):
+        found.append("unbalanced <script> tags")
+    for attr in re.findall(r"<[a-zA-Z][^>]*?\s(on[a-z]+)\s*=", text):
+        found.append("%s= attribute" % attr)
+    if re.search(r"""(?:href|src|action|formaction)\s*=\s*["']?\s*javascript:""", text, re.I):
+        found.append("javascript: URL")
+    for tag in re.findall(r"<(iframe|object|embed|frame)\b", text, re.I):
+        found.append("<%s>" % tag.lower())
+    return found
+
+
 WPM = 225  # reading speed used for every "N min read" on the site
 
 MONTHS = [
@@ -357,7 +443,8 @@ def esc_attr(value: str) -> str:
 def head_block(page) -> str:
     lines = [
         '<meta charset="UTF-8" />',
-        '<meta name="viewport" content="width=device-width, initial-scale=1.0" />',
+        VIEWPORT_META,
+        CSP_META,
         "<title>%s</title>" % page["title"],
     ]
     if page.get("description"):
@@ -414,7 +501,7 @@ def head_block(page) -> str:
     # Reveal animations are opt-in for scripted visitors only, so a page with
     # JavaScript switched off renders every block at full opacity instead of
     # hiding twelve of them.
-    lines.append('<script>document.documentElement.className+=" js";</script>')
+    lines.append("<script>%s</script>" % INLINE_JS)
     if page.get("jsonld"):
         lines.append('<script type="application/ld+json">')
         lines.append(page["jsonld"])
@@ -1850,7 +1937,7 @@ def shell_pass(path: pathlib.Path, location: str, nav_root: str = "/",
             '<script>document.documentElement.className+=" js";</script>',
             1,
         )
-    return src
+    return with_csp(src)
 
 
 # ---------------------------------------------------------------------- main
@@ -1966,6 +2053,21 @@ def gate_site(outputs: dict[str, str]) -> None:
         hits = len(sitelib.recipe_links(rel, text))
         if hits:
             GATE_FAILURES.append("%s: %d link(s) into /recipes/" % (rel, hits))
+
+    # CSP and active content: every page, written or not (lab/, salon/).
+    for rel, text in sorted(pages.items()):
+        if not rel.endswith(".html"):
+            continue
+        head_end = text.find("</head>")
+        head = text[:head_end] if head_end != -1 else text
+        if CSP_META not in head:
+            GATE_FAILURES.append("%s: missing or stale Content-Security-Policy meta" % rel)
+        else:
+            first = re.search(r"<script\b|<link\b[^>]*rel=\"stylesheet\"|<style\b", head)
+            if first and first.start() < head.find(CSP_META):
+                GATE_FAILURES.append("%s: CSP meta comes after a script or stylesheet" % rel)
+        for breach in script_breaches(text):
+            GATE_FAILURES.append("%s: %s" % (rel, breach))
 
     # Tenure: every page outside recipes/, lab/ included, plus llms.txt.
     tenure_sources = [(rel, text) for rel, text in sorted(pages.items())

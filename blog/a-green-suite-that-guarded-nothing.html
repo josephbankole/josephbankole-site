@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tHd4qJ0R/vQfI0CbRTiL3XGSi+Tun7VhOcDbx08aLKA=' https://*.posthog.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.posthog.com; worker-src 'self' blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
 <title>797 green tests, 7 defects: when fixtures drift from config</title>
 <meta name="description" content="Phase one of my pipeline rebuild shipped 275 files and 797 passing tests. Two review agents then found seven defects, all in code whose job was to refuse." />
 <meta name="theme-color" content="#1E223D" />
