@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tHd4qJ0R/vQfI0CbRTiL3XGSi+Tun7VhOcDbx08aLKA=' https://*.posthog.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.posthog.com; worker-src 'self' blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
 <title>Privacy · Joseph Bankole</title>
-<meta name="description" content="What this site measures with PostHog, what it deliberately does not, and who else sees your visit. Plain English, and Do Not Track is honoured." />
+<meta name="description" content="What this site measures with PostHog, what it does not, and who else sees your visit. Do Not Track and Global Privacy Control are honoured." />
 <meta name="theme-color" content="#1E223D" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://josephbankole.ca/privacy.html" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Joseph Bankole" />
 <meta property="og:title" content="Privacy · Joseph Bankole" />
-<meta property="og:description" content="What this site measures with PostHog, what it deliberately does not, and who else sees your visit. Plain English, and Do Not Track is honoured." />
+<meta property="og:description" content="What this site measures with PostHog, what it does not, and who else sees your visit. Do Not Track and Global Privacy Control are honoured." />
 <meta property="og:url" content="https://josephbankole.ca/privacy.html" />
 <meta property="og:image" content="https://josephbankole.ca/assets/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Privacy · Joseph Bankole" />
-<meta name="twitter:description" content="What this site measures with PostHog, what it deliberately does not, and who else sees your visit. Plain English, and Do Not Track is honoured." />
+<meta name="twitter:description" content="What this site measures with PostHog, what it does not, and who else sees your visit. Do Not Track and Global Privacy Control are honoured." />
 <meta name="twitter:image" content="https://josephbankole.ca/assets/og.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
@@ -62,7 +62,7 @@
     <span class="index">Privacy</span>
     <h1>What this site knows about you.</h1>
     <p class="standfirst">Short version: it counts that a page was viewed, how far down you scrolled and how long you stayed, and whether anyone clicked a link. It does not know who you are. There is nothing to log into or download, and the only sign-up is the newsletter box on the homepage, which Substack runs.</p>
-    <p class="article-meta"><span>Last updated: 29 October 2026</span><span>josephbankole.ca</span></p>
+    <p class="article-meta"><span>Last updated: 15 November 2026</span><span>josephbankole.ca</span></p>
   </header>
 
   <div class="article-body wrap">
@@ -87,7 +87,7 @@
         <li><code>configurator_select</code> if you pick an answer in the "How I scope a build" demo on the homepage. It stores the question and the answer you picked, nothing typed. The unlisted <code>/lab/</code> prototype sends the same event, plus <code>hero_skip</code> if you skip its intro.</li>
       </ul>
       <p>Each event also carries the technical basics that any web request brings: your IP address, browser, and rough location derived from that IP. It adds the page address, including any tracking tags in it, the page that sent you, your screen and window size, time zone, and browser language. I have turned <em>off</em> autocapture, so PostHog is not recording every click, keystroke, or form field, and scroll depth is recorded only when you leave a page. Session recording, heatmaps, surveys, and page-speed (web vitals) measurement are switched off in the site's code. PostHog only sees the events listed above.</p>
-      <p>The same PostHog project also receives the analytics for thearchv.ca, another site I run, and I tell the two apart by page address. I honour Do Not Track. If your browser sends that signal, PostHog's script still loads and still keeps its random identifier in your browser (see Cookies below), but it sends no events to PostHog for your visit.</p>
+      <p>The same PostHog project also receives the analytics for thearchv.ca, another site I run, and I tell the two apart by page address. I honour Do Not Track and Global Privacy Control. If your browser sends either signal, PostHog's script does not load at all: no identifier is stored in your browser and no events are sent for your visit.</p>
 
       <h2>Cookies</h2>
       <p>This site sets no cookies of its own. PostHog is configured to use browser localStorage rather than cookies, so it stores a random, anonymous identifier in your browser to avoid double-counting the same visitor. That identifier is not linked to a name, an email, or anything else about you. Clearing your browser storage erases it.</p>
@@ -111,7 +111,7 @@
       <p>This site is aimed at working professionals. It is not directed at children, and I do not knowingly collect anything from them.</p>
 
       <h2>Your choices</h2>
-      <p>Turn on Do Not Track in your browser and PostHog stops receiving events from you, though its script still loads and keeps the identifier described above. Block scripts, use a content blocker, or clear your browser storage and the anonymous identifier disappears. If you want the analytics record of your visit deleted and can tell me roughly when you visited, email me and I will do it, though be aware that with no name attached to any of it, there may be very little to find.</p>
+      <p>Turn on Do Not Track or Global Privacy Control in your browser and PostHog's script does not load, so nothing is stored and nothing is sent. Block scripts, use a content blocker, or clear your browser storage and the anonymous identifier disappears. If you want the analytics record of your visit deleted and can tell me roughly when you visited, email me and I will do it, though be aware that with no name attached to any of it, there may be very little to find.</p>
 
       <h2>Changes</h2>
       <p>If I add anything that changes what is collected, I will update this page and change the date at the top. This is a static site kept in version control, so the edit history is a matter of record.</p>

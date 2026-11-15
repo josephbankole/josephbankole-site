@@ -9,6 +9,15 @@
 (function () {
   "use strict";
 
+  /* ---- privacy signals ----
+     Global Privacy Control or Do Not Track: nothing loads at all, so no
+     PostHog script, no identifier in storage and no events (2026-11-15).
+     respect_dnt below stays as a second line for DNT. */
+  var nav = window.navigator || {};
+  var dnt = nav.doNotTrack === '1' || nav.doNotTrack === 'yes' ||
+    window.doNotTrack === '1' || nav.msDoNotTrack === '1';
+  if (nav.globalPrivacyControl === true || dnt) return;
+
   /* ---- PostHog init ---- */
   !function (t, e) {
     var o, n, p, r;
