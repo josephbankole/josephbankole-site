@@ -409,11 +409,20 @@ def inner(src: str, tag: str, cls: str | None = None) -> str | None:
     return src[found[1]:found[2]] if found else None
 
 
+META_TAG = re.compile(r"""<meta\b(?:[^>"']|"[^"]*"|'[^']*')*>""", re.I)
+META_ATTR = re.compile(r"""\s([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')""")
+
+
 def meta_content(src: str, attr: str, name: str) -> str | None:
-    match = re.search(
-        r'<meta\s+%s="%s"\s+content="([^"]*)"\s*/?>' % (attr, re.escape(name)), src
-    )
-    return match.group(1) if match else None
+    """content of the first <meta attr="name"> tag, in any attribute order and
+    with either quote style, so a reordered tag never loses its description."""
+    for tag in META_TAG.finditer(src):
+        attrs = {}
+        for key, dq, sq in META_ATTR.findall(tag.group(0)):
+            attrs.setdefault(key.lower(), dq if dq or not sq else sq)
+        if attrs.get(attr) == name and "content" in attrs:
+            return attrs["content"]
+    return None
 
 
 def link_href(src: str, rel: str) -> str | None:
