@@ -44,7 +44,11 @@
     api_host: 'https://us.i.posthog.com',
     autocapture: false,
     capture_pageview: true,
-    persistence: 'localStorage',
+    /* Memory only (audit privacy-compliance-3, 2026-11-15): nothing is
+       written to localStorage or cookies, so no identifier outlives the
+       page. The cost is that each page load counts as a new visitor.
+       Whether a consent banner is needed is the founder's call. */
+    persistence: 'memory',
     respect_dnt: true,
     /* The PostHog project is shared with thearchv.ca, so anything a
        dashboard toggle there could switch on is pinned off here in code.

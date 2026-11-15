@@ -87,10 +87,10 @@
         <li><code>hero_skip</code> if you skip the intro on the unlisted <code>/lab/</code> prototype.</li>
       </ul>
       <p>Each event also carries the technical basics that any web request brings: your IP address, browser, and rough location derived from that IP. It adds the page address, including any tracking tags in it, the page that sent you, your screen and window size, time zone, and browser language. I have turned <em>off</em> autocapture, so PostHog is not recording every click, keystroke, or form field, and scroll depth is recorded only when you leave a page. Session recording, heatmaps, surveys, and page-speed (web vitals) measurement are switched off in the site's code. PostHog only sees the events listed above.</p>
-      <p>The same PostHog project also receives the analytics for thearchv.ca, another site I run, and I tell the two apart by page address. I honour Do Not Track and Global Privacy Control. If your browser sends either signal, PostHog's script does not load at all: no identifier is stored in your browser and no events are sent for your visit.</p>
+      <p>The same PostHog project also receives the analytics for thearchv.ca, another site I run, and I tell the two apart by page address. I honour Do Not Track and Global Privacy Control. If your browser sends either signal, PostHog's script does not load at all and no events are sent for your visit.</p>
 
       <h2>Cookies</h2>
-      <p>This site sets no cookies of its own. PostHog is configured to use browser localStorage rather than cookies, so it stores a random, anonymous identifier in your browser to avoid double-counting the same visitor. That identifier is not linked to a name, an email, or anything else about you. Clearing your browser storage erases it.</p>
+      <p>This site sets no cookies, and PostHog is set to store nothing in your browser. While a page is open, PostHog keeps a random, anonymous identifier in memory, and it is gone when you leave the page or close the tab. That identifier is not linked to a name, an email, or anything else about you. Because nothing is kept between pages, each page you open counts as a new visitor.</p>
 
       <h2>Who else sees your visit</h2>
       <p>Even on a site as simple as this one, a handful of other companies see that a request happened. In the interest of being straight about it:</p>
@@ -111,7 +111,7 @@
       <p>This site is aimed at working professionals. It is not directed at children, and I do not knowingly collect anything from them.</p>
 
       <h2>Your choices</h2>
-      <p>Turn on Do Not Track or Global Privacy Control in your browser and PostHog's script does not load, so nothing is stored and nothing is sent. Block scripts, use a content blocker, or clear your browser storage and the anonymous identifier disappears. If you want the analytics record of your visit deleted and can tell me roughly when you visited, email me and I will do it, though be aware that with no name attached to any of it, there may be very little to find.</p>
+      <p>Turn on Do Not Track or Global Privacy Control in your browser and PostHog's script does not load, so nothing is stored and nothing is sent. Block scripts or use a content blocker and PostHog does not run at all. If you want the analytics record of your visit deleted and can tell me roughly when you visited, email me and I will do it, though be aware that with no name attached to any of it, there may be very little to find.</p>
 
       <h2>Changes</h2>
       <p>If I add anything that changes what is collected, I will update this page and change the date at the top. This is a static site kept in version control, so the edit history is a matter of record.</p>
