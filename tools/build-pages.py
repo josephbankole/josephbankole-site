@@ -102,6 +102,7 @@ import importlib.util
 import json
 import pathlib
 import re
+import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
@@ -2065,6 +2066,35 @@ def gate_feeds() -> None:
             GATE_FAILURES.append("%s is stale: run python3 tools/%s (%s)" % (feed, script, owner))
 
 
+# Dotfiles this public repo may carry. On 2026-06-19 eight .fuse_hidden* page
+# copies were swept into a commit, and later an agent's .sf/ state file; both
+# stayed in public history after they were deleted (audit secrets-history-6).
+# A hook in .git/hooks is not versioned, so the check lives here, in the
+# --check every desk runs before it commits. It reads the index plus any
+# untracked file that is not ignored, which is what "git add -A" would take.
+DOTFILE_ALLOW = frozenset({".gitignore", ".nojekyll"})
+
+
+def gate_dotfiles() -> None:
+    """Fail on any tracked or addable path with a dot-named part not allowed."""
+    try:
+        listed = subprocess.run(
+            ["git", "-C", str(REPO), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+            capture_output=True, check=True,
+        ).stdout.decode("utf-8", "replace")
+    except (OSError, subprocess.CalledProcessError) as err:
+        warn("dotfile gate skipped (git unavailable)", str(err))
+        return
+    bad = sorted({
+        rel for rel in listed.split("\0") if rel
+        if any(part.startswith(".") and part not in DOTFILE_ALLOW for part in rel.split("/"))
+    })
+    for rel in bad:
+        GATE_FAILURES.append(
+            "%s: dotfile in the repo (add it to .gitignore, or to DOTFILE_ALLOW if it must ship)" % rel
+        )
+
+
 def build(check: bool, today: dt.date) -> int:
     changed = []
     outputs: dict[str, str] = {}
@@ -2263,6 +2293,7 @@ def build(check: bool, today: dt.date) -> int:
 
     gate_site(outputs)
     gate_feeds()
+    gate_dotfiles()
 
     print(("would rewrite " if check else "rewrote ") + "%d page(s)" % len(changed))
     for name in changed:
