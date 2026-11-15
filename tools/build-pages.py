@@ -232,6 +232,33 @@ def tenure_breaches(text: str) -> list[str]:
     return found
 
 
+# ------------------------------------------------------- fix-count gate
+#
+# Founder ruling 2026-10-27: across HSBC and Societe Generale he shipped 73
+# permanent root-cause fixes (35 + 26 + 12). The 134 that sat on the homepage
+# from June 2026 was a double count, and nothing guarded the number the way
+# the tenure gate guards "ten years". Any count of root-cause fixes on a page
+# outside recipes/, or in llms.txt, must be 73, and 134 next to "fix" fails
+# whatever words sit between.
+FIX_COUNT = "73"
+FIX_COUNT_RE = re.compile(r"\b(\d{1,4})\s+(?:[a-z-]+\s+){0,2}root[- ]cause\s+fix", re.I)
+FIX_DOUBLE_COUNT_RE = re.compile(r"\b134\b[^.]{0,40}?\bfix", re.I)
+
+
+def fix_count_breaches(text: str) -> list[str]:
+    """Root-cause fix counts in a page's text that are not the ruled 73."""
+    plain = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", text)))
+    found, starts = [], set()
+    for match in FIX_COUNT_RE.finditer(plain):
+        if match.group(1) != FIX_COUNT:
+            starts.add(match.start())
+            found.append(plain[max(0, match.start() - 20):match.end() + 40].strip())
+    for match in FIX_DOUBLE_COUNT_RE.finditer(plain):
+        if match.start() not in starts:
+            found.append(plain[max(0, match.start() - 20):match.end() + 20].strip())
+    return found
+
+
 FONTS = (
     "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,"
     "300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&"
@@ -1952,6 +1979,13 @@ def gate_site(outputs: dict[str, str]) -> None:
             else:
                 warn("tenure claims without \"%s\" (TENURE_WARN_ONLY briefs, warn-only)"
                      % TENURE_QUALIFIER, line)
+
+    # Root-cause fix count: same sources as the tenure gate, always enforced.
+    for rel, text in tenure_sources:
+        for snippet in fix_count_breaches(text):
+            GATE_FAILURES.append(
+                '%s: root-cause fix count is not %s ("%s")' % (rel, FIX_COUNT, snippet)
+            )
 
     # Recipes are noindex,follow. A crawler reads the noindex only if it may
     # fetch the page, so robots.txt must never block recipes/ for any agent.
