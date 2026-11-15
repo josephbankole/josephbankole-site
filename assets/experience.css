@@ -1,7 +1,7 @@
 /* ============================================================
    josephbankole.ca — homepage experience layer.
    Linked from index.html ONLY (after style.css).
-   Hero band, engagement diorama, configurator demo.
+   Hero band and the build-run diorama.
 
    The cold open was cut on 2026-08-09 (founder ruling). The page opens on
    content, with the navigation visible from the first frame. Nothing
@@ -179,69 +179,8 @@
 .replay:hover { color: var(--ink); border-color: var(--accent); }
 
 /* ============================================================
-   ACT 3 · SCOPE YOUR BUILD
-   ============================================================ */
-.act3-sub { color: var(--ink-dim); margin-top: 16px; max-width: var(--measure); }
-
-.configurator { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 56px); align-items: start; }
-
-.config-form { display: flex; flex-direction: column; gap: 30px; }
-.q { border: 0; margin: 0; padding: 0; }
-.q legend {
-  font-family: var(--serif); font-weight: 360; font-size: 1.3rem; letter-spacing: -.01em;
-  color: var(--ink); margin-bottom: 16px; display: flex; align-items: baseline; gap: 12px;
-  padding: 0;
-}
-.q-n {
-  font-family: var(--mono); font-size: var(--t-label); color: var(--ink);
-  border: 1px solid var(--accent); border-radius: 50%;
-  width: 26px; height: 26px; display: inline-grid; place-items: center; flex: none;
-}
-.chips { display: flex; flex-wrap: wrap; gap: 10px; }
-.chip {
-  font-family: var(--mono); font-size: var(--t-label); letter-spacing: .04em;
-  color: var(--ink-dim); background: var(--xp-panel);
-  border: 1px solid var(--ink-rule); border-radius: 2px;
-  padding: 12px 15px; cursor: pointer;
-  transition: color .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease), transform .1s var(--ease);
-}
-.chip:hover { color: var(--ink); border-color: var(--accent); }
-.chip:active { transform: scale(.97); }
-.chip[aria-checked="true"] {
-  color: var(--ground-deep); background: var(--accent); border-color: var(--accent); font-weight: 500;
-}
-
-.sketch {
-  border: 1px solid var(--ink-rule); border-top: 3px solid var(--accent);
-  border-radius: 4px; background: var(--ground-soft);
-  padding: clamp(24px, 3vw, 34px); position: sticky; top: 92px;
-}
-.sketch-kicker {
-  font-family: var(--mono); font-size: var(--t-label); letter-spacing: .2em; text-transform: uppercase;
-  color: var(--ink-dim); margin-bottom: 16px;
-}
-.sketch-read {
-  font-family: var(--serif); font-weight: 350; font-size: 1.3rem; line-height: 1.35;
-  letter-spacing: -.01em; color: var(--ink); min-height: 3.4em;
-  transition: opacity .3s var(--ease);
-}
-.sketch-read.swap { opacity: 0; }
-.weeks { margin: 24px 0 0; display: flex; flex-direction: column; gap: 16px; }
-.week { border-top: 1px solid var(--ink-rule); padding-top: 16px; }
-.week-n {
-  font-family: var(--mono); font-size: var(--t-label); letter-spacing: .14em; text-transform: uppercase;
-  color: var(--ink-dim); display: block; margin-bottom: 8px;
-}
-.week p { font-size: var(--t-small); color: var(--ink-dim); line-height: 1.6; }
-
-/* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 860px) {
-  .configurator { grid-template-columns: 1fr; }
-  .sketch { position: static; }
-}
-
 @media (max-width: 760px) {
   /* Act 2 goes vertical, and it is NOT pinned. The pinned version was 812px
      tall with overflow hidden inside a 300vh scroll at 375x812, so station

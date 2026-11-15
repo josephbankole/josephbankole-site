@@ -1,8 +1,10 @@
 /* josephbankole.ca — homepage experience behaviour. No libraries.
    Animate transform and colour only. Reduced-motion safe.
-   PostHog events: configurator_select. Link clicks are bound centrally
-   by /assets/analytics.js. The waitlist, its floating pill and the
-   configurator's waitlist button were removed on 2026-09-23.
+   No PostHog events of its own: link clicks are bound centrally by
+   /assets/analytics.js. The waitlist, its floating pill and the
+   configurator's waitlist button were removed on 2026-09-23, and the
+   configurator itself on 2026-11-15: it sized a client build, and he is
+   not taking client work.
 
    The cold open was cut on 2026-08-09 (founder ruling). It held scroll for
    13.9 seconds behind an overlay that covered the navigation, on every
@@ -14,14 +16,6 @@
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
   var $ = function (id) { return document.getElementById(id); };
-
-  function cap(name, props) {
-    if (window.posthog && posthog.capture) {
-      var p = { site: "josephbankole.ca", surface: "home" };
-      if (props) for (var k in props) p[k] = props[k];
-      try { posthog.capture(name, p); } catch (e) {}
-    }
-  }
 
   /* JS is running: unlock the JS-only states (station card dimming,
      hero underline draw, scrubber). Without this class the page is
@@ -173,113 +167,5 @@
 
     measure();
     applyP(scrollProgress(), true);
-  }
-
-  /* ---------------------------------------------------------
-     ACT 3 · CONFIGURATOR
-     --------------------------------------------------------- */
-  /* A demo of how a two-week build is scoped. It has no button: the
-     answers only rewrite the sketch on the page. */
-  var KEYS = ["ops", "hours", "mode"];
-  var OF = {
-    spreadsheets: "It runs on spreadsheets",
-    saas: "It is spread across your SaaS tools",
-    custom: "It runs on your own custom systems"
-  };
-  var HF = {
-    reporting: "the reporting",
-    replies: "the customer replies",
-    dataentry: "the data entry between systems",
-    monitoring: "the monitoring"
-  };
-  var HH = {
-    reporting: "pulled, checked, and written the same way every time",
-    replies: "drafted against your own answers, with the unsure ones held for you",
-    dataentry: "moved between systems idempotently, so nothing posts twice",
-    monitoring: "checked on a schedule, speaking up only when something is off"
-  };
-  var MF = {
-    alongside: "built alongside your team so they own it after",
-    handover: "built, documented, and handed over so it runs without me"
-  };
-
-  var state = { ops: null, hours: null, mode: null };
-  var readEl = $("sketchRead");
-
-  function compose() {
-    if (!state.ops && !state.hours && !state.mode)
-      return "Pick the three above and the two-week sketch fills in.";
-    var parts = [];
-    if (state.hours) parts.push("Week one takes " + HF[state.hours] + " off your plate, " + HH[state.hours] + ".");
-    if (state.ops) parts.push(OF[state.ops] + ", so we start there.");
-    if (state.mode) parts.push("It is " + MF[state.mode] + ".");
-    return parts.join(" ");
-  }
-
-  function render() {
-    if (readEl) {
-      readEl.classList.add("swap");
-      setTimeout(function () {
-        readEl.textContent = compose();
-        readEl.classList.remove("swap");
-      }, reduce ? 0 : 170);
-    }
-  }
-
-  function selectChip(group, val, fromUser) {
-    if (KEYS.indexOf(group) < 0) return;
-    state[group] = val;
-    var items = document.querySelectorAll('.q[data-q="' + group + '"] .chip');
-    Array.prototype.forEach.call(items, function (c) {
-      var on = c.getAttribute("data-val") === val;
-      c.setAttribute("aria-checked", on ? "true" : "false");
-      c.tabIndex = on ? 0 : -1;
-    });
-    render();
-    updateHash();
-    if (fromUser) cap("configurator_select", { question: group, choice: val });
-  }
-
-  function updateHash() {
-    var parts = [];
-    KEYS.forEach(function (k) { if (state[k]) parts.push(k + "=" + state[k]); });
-    var h = parts.length ? "#" + parts.join("&") : "";
-    try { history.replaceState(null, "", location.pathname + location.search + h); } catch (e) {}
-  }
-
-  function initGroup(group) {
-    var items = Array.prototype.slice.call(document.querySelectorAll('.q[data-q="' + group + '"] .chip'));
-    items.forEach(function (c, i) {
-      c.tabIndex = i === 0 ? 0 : -1;
-      c.addEventListener("click", function () { selectChip(group, c.getAttribute("data-val"), true); });
-      c.addEventListener("keydown", function (e) {
-        var ni = null;
-        if (e.key === "ArrowRight" || e.key === "ArrowDown") ni = (i + 1) % items.length;
-        else if (e.key === "ArrowLeft" || e.key === "ArrowUp") ni = (i - 1 + items.length) % items.length;
-        if (ni !== null) {
-          e.preventDefault();
-          items[ni].focus();
-          selectChip(group, items[ni].getAttribute("data-val"), true);
-        }
-      });
-    });
-  }
-
-  if (readEl) {
-    KEYS.forEach(function (k) {
-      if (document.querySelector('.q[data-q="' + k + '"]')) initGroup(k);
-    });
-
-    // restore state from URL hash so a refresh keeps the sketch
-    var h = location.hash.replace(/^#/, "");
-    if (h) {
-      h.split("&").forEach(function (pair) {
-        var kv = pair.split("=");
-        var k = kv[0], v = kv[1];
-        if (KEYS.indexOf(k) >= 0 && v && document.querySelector('.q[data-q="' + k + '"] .chip[data-val="' + v + '"]'))
-          selectChip(k, v, false);
-      });
-    }
-    render();
   }
 })();
