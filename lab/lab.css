@@ -111,7 +111,7 @@ h2 em { font-style: italic; color: var(--gold); }
 }
 .btn--ghost:hover { border-color: var(--gold-soft); box-shadow: none; }
 
-a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focus-visible, .proof-card:focus-visible {
+a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .proof-card:focus-visible {
   outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px;
 }
 
@@ -339,68 +339,6 @@ a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focu
 .replay:hover { color: var(--gold); border-color: var(--gold-soft); }
 
 /* ============================================================
-   ACT 3 · SCOPE YOUR BUILD
-   ============================================================ */
-.act3 {
-  padding: clamp(72px, 10vw, 130px) 0; border-top: 1px solid var(--cream-faint);
-  transition: opacity .8s var(--ease);
-}
-.act3-head { max-width: 44rem; margin-bottom: 48px; }
-.act3-sub { color: var(--cream-dim); margin-top: 16px; font-size: 1.1rem; max-width: 52ch; }
-
-.configurator { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 56px); align-items: start; }
-
-.config-form { display: flex; flex-direction: column; gap: 30px; }
-.q { border: 0; }
-.q legend {
-  font-family: var(--serif); font-weight: 360; font-size: 1.3rem; letter-spacing: -.01em;
-  color: var(--cream); margin-bottom: 16px; display: flex; align-items: baseline; gap: 12px;
-}
-.q-n {
-  font-family: var(--mono); font-size: 11px; color: var(--gold);
-  border: 1px solid var(--gold-soft); border-radius: 50%;
-  width: 24px; height: 24px; display: inline-grid; place-items: center; flex: none;
-}
-.chips { display: flex; flex-wrap: wrap; gap: 10px; }
-.chip {
-  font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
-  color: var(--cream-dim); background: rgba(18,52,73,.3);
-  border: 1px solid var(--cream-faint); border-radius: 2px;
-  padding: 11px 15px; cursor: pointer;
-  transition: color .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease), transform .1s var(--ease);
-}
-.chip:hover { color: var(--cream); border-color: var(--gold-soft); }
-.chip:active { transform: scale(.97); }
-.chip[aria-checked="true"] {
-  color: var(--navy-2); background: var(--gold); border-color: var(--gold); font-weight: 500;
-}
-
-.sketch {
-  border: 1px solid var(--cream-faint); border-radius: 4px;
-  background: linear-gradient(180deg, rgba(18,52,73,.4), rgba(7,28,43,.55));
-  padding: clamp(24px, 3vw, 34px); position: sticky; top: 32px;
-}
-.sketch-kicker {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 16px;
-}
-.sketch-read {
-  font-family: var(--serif); font-weight: 350; font-size: 1.3rem; line-height: 1.32;
-  letter-spacing: -.01em; color: var(--cream); min-height: 3.4em;
-  transition: opacity .3s var(--ease);
-}
-.sketch-read.swap { opacity: 0; }
-.weeks { margin: 24px 0 0; display: flex; flex-direction: column; gap: 16px; }
-.week {
-  border-top: 1px solid var(--cream-faint); padding-top: 16px;
-}
-.week-n {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--gold); display: block; margin-bottom: 8px;
-}
-.week p { font-size: .98rem; color: var(--cream-dim); line-height: 1.55; }
-
-/* ============================================================
    ACT 4 · PROOF + CLOSE
    ============================================================ */
 .act4 { padding: clamp(72px, 10vw, 120px) 0 0; border-top: 1px solid var(--cream-faint); transition: opacity .8s var(--ease); }
@@ -442,8 +380,6 @@ a:focus-visible, button:focus-visible, [role="slider"]:focus-visible, .chip:focu
    RESPONSIVE
    ============================================================ */
 @media (max-width: 860px) {
-  .configurator { grid-template-columns: 1fr; }
-  .sketch { position: static; }
   .proof-grid { grid-template-columns: 1fr; }
 }
 
