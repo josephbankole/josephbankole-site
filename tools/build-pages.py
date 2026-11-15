@@ -241,18 +241,24 @@ def tenure_breaches(text: str) -> list[str]:
 # permanent root-cause fixes (35 + 26 + 12). The 134 that sat on the homepage
 # from June 2026 was a double count, and nothing guarded the number the way
 # the tenure gate guards "ten years". Any count of root-cause fixes on a page
-# outside recipes/, or in llms.txt, must be 73, and 134 next to "fix" fails
-# whatever words sit between.
+# outside recipes/ and news/, or in llms.txt, must be 73 (news briefs quote
+# other firms' figures). On every one of those pages, news included, 134
+# within a sentence before "fix" or "fixes" fails whatever words sit between.
+# "fixed" is not matched, so "$134 million in fixed income" stays legal.
 FIX_COUNT = "73"
 FIX_COUNT_RE = re.compile(r"\b(\d{1,4})\s+(?:[a-z-]+\s+){0,2}root[- ]cause\s+fix", re.I)
-FIX_DOUBLE_COUNT_RE = re.compile(r"\b134\b[^.]{0,40}?\bfix", re.I)
+FIX_DOUBLE_COUNT_RE = re.compile(r"\b134\b[^.]{0,40}?\bfix(?:es)?\b", re.I)
 
 
-def fix_count_breaches(text: str) -> list[str]:
-    """Root-cause fix counts in a page's text that are not the ruled 73."""
+def fix_count_breaches(text: str, double_count_only: bool = False) -> list[str]:
+    """Root-cause fix counts in a page's text that are not the ruled 73.
+
+    double_count_only skips the general count rule (news briefs) and keeps
+    only the 134 double-count rule.
+    """
     plain = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", text)))
     found, starts = [], set()
-    for match in FIX_COUNT_RE.finditer(plain):
+    for match in ([] if double_count_only else FIX_COUNT_RE.finditer(plain)):
         if match.group(1) != FIX_COUNT:
             starts.add(match.start())
             found.append(plain[max(0, match.start() - 20):match.end() + 40].strip())
@@ -2084,8 +2090,10 @@ def gate_site(outputs: dict[str, str]) -> None:
                      % TENURE_QUALIFIER, line)
 
     # Root-cause fix count: same sources as the tenure gate, always enforced.
+    # News briefs get only the 134 rule, since they quote third-party counts.
     for rel, text in tenure_sources:
-        for snippet in fix_count_breaches(text):
+        is_news = rel.startswith("news/")
+        for snippet in fix_count_breaches(text, double_count_only=is_news):
             GATE_FAILURES.append(
                 '%s: root-cause fix count is not %s ("%s")' % (rel, FIX_COUNT, snippet)
             )
