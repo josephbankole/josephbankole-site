@@ -2117,7 +2117,10 @@ def gate_site(outputs: dict[str, str]) -> None:
     if sitemap and re.search(r"<loc>https?://(?:www\.)?josephbankole\.ca/recipes", sitemap):
         GATE_FAILURES.append("sitemap.xml: lists a /recipes/ URL")
     if sitemap:
-        gate_sitemap_parity(outputs, sitemap)
+        # Pages on disk as well as pages this run writes: the hand-made Salon
+        # pages were missing from the sitemap for weeks because the check only
+        # saw what the script writes (audit gap7-2, 2026-11-15).
+        gate_sitemap_parity(pages, sitemap)
 
 
 SITEMAP_ROW_RE = re.compile(
@@ -2130,7 +2133,8 @@ def gate_sitemap_parity(outputs: dict[str, str], sitemap: str) -> None:
 
     Nothing generates the sitemap: both desks edit it by hand, and on
     2026-09-23 a page's dateModified moved while its lastmod stayed put until
-    someone spotted it by eye. Pages carrying noindex (recipes/, the 404) and
+    someone spotted it by eye. `pages` holds every page, written or on disk
+    (salon/ is hand-made). Pages carrying noindex (recipes/, the 404) and
     lab/ are skipped. Pages with no dateModified (hubs, the homepage, privacy)
     are checked for coverage only.
     """

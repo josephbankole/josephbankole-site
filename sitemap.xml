@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://josephbankole.ca/</loc><lastmod>2026-11-13</lastmod><priority>1.0</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://josephbankole.ca/</loc><lastmod>2026-11-15</lastmod><priority>1.0</priority></url>
   <url><loc>https://josephbankole.ca/privacy.html</loc><lastmod>2026-11-15</lastmod><priority>0.3</priority></url>
-  <url><loc>https://josephbankole.ca/salon/privacy/</loc><lastmod>2026-10-29</lastmod><priority>0.3</priority></url>
-  <url><loc>https://josephbankole.ca/salon/privacy/fr/</loc><lastmod>2026-10-29</lastmod><priority>0.3</priority></url>
+  <url><loc>https://josephbankole.ca/salon/</loc><lastmod>2026-11-15</lastmod><priority>0.5</priority><xhtml:link rel="alternate" hreflang="en" href="https://josephbankole.ca/salon/"/><xhtml:link rel="alternate" hreflang="fr" href="https://josephbankole.ca/salon/fr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://josephbankole.ca/salon/"/></url>
+  <url><loc>https://josephbankole.ca/salon/fr/</loc><lastmod>2026-11-15</lastmod><priority>0.5</priority><xhtml:link rel="alternate" hreflang="en" href="https://josephbankole.ca/salon/"/><xhtml:link rel="alternate" hreflang="fr" href="https://josephbankole.ca/salon/fr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://josephbankole.ca/salon/"/></url>
+  <url><loc>https://josephbankole.ca/salon/support/</loc><lastmod>2026-11-15</lastmod><priority>0.3</priority><xhtml:link rel="alternate" hreflang="en" href="https://josephbankole.ca/salon/support/"/><xhtml:link rel="alternate" hreflang="fr" href="https://josephbankole.ca/salon/support/fr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://josephbankole.ca/salon/support/"/></url>
+  <url><loc>https://josephbankole.ca/salon/support/fr/</loc><lastmod>2026-11-15</lastmod><priority>0.3</priority><xhtml:link rel="alternate" hreflang="en" href="https://josephbankole.ca/salon/support/"/><xhtml:link rel="alternate" hreflang="fr" href="https://josephbankole.ca/salon/support/fr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://josephbankole.ca/salon/support/"/></url>
+  <url><loc>https://josephbankole.ca/salon/privacy/</loc><lastmod>2026-11-15</lastmod><priority>0.3</priority><xhtml:link rel="alternate" hreflang="en" href="https://josephbankole.ca/salon/privacy/"/><xhtml:link rel="alternate" hreflang="fr" href="https://josephbankole.ca/salon/privacy/fr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://josephbankole.ca/salon/privacy/"/></url>
+  <url><loc>https://josephbankole.ca/salon/privacy/fr/</loc><lastmod>2026-11-15</lastmod><priority>0.3</priority><xhtml:link rel="alternate" hreflang="en" href="https://josephbankole.ca/salon/privacy/"/><xhtml:link rel="alternate" hreflang="fr" href="https://josephbankole.ca/salon/privacy/fr/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://josephbankole.ca/salon/privacy/"/></url>
   <url><loc>https://josephbankole.ca/answers/</loc><lastmod>2026-09-30</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/answers/what-is-mastercard-agent-pay/</loc><lastmod>2026-09-30</lastmod><priority>0.8</priority></url>
   <url><loc>https://josephbankole.ca/answers/what-is-universal-commerce-protocol/</loc><lastmod>2026-09-30</lastmod><priority>0.8</priority></url>
