@@ -2,9 +2,8 @@
 """
 seo_audit.py — daily SEO/AEO diagnostic + safe-fix pass for josephbankole.ca
 
-Built for the Perplexity-hosted "JB Site Desk" scheduled task (v1, Lane C only).
-Mirrors the SAFE / JUDGEMENT split from fifa.archv/routines-v2/josephbankole-site-desk.md
-STEP 3, scoped to what a deterministic script can do responsibly:
+Run by the site's scheduled SEO check. Mirrors the SAFE / JUDGEMENT split of
+that routine's spec, scoped to what a deterministic script can do responsibly:
 
 SAFE (applied automatically, and only to indexable pages; never to a page
 carrying robots noindex, such as recipes/, lab/ or the 404):
