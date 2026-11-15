@@ -41,11 +41,11 @@ CNAME   www   josephbankole.github.io.
 Remove any conflicting existing A/AAAA on the apex. Propagation is usually under an hour.
 GitHub then issues the HTTPS cert automatically (can take up to ~24h).
 
-## 4. Newsletter (no setup needed)
+## 4. Newsletter (none on the site)
 
-`index.html` → the subscribe section embeds the ARCHV AI Substack
-(archvai.substack.com/embed), which handles email capture directly. No Web3Forms key
-or backend required. Done 2026-07-01. Contact email across the site is
+There is no sign-up on the site. The Substack embed was removed after the Substacks
+were paused (D-2026-10-06a); the subscribe section now links to @thearchv.ai on
+Threads. No Web3Forms key or backend required. Contact email across the site is
 partnerships@josephbankole.ca (Zoho mailbox).
 
 ## 4b. After publishing a news edition, rebuild the feed
