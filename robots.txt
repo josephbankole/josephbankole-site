@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+# Recipe photos stay out of image search. The recipe pages themselves must stay
+# crawlable so search engines can read their noindex (build-pages.py --check).
+Disallow: /assets/recipes/
 
 Sitemap: https://josephbankole.ca/sitemap.xml
