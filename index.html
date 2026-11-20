@@ -299,6 +299,11 @@
       <p>Lived-experience write-ups on payment infrastructure and running AI agents against real work. Expanded from what I post each week.</p>
     </div>
     <div class="postlist reveal stagger">
+      <a class="post-row" href="/blog/mktemp-ignores-tmpdir-on-macos.html">
+        <span class="date">Nov 2026</span>
+        <span class="ttl">macOS mktemp ignored TMPDIR and a sandboxed build failed<span>On macOS a bare mktemp -d ignores TMPDIR and writes to /var/folders. How that broke a sandboxed build, what the man page says, and the one-line fix.</span></span>
+        <span class="arrow">&rarr;</span>
+      </a>
       <a class="post-row" href="/blog/check-the-budget-before-the-job.html">
         <span class="date">Nov 2026</span>
         <span class="ttl">Check the usage budget before a scheduled AI job starts<span>A scheduled AI job should read its plan usage before the heavy work and hold cleanly. Where the check goes, what threshold, and what a hold must leave.</span></span>
@@ -307,11 +312,6 @@
       <a class="post-row" href="/blog/builder-reads-its-own-output.html">
         <span class="date">Nov 2026</span>
         <span class="ttl">A build that reads its own output cut 99 rows to one<span>Splitting one div in two made a static site build rewrite a 99-row news hub to a single row. What to assert when a generator reads its own output.</span></span>
-        <span class="arrow">&rarr;</span>
-      </a>
-      <a class="post-row" href="/blog/stuck-in-publishing-rerun.html">
-        <span class="date">Oct 2026</span>
-        <span class="ttl">A post stuck in Publishing: when is it safe to rerun?<span>Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside.</span></span>
         <span class="arrow">&rarr;</span>
       </a>
     </div>

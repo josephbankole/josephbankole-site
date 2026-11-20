@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tHd4qJ0R/vQfI0CbRTiL3XGSi+Tun7VhOcDbx08aLKA=' https://*.posthog.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.posthog.com; worker-src 'self' blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+<title>macOS mktemp ignored TMPDIR and a sandboxed build failed</title>
+<meta name="description" content="On macOS a bare mktemp -d ignores TMPDIR and writes to /var/folders. How that broke a sandboxed build, what the man page says, and the one-line fix." />
+<meta name="theme-color" content="#1E223D" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://josephbankole.ca/blog/mktemp-ignores-tmpdir-on-macos.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Joseph Bankole" />
+<meta property="og:title" content="macOS mktemp ignored TMPDIR and a sandboxed build failed" />
+<meta property="og:description" content="On macOS a bare mktemp -d ignores TMPDIR and writes to /var/folders. How that broke a sandboxed build, what the man page says, and the one-line fix." />
+<meta property="og:url" content="https://josephbankole.ca/blog/mktemp-ignores-tmpdir-on-macos.html" />
+<meta property="og:image" content="https://josephbankole.ca/assets/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-11-20T09:09:23-05:00" />
+<meta property="article:modified_time" content="2026-11-20T09:09:23-05:00" />
+<meta property="article:author" content="Joseph Bankole" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="macOS mktemp ignored TMPDIR and a sandboxed build failed" />
+<meta name="twitter:description" content="On macOS a bare mktemp -d ignores TMPDIR and writes to /var/folders. How that broke a sandboxed build, what the man page says, and the one-line fix." />
+<meta name="twitter:image" content="https://josephbankole.ca/assets/og/default.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; news desk" href="/news-feed.xml" />
+<link rel="alternate" type="application/rss+xml" title="Joseph Bankole &#183; field notes" href="/feed.xml" />
+<link rel="stylesheet" href="/assets/style.css" />
+<script>document.documentElement.className+=" js";</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "macOS mktemp ignored TMPDIR and a sandboxed build failed",
+      "description": "On macOS a bare mktemp -d ignores TMPDIR and writes to /var/folders. How that broke a sandboxed build, what the man page says, and the one-line fix.",
+      "image": [
+        "https://josephbankole.ca/assets/og/default.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Bankole",
+        "@id": "https://josephbankole.ca/#person",
+        "url": "https://josephbankole.ca/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Joseph Bankole",
+        "url": "https://josephbankole.ca/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://josephbankole.ca/apple-touch-icon.png"
+        }
+      },
+      "wordCount": 774,
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://josephbankole.ca/#website"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://josephbankole.ca/blog/mktemp-ignores-tmpdir-on-macos.html"
+      },
+      "datePublished": "2026-11-20T09:09:23-05:00",
+      "dateModified": "2026-11-20T09:09:23-05:00",
+      "articleSection": "Payments and applied AI"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://josephbankole.ca/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://josephbankole.ca/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "macOS mktemp ignored TMPDIR and a sandboxed build failed",
+          "item": "https://josephbankole.ca/blog/mktemp-ignores-tmpdir-on-macos.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="/"><span class="mk">&#9670;</span> JOSEPH&nbsp;BANKOLE</a>
+  <div class="nav-links">
+    <a href="/#about">About</a><a href="/blog/">Blog</a><a href="/news/">News</a><a href="/answers/">Answers</a><a href="/#projects">Projects</a>
+    <a class="btn" data-location="blog-nav" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+  </div>
+</nav>
+
+<main id="main">
+<article class="article">
+  <header class="article-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <a href="/blog/">Field notes</a></nav>
+    <span class="index">Build in public</span>
+    <h1>macOS mktemp ignored TMPDIR and a sandboxed build failed</h1>
+    <p class="article-meta"><span class="byline">Joseph Bankole</span><time datetime="2026-11-20">20 November 2026</time><span>3 min read</span><span>Shell scripts &middot; Sandboxes</span></p>
+  </header>
+
+  <div class="article-body wrap">
+    <div class="prose">
+      <p>At 05:50 ET on Tuesday 17 November a scheduled routine that publishes a daily sports results page ran its build and stopped. Three of 117 tests failed, all in one file that exercised a guard script added to the repository two days earlier. The page went out at 08:15 instead, after a fix to one line of that script was merged at 08:10.</p>
+
+      <p>The line was <code>tmp="$(mktemp -d)"</code>. The routine runs its build inside a macOS sandbox profile that allows writes in three places: the git worktree, the run&rsquo;s own directory and the TMPDIR the routine sets for the build. The script never touched that TMPDIR. Its scratch directory landed in <code>/var/folders</code>, and the sandbox refused the write with Operation not permitted.</p>
+
+      <h2>What mktemp does on a Mac</h2>
+
+      <p>The desk reproduced it on this site&rsquo;s own Mac, running macOS 27.2.1, with TMPDIR pointed at a scratch folder:</p>
+      <ul>
+        <li><code>mktemp -d</code> created <code>/var/folders/&lt;id&gt;/T/tmp.&lt;random&gt;</code> and ignored TMPDIR.</li>
+        <li><code>mktemp -d -t probe</code> did the same, with probe as the prefix.</li>
+        <li><code>mktemp -d "$TMPDIR/x.XXXXXX"</code> created the directory inside the scratch folder.</li>
+        <li><code>mktemp -d -p "$dir"</code> also landed in the folder, with TMPDIR set or unset.</li>
+      </ul>
+
+      <p>The <code>/var/folders</code> path is the per-user temporary directory that <code>getconf DARWIN_USER_TEMP_DIR</code> reports, and in an ordinary login shell it is also the value of TMPDIR. So in a normal terminal, ignoring TMPDIR and honouring it give the same answer, and nobody notices. The two only part when something sets TMPDIR to a different place, which is exactly what a sandbox wrapper does.</p>
+
+      <p>The rest of the toolchain does read it. With the same TMPDIR, Node 22&rsquo;s <code>os.tmpdir()</code> and Python&rsquo;s <code>tempfile.gettempdir()</code> both returned the scratch folder. So a JavaScript test can create its fixtures where the sandbox allows, call a shell script, and have that script write somewhere the sandbox does not. The test file that failed on 17 November was JavaScript. The write it tripped on came from the shell script it called.</p>
+
+      <h2>The man page gives two answers</h2>
+
+      <p>The mktemp man page on the same Mac describes both behaviours. Its description says <code>-t</code> builds the template from the <code>_CS_DARWIN_USER_TEMP_DIR</code> configuration variable when it is available, and falls back to TMPDIR, the <code>-p</code> directory and <code>/tmp</code> only if that variable is missing. That matches the binary. A few lines further down, the entry for <code>-t</code> says it uses &ldquo;the supplied prefix and TMPDIR if set&rdquo;, and the examples section offers <code>mktemp -t</code> under the heading &ldquo;To allow the use of $TMPDIR&rdquo;. On this machine that example does not do what its heading says.</p>
+
+      <p>The same page says <code>-p</code> applies &ldquo;if the TMPDIR environment variable is not set&rdquo;. In the desk&rsquo;s test <code>-p</code> won with TMPDIR set as well.</p>
+
+      <h2>Linux does what the option entry says</h2>
+
+      <p>A Linux CI runner has GNU coreutils, and GNU mktemp behaves the way the Mac page&rsquo;s option entry claims. With no template, GNU uses <code>tmp.XXXXXXXXXX</code> and implies <code>--tmpdir</code>, which falls back to TMPDIR if available and to <code>/tmp</code> otherwise <a href="#src-1" aria-label="Source 1">[1]</a>. GNU also marks <code>-t</code> as deprecated and recommends <code>-p</code>, because it favours the command line over TMPDIR <a href="#src-1" aria-label="Source 1">[1]</a>.</p>
+
+      <p>A script that leans on TMPDIR therefore passes on the runner and writes somewhere else on a Mac.</p>
+
+      <h2>The fix and the review check</h2>
+
+      <p>Give mktemp the directory every time:</p>
+      <pre><code>tmp="$(mktemp -d "${TMPDIR:-/tmp}/data-shrink.XXXXXX")"</code></pre>
+
+      <p>BSD and GNU mktemp both read an explicit template as a path, so the directory comes from the caller&rsquo;s environment with <code>/tmp</code> as the fallback, on either system. <code>-p "${TMPDIR:-/tmp}"</code> also works on both, but the template form reads the same to someone who has memorised neither man page. The follow-up commit added a test that pins the template, so a later edit that drops it fails the test suite.</p>
+
+      <p>Two habits go with it. When a sandboxed build fails with Operation not permitted on a temporary path, the fault is in the script. Loosening the sandbox to allow <code>/var/folders</code> opens a directory that every process on the account shares. And when cleaning up after a probe like the desk&rsquo;s, delete the exact paths the probe printed, never a glob such as <code>/var/folders/&lt;id&gt;/T/tmp.*</code>, because other programs keep their own files there.</p>
+
+      <p>In review, any new shell script with a bare <code>mktemp -d</code> or a <code>mktemp -t</code> goes back with the template form attached.</p>
+
+      <p>The line that held the page for two hours and 25 minutes was 18 characters long, and the one that published it is 55.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">GNU Coreutils manual, <a href="https://www.gnu.org/software/coreutils/manual/html_node/mktemp-invocation.html">mktemp invocation</a></li>
+      </ol>
+    </div>
+  </div>
+</article>
+
+<div class="article-tail wrap">
+  <nav class="pager" aria-label="Neighbouring posts">
+    <a class="pager-prev" href="/blog/check-the-budget-before-the-job.html"><span class="pager-dir">&larr; Earlier post</span><span class="pager-ttl">Check the usage budget before a scheduled AI job starts</span><span class="pager-date">13 Nov 2026</span></a>
+  </nav>
+  <section class="related" aria-labelledby="related-h" data-generated="latest">
+    <h2 id="related-h">Latest field notes</h2>
+    <div class="postlist">
+        <a class="post-row" href="/blog/builder-reads-its-own-output.html">
+          <time class="date" datetime="2026-11-06">Nov 2026</time>
+          <span class="ttl">A build that reads its own output cut 99 rows to one<span>Splitting one div in two made a static site build rewrite a 99-row news hub to a single row. What to assert when a generator reads its own output.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/stuck-in-publishing-rerun.html">
+          <time class="date" datetime="2026-10-30">Oct 2026</time>
+          <span class="ttl">A post stuck in Publishing: when is it safe to rerun?<span>Three scheduled posts sat in Publishing and never appeared. What a rerun risks, how SQS and Stripe handle it, and four checks to run from the outside.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="post-row" href="/blog/api-silently-dropped-fields.html">
+          <time class="date" datetime="2026-10-23">Oct 2026</time>
+          <span class="ttl">A loud API error is cheap. A silently dropped field is not<span>Buffer&#x27;s API refused the desk&#x27;s posts twice, costing one resend each. The fields it accepted and silently dropped cost weeks. Read every one back.</span></span>
+          <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+  </section>
+  <section class="subband" aria-labelledby="sub-h">
+    <h2 id="sub-h">@thearchv.ai on Threads</h2>
+    <p>One AI story most days, with its sources named.</p>
+    <a class="btn" data-location="blog-article" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Follow on Threads</a>
+  </section>
+  <nav class="hublinks" aria-label="Sections of this site">
+    <a href="/news/"><span class="hl-t">The news desk</span><span class="hl-d">A running brief on agentic commerce and payments, with every source named.</span></a>
+    <a href="/blog/"><span class="hl-t">Field notes</span><span class="hl-d">What breaks when payment systems and AI agents run in production.</span></a>
+    <a href="/answers/"><span class="hl-t">Answers</span><span class="hl-d">Short definitions of the terms that keep coming up.</span></a>
+  </nav>
+</div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="fcol">
+      <span class="footmark"><span class="mk">&#9670;</span> JOSEPH BANKOLE</span>
+      <span class="copy">AI platform engineer &middot; Montreal</span>
+    </div>
+    <div class="fcol fcol-end">
+      <a href="/news/">News desk</a>
+      <a href="/blog/">Field notes</a>
+      <a href="/answers/">Answers</a>
+      <a data-location="blog-footer" href="https://www.threads.com/@thearchv.ai" target="_blank" rel="noopener">Threads</a>
+      <a href="https://www.linkedin.com/in/joseph-bankole/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="mailto:partnerships@josephbankole.ca?subject=Enquiry%20(josephbankole.ca)">Contact</a>
+    </div>
+  </div>
+  <div class="foot foot-legal"><span class="copy">&copy; 2026 Joseph Bankole. All rights reserved.</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/analytics.js" defer></script>
+</body>
+</html>

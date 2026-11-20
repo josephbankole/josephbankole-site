@@ -5,8 +5,62 @@
   <link>https://josephbankole.ca</link>
   <description>Field notes by Joseph Bankole on payment infrastructure, ISO 20022 migrations and running AI agents in production, written up from the work itself.</description>
   <language>en</language>
-  <lastBuildDate>Fri, 13 Nov 2026 14:13:51 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 20 Nov 2026 14:09:23 GMT</lastBuildDate>
   <atom:link href="https://josephbankole.ca/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+    <title>macOS mktemp ignored TMPDIR and a sandboxed build failed</title>
+    <link>https://josephbankole.ca/blog/mktemp-ignores-tmpdir-on-macos.html</link>
+    <guid>https://josephbankole.ca/blog/mktemp-ignores-tmpdir-on-macos.html</guid>
+    <pubDate>Fri, 20 Nov 2026 14:09:23 GMT</pubDate>
+    <description>On macOS a bare mktemp -d ignores TMPDIR and writes to /var/folders. How that broke a sandboxed build, what the man page says, and the one-line fix.</description>
+    <content:encoded><![CDATA[<p>At 05:50 ET on Tuesday 17 November a scheduled routine that publishes a daily sports results page ran its build and stopped. Three of 117 tests failed, all in one file that exercised a guard script added to the repository two days earlier. The page went out at 08:15 instead, after a fix to one line of that script was merged at 08:10.</p>
+
+      <p>The line was <code>tmp="$(mktemp -d)"</code>. The routine runs its build inside a macOS sandbox profile that allows writes in three places: the git worktree, the run&rsquo;s own directory and the TMPDIR the routine sets for the build. The script never touched that TMPDIR. Its scratch directory landed in <code>/var/folders</code>, and the sandbox refused the write with Operation not permitted.</p>
+
+      <h2>What mktemp does on a Mac</h2>
+
+      <p>The desk reproduced it on this site&rsquo;s own Mac, running macOS 27.2.1, with TMPDIR pointed at a scratch folder:</p>
+      <ul>
+        <li><code>mktemp -d</code> created <code>/var/folders/&lt;id&gt;/T/tmp.&lt;random&gt;</code> and ignored TMPDIR.</li>
+        <li><code>mktemp -d -t probe</code> did the same, with probe as the prefix.</li>
+        <li><code>mktemp -d "$TMPDIR/x.XXXXXX"</code> created the directory inside the scratch folder.</li>
+        <li><code>mktemp -d -p "$dir"</code> also landed in the folder, with TMPDIR set or unset.</li>
+      </ul>
+
+      <p>The <code>/var/folders</code> path is the per-user temporary directory that <code>getconf DARWIN_USER_TEMP_DIR</code> reports, and in an ordinary login shell it is also the value of TMPDIR. So in a normal terminal, ignoring TMPDIR and honouring it give the same answer, and nobody notices. The two only part when something sets TMPDIR to a different place, which is exactly what a sandbox wrapper does.</p>
+
+      <p>The rest of the toolchain does read it. With the same TMPDIR, Node 22&rsquo;s <code>os.tmpdir()</code> and Python&rsquo;s <code>tempfile.gettempdir()</code> both returned the scratch folder. So a JavaScript test can create its fixtures where the sandbox allows, call a shell script, and have that script write somewhere the sandbox does not. The test file that failed on 17 November was JavaScript. The write it tripped on came from the shell script it called.</p>
+
+      <h2>The man page gives two answers</h2>
+
+      <p>The mktemp man page on the same Mac describes both behaviours. Its description says <code>-t</code> builds the template from the <code>_CS_DARWIN_USER_TEMP_DIR</code> configuration variable when it is available, and falls back to TMPDIR, the <code>-p</code> directory and <code>/tmp</code> only if that variable is missing. That matches the binary. A few lines further down, the entry for <code>-t</code> says it uses &ldquo;the supplied prefix and TMPDIR if set&rdquo;, and the examples section offers <code>mktemp -t</code> under the heading &ldquo;To allow the use of $TMPDIR&rdquo;. On this machine that example does not do what its heading says.</p>
+
+      <p>The same page says <code>-p</code> applies &ldquo;if the TMPDIR environment variable is not set&rdquo;. In the desk&rsquo;s test <code>-p</code> won with TMPDIR set as well.</p>
+
+      <h2>Linux does what the option entry says</h2>
+
+      <p>A Linux CI runner has GNU coreutils, and GNU mktemp behaves the way the Mac page&rsquo;s option entry claims. With no template, GNU uses <code>tmp.XXXXXXXXXX</code> and implies <code>--tmpdir</code>, which falls back to TMPDIR if available and to <code>/tmp</code> otherwise <a href="#src-1" aria-label="Source 1">[1]</a>. GNU also marks <code>-t</code> as deprecated and recommends <code>-p</code>, because it favours the command line over TMPDIR <a href="#src-1" aria-label="Source 1">[1]</a>.</p>
+
+      <p>A script that leans on TMPDIR therefore passes on the runner and writes somewhere else on a Mac.</p>
+
+      <h2>The fix and the review check</h2>
+
+      <p>Give mktemp the directory every time:</p>
+      <pre><code>tmp="$(mktemp -d "${TMPDIR:-/tmp}/data-shrink.XXXXXX")"</code></pre>
+
+      <p>BSD and GNU mktemp both read an explicit template as a path, so the directory comes from the caller&rsquo;s environment with <code>/tmp</code> as the fallback, on either system. <code>-p "${TMPDIR:-/tmp}"</code> also works on both, but the template form reads the same to someone who has memorised neither man page. The follow-up commit added a test that pins the template, so a later edit that drops it fails the test suite.</p>
+
+      <p>Two habits go with it. When a sandboxed build fails with Operation not permitted on a temporary path, the fault is in the script. Loosening the sandbox to allow <code>/var/folders</code> opens a directory that every process on the account shares. And when cleaning up after a probe like the desk&rsquo;s, delete the exact paths the probe printed, never a glob such as <code>/var/folders/&lt;id&gt;/T/tmp.*</code>, because other programs keep their own files there.</p>
+
+      <p>In review, any new shell script with a bare <code>mktemp -d</code> or a <code>mktemp -t</code> goes back with the template form attached.</p>
+
+      <p>The line that held the page for two hours and 25 minutes was 18 characters long, and the one that published it is 55.</p>
+
+      <h2>Sources</h2>
+      <ol>
+        <li id="src-1">GNU Coreutils manual, <a href="https://www.gnu.org/software/coreutils/manual/html_node/mktemp-invocation.html">mktemp invocation</a></li>
+      </ol>]]></content:encoded>
+  </item>
   <item>
     <title>Check the usage budget before a scheduled AI job starts</title>
     <link>https://josephbankole.ca/blog/check-the-budget-before-the-job.html</link>
